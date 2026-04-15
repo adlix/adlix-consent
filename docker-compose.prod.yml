@@ -1,0 +1,6 @@
+services:
+  backend:
+    command: npm run start
+
+  frontend:
+    command: npm run start

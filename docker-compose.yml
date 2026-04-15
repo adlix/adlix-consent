@@ -1,0 +1,61 @@
+services:
+  postgres:
+    container_name: consent_postgres
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-consent}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-consent}
+      POSTGRES_DB: ${POSTGRES_DB:-consent}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+      - "[::1]:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-consent} -d ${POSTGRES_DB:-consent}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+  backend:
+    build: ./apps/backend
+    restart: unless-stopped
+    container_name: consent_strapi
+    env_file:
+      - ./apps/backend/.env
+    ports:
+      - "127.0.0.1:${STRAPI_PORT:-1337}:1337"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - internal
+      - proxy
+
+  frontend:
+    build: ./apps/frontend
+    restart: unless-stopped
+    container_name: consent_next
+    env_file:
+      - ./apps/frontend/.env
+    ports:
+      - "127.0.0.1:${NEXT_PORT:-3000}:3000"
+    depends_on:
+      - backend
+    networks:
+      - internal
+      - proxy
+
+volumes:
+  postgres_data:
+  backend_node_modules:
+  frontend_node_modules:
+
+networks:
+  internal:
+    driver: bridge
+  proxy:
+    external: true

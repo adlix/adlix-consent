@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+apps/backend/.env
+apps/frontend/.env
+
+# Next.js
+apps/frontend/.next/
+apps/frontend/out/
+
+# Strapi
+apps/backend/.tmp/
+apps/backend/.cache/
+apps/backend/build/
+apps/backend/dist/
+apps/backend/exports/
+apps/backend/public/uploads/
+
+# Persistent (keep .gitkeep)
+persistent/*
+!persistent/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
