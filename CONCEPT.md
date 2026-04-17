@@ -36,6 +36,19 @@ Zielgruppe: Agile Tribes, Selbstorganisierte Teams, Kreise im Sinne der Soziokra
 - Integration der Inhalte aus adlix-bussard und adlix-book
 - Community-Wissen wächst mit den Projekten
 
+### Der spirituelle Kern
+
+**Omitakuyasin** (Lakota) — „Alle meine Verwandten" / „Wir sind alle verbunden."
+
+Keine Bitte. Eine Erinnerung. Eine Weltanschauung in einem Wort.
+
+Das ist das stille Fundament — nicht aufdringlich nach außen, aber spürbar in der Haltung der Plattform:
+- Consent, weil der andere mein Verwandter ist
+- Einwände als Geschenk, nicht als Angriff
+- Kreise, weil jeder Platz gleichwertig ist
+
+---
+
 ### Die Bewegung: Agile Tribes
 
 **„Agile Tribes"** — Arbeitstitel und möglicher Name der Bewegung.
@@ -65,6 +78,18 @@ Die Plattform ist das Werkzeug — der Tribe ist das Ziel.
 - **Nicht** Loomio (zu generisch)
 - **Ja**: geführter Consent-Prozess mit Kreiskultur-DNA
 - **Ja**: Bewegungsplattform für Agile Tribes — Verbindung auf Herzensebene
+
+### Das Gleichgewicht
+
+> Der Gesamtzusammenhang bleibt im Blick — das Tool auch.
+
+Die Bewegung (Agile Tribes, Omitakuyasin, Die Problemlöser e.V.) ist der *Warum*.
+Das Consent-Tool ist das *Wie* — konkret, schlank, benutzbar.
+
+**Gefahr #1:** Das Tool wird zu abstrakt, zu philosophisch — niemand nutzt es.
+**Gefahr #2:** Das Tool wird zu technisch, zu kalt — die Seele fehlt.
+
+Das Richtige: Ein Tool das sich *anders* anfühlt. Das in seiner Gestaltung spürbar macht, dass hier eine andere Haltung dahintersteht. Ohne es zu erklären.
 
 ---
 
