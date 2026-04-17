@@ -5,6 +5,45 @@
 
 ---
 
+## Vision & Kontext
+
+adlix-consent ist die Plattform-Konsequenz aus drei Projekten:
+
+- **adlix-bussard** — „Der Weg des Bussards": Ein Weg aus den Krisen, Kreiskultur, Medizinrad, Herzko­härenz
+- **adlix-book** — Das Sachbuch zur Wahrheit und Transformation
+- **die-problemloeser.org** — Der Verein „Die Problemlöser e.V." (Vorstand: Matthias Zillig): Menschen, die etwas bewegen wollen; Steigerung der Lebenskraft, Herzkohärenz, Kreisarbeit
+
+### Was die Plattform leisten soll
+
+**Phase 1 — Consent-Tool (MVP)**
+Schlankes Tool zur Consent-Bildung für Teams, die in Kreiskultur arbeiten.
+Zielgruppe: Agile Tribes, Selbstorganisierte Teams, Kreise im Sinne der Soziokratie.
+
+**Phase 2 — Agile Tribes & Leads**
+- Teams finden über Consent-Prozesse zueinander
+- Vorhaben schaffen Sichtbarkeit für Mitwirkende und Unterstützer
+- Leads für Consulting-Projekte entstehen organisch aus dem Consent-Prozess
+- Unternehmen/Organisationen entdecken kompetente Tribes
+
+**Phase 3 — Projektsourcing**
+- Vorhaben werden öffentlich vorgestellt
+- Mitwirkende (Skills, Zeit, Engagement) werden gefunden
+- Finanzielle Unterstützer werden eingebunden
+- Community-Finanzierung / Kooperationen
+
+**Phase 4 — Lernplattform**
+- Lernmodule: Kreisarbeit, Soziokratie, Konsent, Agilität, Herzkohärenz
+- Integration der Inhalte aus adlix-bussard und adlix-book
+- Community-Wissen wächst mit den Projekten
+
+### Positionierung
+- **Nicht** ein weiteres Projektmanagement-Tool
+- **Nicht** Loomio (zu generisch)
+- **Ja**: geführter Consent-Prozess mit Kreiskultur-DNA
+- **Ja**: Bewegungsplattform für Menschen, die Veränderung leben
+
+---
+
 ## Begriffe
 
 | Begriff | Bedeutung |
