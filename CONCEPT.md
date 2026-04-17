@@ -178,23 +178,27 @@ Wenn mehrere Personen sich mit Grund E enthalten:
 
 ### Dialog-Phasen
 
-#### Phase 1: Einwand verstehen
+#### Phase 1: Einwand verstehen — KI-unterstützt (Free + Pro)
 
-Die einwendende Person beantwortet geführte Fragen — strukturiert, nicht frei:
+Die einwendende Person gibt ihren Einwand zunächst **frei** ein — keine Formularfelder.
 
-1. **Was genau stört dich?**
-   *Beschreibe den problematischen Teil des Vorhabens so konkret wie möglich.*
+**KI analysiert den Freitext** und:
+1. Extrahiert das Kernproblem: *„Du machst dir Sorgen, dass X passieren könnte"*
+2. Prüft die 4 Validitätskriterien (von Loomio/Soziokratie):
+   - **Explicit**: Kann ich einen konkreten Fall machen?
+   - **Impersonal**: Ist es keine persönliche Präferenz?
+   - **Evidenced**: Basiert es auf Erfahrung, nicht nur Vorahnung?
+   - **Not safe to fail**: Ist es kein „bessere Idee"-Einwand?
+3. Gibt Rückmeldung: *„Dein Einwand klingt valide / Hast du vielleicht eher eine andere Idee als einen Einwand?"*
+4. Schlägt 3 Leitfragen vor, die helfen den Einwand zu schärfen — Person kann diese beantworten oder ignorieren
 
-2. **Warum ist das ein Problem für das gemeinsame Ziel?**
-   *Was könnte passieren, wenn das Vorhaben so umgesetzt wird?*
-   Pflichtfeld — verhindert rein persönliche Einwände.
-
-3. **Was bräuchtest du, um Konsent geben zu können?**
-   *Formuliere eine Bedingung oder einen Wunsch — auch wenn du noch keine Lösung siehst.*
+**Ergebnis:** Strukturierter Einwand (Kernthese + Begründung + Bedingung für Konsent)
 
 > Die Plattform unterscheidet aktiv zwischen Einwand und Bedenken:
 > - **Einwand**: konkretes, sachliches Argument gegen das gemeinsame Ziel → Blocker
 > - **Bedenken**: Sorge ohne direkte Zielgefährdung → kein Blocker, wird dokumentiert
+>
+> KI hilft bei der Einordnung — Mensch entscheidet final
 
 ---
 
@@ -297,14 +301,35 @@ Wenn nach N Dialogrunden kein Konsent möglich:
 
 ---
 
-### UX-Prinzipien für den Dialog
+### UX-Prinzipien für den Dialog (inspiriert von Loomio)
 
+- **Thread-Struktur**: Jedes Vorhaben ist ein Thread — Kontext, Diskussion, Abstimmung, Ergebnis in einem Ort
 - **Reihum, nicht chaotisch**: Plattform gibt die Reihenfolge vor — verhindert dominante Stimmen
-- **Zeitlimits**: Jeder Beitrag hat ein optionales Zeitlimit (konfigurierbar)
+- **Vote ändern**: Wer abgestimmt hat, kann seine Stimme ändern wenn der Vorschlag angepasst wurde (wie Loomio)
+- **Begründung beim Abstimmen**: Jede Stimme enthält optional eine Begründung — *warum*, nicht nur *was*
+- **Erinnerungen**: Automatische Reminders an Personen, die noch nicht abgestimmt haben
 - **Kein Echtzeit-Chat**: Beiträge werden gesammelt, nicht live diskutiert — bewusste Entschleunigung
 - **Async-first**: Dialog kann über Stunden/Tage laufen, nicht nur synchron
-- **Dokumentation**: Jeder Dialog-Schritt wird protokolliert und ist später nachvollziehbar
-- **Fortschrittsanzeige**: Alle sehen wo der Prozess gerade steht (welche Phase, wer ist noch dran)
+- **Outcome festhalten**: Am Ende wird das Ergebnis + nächste Schritte explizit dokumentiert (nicht nur „angenommen")
+- **Audit-Trail**: Jeder Schritt mit Zeitstempel — *warum wurde wie entschieden* ist nachvollziehbar
+- **Sense Check vor Consent**: Erst informelle Reaktionsrunde (Sense Check), dann formeller Consent-Vote — wie Loomio
+
+---
+
+## Von Loomio lernen — Was wir anders machen
+
+| Loomio | adlix-consent |
+|---|---|
+| Generisches Tool (Konsens, Mehrheit, Konsent, Advice...) | Fokus: Konsent-Prozess nach Soziokratie |
+| Freie Thread-Diskussion | Geführter Prozess — Phasen enforced |
+| Keine KI | KI als Prozess-Coach + Synthese (Pro) |
+| Stimme ändern möglich | ✅ übernehmen |
+| Begründung beim Vote | ✅ übernehmen |
+| Erinnerungen an Nicht-Abstimmende | ✅ übernehmen |
+| Outcome-Statement | ✅ übernehmen + Evaluationsdatum |
+| Sense Check → Consent (2-Stufen) | ✅ übernehmen als Reaktionsrunde → Abstimmungsrunde |
+| Keine Enthaltungs-Analyse | ✅ unser Differenzierungsmerkmal |
+| Keine Eskalationspfade | ✅ unser Differenzierungsmerkmal |
 
 ---
 
