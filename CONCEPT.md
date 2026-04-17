@@ -162,6 +162,152 @@ Wenn mehrere Personen sich mit Grund E enthalten:
 
 ---
 
+## Dialog zur Lösungsfindung
+
+> Das Herzstück der Plattform. Hier passiert die eigentliche Arbeit nach einem Einwand.
+> Ziel: Kein Streit, kein Verhandeln — gemeinsames Suchen nach einer Lösung,
+> die das Vorhaben voranbringt und den Einwand integriert.
+
+### Wann wird der Dialog gestartet?
+
+- Bei jedem 🔴 schwerwiegenden Einwand (automatisch)
+- Optional bei mehreren 💛 leichten Einwänden (manuell durch Einreicher)
+- Optional bei gehäuften Enthaltungen mit Grund D/E (Moderationsempfehlung)
+
+---
+
+### Dialog-Phasen
+
+#### Phase 1: Einwand verstehen
+
+Die einwendende Person beantwortet geführte Fragen — strukturiert, nicht frei:
+
+1. **Was genau stört dich?**
+   *Beschreibe den problematischen Teil des Vorhabens so konkret wie möglich.*
+
+2. **Warum ist das ein Problem für das gemeinsame Ziel?**
+   *Was könnte passieren, wenn das Vorhaben so umgesetzt wird?*
+   Pflichtfeld — verhindert rein persönliche Einwände.
+
+3. **Was bräuchtest du, um Konsent geben zu können?**
+   *Formuliere eine Bedingung oder einen Wunsch — auch wenn du noch keine Lösung siehst.*
+
+> Die Plattform unterscheidet aktiv zwischen Einwand und Bedenken:
+> - **Einwand**: konkretes, sachliches Argument gegen das gemeinsame Ziel → Blocker
+> - **Bedenken**: Sorge ohne direkte Zielgefährdung → kein Blocker, wird dokumentiert
+
+---
+
+#### Phase 2: Einwand validieren (Kreis)
+
+Alle Kreismitglieder sehen den formulierten Einwand und beantworten:
+
+> *„Ist dieser Einwand aus deiner Sicht ein sachliches Argument gegen das gemeinsame Ziel
+> — oder eher eine persönliche Präferenz?"*
+
+- Mehrheitlich sachlich → Einwand ist valide, Dialog geht weiter
+- Mehrheitlich Präferenz → Einwand wird zu Bedenken herabgestuft, dokumentiert
+- Unentschieden → Moderationshinweis: Einwand-Klärungsgespräch empfohlen
+
+*(Keine Abstimmung im Sinne von überstimmen — nur Einschätzung als Orientierung)*
+
+---
+
+#### Phase 3: Lösungsraum öffnen
+
+Alle Beteiligten sind eingeladen, Lösungsideen einzubringen.
+Reihum — jede Person hat genau einen Beitrag:
+
+**Eingabe-Optionen:**
+- 💡 **Lösungsidee**: Wie könnte das Vorhaben angepasst werden?
+- ❓ **Frage**: Was müsste ich noch wissen, um eine Idee zu entwickeln?
+- ➕ **Zustimmung zu einer anderen Idee**: Ich unterstütze Idee von [Person]
+- ⏭️ **Passe**: Ich habe gerade keine Idee — möchte aber zuhören
+
+**Wichtige Regeln (von der Plattform enforced):**
+- Keine direkte Kritik an anderen Ideen in dieser Phase
+- Keine Diskussion — nur Beiträge sammeln
+- Einreicher ist in dieser Phase Zuhörer, nicht Verteidiger
+
+---
+
+#### Phase 4: Synthese
+
+**Option A — Manuell:**
+Einreicher sieht alle Lösungsideen und formuliert einen angepassten Vorschlag.
+Änderungen zum Original werden diff-artig hervorgehoben.
+
+**Option B — KI-unterstützt (Pro):**
+KI analysiert:
+- Ursprüngliches Vorhaben
+- Einwand(e) + Begründungen
+- Alle Lösungsideen aus Phase 3
+
+Ergebnis:
+1. **Kernspannungen** (was ist eigentlich das Problem?):
+   > *„Der Einwand dreht sich um X. 3 Lösungsideen adressieren X durch..."*
+
+2. **Integrierter Entwurf**: angepasstes Vorhaben, das versucht Einwand + Original zu vereinen
+
+3. **Transparenz-Log**: Welche Idee hat was beeinflusst?
+   > *„Idee von [Person A] → Abschnitt 2 wurde angepasst"*
+   > *„Idee von [Person B] → neuer Absatz 3 hinzugefügt"*
+
+4. **Ungelöste Spannung** (falls KI keine Integration findet):
+   > *„Einwand und Vorhaben scheinen grundsätzlich unvereinbar in Punkt X.
+   > Empfehlung: direktes Gespräch / Neuformulierung des Vorhabens"*
+
+**Immer:** KI-Entwurf ist Vorschlag, kein Beschluss. Einreicher entscheidet ob er ihn übernimmt, anpasst oder verwirft.
+
+---
+
+#### Phase 5: Angepasstes Vorhaben vorstellen
+
+- Einreicher präsentiert den angepassten Vorschlag
+- Änderungen sind sichtbar (diff zum Original)
+- Kurze Erklärung: *„Ich habe X geändert, weil..."*
+- Einwendende Person bestätigt: *„Adressiert das deinen Einwand?"*
+  - Ja → Einwand zurückgezogen, neuer Abstimmungsloop
+  - Teilweise → Einwand bleibt, Dialog geht weiter (max. N Runden)
+  - Nein → Eskalationspfad (siehe unten)
+
+---
+
+#### Phase 6: Eskalationspfad
+
+Wenn nach N Dialogrunden kein Konsent möglich:
+
+**Option A: Vorhaben zurückstellen**
+- Vorhaben wird pausiert
+- Einreicher überdenkt das Vorhaben grundsätzlich
+- Neues Vorhaben kann eingereicht werden
+
+**Option B: Teilentscheidung**
+- Konsent nur für den unstrittigen Teil des Vorhabens
+- Strittiger Teil wird ausgeklammert und separat behandelt
+
+**Option C: Externe Moderation**
+- Plattform empfiehlt: direktes Gespräch / Mediationsrunde außerhalb der Plattform
+- Ergebnis wird manuell eingetragen
+
+**Option D: Zeitlich begrenzter Versuch (Soziokratie-Prinzip)**
+- Vorhaben wird für definierten Zeitraum „auf Probe" beschlossen
+- Evaluationsdatum wird gesetzt
+- Einwendende Person stimmt dem Versuch zu (nicht dem Vorhaben)
+
+---
+
+### UX-Prinzipien für den Dialog
+
+- **Reihum, nicht chaotisch**: Plattform gibt die Reihenfolge vor — verhindert dominante Stimmen
+- **Zeitlimits**: Jeder Beitrag hat ein optionales Zeitlimit (konfigurierbar)
+- **Kein Echtzeit-Chat**: Beiträge werden gesammelt, nicht live diskutiert — bewusste Entschleunigung
+- **Async-first**: Dialog kann über Stunden/Tage laufen, nicht nur synchron
+- **Dokumentation**: Jeder Dialog-Schritt wird protokolliert und ist später nachvollziehbar
+- **Fortschrittsanzeige**: Alle sehen wo der Prozess gerade steht (welche Phase, wer ist noch dran)
+
+---
+
 ## Abstimmungs-Signale im Überblick
 
 | Signal | Bedeutung | Blocker? |
