@@ -1,0 +1,52 @@
+{
+  "collectionName": "projects",
+  "info": {
+    "singularName": "project",
+    "pluralName": "projects",
+    "displayName": "Project",
+    "description": "Consent-Projekt mit Beschreibung und Teilnehmern"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "maxLength": 200
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["draft", "active", "completed", "archived"],
+      "default": "draft"
+    },
+    "currentRound": {
+      "type": "relation",
+      "relation": "hasOne",
+      "target": "api::round.round"
+    },
+    "rounds": {
+      "type": "relation",
+      "relation": "hasMany",
+      "target": "api::round.round"
+    },
+    "participants": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "through": "api::project-participant.project-participant",
+      "inverse": "projects"
+    },
+    "owner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "required": true
+    }
+  }
+}

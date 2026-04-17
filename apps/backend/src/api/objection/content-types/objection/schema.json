@@ -1,0 +1,41 @@
+{
+  "collectionName": "objections",
+  "info": {
+    "singularName": "objection",
+    "pluralName": "objections",
+    "displayName": "Objection",
+    "description": "Einspruch gegen eine Abstimmung"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "reason": {
+      "type": "text",
+      "required": true
+    },
+    "severity": {
+      "type": "enumeration",
+      "enum": ["minor", "major", "blocking"],
+      "default": "minor"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["open", "addressed", "resolved", "dismissed"],
+      "default": "open"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "required": true
+    },
+    "round": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::round.round",
+      "required": true
+    }
+  }
+}

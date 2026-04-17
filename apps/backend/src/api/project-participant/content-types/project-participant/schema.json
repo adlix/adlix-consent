@@ -1,0 +1,27 @@
+{
+  "collectionName": "project-participants",
+  "info": {
+    "singularName": "project-participant",
+    "pluralName": "project-participants",
+    "displayName": "Project Participant",
+    "description": "Join table for project participants"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "project": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::project.project",
+      "required": true
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "required": true
+    }
+  }
+}

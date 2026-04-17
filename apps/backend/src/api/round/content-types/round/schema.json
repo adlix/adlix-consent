@@ -1,0 +1,51 @@
+{
+  "collectionName": "rounds",
+  "info": {
+    "singularName": "round",
+    "pluralName": "rounds",
+    "displayName": "Round",
+    "description": "Abstimmungsrunde innerhalb eines Projekts"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "roundNumber": {
+      "type": "integer",
+      "required": true,
+      "min": 1
+    },
+    "proposal": {
+      "type": "text",
+      "required": true
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["open", "voting", "objection", "discussion", "completed"],
+      "default": "open"
+    },
+    "startDate": {
+      "type": "datetime"
+    },
+    "endDate": {
+      "type": "datetime"
+    },
+    "votes": {
+      "type": "relation",
+      "relation": "hasMany",
+      "target": "api::vote.vote"
+    },
+    "objections": {
+      "type": "relation",
+      "relation": "hasMany",
+      "target": "api::objection.objection"
+    },
+    "project": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::project.project",
+      "required": true
+    }
+  }
+}
