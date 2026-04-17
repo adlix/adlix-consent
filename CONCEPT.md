@@ -36,11 +36,35 @@ Zielgruppe: Agile Tribes, Selbstorganisierte Teams, Kreise im Sinne der Soziokra
 - Integration der Inhalte aus adlix-bussard und adlix-book
 - Community-Wissen wächst mit den Projekten
 
+### Die Bewegung: Agile Tribes
+
+**„Agile Tribes"** — Arbeitstitel und möglicher Name der Bewegung.
+
+**Tribes** — nach Dave Logan (Tribal Leadership):
+- Menschen verbinden sich nicht über Verträge, sondern über gemeinsame Werte
+- Ein Tribe ist eine Gemeinschaft von 20–150 Menschen mit gemeinsamer Sprache und Kultur
+- Tribes durchlaufen Stadien — von „mein Leben ist schlecht" bis „wir können die Welt verändern"
+- Logan: Der stärkste Tribe gewinnt — nicht durch Macht, sondern durch Kohärenz
+
+**Tribes** — im ursprünglichen Sinn (Mitákuye Oyásʼiŋ — „Alle meine Verwandten"):
+- Verbindung auf Herzensebene, nicht nur Arbeitsebene
+- Zugehörigkeit, die tiefer geht als Team oder Abteilung
+- Der Kreis als Grundform: jeder Platz ist gleichwertig
+
+**Agil** — doppelte Bedeutung:
+- Arbeitsweise: iterativ, selbstorganisiert, lernend
+- Lebendigkeit: anpassungsfähig, lebendig, in Bewegung
+
+**Der Consent-Prozess als Tribe-Bildner:**
+Wer gemeinsam Consent-Entscheidungen trifft, baut Vertrauen.
+Vertrauen ist die Grundlage eines Tribe.
+Die Plattform ist das Werkzeug — der Tribe ist das Ziel.
+
 ### Positionierung
 - **Nicht** ein weiteres Projektmanagement-Tool
 - **Nicht** Loomio (zu generisch)
 - **Ja**: geführter Consent-Prozess mit Kreiskultur-DNA
-- **Ja**: Bewegungsplattform für Menschen, die Veränderung leben
+- **Ja**: Bewegungsplattform für Agile Tribes — Verbindung auf Herzensebene
 
 ---
 
