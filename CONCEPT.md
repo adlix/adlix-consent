@@ -31,7 +31,7 @@ Zielgruppe: Agile Tribes, Selbstorganisierte Teams, Kreise im Sinne der Soziokra
 - Finanzielle Unterstützer werden eingebunden
 - Community-Finanzierung / Kooperationen
 
-**Phase 4 — Lernplattform**
+**Phase 4 — Lernplattform** *(zurückgestellt — Architektur folgt aus sima-chartarea Phase 2)*
 - Lernmodule: Kreisarbeit, Soziokratie, Konsent, Agilität, Herzkohärenz
 - Integration der Inhalte aus adlix-bussard und adlix-book
 - Community-Wissen wächst mit den Projekten
