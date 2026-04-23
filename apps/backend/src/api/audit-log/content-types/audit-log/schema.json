@@ -1,0 +1,55 @@
+{
+  "collectionName": "audit_logs",
+  "info": {
+    "singularName": "audit-log",
+    "pluralName": "audit-logs",
+    "displayName": "AuditLog",
+    "description": "Zeitgestempelter Audit-Trail für alle Aktionen im Consent-Prozess"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "action": {
+      "type": "enumeration",
+      "enum": [
+        "create_project",
+        "start_round",
+        "phase_transition",
+        "submit_question",
+        "submit_answer",
+        "submit_reaction",
+        "submit_vote",
+        "change_vote",
+        "submit_objection",
+        "adjust_proposal",
+        "complete_round"
+      ],
+      "required": true
+    },
+    "entityType": {
+      "type": "string",
+      "required": true
+    },
+    "entityId": {
+      "type": "string"
+    },
+    "details": {
+      "type": "text"
+    },
+    "userName": {
+      "type": "string"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "project": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::project.project"
+    }
+  }
+}
