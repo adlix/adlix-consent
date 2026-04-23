@@ -4,7 +4,7 @@
     "singularName": "vote",
     "pluralName": "votes",
     "displayName": "Vote",
-    "description": "Abstimmungsstimme in einer Runde"
+    "description": "Consent-Abstimmungsstimme in einer Runde"
   },
   "options": {
     "draftAndPublish": false
@@ -13,8 +13,21 @@
   "attributes": {
     "choice": {
       "type": "enumeration",
-      "enum": ["yes", "no", "abstain"],
+      "enum": ["consent", "minor_objection", "major_objection", "abstain"],
       "required": true
+    },
+    "reason": {
+      "type": "text"
+    },
+    "previousChoice": {
+      "type": "enumeration",
+      "enum": ["consent", "minor_objection", "major_objection", "abstain"]
+    },
+    "reasonForChange": {
+      "type": "text"
+    },
+    "voteHistory": {
+      "type": "json"
     },
     "user": {
       "type": "relation",
