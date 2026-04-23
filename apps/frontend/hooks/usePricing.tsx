@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 interface License {
   plan: 'free' | 'pro'
@@ -16,16 +16,10 @@ const mockLicense: License = {
 }
 
 export function usePricing() {
-  const [license, setLicense] = useState<License>(mockLicense)
-  const [loading, setLoading] = useState(true)
+  const [license] = useState<License>(mockLicense)
+  const loading = false
 
-  useEffect(() => {
-    // API-Call für echte Lizenz-Daten
-    // fetch('/api/user/license').then(...)
-    setLoading(false)
-  }, [])
-
-  const canCreateCircle = (): { allowed: boolean; reason?: string } => {
+  const canCreateCircle = useCallback((): { allowed: boolean; reason?: string } => {
     if (license.plan === 'pro') {
       return { allowed: true }
     }
@@ -38,9 +32,13 @@ export function usePricing() {
     }
 
     return { allowed: true }
-  }
+  }, [license])
 
-  const checkAndCreate = async () => {
+  const showUpgradePrompt = useCallback(() => {
+    window.location.href = '/pricing'
+  }, [])
+
+  const checkAndCreate = useCallback(async () => {
     const { allowed, reason } = canCreateCircle()
 
     if (!allowed) {
@@ -49,12 +47,7 @@ export function usePricing() {
 
     // TODO: API-Call für Kreis-Erstellung
     return { success: true, upgradeRequired: false }
-  }
-
-  const showUpgradePrompt = () => {
-    // Öffnet Pricing-Modal oder leitet zur Pricing-Seite weiter
-    window.location.href = '/pricing'
-  }
+  }, [canCreateCircle])
 
   return {
     license,
@@ -76,7 +69,7 @@ export function LicenseGuard({ children }: { children: React.ReactNode }) {
     if (!allowed) {
       showUpgradePrompt()
     }
-  }, [loading])
+  }, [loading, canCreateCircle, showUpgradePrompt])
 
   if (loading) {
     return <div>Lädt...</div>

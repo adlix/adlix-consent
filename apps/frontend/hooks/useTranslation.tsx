@@ -115,14 +115,16 @@ export function I18nProvider({
   const [locale, setLocaleState] = useState(initialLocale)
 
   useEffect(() => {
-    // Check URL or localStorage
-    const stored = localStorage.getItem('locale')
-    const urlMatch = pathname.match(/^\/(de|en)\//)
-    if (urlMatch) {
-      setLocaleState(urlMatch[1])
-    } else if (stored) {
-      setLocaleState(stored)
+    async function applyLocale() {
+      const stored = localStorage.getItem('locale')
+      const urlMatch = pathname.match(/^\/(de|en)\//)
+      if (urlMatch) {
+        setLocaleState(urlMatch[1])
+      } else if (stored) {
+        setLocaleState(stored)
+      }
     }
+    applyLocale()
   }, [pathname])
 
   const setLocale = (newLocale: string) => {

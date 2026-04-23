@@ -147,7 +147,7 @@ const choiceLabels: Record<ConsentChoice, { emoji: string; label: string; color:
   },
 }
 
-export default function ProjectDetailPage({ params }: { params: { id: string } }) {
+export default function ProjectDetailPage() {
   const [selectedRound, setSelectedRound] = useState(mockRounds[mockRounds.length - 1])
   const [userVote, setUserVote] = useState<ConsentChoice | null>(null)
   const [showQuestionForm, setShowQuestionForm] = useState(false)
@@ -155,7 +155,10 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
   const [showObjectionForm, setShowObjectionForm] = useState(false)
   const [question, setQuestion] = useState('')
   const [reaction, setReaction] = useState('')
-  const [objection, setObjection] = useState({ reason: '', severity: 'minor' as const })
+  const [objection, setObjection] = useState<{
+    reason: string
+    severity: 'minor' | 'major' | 'blocking'
+  }>({ reason: '', severity: 'minor' })
 
   const currentPhaseIndex = phaseOrder.indexOf(selectedRound.status)
   const currentPhase = flowPhases[currentPhaseIndex]

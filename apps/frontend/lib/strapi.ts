@@ -30,15 +30,12 @@ class StrapiClient {
   ): Promise<StrapiResponse<T>> {
     const url = `${this.baseUrl}/api${endpoint}`
 
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    }
+    const headers = new Headers(options.headers)
+    headers.set('Content-Type', 'application/json')
 
-    // Add auth token if available
     const token = process.env.STRAPI_API_TOKEN
     if (token) {
-      headers['Authorization'] = `Bearer ${token}`
+      headers.set('Authorization', `Bearer ${token}`)
     }
 
     const response = await fetch(url, {
@@ -56,7 +53,7 @@ class StrapiClient {
   // Projects
   async getProjects(params?: {
     populate?: string
-    filters?: Record<string, any>
+    filters?: Record<string, string | number | boolean>
     sort?: string | string[]
     pagination?: { page?: number; pageSize?: number }
   }) {
@@ -83,15 +80,15 @@ class StrapiClient {
       }
     }
 
-    return this.request<any[]>(`/projects?${queryParams.toString()}`)
+    return this.request<unknown[]>(`/projects?${queryParams.toString()}`)
   }
 
   async getProject(id: number | string, populate: string = '*') {
-    return this.request<any>(`/projects/${id}?populate=${populate}`)
+    return this.request<unknown>(`/projects/${id}?populate=${populate}`)
   }
 
   async createProject(data: { name: string; description: string; status?: string }) {
-    return this.request<any>('/projects', {
+    return this.request<unknown>('/projects', {
       method: 'POST',
       body: JSON.stringify({ data }),
     })
@@ -99,7 +96,7 @@ class StrapiClient {
 
   // Rounds
   async getRounds(projectId: number | string) {
-    return this.request<any[]>(`/rounds?filters[project][id][$eq]=${projectId}&populate=*`)
+    return this.request<unknown[]>(`/rounds?filters[project][id][$eq]=${projectId}&populate=*`)
   }
 
   async createRound(data: {
@@ -108,7 +105,7 @@ class StrapiClient {
     status?: string
     project: number
   }) {
-    return this.request<any>('/rounds', {
+    return this.request<unknown>('/rounds', {
       method: 'POST',
       body: JSON.stringify({ data }),
     })
@@ -116,7 +113,7 @@ class StrapiClient {
 
   // Votes
   async castVote(roundId: number | string, choice: 'yes' | 'no' | 'abstain', userId: number) {
-    return this.request<any>('/votes', {
+    return this.request<unknown>('/votes', {
       method: 'POST',
       body: JSON.stringify({
         data: {
@@ -129,7 +126,7 @@ class StrapiClient {
   }
 
   async getVotes(roundId: number | string) {
-    return this.request<any[]>(`/votes?filters[round][id][$eq]=${roundId}&populate=user`)
+    return this.request<unknown[]>(`/votes?filters[round][id][$eq]=${roundId}&populate=user`)
   }
 
   // Objections
@@ -139,26 +136,26 @@ class StrapiClient {
     round: number
     user: number
   }) {
-    return this.request<any>('/objections', {
+    return this.request<unknown>('/objections', {
       method: 'POST',
       body: JSON.stringify({ data }),
     })
   }
 
   async getObjections(roundId: number | string) {
-    return this.request<any[]>(`/objections?filters[round][id][$eq]=${roundId}&populate=user`)
+    return this.request<unknown[]>(`/objections?filters[round][id][$eq]=${roundId}&populate=user`)
   }
 
   // Comments
   async createComment(data: { content: string; round: number; user: number }) {
-    return this.request<any>('/comments', {
+    return this.request<unknown>('/comments', {
       method: 'POST',
       body: JSON.stringify({ data }),
     })
   }
 
   async getComments(roundId: number | string) {
-    return this.request<any[]>(
+    return this.request<unknown[]>(
       `/comments?filters[round][id][$eq]=${roundId}&populate=user&sort=createdAt:asc`
     )
   }

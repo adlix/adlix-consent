@@ -28,8 +28,12 @@ const OnboardingContext = createContext<OnboardingContextType | undefined>(undef
 
 export function OnboardingProvider({ children }: { children: ReactNode }) {
   const [step, setStep] = useState(0)
-  const [userData, setUserData] = useState({ name: '', avatar: '' })
-  const [circleData, setCircleData] = useState({ name: '', description: '' })
+  const [userData, setUserData] = useState<{ name: string; avatar?: string }>({ name: '' })
+  const [circleData, setCircleData] = useState<{
+    name: string
+    description?: string
+    inviteCode?: string
+  }>({ name: '' })
   const [isCompleted, setIsCompleted] = useState(false)
 
   // Check if onboarding is already completed
@@ -43,7 +47,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
             setIsCompleted(true)
           }
         }
-      } catch (e) {
+      } catch {
         // Ignore
       }
     }
