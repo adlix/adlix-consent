@@ -4,7 +4,7 @@
     "singularName": "comment",
     "pluralName": "comments",
     "displayName": "Comment",
-    "description": "Kommentar in der Diskussionsphase"
+    "description": "Kommentar in einer Runde (Frage, Antwort, Reaktion oder Perspektive)"
   },
   "options": {
     "draftAndPublish": false
@@ -14,6 +14,11 @@
     "content": {
       "type": "text",
       "required": true
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": ["question", "answer", "reaction", "perspective"],
+      "default": "question"
     },
     "user": {
       "type": "relation",

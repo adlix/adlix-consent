@@ -22,13 +22,19 @@
     },
     "status": {
       "type": "enumeration",
-      "enum": ["open", "voting", "objection", "discussion", "completed"],
-      "default": "open"
+      "enum": ["information", "reaction", "adjustment", "voting", "integration", "completed"],
+      "default": "information"
     },
     "startDate": {
       "type": "datetime"
     },
     "endDate": {
+      "type": "datetime"
+    },
+    "phaseStartedAt": {
+      "type": "datetime"
+    },
+    "phaseDeadline": {
       "type": "datetime"
     },
     "votes": {
@@ -40,6 +46,11 @@
       "type": "relation",
       "relation": "hasMany",
       "target": "api::objection.objection"
+    },
+    "comments": {
+      "type": "relation",
+      "relation": "hasMany",
+      "target": "api::comment.comment"
     },
     "project": {
       "type": "relation",
