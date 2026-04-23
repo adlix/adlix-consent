@@ -2,19 +2,19 @@
  * Onboarding Steps
  * Schrittweiser Onboarding-Flow für neue Benutzer
  */
-'use client';
+'use client'
 
-import { useState, ReactNode } from 'react';
-import { useOnboarding } from './OnboardingContext';
+import { useState, ReactNode } from 'react'
+import { useOnboarding } from './OnboardingContext'
 
 // Progress Bar
 function ProgressBar({ current, total }: { current: number; total: number }) {
-  const progress = ((current + 1) / total) * 100;
-  
+  const progress = ((current + 1) / total) * 100
+
   return (
     <div className="w-full max-w-md mx-auto mb-8">
       <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-        <div 
+        <div
           className="h-full bg-green-500 transition-all duration-500 ease-out"
           style={{ width: `${progress}%` }}
         />
@@ -23,16 +23,14 @@ function ProgressBar({ current, total }: { current: number; total: number }) {
         Schritt {current + 1} von {total}
       </p>
     </div>
-  );
+  )
 }
 
 // Welcome Step
 function WelcomeStep({ onNext }: { onNext: () => void }) {
   return (
     <div className="text-center">
-      <h1 className="text-3xl font-bold mb-4">
-        Willkommen bei adlix-consent
-      </h1>
+      <h1 className="text-3xl font-bold mb-4">Willkommen bei adlix-consent</h1>
       <p className="text-gray-600 mb-8">
         Der Weg zu echter Entscheidungsfindung — mit Herz und Verstand.
       </p>
@@ -52,30 +50,30 @@ function WelcomeStep({ onNext }: { onNext: () => void }) {
         Loslegen →
       </button>
     </div>
-  );
+  )
 }
 
 // Profile Setup Step
 function ProfileStep({ onNext }: { onNext: () => void }) {
-  const { userData, setUserData } = useOnboarding();
-  const [name, setName] = useState(userData.name);
-  const [avatar, setAvatar] = useState(userData.avatar || '');
-  const [error, setError] = useState('');
+  const { userData, setUserData } = useOnboarding()
+  const [name, setName] = useState(userData.name)
+  const [avatar, setAvatar] = useState(userData.avatar || '')
+  const [error, setError] = useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     if (!name.trim()) {
-      setError('Bitte gib einen Namen ein');
-      return;
+      setError('Bitte gib einen Namen ein')
+      return
     }
-    setUserData({ name: name.trim(), avatar });
-    onNext();
-  };
+    setUserData({ name: name.trim(), avatar })
+    onNext()
+  }
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto">
       <h2 className="text-2xl font-bold mb-6 text-center">Über dich</h2>
-      
+
       <div className="mb-6">
         <label className="block text-sm font-medium mb-2">Dein Name</label>
         <input
@@ -107,50 +105,48 @@ function ProfileStep({ onNext }: { onNext: () => void }) {
         Weiter →
       </button>
     </form>
-  );
+  )
 }
 
 // Circle Setup Step
 function CircleStep({ onNext }: { onNext: () => void }) {
-  const { circleData, setCircleData } = useOnboarding();
-  const [name, setName] = useState(circleData.name);
-  const [description, setDescription] = useState(circleData.description || '');
-  const [joinMode, setJoinMode] = useState<'create' | 'join'>('create');
-  const [inviteCode, setInviteCode] = useState('');
-  const [error, setError] = useState('');
+  const { circleData, setCircleData } = useOnboarding()
+  const [name, setName] = useState(circleData.name)
+  const [description, setDescription] = useState(circleData.description || '')
+  const [joinMode, setJoinMode] = useState<'create' | 'join'>('create')
+  const [inviteCode, setInviteCode] = useState('')
+  const [error, setError] = useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
+    e.preventDefault()
+
     if (joinMode === 'create') {
       if (!name.trim()) {
-        setError('Bitte gib einen Kreis-Namen ein');
-        return;
+        setError('Bitte gib einen Kreis-Namen ein')
+        return
       }
-      setCircleData({ name: name.trim(), description: description.trim() });
+      setCircleData({ name: name.trim(), description: description.trim() })
     } else {
       if (!inviteCode.trim()) {
-        setError('Bitte gib einen Einladungscode ein');
-        return;
+        setError('Bitte gib einen Einladungscode ein')
+        return
       }
-      setCircleData({ name: '', inviteCode: inviteCode.trim() });
+      setCircleData({ name: '', inviteCode: inviteCode.trim() })
     }
-    onNext();
-  };
+    onNext()
+  }
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto">
       <h2 className="text-2xl font-bold mb-6 text-center">Dein Kreis</h2>
-      
+
       {/* Mode Toggle */}
       <div className="flex mb-6 bg-gray-100 rounded-lg p-1">
         <button
           type="button"
           onClick={() => setJoinMode('create')}
           className={`flex-1 py-2 rounded-md transition-colors ${
-            joinMode === 'create' 
-              ? 'bg-white shadow text-green-600' 
-              : 'text-gray-600'
+            joinMode === 'create' ? 'bg-white shadow text-green-600' : 'text-gray-600'
           }`}
         >
           Neuen Kreis erstellen
@@ -159,9 +155,7 @@ function CircleStep({ onNext }: { onNext: () => void }) {
           type="button"
           onClick={() => setJoinMode('join')}
           className={`flex-1 py-2 rounded-md transition-colors ${
-            joinMode === 'join' 
-              ? 'bg-white shadow text-green-600' 
-              : 'text-gray-600'
+            joinMode === 'join' ? 'bg-white shadow text-green-600' : 'text-gray-600'
           }`}
         >
           Einladungscode
@@ -213,24 +207,26 @@ function CircleStep({ onNext }: { onNext: () => void }) {
         {joinMode === 'create' ? 'Kreis erstellen' : 'Kreis beitreten'}
       </button>
     </form>
-  );
+  )
 }
 
 // Complete Step
 function CompleteStep({ onComplete }: { onComplete: () => void }) {
-  const { userData, circleData } = useOnboarding();
+  const { userData, circleData } = useOnboarding()
 
   return (
     <div className="text-center">
       <div className="text-6xl mb-4">🎉</div>
       <h2 className="text-2xl font-bold mb-4">Fast fertig!</h2>
-      <p className="text-gray-600 mb-8">
-        Wir richten jetzt deinen Circle ein...
-      </p>
-      
+      <p className="text-gray-600 mb-8">Wir richten jetzt deinen Circle ein...</p>
+
       <div className="bg-gray-50 p-6 rounded-lg text-left max-w-md mx-auto mb-8">
-        <p><strong>Name:</strong> {userData.name}</p>
-        <p><strong>Kreis:</strong> {circleData.name || 'wird beigetreten'}</p>
+        <p>
+          <strong>Name:</strong> {userData.name}
+        </p>
+        <p>
+          <strong>Kreis:</strong> {circleData.name || 'wird beigetreten'}
+        </p>
       </div>
 
       <button
@@ -240,35 +236,35 @@ function CompleteStep({ onComplete }: { onComplete: () => void }) {
         Zum Dashboard →
       </button>
     </div>
-  );
+  )
 }
 
 // Main Onboarding Component
-const STEPS = [WelcomeStep, ProfileStep, CircleStep, CompleteStep];
+const STEPS = [WelcomeStep, ProfileStep, CircleStep, CompleteStep]
 
 export function OnboardingFlow() {
-  const { step, setStep, completeOnboarding } = useOnboarding();
-  const totalSteps = STEPS.length;
-  
-  const CurrentStep = STEPS[step];
-  
+  const { step, setStep, completeOnboarding } = useOnboarding()
+  const totalSteps = STEPS.length
+
+  const CurrentStep = STEPS[step]
+
   const handleNext = () => {
     if (step < totalSteps - 1) {
-      setStep(step + 1);
+      setStep(step + 1)
     }
-  };
+  }
 
   const handleComplete = async () => {
-    completeOnboarding();
+    completeOnboarding()
     // API call to complete onboarding would go here
-  };
+  }
 
   return (
     <div className="min-h-screen bg-white py-12 px-4">
       <ProgressBar current={step} total={totalSteps} />
       <CurrentStep onNext={handleNext} onComplete={handleComplete} />
     </div>
-  );
+  )
 }
 
-export { ProgressBar, WelcomeStep, ProfileStep, CircleStep, CompleteStep };
+export { ProgressBar, WelcomeStep, ProfileStep, CircleStep, CompleteStep }

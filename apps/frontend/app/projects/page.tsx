@@ -1,42 +1,42 @@
-import Link from "next/link";
+import Link from 'next/link'
 
 // Mock data for projects (will be replaced with Strapi API calls)
 const mockProjects = [
   {
     id: 1,
-    name: "Neues Büro-Konzept",
-    description: "Diskussion über flexible Arbeitsplatzgestaltung",
-    status: "active",
+    name: 'Neues Büro-Konzept',
+    description: 'Diskussion über flexible Arbeitsplatzgestaltung',
+    status: 'active',
     currentRound: 2,
     participantCount: 12,
-    updatedAt: "2026-04-16",
+    updatedAt: '2026-04-16',
   },
   {
     id: 2,
-    name: "Team-Event 2026",
-    description: "Planung des nächsten Team-Events",
-    status: "active",
+    name: 'Team-Event 2026',
+    description: 'Planung des nächsten Team-Events',
+    status: 'active',
     currentRound: 1,
     participantCount: 8,
-    updatedAt: "2026-04-15",
+    updatedAt: '2026-04-15',
   },
   {
     id: 3,
-    name: "Projekt-Review Prozess",
-    description: "Neuer Ablauf für Projekt-Reviews",
-    status: "draft",
+    name: 'Projekt-Review Prozess',
+    description: 'Neuer Ablauf für Projekt-Reviews',
+    status: 'draft',
     currentRound: 0,
     participantCount: 5,
-    updatedAt: "2026-04-10",
+    updatedAt: '2026-04-10',
   },
-];
+]
 
 const statusLabels: Record<string, { label: string; color: string }> = {
-  draft: { label: "Entwurf", color: "bg-gray-100 text-gray-700" },
-  active: { label: "Aktiv", color: "bg-green-100 text-green-700" },
-  completed: { label: "Abgeschlossen", color: "bg-blue-100 text-blue-700" },
-  archived: { label: "Archiviert", color: "bg-gray-100 text-gray-500" },
-};
+  draft: { label: 'Entwurf', color: 'bg-gray-100 text-gray-700' },
+  active: { label: 'Aktiv', color: 'bg-green-100 text-green-700' },
+  completed: { label: 'Abgeschlossen', color: 'bg-blue-100 text-blue-700' },
+  archived: { label: 'Archiviert', color: 'bg-gray-100 text-gray-500' },
+}
 
 export default function ProjectsPage() {
   return (
@@ -94,7 +94,7 @@ export default function ProjectsPage() {
           ) : (
             <div className="grid gap-4">
               {mockProjects.map((project) => {
-                const status = statusLabels[project.status] || statusLabels.draft;
+                const status = statusLabels[project.status] || statusLabels.draft
                 return (
                   <Link
                     key={project.id}
@@ -106,24 +106,24 @@ export default function ProjectsPage() {
                         <h2 className="text-lg font-semibold mb-1">{project.name}</h2>
                         <p className="text-gray-600 text-sm">{project.description}</p>
                       </div>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${status.color}`}>
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${status.color}`}
+                      >
                         {status.label}
                       </span>
                     </div>
                     <div className="flex items-center gap-6 text-sm text-gray-500">
-                      {project.currentRound > 0 && (
-                        <span>Runde {project.currentRound}</span>
-                      )}
+                      {project.currentRound > 0 && <span>Runde {project.currentRound}</span>}
                       <span>{project.participantCount} Teilnehmer</span>
                       <span>Aktualisiert: {project.updatedAt}</span>
                     </div>
                   </Link>
-                );
+                )
               })}
             </div>
           )}
         </div>
       </main>
     </div>
-  );
+  )
 }

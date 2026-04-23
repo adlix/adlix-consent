@@ -1,37 +1,37 @@
-'use client';
+'use client'
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [mounted, setMounted] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light')
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true);
+    setMounted(true)
     // System-Preference oder LocalStorage
-    const stored = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
+    const stored = localStorage.getItem('theme')
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+
     if (stored === 'dark' || (!stored && prefersDark)) {
-      setTheme('dark');
-      document.documentElement.classList.add('dark');
+      setTheme('dark')
+      document.documentElement.classList.add('dark')
     }
-  }, []);
+  }, [])
 
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    
+    const newTheme = theme === 'light' ? 'dark' : 'light'
+    setTheme(newTheme)
+    localStorage.setItem('theme', newTheme)
+
     if (newTheme === 'dark') {
-      document.documentElement.classList.add('dark');
+      document.documentElement.classList.add('dark')
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove('dark')
     }
-  };
+  }
 
   if (!mounted) {
-    return <div className="w-9 h-9" />; // Avoid hydration mismatch
+    return <div className="w-9 h-9" /> // Avoid hydration mismatch
   }
 
   return (
@@ -46,5 +46,5 @@ export default function ThemeToggle() {
         <span className="text-lg">☀️</span>
       )}
     </button>
-  );
+  )
 }

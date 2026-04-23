@@ -1,120 +1,187 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { useState } from "react";
+import Link from 'next/link'
+import { useState } from 'react'
 
 // Mock data
 const mockProject = {
   id: 1,
-  name: "Neues Büro-Konzept",
-  description: "Diskussion über flexible Arbeitsplatzgestaltung und Remote-Work-Policy",
-  status: "active",
-  owner: { name: "Matthias Zillig", email: "matthias@example.com" },
+  name: 'Neues Büro-Konzept',
+  description: 'Diskussion über flexible Arbeitsplatzgestaltung und Remote-Work-Policy',
+  status: 'active',
+  owner: { name: 'Matthias Zillig', email: 'matthias@example.com' },
   participantCount: 12,
-};
+}
 
 const mockRounds = [
   {
     id: 1,
     roundNumber: 1,
-    proposal: "Wir führen ein hybrides Arbeitsmodell ein: 2 Tage Büro, 3 Tage Remote.",
-    status: "completed",
-    startDate: "2026-04-10",
-    endDate: "2026-04-14",
+    proposal: 'Wir führen ein hybrides Arbeitsmodell ein: 2 Tage Büro, 3 Tage Remote.',
+    status: 'completed',
+    startDate: '2026-04-10',
+    endDate: '2026-04-14',
     votes: [
-      { user: "Anna", choice: "consent" },
-      { user: "Tom", choice: "consent" },
-      { user: "Lisa", choice: "minor_objection", reason: "Core-Days sollten frei wählbar sein" },
-      { user: "Max", choice: "consent" },
-      { user: "Julia", choice: "abstain" },
+      { user: 'Anna', choice: 'consent' },
+      { user: 'Tom', choice: 'consent' },
+      { user: 'Lisa', choice: 'minor_objection', reason: 'Core-Days sollten frei wählbar sein' },
+      { user: 'Max', choice: 'consent' },
+      { user: 'Julia', choice: 'abstain' },
     ],
     objections: [],
     comments: [
-      { id: 1, user: "Anna", type: "question", content: "Wie viele Tage sind verpflichtend im Büro?", createdAt: "2026-04-11" },
-      { id: 2, user: "Tom", type: "answer", content: "Der Vorschlag sagt 2 Tage Büro.", createdAt: "2026-04-11" },
-      { id: 3, user: "Lisa", type: "reaction", content: "Ich finde das grundsätzlich gut, aber die Core-Days sollten wählbar sein.", createdAt: "2026-04-12" },
+      {
+        id: 1,
+        user: 'Anna',
+        type: 'question',
+        content: 'Wie viele Tage sind verpflichtend im Büro?',
+        createdAt: '2026-04-11',
+      },
+      {
+        id: 2,
+        user: 'Tom',
+        type: 'answer',
+        content: 'Der Vorschlag sagt 2 Tage Büro.',
+        createdAt: '2026-04-11',
+      },
+      {
+        id: 3,
+        user: 'Lisa',
+        type: 'reaction',
+        content: 'Ich finde das grundsätzlich gut, aber die Core-Days sollten wählbar sein.',
+        createdAt: '2026-04-12',
+      },
     ],
   },
   {
     id: 2,
     roundNumber: 2,
-    proposal: "Angepasstes Modell: 3 Tage Büro, 2 Tage Remote, mit Core-Days (Di+Do).",
-    status: "voting",
-    startDate: "2026-04-15",
-    endDate: "2026-04-19",
+    proposal: 'Angepasstes Modell: 3 Tage Büro, 2 Tage Remote, mit Core-Days (Di+Do).',
+    status: 'voting',
+    startDate: '2026-04-15',
+    endDate: '2026-04-19',
     votes: [
-      { user: "Anna", choice: "consent" },
-      { user: "Tom", choice: "consent" },
-      { user: "Max", choice: "consent" },
-      { user: "Lisa", choice: "minor_objection", reason: "Core-Days sollten frei wählbar sein" },
-      { user: "Julia", choice: "consent" },
+      { user: 'Anna', choice: 'consent' },
+      { user: 'Tom', choice: 'consent' },
+      { user: 'Max', choice: 'consent' },
+      { user: 'Lisa', choice: 'minor_objection', reason: 'Core-Days sollten frei wählbar sein' },
+      { user: 'Julia', choice: 'consent' },
     ],
     objections: [
-      { id: 1, user: "Lisa", severity: "minor", reason: "Core-Days sollten frei wählbar sein", status: "open" },
+      {
+        id: 1,
+        user: 'Lisa',
+        severity: 'minor',
+        reason: 'Core-Days sollten frei wählbar sein',
+        status: 'open',
+      },
     ],
     comments: [
-      { id: 4, user: "Anna", type: "question", content: "Was passiert, wenn man an einem Core-Day verhindert ist?", createdAt: "2026-04-15" },
-      { id: 5, user: "Max", type: "reaction", content: "Die Core-Days finde ich gut für Team-Meetings!", createdAt: "2026-04-16" },
+      {
+        id: 4,
+        user: 'Anna',
+        type: 'question',
+        content: 'Was passiert, wenn man an einem Core-Day verhindert ist?',
+        createdAt: '2026-04-15',
+      },
+      {
+        id: 5,
+        user: 'Max',
+        type: 'reaction',
+        content: 'Die Core-Days finde ich gut für Team-Meetings!',
+        createdAt: '2026-04-16',
+      },
     ],
   },
-];
+]
 
-type ConsentChoice = "consent" | "minor_objection" | "major_objection" | "abstain";
+type ConsentChoice = 'consent' | 'minor_objection' | 'major_objection' | 'abstain'
 
 // Consent Flow Phases (matching CONCEPT.md)
 const flowPhases = [
-  { key: "information", label: "Informationsrunde", icon: "❓", hint: "Nur Verständnisfragen — keine Meinungen" },
-  { key: "reaction", label: "Reaktionsrunde", icon: "💬", hint: "Nur Perspektiven — kein Gegenargumentieren" },
-  { key: "adjustment", label: "Anpassung", icon: "🔄", hint: "Einreicher überarbeitet den Vorschlag" },
-  { key: "voting", label: "Abstimmung", icon: "🗳️", hint: "Konsent-Abstimmung" },
-  { key: "integration", label: "Integration", icon: "🤝", hint: "Einwände werden integriert" },
-  { key: "completed", label: "Ergebnis", icon: "✅", hint: "Beschluss gefasst" },
-];
+  {
+    key: 'information',
+    label: 'Informationsrunde',
+    icon: '❓',
+    hint: 'Nur Verständnisfragen — keine Meinungen',
+  },
+  {
+    key: 'reaction',
+    label: 'Reaktionsrunde',
+    icon: '💬',
+    hint: 'Nur Perspektiven — kein Gegenargumentieren',
+  },
+  {
+    key: 'adjustment',
+    label: 'Anpassung',
+    icon: '🔄',
+    hint: 'Einreicher überarbeitet den Vorschlag',
+  },
+  { key: 'voting', label: 'Abstimmung', icon: '🗳️', hint: 'Konsent-Abstimmung' },
+  { key: 'integration', label: 'Integration', icon: '🤝', hint: 'Einwände werden integriert' },
+  { key: 'completed', label: 'Ergebnis', icon: '✅', hint: 'Beschluss gefasst' },
+]
 
-const phaseOrder = flowPhases.map(p => p.key);
+const phaseOrder = flowPhases.map((p) => p.key)
 
 const choiceLabels: Record<ConsentChoice, { emoji: string; label: string; color: string }> = {
-  consent: { emoji: "✅", label: "Konsent", color: "bg-green-50 text-green-700 hover:bg-green-100 ring-green-200" },
-  minor_objection: { emoji: "💛", label: "Leichter Einwand", color: "bg-yellow-50 text-yellow-700 hover:bg-yellow-100 ring-yellow-200" },
-  major_objection: { emoji: "🔴", label: "Schwerwiegender Einwand", color: "bg-red-50 text-red-700 hover:bg-red-100 ring-red-200" },
-  abstain: { emoji: "⏸️", label: "Enthalten", color: "bg-gray-50 text-gray-700 hover:bg-gray-200 ring-gray-300" },
-};
+  consent: {
+    emoji: '✅',
+    label: 'Konsent',
+    color: 'bg-green-50 text-green-700 hover:bg-green-100 ring-green-200',
+  },
+  minor_objection: {
+    emoji: '💛',
+    label: 'Leichter Einwand',
+    color: 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100 ring-yellow-200',
+  },
+  major_objection: {
+    emoji: '🔴',
+    label: 'Schwerwiegender Einwand',
+    color: 'bg-red-50 text-red-700 hover:bg-red-100 ring-red-200',
+  },
+  abstain: {
+    emoji: '⏸️',
+    label: 'Enthalten',
+    color: 'bg-gray-50 text-gray-700 hover:bg-gray-200 ring-gray-300',
+  },
+}
 
 export default function ProjectDetailPage({ params }: { params: { id: string } }) {
-  const [selectedRound, setSelectedRound] = useState(mockRounds[mockRounds.length - 1]);
-  const [userVote, setUserVote] = useState<ConsentChoice | null>(null);
-  const [showQuestionForm, setShowQuestionForm] = useState(false);
-  const [showReactionForm, setShowReactionForm] = useState(false);
-  const [showObjectionForm, setShowObjectionForm] = useState(false);
-  const [question, setQuestion] = useState("");
-  const [reaction, setReaction] = useState("");
-  const [objection, setObjection] = useState({ reason: "", severity: "minor" as const });
+  const [selectedRound, setSelectedRound] = useState(mockRounds[mockRounds.length - 1])
+  const [userVote, setUserVote] = useState<ConsentChoice | null>(null)
+  const [showQuestionForm, setShowQuestionForm] = useState(false)
+  const [showReactionForm, setShowReactionForm] = useState(false)
+  const [showObjectionForm, setShowObjectionForm] = useState(false)
+  const [question, setQuestion] = useState('')
+  const [reaction, setReaction] = useState('')
+  const [objection, setObjection] = useState({ reason: '', severity: 'minor' as const })
 
-  const currentPhaseIndex = phaseOrder.indexOf(selectedRound.status);
-  const currentPhase = flowPhases[currentPhaseIndex];
+  const currentPhaseIndex = phaseOrder.indexOf(selectedRound.status)
+  const currentPhase = flowPhases[currentPhaseIndex]
 
   const handleVote = (choice: ConsentChoice) => {
-    setUserVote(choice);
-  };
+    setUserVote(choice)
+  }
 
   const handleSubmitQuestion = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!question.includes("?")) return;
-    setQuestion("");
-    setShowQuestionForm(false);
-  };
+    e.preventDefault()
+    if (!question.includes('?')) return
+    setQuestion('')
+    setShowQuestionForm(false)
+  }
 
   const handleSubmitReaction = (e: React.FormEvent) => {
-    e.preventDefault();
-    setReaction("");
-    setShowReactionForm(false);
-  };
+    e.preventDefault()
+    setReaction('')
+    setShowReactionForm(false)
+  }
 
   const handleSubmitObjection = (e: React.FormEvent) => {
-    e.preventDefault();
-    setObjection({ reason: "", severity: "minor" });
-    setShowObjectionForm(false);
-  };
+    e.preventDefault()
+    setObjection({ reason: '', severity: 'minor' })
+    setShowObjectionForm(false)
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -159,8 +226,8 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
             <h2 className="text-lg font-semibold mb-4">Consent-Prozess</h2>
             <div className="flex items-center justify-between overflow-x-auto pb-2">
               {flowPhases.map((phase, index) => {
-                const isCompleted = index < currentPhaseIndex;
-                const isActive = index === currentPhaseIndex;
+                const isCompleted = index < currentPhaseIndex
+                const isActive = index === currentPhaseIndex
 
                 return (
                   <div key={phase.key} className="flex items-center min-w-0">
@@ -168,27 +235,29 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
                       <div
                         className={`w-12 h-12 rounded-full flex items-center justify-center text-xl mb-2 shrink-0 transition-colors ${
                           isCompleted
-                            ? "bg-green-500 text-white"
+                            ? 'bg-green-500 text-white'
                             : isActive
-                            ? "bg-blue-600 text-white ring-4 ring-blue-200"
-                            : "bg-gray-200 text-gray-500"
+                              ? 'bg-blue-600 text-white ring-4 ring-blue-200'
+                              : 'bg-gray-200 text-gray-500'
                         }`}
                       >
                         {phase.icon}
                       </div>
-                      <div className={`text-xs font-medium text-center max-w-[80px] ${isActive ? "text-blue-600" : ""}`}>
+                      <div
+                        className={`text-xs font-medium text-center max-w-[80px] ${isActive ? 'text-blue-600' : ''}`}
+                      >
                         {phase.label}
                       </div>
                     </div>
                     {index < flowPhases.length - 1 && (
                       <div
                         className={`w-6 sm:w-12 h-0.5 mx-1 sm:mx-2 shrink-0 transition-colors ${
-                          isCompleted ? "bg-green-500" : "bg-gray-200"
+                          isCompleted ? 'bg-green-500' : 'bg-gray-200'
                         }`}
                       />
                     )}
                   </div>
-                );
+                )
               })}
             </div>
             {currentPhase && (
@@ -208,13 +277,13 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
                   onClick={() => setSelectedRound(round)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
                     selectedRound.id === round.id
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
                   Runde {round.roundNumber}
-                  {round.status === "voting" && " 🗳️"}
-                  {round.status === "completed" && " ✓"}
+                  {round.status === 'voting' && ' 🗳️'}
+                  {round.status === 'completed' && ' ✓'}
                 </button>
               ))}
             </div>
@@ -224,21 +293,22 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
           {selectedRound && (
             <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold">
-                  Runde {selectedRound.roundNumber}
-                </h2>
-                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  selectedRound.status === "voting"
-                    ? "bg-blue-600 text-white"
-                    : selectedRound.status === "completed"
-                    ? "bg-green-500 text-white"
-                    : selectedRound.status === "information"
-                    ? "bg-indigo-100 text-indigo-700"
-                    : selectedRound.status === "reaction"
-                    ? "bg-purple-100 text-purple-700"
-                    : "bg-gray-100 text-gray-700"
-                }`}>
-                  {flowPhases[phaseOrder.indexOf(selectedRound.status)]?.label || selectedRound.status}
+                <h2 className="text-xl font-semibold">Runde {selectedRound.roundNumber}</h2>
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    selectedRound.status === 'voting'
+                      ? 'bg-blue-600 text-white'
+                      : selectedRound.status === 'completed'
+                        ? 'bg-green-500 text-white'
+                        : selectedRound.status === 'information'
+                          ? 'bg-indigo-100 text-indigo-700'
+                          : selectedRound.status === 'reaction'
+                            ? 'bg-purple-100 text-purple-700'
+                            : 'bg-gray-100 text-gray-700'
+                  }`}
+                >
+                  {flowPhases[phaseOrder.indexOf(selectedRound.status)]?.label ||
+                    selectedRound.status}
                 </span>
               </div>
 
@@ -249,21 +319,27 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
               </div>
 
               {/* Information Phase — Questions */}
-              {selectedRound.status === "information" && (
+              {selectedRound.status === 'information' && (
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold mb-2">Informationsrunde</h3>
                   <p className="text-sm text-gray-500 mb-4">
-                    Stelle Verständnisfragen zum Vorschlag. Keine Meinungen oder Diskussion — nur Klärung.
+                    Stelle Verständnisfragen zum Vorschlag. Keine Meinungen oder Diskussion — nur
+                    Klärung.
                   </p>
                   {selectedRound.comments
-                    .filter(c => c.type === "question" || c.type === "answer")
+                    .filter((c) => c.type === 'question' || c.type === 'answer')
                     .map((cmt) => (
-                      <div key={cmt.id} className={`p-4 rounded-lg mb-2 ${
-                        cmt.type === "question" ? "bg-indigo-50 border-l-4 border-indigo-300" : "bg-blue-50 border-l-4 border-blue-300"
-                      }`}>
+                      <div
+                        key={cmt.id}
+                        className={`p-4 rounded-lg mb-2 ${
+                          cmt.type === 'question'
+                            ? 'bg-indigo-50 border-l-4 border-indigo-300'
+                            : 'bg-blue-50 border-l-4 border-blue-300'
+                        }`}
+                      >
                         <div className="flex items-center justify-between mb-1">
                           <span className="font-medium text-sm">
-                            {cmt.type === "question" ? "❓" : "💡"} {cmt.user}
+                            {cmt.type === 'question' ? '❓' : '💡'} {cmt.user}
                           </span>
                           <span className="text-xs text-gray-500">{cmt.createdAt}</span>
                         </div>
@@ -277,7 +353,10 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
                     ❓ Frage stellen
                   </button>
                   {showQuestionForm && (
-                    <form onSubmit={handleSubmitQuestion} className="mt-4 p-4 bg-indigo-5 rounded-lg border border-indigo-200">
+                    <form
+                      onSubmit={handleSubmitQuestion}
+                      className="mt-4 p-4 bg-indigo-5 rounded-lg border border-indigo-200"
+                    >
                       <textarea
                         value={question}
                         onChange={(e) => setQuestion(e.target.value)}
@@ -286,14 +365,24 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
                         placeholder="Deine Frage zum Vorschlag... (muss ein ? enthalten)"
                         required
                       />
-                      {question && !question.includes("?") && (
-                        <p className="text-xs text-red-500 mb-2">Fragen müssen ein Fragezeichen (?) enthalten.</p>
+                      {question && !question.includes('?') && (
+                        <p className="text-xs text-red-500 mb-2">
+                          Fragen müssen ein Fragezeichen (?) enthalten.
+                        </p>
                       )}
                       <div className="flex gap-2">
-                        <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium" disabled={!question.includes("?")}>
+                        <button
+                          type="submit"
+                          className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium"
+                          disabled={!question.includes('?')}
+                        >
                           Frage einreichen
                         </button>
-                        <button type="button" onClick={() => setShowQuestionForm(false)} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">
+                        <button
+                          type="button"
+                          onClick={() => setShowQuestionForm(false)}
+                          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg"
+                        >
                           Abbrechen
                         </button>
                       </div>
@@ -303,16 +392,19 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
               )}
 
               {/* Reaction Phase — Perspectives */}
-              {selectedRound.status === "reaction" && (
+              {selectedRound.status === 'reaction' && (
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold mb-2">Reaktionsrunde</h3>
                   <p className="text-sm text-gray-500 mb-4">
                     Teile deine Perspektive — reihum, kein Gegenargumentieren. Aktives Zuhören.
                   </p>
                   {selectedRound.comments
-                    .filter(c => c.type === "reaction" || c.type === "perspective")
+                    .filter((c) => c.type === 'reaction' || c.type === 'perspective')
                     .map((cmt) => (
-                      <div key={cmt.id} className="p-4 rounded-lg mb-2 bg-purple-50 border-l-4 border-purple-300">
+                      <div
+                        key={cmt.id}
+                        className="p-4 rounded-lg mb-2 bg-purple-50 border-l-4 border-purple-300"
+                      >
                         <div className="flex items-center justify-between mb-1">
                           <span className="font-medium text-sm">💬 {cmt.user}</span>
                           <span className="text-xs text-gray-500">{cmt.createdAt}</span>
@@ -327,7 +419,10 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
                     💬 Perspektive teilen
                   </button>
                   {showReactionForm && (
-                    <form onSubmit={handleSubmitReaction} className="mt-4 p-4 bg-purple-5 rounded-lg border border-purple-200">
+                    <form
+                      onSubmit={handleSubmitReaction}
+                      className="mt-4 p-4 bg-purple-5 rounded-lg border border-purple-200"
+                    >
                       <textarea
                         value={reaction}
                         onChange={(e) => setReaction(e.target.value)}
@@ -337,10 +432,17 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
                         required
                       />
                       <div className="flex gap-2">
-                        <button type="submit" className="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium">
+                        <button
+                          type="submit"
+                          className="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium"
+                        >
                           Einreichen
                         </button>
-                        <button type="button" onClick={() => setShowReactionForm(false)} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">
+                        <button
+                          type="button"
+                          onClick={() => setShowReactionForm(false)}
+                          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg"
+                        >
                           Abbrechen
                         </button>
                       </div>
@@ -350,7 +452,7 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
               )}
 
               {/* Voting Phase — Consent Vote (4 options) */}
-              {selectedRound.status === "voting" && (
+              {selectedRound.status === 'voting' && (
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold mb-2">Konsent-Abstimmung</h3>
                   <p className="text-sm text-gray-500 mb-4">
@@ -359,14 +461,14 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
 
                   {/* Vote Buttons — 4 consent options */}
                   <div className="grid grid-cols-2 gap-3 mb-4">
-                    {(Object.entries(choiceLabels) as [ConsentChoice, typeof choiceLabels.consent][]).map(([key, { emoji, label, color }]) => (
+                    {(
+                      Object.entries(choiceLabels) as [ConsentChoice, typeof choiceLabels.consent][]
+                    ).map(([key, { emoji, label, color }]) => (
                       <button
                         key={key}
                         onClick={() => handleVote(key)}
                         className={`py-4 px-4 rounded-xl font-medium transition-all ${
-                          userVote === key
-                            ? `${color} ring-4`
-                            : color
+                          userVote === key ? `${color} ring-4` : color
                         }`}
                       >
                         <div className="text-2xl mb-1">{emoji}</div>
@@ -377,32 +479,45 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
 
                   {userVote && (
                     <div className="p-3 bg-blue-50 rounded-lg text-sm text-blue-800">
-                      Du hast mit <strong>{choiceLabels[userVote].emoji} {choiceLabels[userVote].label}</strong> abgestimmt.
-                      Du kannst deine Stimme ändern, wenn der Vorschlag angepasst wird.
+                      Du hast mit{' '}
+                      <strong>
+                        {choiceLabels[userVote].emoji} {choiceLabels[userVote].label}
+                      </strong>{' '}
+                      abgestimmt. Du kannst deine Stimme ändern, wenn der Vorschlag angepasst wird.
                     </div>
                   )}
 
                   {/* Vote Results */}
                   {selectedRound.votes.length > 0 && (
                     <div className="mt-6">
-                      <h4 className="text-sm font-medium text-gray-500 mb-2">Bisherige Stimmen ({selectedRound.votes.length}/{mockProject.participantCount})</h4>
+                      <h4 className="text-sm font-medium text-gray-500 mb-2">
+                        Bisherige Stimmen ({selectedRound.votes.length}/
+                        {mockProject.participantCount})
+                      </h4>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                        {(["consent", "minor_objection", "major_objection", "abstain"] as ConsentChoice[]).map((key) => {
-                          const count = selectedRound.votes.filter(v => v.choice === key).length;
+                        {(
+                          [
+                            'consent',
+                            'minor_objection',
+                            'major_objection',
+                            'abstain',
+                          ] as ConsentChoice[]
+                        ).map((key) => {
+                          const count = selectedRound.votes.filter((v) => v.choice === key).length
                           return (
                             <div key={key} className="p-3 rounded-lg bg-gray-50 text-center">
                               <div className="text-lg">{choiceLabels[key].emoji}</div>
                               <div className="text-xl font-bold">{count}</div>
                               <div className="text-xs text-gray-500">{choiceLabels[key].label}</div>
                             </div>
-                          );
+                          )
                         })}
                       </div>
                     </div>
                   )}
 
                   {/* Objection Form */}
-                  {(userVote === "minor_objection" || userVote === "major_objection") && (
+                  {(userVote === 'minor_objection' || userVote === 'major_objection') && (
                     <div className="mt-4">
                       <button
                         onClick={() => setShowObjectionForm(!showObjectionForm)}
@@ -414,7 +529,10 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
                   )}
 
                   {showObjectionForm && (
-                    <form onSubmit={handleSubmitObjection} className="mt-4 p-4 bg-yellow-5 rounded-lg border border-yellow-200">
+                    <form
+                      onSubmit={handleSubmitObjection}
+                      className="mt-4 p-4 bg-yellow-5 rounded-lg border border-yellow-200"
+                    >
                       <div className="mb-3">
                         <label className="block text-sm font-medium mb-1">Begründung</label>
                         <textarea
@@ -430,7 +548,12 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
                         <label className="block text-sm font-medium mb-1">Schweregrad</label>
                         <select
                           value={objection.severity}
-                          onChange={(e) => setObjection({ ...objection, severity: e.target.value as "minor" | "major" | "blocking" })}
+                          onChange={(e) =>
+                            setObjection({
+                              ...objection,
+                              severity: e.target.value as 'minor' | 'major' | 'blocking',
+                            })
+                          }
                           className="w-full p-3 border rounded-lg"
                         >
                           <option value="minor">Geringfügig</option>
@@ -439,10 +562,17 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
                         </select>
                       </div>
                       <div className="flex gap-2">
-                        <button type="submit" className="px-4 py-2 bg-yellow-600 text-white rounded-lg font-medium">
+                        <button
+                          type="submit"
+                          className="px-4 py-2 bg-yellow-600 text-white rounded-lg font-medium"
+                        >
                           Einreichungen
                         </button>
-                        <button type="button" onClick={() => setShowObjectionForm(false)} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">
+                        <button
+                          type="button"
+                          onClick={() => setShowObjectionForm(false)}
+                          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg"
+                        >
                           Abbrechen
                         </button>
                       </div>
@@ -452,14 +582,15 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
               )}
 
               {/* Completed — Result */}
-              {selectedRound.status === "completed" && (
+              {selectedRound.status === 'completed' && (
                 <div className="mb-6 p-4 bg-green-50 rounded-lg border border-green-200">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-2xl">✅</span>
                     <h3 className="text-lg font-semibold text-green-800">Beschluss gefasst</h3>
                   </div>
                   <p className="text-sm text-green-700">
-                    Konsent erreicht — kein schwerwiegender Einwand. Evaluationsdatum sollte gesetzt werden.
+                    Konsent erreicht — kein schwerwiegender Einwand. Evaluationsdatum sollte gesetzt
+                    werden.
                   </p>
                 </div>
               )}
@@ -473,24 +604,29 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
                       <div
                         key={obj.id}
                         className={`p-4 rounded-lg border ${
-                          obj.severity === "blocking"
-                            ? "bg-red-50 border-red-200"
-                            : obj.severity === "major"
-                            ? "bg-orange-50 border-orange-200"
-                            : "bg-yellow-50 border-yellow-200"
+                          obj.severity === 'blocking'
+                            ? 'bg-red-50 border-red-200'
+                            : obj.severity === 'major'
+                              ? 'bg-orange-50 border-orange-200'
+                              : 'bg-yellow-50 border-yellow-200'
                         }`}
                       >
                         <div className="flex items-center justify-between mb-2">
                           <span className="font-medium">{obj.user}</span>
-                          <span className={`px-2 py-0.5 rounded text-xs font-medium ${
-                            obj.severity === "blocking"
-                              ? "bg-red-200 text-red-800"
-                              : obj.severity === "major"
-                              ? "bg-orange-200 text-orange-800"
-                              : "bg-yellow-200 text-yellow-800"
-                          }`}>
-                            {obj.severity === "blocking" ? "Blockierend" :
-                             obj.severity === "major" ? "Erheblich" : "Geringfügig"}
+                          <span
+                            className={`px-2 py-0.5 rounded text-xs font-medium ${
+                              obj.severity === 'blocking'
+                                ? 'bg-red-200 text-red-800'
+                                : obj.severity === 'major'
+                                  ? 'bg-orange-200 text-orange-800'
+                                  : 'bg-yellow-200 text-yellow-800'
+                            }`}
+                          >
+                            {obj.severity === 'blocking'
+                              ? 'Blockierend'
+                              : obj.severity === 'major'
+                                ? 'Erheblich'
+                                : 'Geringfügig'}
                           </span>
                         </div>
                         <p className="text-gray-700">{obj.reason}</p>
@@ -511,7 +647,7 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
                   <div>Reaktionsrunde gestartet — 12.04.2026 09:00</div>
                   <div>Perspektive von Lisa — 12.04.2026 10:15</div>
                   <div>Abstimmungsrunde gestartet — 15.04.2026 09:00</div>
-                  {selectedRound.status === "completed" && (
+                  {selectedRound.status === 'completed' && (
                     <div>Beschluss gefasst — 14.04.2026 18:00</div>
                   )}
                 </div>
@@ -521,5 +657,5 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
         </div>
       </main>
     </div>
-  );
+  )
 }

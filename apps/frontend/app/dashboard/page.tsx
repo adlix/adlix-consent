@@ -1,30 +1,30 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
 
 // Types
 interface Circle {
-  id: number;
-  name: string;
-  memberCount: number;
-  role: 'admin' | 'member';
-  lastActivity: string;
+  id: number
+  name: string
+  memberCount: number
+  role: 'admin' | 'member'
+  lastActivity: string
 }
 
 interface Proposal {
-  id: number;
-  title: string;
-  circleName: string;
-  phase: 'description' | 'reaction' | 'voting' | 'integration';
-  needsVote: boolean;
+  id: number
+  title: string
+  circleName: string
+  phase: 'description' | 'reaction' | 'voting' | 'integration'
+  needsVote: boolean
 }
 
 interface Activity {
-  id: number;
-  type: 'invitation' | 'proposal' | 'consent' | 'objection';
-  message: string;
-  timestamp: string;
+  id: number
+  type: 'invitation' | 'proposal' | 'consent' | 'objection'
+  message: string
+  timestamp: string
 }
 
 // Mock data (später durch API-Calls ersetzen)
@@ -32,31 +32,59 @@ const mockCircles: Circle[] = [
   { id: 1, name: 'Agile Tribe Gründer', memberCount: 12, role: 'admin', lastActivity: '2h' },
   { id: 2, name: 'Die Problemlöser', memberCount: 28, role: 'member', lastActivity: '1d' },
   { id: 3, name: 'Herzkohärenz Kreis', memberCount: 8, role: 'admin', lastActivity: '3d' },
-];
+]
 
 const mockProposals: Proposal[] = [
-  { id: 1, title: 'Neues Onboarding einführen', circleName: 'Agile Tribe Gründer', phase: 'voting', needsVote: true },
-  { id: 2, title: 'Budget für Q3 2026', circleName: 'Die Problemlöser', phase: 'description', needsVote: false },
-  { id: 3, title: 'Slack-Integration aktivieren', circleName: 'Herzkohärenz Kreis', phase: 'integration', needsVote: false },
-];
+  {
+    id: 1,
+    title: 'Neues Onboarding einführen',
+    circleName: 'Agile Tribe Gründer',
+    phase: 'voting',
+    needsVote: true,
+  },
+  {
+    id: 2,
+    title: 'Budget für Q3 2026',
+    circleName: 'Die Problemlöser',
+    phase: 'description',
+    needsVote: false,
+  },
+  {
+    id: 3,
+    title: 'Slack-Integration aktivieren',
+    circleName: 'Herzkohärenz Kreis',
+    phase: 'integration',
+    needsVote: false,
+  },
+]
 
 const mockActivities: Activity[] = [
-  { id: 1, type: 'invitation', message: 'Du wurdest eingeladen zu „Agile Tribe Gründer"', timestamp: '2h' },
-  { id: 2, type: 'proposal', message: 'Neues Vorhaben „Neues Onboarding" in „Agile Tribe Gründer"', timestamp: '3h' },
+  {
+    id: 1,
+    type: 'invitation',
+    message: 'Du wurdest eingeladen zu „Agile Tribe Gründer"',
+    timestamp: '2h',
+  },
+  {
+    id: 2,
+    type: 'proposal',
+    message: 'Neues Vorhaben „Neues Onboarding" in „Agile Tribe Gründer"',
+    timestamp: '3h',
+  },
   { id: 3, type: 'consent', message: 'Konsent erreicht in „Herzkohärenz Kreis"', timestamp: '1d' },
-];
+]
 
 const phaseLabels: Record<string, string> = {
   description: 'Beschreibung',
   reaction: 'Reaktionsrunde',
   voting: 'Abstimmung',
   integration: 'Integration',
-};
+}
 
 export default function DashboardPage() {
-  const [circles] = useState<Circle[]>(mockCircles);
-  const [proposals] = useState<Proposal[]>(mockProposals);
-  const [activities] = useState<Activity[]>(mockActivities);
+  const [circles] = useState<Circle[]>(mockCircles)
+  const [proposals] = useState<Proposal[]>(mockProposals)
+  const [activities] = useState<Activity[]>(mockActivities)
 
   // TODO: API-Calls für echte Daten
   // useEffect(() => {
@@ -65,13 +93,18 @@ export default function DashboardPage() {
 
   const getActivityIcon = (type: string) => {
     switch (type) {
-      case 'invitation': return '📩';
-      case 'proposal': return '📝';
-      case 'consent': return '✅';
-      case 'objection': return '✋';
-      default: return '📌';
+      case 'invitation':
+        return '📩'
+      case 'proposal':
+        return '📝'
+      case 'consent':
+        return '✅'
+      case 'objection':
+        return '✋'
+      default:
+        return '📌'
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -109,14 +142,11 @@ export default function DashboardPage() {
             <section className="bg-white rounded-xl shadow-sm p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold">Meine Kreise</h2>
-                <Link
-                  href="/circles/new"
-                  className="text-sm text-primary hover:underline"
-                >
+                <Link href="/circles/new" className="text-sm text-primary hover:underline">
                   + Kreis erstellen
                 </Link>
               </div>
-              
+
               {circles.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {circles.map((circle) => (
@@ -126,11 +156,13 @@ export default function DashboardPage() {
                     >
                       <div className="flex items-start justify-between">
                         <h3 className="font-medium">{circle.name}</h3>
-                        <span className={`text-xs px-2 py-1 rounded ${
-                          circle.role === 'admin' 
-                            ? 'bg-primary/10 text-primary' 
-                            : 'bg-gray-100 text-gray-600'
-                        }`}>
+                        <span
+                          className={`text-xs px-2 py-1 rounded ${
+                            circle.role === 'admin'
+                              ? 'bg-primary/10 text-primary'
+                              : 'bg-gray-100 text-gray-600'
+                          }`}
+                        >
                           {circle.role === 'admin' ? 'Admin' : 'Member'}
                         </span>
                       </div>
@@ -154,7 +186,7 @@ export default function DashboardPage() {
             {/* Aktive Vorhaben */}
             <section className="bg-white rounded-xl shadow-sm p-6">
               <h2 className="text-lg font-semibold mb-4">Aktive Vorhaben</h2>
-              
+
               {proposals.length > 0 ? (
                 <div className="space-y-3">
                   {proposals.map((proposal) => (
@@ -193,7 +225,7 @@ export default function DashboardPage() {
             {/* Letzte Aktivitäten */}
             <section className="bg-white rounded-xl shadow-sm p-6">
               <h2 className="text-lg font-semibold mb-4">Letzte Aktivitäten</h2>
-              
+
               {activities.length > 0 ? (
                 <div className="space-y-4">
                   {activities.map((activity) => (
@@ -214,7 +246,7 @@ export default function DashboardPage() {
             {/* Schnellaktionen */}
             <section className="bg-white rounded-xl shadow-sm p-6">
               <h2 className="text-lg font-semibold mb-4">Schnellaktionen</h2>
-              
+
               <div className="space-y-3">
                 <Link
                   href="/circles/new"
@@ -223,7 +255,7 @@ export default function DashboardPage() {
                   <span className="text-xl">🆕</span>
                   <span className="font-medium">Kreis erstellen</span>
                 </Link>
-                
+
                 <Link
                   href="/proposals/new"
                   className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-primary transition-colors"
@@ -231,11 +263,11 @@ export default function DashboardPage() {
                   <span className="text-xl">📝</span>
                   <span className="font-medium">Vorhaben einreichen</span>
                 </Link>
-                
+
                 <button
                   onClick={() => {
-                    navigator.clipboard.writeText(window.location.origin + '/join');
-                    alert('Einladungslink kopiert!');
+                    navigator.clipboard.writeText(window.location.origin + '/join')
+                    alert('Einladungslink kopiert!')
                   }}
                   className="w-full flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-primary transition-colors"
                 >
@@ -248,5 +280,5 @@ export default function DashboardPage() {
         </div>
       </main>
     </div>
-  );
+  )
 }
