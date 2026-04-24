@@ -11,5 +11,14 @@ module.exports = {
         policies: [],
       },
     },
+    {
+      method: 'POST',
+      path: '/rounds/reminders',
+      handler: 'round.sendReminders',
+      config: {
+        auth: { strategies: ['api-token', 'jwt'] },
+        policies: [],
+      },
+    },
   ],
 };

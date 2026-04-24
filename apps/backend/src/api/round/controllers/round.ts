@@ -102,4 +102,10 @@ module.exports = createCoreController('api::round.round', ({ strapi }) => ({
 
     return { data: updated };
   },
+
+  async sendReminders(ctx) {
+    const hours = ctx.query.hours ? parseInt(ctx.query.hours, 10) : 48;
+    const results = await strapi.service('api::round.round').sendReminders(hours);
+    ctx.body = { data: results };
+  },
 }));

@@ -1,7 +1,11 @@
+'use client'
+
 import Link from 'next/link'
+import { useState } from 'react'
+import ProjectSearch, { SearchableProject } from '../../components/ProjectSearch/ProjectSearch'
 
 // Mock data for projects (will be replaced with Strapi API calls)
-const mockProjects = [
+const mockProjects: SearchableProject[] = [
   {
     id: 1,
     name: 'Neues Büro-Konzept',
@@ -35,10 +39,13 @@ const statusLabels: Record<string, { label: string; color: string }> = {
   draft: { label: 'Entwurf', color: 'bg-gray-100 text-gray-700' },
   active: { label: 'Aktiv', color: 'bg-green-100 text-green-700' },
   completed: { label: 'Abgeschlossen', color: 'bg-blue-100 text-blue-700' },
+  beschlossen: { label: 'Beschlossen', color: 'bg-emerald-100 text-emerald-700' },
   archived: { label: 'Archiviert', color: 'bg-gray-100 text-gray-500' },
 }
 
 export default function ProjectsPage() {
+  const [filteredProjects, setFilteredProjects] = useState<SearchableProject[]>(mockProjects)
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
@@ -77,23 +84,28 @@ export default function ProjectsPage() {
             </Link>
           </div>
 
-          {mockProjects.length === 0 ? (
+          {/* Search & Filter */}
+          <div className="mb-6">
+            <ProjectSearch projects={mockProjects} onFilterChange={setFilteredProjects} />
+          </div>
+
+          {filteredProjects.length === 0 ? (
             <div className="bg-white rounded-xl p-12 text-center">
               <div className="text-5xl mb-4">📋</div>
-              <h2 className="text-xl font-semibold mb-2">Keine Projekte vorhanden</h2>
+              <h2 className="text-xl font-semibold mb-2">Keine Projekte gefunden</h2>
               <p className="text-gray-600 mb-6">
-                Starte dein erstes Consent-Projekt und treffe gemeinsam bessere Entscheidungen.
+                Keine Projekte entsprechen deinen Suchkriterien.
               </p>
               <Link
                 href="/projects/new"
                 className="inline-block px-6 py-3 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark"
               >
-                Erstes Projekt erstellen
+                Neues Projekt erstellen
               </Link>
             </div>
           ) : (
             <div className="grid gap-4">
-              {mockProjects.map((project) => {
+              {filteredProjects.map((project) => {
                 const status = statusLabels[project.status] || statusLabels.draft
                 return (
                   <Link
@@ -113,9 +125,13 @@ export default function ProjectsPage() {
                       </span>
                     </div>
                     <div className="flex items-center gap-6 text-sm text-gray-500">
-                      {project.currentRound > 0 && <span>Runde {project.currentRound}</span>}
-                      <span>{project.participantCount} Teilnehmer</span>
-                      <span>Aktualisiert: {project.updatedAt}</span>
+                      {project.currentRound && project.currentRound > 0 && (
+                        <span>Runde {project.currentRound}</span>
+                      )}
+                      {project.participantCount && (
+                        <span>{project.participantCount} Teilnehmer</span>
+                      )}
+                      {project.updatedAt && <span>Aktualisiert: {project.updatedAt}</span>}
                     </div>
                   </Link>
                 )

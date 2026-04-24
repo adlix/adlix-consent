@@ -2,6 +2,9 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import OutcomeForm from '../../../components/Outcome/OutcomeForm'
+import AuditTrail from '../../../components/AuditTrail/AuditTrail'
+import AbstainReasonModal from '../../../components/AbstainReason/AbstainReasonModal'
 
 // Mock data
 const mockProject = {
@@ -159,12 +162,46 @@ export default function ProjectDetailPage() {
     reason: string
     severity: 'minor' | 'major' | 'blocking'
   }>({ reason: '', severity: 'minor' })
+  const [showAbstainModal, setShowAbstainModal] = useState(false)
+  const [outcomeSubmitted, setOutcomeSubmitted] = useState(false)
+  const [outcomeData, setOutcomeData] = useState<{
+    outcome: string
+    nextSteps: string
+    evaluationDate: string
+  } | null>(null)
 
   const currentPhaseIndex = phaseOrder.indexOf(selectedRound.status)
   const currentPhase = flowPhases[currentPhaseIndex]
 
   const handleVote = (choice: ConsentChoice) => {
+    if (choice === 'abstain') {
+      setShowAbstainModal(true)
+    }
     setUserVote(choice)
+  }
+
+  const handleAbstainSubmit = (data: {
+    reason: string
+    detail?: string
+    isObjection?: boolean
+    objectionSeverity?: 'minor' | 'major'
+  }) => {
+    setShowAbstainModal(false)
+    if (data.isObjection) {
+      setUserVote(data.objectionSeverity === 'major' ? 'major_objection' : 'minor_objection')
+    }
+    // reason data would be sent to backend
+  }
+
+  const handleOutcomeSubmit = (data: {
+    outcome: string
+    nextSteps: string
+    evaluationDate: string
+    status: string
+  }) => {
+    setOutcomeData(data)
+    setOutcomeSubmitted(true)
+    // would call strapi.setOutcome(projectId, data) in production
   }
 
   const handleSubmitQuestion = (e: React.FormEvent) => {
@@ -586,15 +623,45 @@ export default function ProjectDetailPage() {
 
               {/* Completed — Result */}
               {selectedRound.status === 'completed' && (
-                <div className="mb-6 p-4 bg-green-50 rounded-lg border border-green-200">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-2xl">✅</span>
-                    <h3 className="text-lg font-semibold text-green-800">Beschluss gefasst</h3>
+                <div className="space-y-4">
+                  <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-2xl">✅</span>
+                      <h3 className="text-lg font-semibold text-green-800">Beschluss gefasst</h3>
+                    </div>
+                    <p className="text-sm text-green-700">
+                      Konsent erreicht — kein schwerwiegender Einwand.
+                    </p>
                   </div>
-                  <p className="text-sm text-green-700">
-                    Konsent erreicht — kein schwerwiegender Einwand. Evaluationsdatum sollte gesetzt
-                    werden.
-                  </p>
+
+                  {/* Outcome Form (appears after consent) */}
+                  {!outcomeSubmitted && (
+                    <OutcomeForm
+                      onSubmit={handleOutcomeSubmit}
+                      minorObjections={selectedRound.objections
+                        .filter((o) => o.severity === 'minor')
+                        .map((o) => ({ user: o.user, reason: o.reason }))}
+                    />
+                  )}
+
+                  {/* Display outcome after submission */}
+                  {outcomeData && (
+                    <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                      <h4 className="text-sm font-semibold text-green-800 mb-2">📋 Ergebnis</h4>
+                      <p className="text-sm text-green-700 mb-2">{outcomeData.outcome}</p>
+                      {outcomeData.nextSteps && (
+                        <p className="text-sm text-green-700 mb-1">
+                          <strong>Nächste Schritte:</strong> {outcomeData.nextSteps}
+                        </p>
+                      )}
+                      {outcomeData.evaluationDate && (
+                        <p className="text-sm text-green-700">
+                          <strong>Evaluationsdatum:</strong>{' '}
+                          {new Date(outcomeData.evaluationDate).toLocaleDateString('de-DE')}
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -642,23 +709,34 @@ export default function ProjectDetailPage() {
               {/* Audit Trail */}
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <h3 className="text-sm font-medium text-gray-500 mb-3">Audit-Trail</h3>
-                <div className="space-y-1 text-xs text-gray-400">
-                  <div>Vorhaben eingereicht — 10.04.2026 09:00</div>
-                  <div>Informationsrunde gestartet — 10.04.2026 09:00</div>
-                  <div>Frage von Anna — 11.04.2026 14:30</div>
-                  <div>Antwort von Tom — 11.04.2026 15:00</div>
-                  <div>Reaktionsrunde gestartet — 12.04.2026 09:00</div>
-                  <div>Perspektive von Lisa — 12.04.2026 10:15</div>
-                  <div>Abstimmungsrunde gestartet — 15.04.2026 09:00</div>
-                  {selectedRound.status === 'completed' && (
-                    <div>Beschluss gefasst — 14.04.2026 18:00</div>
-                  )}
-                </div>
+                <AuditTrail
+                  projectId={mockProject.id}
+                  fallbackEntries={[
+                    { action: 'create', label: 'Vorhaben eingereicht', timestamp: '10.04.2026 09:00' },
+                    { action: 'phase', label: 'Informationsrunde gestartet', timestamp: '10.04.2026 09:00' },
+                    { action: 'question', label: 'Frage von Anna', timestamp: '11.04.2026 14:30' },
+                    { action: 'answer', label: 'Antwort von Tom', timestamp: '11.04.2026 15:00' },
+                    { action: 'phase', label: 'Reaktionsrunde gestartet', timestamp: '12.04.2026 09:00' },
+                    { action: 'reaction', label: 'Perspektive von Lisa', timestamp: '12.04.2026 10:15' },
+                    { action: 'phase', label: 'Abstimmungsrunde gestartet', timestamp: '15.04.2026 09:00' },
+                    ...(selectedRound.status === 'completed'
+                      ? [{ action: 'complete', label: 'Beschluss gefasst', timestamp: '14.04.2026 18:00' }]
+                      : []),
+                  ]}
+                />
               </div>
             </div>
           )}
         </div>
       </main>
+
+      {/* Abstain Reason Modal */}
+      {showAbstainModal && (
+        <AbstainReasonModal
+          onSubmit={handleAbstainSubmit}
+          onCancel={() => setShowAbstainModal(false)}
+        />
+      )}
     </div>
   )
 }

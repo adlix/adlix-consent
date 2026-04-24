@@ -146,6 +146,27 @@ class StrapiClient {
     return this.request<unknown[]>(`/objections?filters[round][id][$eq]=${roundId}&populate=user`)
   }
 
+  // Outcome
+  async setOutcome(projectId: number | string, data: {
+    outcome: string
+    nextSteps?: string
+    evaluationDate?: string
+    minorObjectionsLog?: unknown[]
+    status?: string
+  }) {
+    return this.request<unknown>(`/projects/${projectId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ data }),
+    })
+  }
+
+  // Audit Logs
+  async getAuditLogs(projectId: number | string) {
+    return this.request<unknown[]>(
+      `/audit-logs?filters[project][id][$eq]=${projectId}&sort=createdAt:desc&pagination[pageSize]=100`
+    )
+  }
+
   // Comments
   async createComment(data: { content: string; round: number; user: number }) {
     return this.request<unknown>('/comments', {

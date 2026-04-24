@@ -37,6 +37,10 @@
     "phaseDeadline": {
       "type": "datetime"
     },
+    "reminderSent": {
+      "type": "boolean",
+      "default": false
+    },
     "votes": {
       "type": "relation",
       "relation": "hasMany",

@@ -22,8 +22,20 @@
     },
     "status": {
       "type": "enumeration",
-      "enum": ["draft", "active", "completed", "archived"],
+      "enum": ["draft", "active", "completed", "beschlossen", "archived"],
       "default": "draft"
+    },
+    "outcome": {
+      "type": "text"
+    },
+    "nextSteps": {
+      "type": "text"
+    },
+    "evaluationDate": {
+      "type": "datetime"
+    },
+    "minorObjectionsLog": {
+      "type": "json"
     },
     "currentRound": {
       "type": "relation",
