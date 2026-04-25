@@ -1,8 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
-import ProjectSearch, { SearchableProject } from '../../components/ProjectSearch/ProjectSearch'
+import { useState, Suspense } from 'react'
+import dynamic from 'next/dynamic'
+import type { SearchableProject } from '../../components/ProjectSearch/ProjectSearch'
+
+const ProjectSearch = dynamic(() => import('../../components/ProjectSearch/ProjectSearch'), {
+  ssr: false,
+})
 
 // Mock data for projects (will be replaced with Strapi API calls)
 const mockProjects: SearchableProject[] = [
@@ -97,7 +102,9 @@ export default function ProjectsPage() {
 
           {/* Search & Filter */}
           <div className="mb-6">
-            <ProjectSearch projects={mockProjects} onFilterChange={setFilteredProjects} />
+            <Suspense fallback={<div className="h-24 bg-gray-100 animate-pulse rounded-xl" />}>
+              <ProjectSearch projects={mockProjects} onFilterChange={setFilteredProjects} />
+            </Suspense>
           </div>
 
           {filteredProjects.length === 0 ? (

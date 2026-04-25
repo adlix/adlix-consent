@@ -1,10 +1,15 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
+import dynamic from 'next/dynamic'
 import OutcomeForm from '../../../components/Outcome/OutcomeForm'
 import AuditTrail from '../../../components/AuditTrail/AuditTrail'
-import AbstainReasonModal from '../../../components/AbstainReason/AbstainReasonModal'
+
+const AbstainReasonModal = dynamic(
+  () => import('../../../components/AbstainReason/AbstainReasonModal'),
+  { ssr: false }
+)
 
 // Mock data
 const mockProject = {
@@ -732,10 +737,12 @@ export default function ProjectDetailPage() {
 
       {/* Abstain Reason Modal */}
       {showAbstainModal && (
-        <AbstainReasonModal
-          onSubmit={handleAbstainSubmit}
-          onCancel={() => setShowAbstainModal(false)}
-        />
+        <Suspense fallback={null}>
+          <AbstainReasonModal
+            onSubmit={handleAbstainSubmit}
+            onCancel={() => setShowAbstainModal(false)}
+          />
+        </Suspense>
       )}
     </div>
   )

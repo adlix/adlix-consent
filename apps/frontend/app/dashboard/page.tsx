@@ -1,7 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
+import { OnboardingProvider } from '../../components/Onboarding/OnboardingContext'
+
+const OnboardingFlow = dynamic(
+  () => import('../../components/Onboarding/OnboardingFlow').then((m) => ({ default: m.OnboardingFlow })),
+  { ssr: false }
+)
 
 // Types
 interface Circle {
@@ -85,6 +92,7 @@ export default function DashboardPage() {
   const [circles] = useState<Circle[]>(mockCircles)
   const [proposals] = useState<Proposal[]>(mockProposals)
   const [activities] = useState<Activity[]>(mockActivities)
+  const [showOnboarding, setShowOnboarding] = useState(false)
 
   const getActivityIcon = (type: string) => {
     switch (type) {
@@ -300,12 +308,47 @@ export default function DashboardPage() {
                       <span className="font-medium">Einladung teilen</span>
                     </button>
                   </li>
+                  <li>
+                    <button
+                      type="button"
+                      onClick={() => setShowOnboarding(true)}
+                      aria-label="Onboarding starten"
+                      className="w-full flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-primary transition-colors"
+                    >
+                      <span className="text-xl" aria-hidden="true">🚀</span>
+                      <span className="font-medium">Onboarding starten</span>
+                    </button>
+                  </li>
                 </ul>
               </nav>
             </section>
           </div>
         </div>
       </main>
+
+      {showOnboarding && (
+        <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
+          <button
+            type="button"
+            onClick={() => setShowOnboarding(false)}
+            aria-label="Onboarding schließen"
+            className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-900 text-xl"
+          >
+            ✕
+          </button>
+          <OnboardingProvider>
+            <Suspense
+              fallback={
+                <div className="flex items-center justify-center min-h-screen">
+                  <div className="animate-pulse text-gray-400">Lädt...</div>
+                </div>
+              }
+            >
+              <OnboardingFlow />
+            </Suspense>
+          </OnboardingProvider>
+        </div>
+      )}
     </div>
   )
 }
