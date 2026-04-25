@@ -86,93 +86,109 @@ export default function DashboardPage() {
   const [proposals] = useState<Proposal[]>(mockProposals)
   const [activities] = useState<Activity[]>(mockActivities)
 
-  // TODO: API-Calls für echte Daten
-  // useEffect(() => {
-  //   fetch('/api/user/circles').then(...)
-  // }, []);
-
   const getActivityIcon = (type: string) => {
     switch (type) {
-      case 'invitation':
-        return '📩'
-      case 'proposal':
-        return '📝'
-      case 'consent':
-        return '✅'
-      case 'objection':
-        return '✋'
-      default:
-        return '📌'
+      case 'invitation': return '📩'
+      case 'proposal': return '📝'
+      case 'consent': return '✅'
+      case 'objection': return '✋'
+      default: return '📌'
+    }
+  }
+
+  const getActivityIconLabel = (type: string) => {
+    switch (type) {
+      case 'invitation': return 'Einladung'
+      case 'proposal': return 'Vorhaben'
+      case 'consent': return 'Konsent'
+      case 'objection': return 'Einspruch'
+      default: return 'Aktivität'
     }
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-white border-b border-gray-200" role="banner">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-2xl">🗳️</span>
+            <span className="text-2xl" aria-hidden="true">🗳️</span>
             <span className="text-xl font-bold">adlix consent</span>
           </div>
-          <nav className="flex items-center gap-4">
-            <Link href="/dashboard" className="text-primary font-medium">
-              Dashboard
-            </Link>
-            <Link href="/circles" className="text-gray-600 hover:text-gray-900">
-              Kreise
-            </Link>
-            <Link href="/proposals" className="text-gray-600 hover:text-gray-900">
-              Vorhaben
-            </Link>
-            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm">
-              M
-            </div>
+          <nav aria-label="Hauptnavigation">
+            <ul className="flex items-center gap-4 list-none">
+              <li>
+                <Link href="/dashboard" className="text-primary font-medium" aria-current="page">
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <Link href="/circles" className="text-gray-600 hover:text-gray-900">
+                  Kreise
+                </Link>
+              </li>
+              <li>
+                <Link href="/proposals" className="text-gray-600 hover:text-gray-900">
+                  Vorhaben
+                </Link>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  aria-label="Benutzerprofil öffnen"
+                  className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm hover:opacity-90"
+                >
+                  M
+                </button>
+              </li>
+            </ul>
           </nav>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main id="main-content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-2xl font-bold mb-8">Willkommen zurück!</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Linke Spalte: Kreise + Vorhaben */}
           <div className="lg:col-span-2 space-y-8">
             {/* Meine Kreise */}
-            <section className="bg-white rounded-xl shadow-sm p-6">
+            <section aria-labelledby="circles-heading" className="bg-white rounded-xl shadow-sm p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold">Meine Kreise</h2>
+                <h2 id="circles-heading" className="text-lg font-semibold">Meine Kreise</h2>
                 <Link href="/circles/new" className="text-sm text-primary hover:underline">
                   + Kreis erstellen
                 </Link>
               </div>
 
               {circles.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none">
                   {circles.map((circle) => (
-                    <div
-                      key={circle.id}
-                      className="border border-gray-200 rounded-lg p-4 hover:border-primary transition-colors"
-                    >
-                      <div className="flex items-start justify-between">
-                        <h3 className="font-medium">{circle.name}</h3>
-                        <span
-                          className={`text-xs px-2 py-1 rounded ${
-                            circle.role === 'admin'
-                              ? 'bg-primary/10 text-primary'
-                              : 'bg-gray-100 text-gray-600'
-                          }`}
-                        >
-                          {circle.role === 'admin' ? 'Admin' : 'Member'}
-                        </span>
+                    <li key={circle.id}>
+                      <div
+                        className="border border-gray-200 rounded-lg p-4 hover:border-primary transition-colors"
+                      >
+                        <div className="flex items-start justify-between">
+                          <h3 className="font-medium">{circle.name}</h3>
+                          <span
+                            className={`text-xs px-2 py-1 rounded ${
+                              circle.role === 'admin'
+                                ? 'bg-primary/10 text-primary'
+                                : 'bg-gray-100 text-gray-600'
+                            }`}
+                            aria-label={`Rolle: ${circle.role === 'admin' ? 'Admin' : 'Mitglied'}`}
+                          >
+                            {circle.role === 'admin' ? 'Admin' : 'Member'}
+                          </span>
+                        </div>
+                        <div className="mt-2 flex items-center gap-4 text-sm text-gray-500">
+                          <span><span aria-hidden="true">👥 </span>{circle.memberCount} Mitglieder</span>
+                          <span><span aria-hidden="true">🕐 </span>vor {circle.lastActivity}</span>
+                        </div>
                       </div>
-                      <div className="mt-2 flex items-center gap-4 text-sm text-gray-500">
-                        <span>👥 {circle.memberCount}</span>
-                        <span>🕐 {circle.lastActivity}</span>
-                      </div>
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               ) : (
                 <div className="text-center py-8 text-gray-500">
                   <p>Du bist noch in keinem Kreis</p>
@@ -184,13 +200,13 @@ export default function DashboardPage() {
             </section>
 
             {/* Aktive Vorhaben */}
-            <section className="bg-white rounded-xl shadow-sm p-6">
-              <h2 className="text-lg font-semibold mb-4">Aktive Vorhaben</h2>
+            <section aria-labelledby="proposals-heading" className="bg-white rounded-xl shadow-sm p-6">
+              <h2 id="proposals-heading" className="text-lg font-semibold mb-4">Aktive Vorhaben</h2>
 
               {proposals.length > 0 ? (
-                <div className="space-y-3">
+                <ul className="space-y-3 list-none">
                   {proposals.map((proposal) => (
-                    <div
+                    <li
                       key={proposal.id}
                       className="flex items-center justify-between border border-gray-200 rounded-lg p-4"
                     >
@@ -207,13 +223,14 @@ export default function DashboardPage() {
                         <Link
                           href={`/proposals/${proposal.id}/vote`}
                           className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark"
+                          aria-label={`Abstimmen: ${proposal.title}`}
                         >
                           Abstimmen
                         </Link>
                       )}
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               ) : (
                 <p className="text-gray-500 text-center py-4">Keine aktiven Vorhaben</p>
               )}
@@ -223,58 +240,68 @@ export default function DashboardPage() {
           {/* Rechte Spalte: Aktivitäten + Schnellaktionen */}
           <div className="space-y-8">
             {/* Letzte Aktivitäten */}
-            <section className="bg-white rounded-xl shadow-sm p-6">
-              <h2 className="text-lg font-semibold mb-4">Letzte Aktivitäten</h2>
+            <section aria-labelledby="activities-heading" className="bg-white rounded-xl shadow-sm p-6">
+              <h2 id="activities-heading" className="text-lg font-semibold mb-4">Letzte Aktivitäten</h2>
 
               {activities.length > 0 ? (
-                <div className="space-y-4">
+                <ul className="space-y-4 list-none">
                   {activities.map((activity) => (
-                    <div key={activity.id} className="flex gap-3">
-                      <span className="text-xl">{getActivityIcon(activity.type)}</span>
+                    <li key={activity.id} className="flex gap-3">
+                      <span className="text-xl" aria-label={getActivityIconLabel(activity.type)}>
+                        {getActivityIcon(activity.type)}
+                      </span>
                       <div>
                         <p className="text-sm">{activity.message}</p>
-                        <span className="text-xs text-gray-400">{activity.timestamp}</span>
+                        <time className="text-xs text-gray-400">vor {activity.timestamp}</time>
                       </div>
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               ) : (
                 <p className="text-gray-500 text-sm">Keine aktuellen Aktivitäten</p>
               )}
             </section>
 
             {/* Schnellaktionen */}
-            <section className="bg-white rounded-xl shadow-sm p-6">
-              <h2 className="text-lg font-semibold mb-4">Schnellaktionen</h2>
+            <section aria-labelledby="quick-actions-heading" className="bg-white rounded-xl shadow-sm p-6">
+              <h2 id="quick-actions-heading" className="text-lg font-semibold mb-4">Schnellaktionen</h2>
 
-              <div className="space-y-3">
-                <Link
-                  href="/circles/new"
-                  className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-primary transition-colors"
-                >
-                  <span className="text-xl">🆕</span>
-                  <span className="font-medium">Kreis erstellen</span>
-                </Link>
-
-                <Link
-                  href="/proposals/new"
-                  className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-primary transition-colors"
-                >
-                  <span className="text-xl">📝</span>
-                  <span className="font-medium">Vorhaben einreichen</span>
-                </Link>
-
-                <button
-                  onClick={() => {
-                    navigator.clipboard.writeText(window.location.origin + '/join')
-                    alert('Einladungslink kopiert!')
-                  }}
-                  className="w-full flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-primary transition-colors"
-                >
-                  <span className="text-xl">🔗</span>
-                  <span className="font-medium">Einladung teilen</span>
-                </button>
-              </div>
+              <nav aria-label="Schnellaktionen">
+                <ul className="space-y-3 list-none">
+                  <li>
+                    <Link
+                      href="/circles/new"
+                      className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-primary transition-colors"
+                    >
+                      <span className="text-xl" aria-hidden="true">🆕</span>
+                      <span className="font-medium">Kreis erstellen</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/proposals/new"
+                      className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-primary transition-colors"
+                    >
+                      <span className="text-xl" aria-hidden="true">📝</span>
+                      <span className="font-medium">Vorhaben einreichen</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText(window.location.origin + '/join')
+                        alert('Einladungslink kopiert!')
+                      }}
+                      aria-label="Einladungslink in Zwischenablage kopieren"
+                      className="w-full flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-primary transition-colors"
+                    >
+                      <span className="text-xl" aria-hidden="true">🔗</span>
+                      <span className="font-medium">Einladung teilen</span>
+                    </button>
+                  </li>
+                </ul>
+              </nav>
             </section>
           </div>
         </div>
