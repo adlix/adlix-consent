@@ -1,4 +1,18 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'adlix consent — Gemeinsam entscheiden',
+  description:
+    'Fair. Transparent. Inklusiv. adlix consent macht es einfach, gemeinsam zu entscheiden — ohne Hierarchien, mit Stimme für alle.',
+  alternates: { canonical: '/' },
+  openGraph: {
+    title: 'adlix consent — Gemeinsam entscheiden',
+    description:
+      'Fair. Transparent. Inklusiv. adlix consent macht es einfach, gemeinsam zu entscheiden — ohne Hierarchien, mit Stimme für alle.',
+    url: '/',
+  },
+}
 
 // Consent Flow Steps
 const flowSteps = [
