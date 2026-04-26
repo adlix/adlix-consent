@@ -244,6 +244,28 @@ class StrapiClient {
       }
     )
   }
+
+  // Abstentions (Enthaltung)
+  async createAbstention(data: {
+    reason: string
+    detail?: string
+    finalChoice?: string
+    reflexionAnswers?: string[]
+    anonymousConcern?: string
+    round: number
+    user: number
+  }) {
+    return this.request<unknown>('/abstentions', {
+      method: 'POST',
+      body: JSON.stringify({ data }),
+    })
+  }
+
+  async getAbstentions(roundId: number | string) {
+    return this.request<unknown[]>(
+      `/abstentions?filters[round][id][$eq]=${roundId}&populate=user`
+    )
+  }
 }
 
 // Singleton instance

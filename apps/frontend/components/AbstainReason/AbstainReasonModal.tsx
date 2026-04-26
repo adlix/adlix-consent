@@ -1,10 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { strapi } from '../../lib/strapi'
 
 type AbstainReason = 'A' | 'B' | 'C' | 'D' | 'E'
 
 interface AbstainReasonModalProps {
+  roundId: number
   onSubmit: (data: {
     reason: AbstainReason
     detail?: string
@@ -15,36 +18,11 @@ interface AbstainReasonModalProps {
 }
 
 const reasons: { key: AbstainReason; label: string; description: string; icon: string }[] = [
-  {
-    key: 'A',
-    label: 'Nicht betroffen',
-    description: 'Ich bin nicht betroffen oder habe keine Expertise.',
-    icon: '🤷',
-  },
-  {
-    key: 'B',
-    label: 'Mehr Infos nötig',
-    description: 'Ich brauche mehr Informationen, um mich entscheiden zu können.',
-    icon: '📚',
-  },
-  {
-    key: 'C',
-    label: 'Unklar',
-    description: 'Mir ist ein Teil des Vorhabens unklar.',
-    icon: '🤔',
-  },
-  {
-    key: 'D',
-    label: 'Anonyme Bedenken',
-    description: 'Ich habe Bedenken, möchte sie aber nicht öffentlich äußern.',
-    icon: '🔒',
-  },
-  {
-    key: 'E',
-    label: 'Will mich nicht festlegen',
-    description: 'Ich möchte mich nicht festlegen.',
-    icon: '⏸️',
-  },
+  { key: 'A', label: 'Nicht betroffen', description: 'Ich bin nicht betroffen oder habe keine Expertise.', icon: '🤷' },
+  { key: 'B', label: 'Mehr Infos nötig', description: 'Ich brauche mehr Informationen, um mich entscheiden zu können.', icon: '📚' },
+  { key: 'C', label: 'Unklar', description: 'Mir ist ein Teil des Vorhabens unklar.', icon: '🤔' },
+  { key: 'D', label: 'Anonyme Bedenken', description: 'Ich habe Bedenken, möchte sie aber nicht öffentlich äußern.', icon: '🔒' },
+  { key: 'E', label: 'Will mich nicht festlegen', description: 'Ich möchte mich nicht festlegen.', icon: '⏸️' },
 ]
 
 const reflexionQuestions = [
@@ -53,12 +31,39 @@ const reflexionQuestions = [
   'Was bräuchtest du, um wirklich Konsent geben zu können?',
 ]
 
-export default function AbstainReasonModal({ onSubmit, onCancel }: AbstainReasonModalProps) {
+export default function AbstainReasonModal({ roundId, onSubmit, onCancel }: AbstainReasonModalProps) {
+  const { data: session } = useSession()
   const [selectedReason, setSelectedReason] = useState<AbstainReason | null>(null)
   const [detail, setDetail] = useState('')
   const [reflexionAnswers, setReflexionAnswers] = useState<string[]>(['', '', ''])
   const [showReflexion, setShowReflexion] = useState(false)
   const [finalChoice, setFinalChoice] = useState<'abstain' | 'minor' | 'major' | 'anonymous' | null>(null)
+  const [submitting, setSubmitting] = useState(false)
+
+  const jwt = (session as unknown as { jwt?: string })?.jwt
+
+  const saveAbstention = async (data: {
+    reason: AbstainReason
+    detail?: string
+    finalChoice?: string
+    reflexionAnswers?: string[]
+    anonymousConcern?: string
+  }) => {
+    strapi.setJwt(jwt || null)
+    try {
+      await strapi.createAbstention({
+        reason: data.reason,
+        detail: data.detail,
+        finalChoice: data.finalChoice,
+        reflexionAnswers: data.reflexionAnswers,
+        anonymousConcern: data.anonymousConcern,
+        round: roundId,
+        user: Number(session?.user?.id),
+      })
+    } catch (err) {
+      console.error('Failed to save abstention:', err)
+    }
+  }
 
   const handleReasonSelect = (reason: AbstainReason) => {
     setSelectedReason(reason)
@@ -67,12 +72,29 @@ export default function AbstainReasonModal({ onSubmit, onCancel }: AbstainReason
     setFinalChoice(null)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!selectedReason) return
+    setSubmitting(true)
+
+    const isObjection = finalChoice === 'minor' || finalChoice === 'major'
+    const finalChoiceValue = finalChoice === 'abstain' ? 'abstain' :
+      finalChoice === 'minor' ? 'minor_objection' :
+      finalChoice === 'major' ? 'major_objection' :
+      finalChoice === 'anonymous' ? 'anonymous' : undefined
+
+    await saveAbstention({
+      reason: selectedReason,
+      detail: detail.trim() || undefined,
+      finalChoice: finalChoiceValue,
+      reflexionAnswers: showReflexion ? reflexionAnswers : undefined,
+      anonymousConcern: finalChoice === 'anonymous' ? detail : undefined,
+    })
+
+    setSubmitting(false)
     onSubmit({
       reason: selectedReason,
       detail: detail.trim() || undefined,
-      isObjection: finalChoice === 'minor' || finalChoice === 'major',
+      isObjection,
       objectionSeverity: finalChoice === 'major' ? 'major' : finalChoice === 'minor' ? 'minor' : undefined,
     })
   }
@@ -98,9 +120,7 @@ export default function AbstainReasonModal({ onSubmit, onCancel }: AbstainReason
                   <div className="flex items-start gap-3">
                     <span className="text-xl">{r.icon}</span>
                     <div>
-                      <div className="font-medium">
-                        {r.key} — {r.label}
-                      </div>
+                      <div className="font-medium">{r.key} — {r.label}</div>
                       <div className="text-sm text-gray-500">{r.description}</div>
                     </div>
                   </div>
@@ -113,22 +133,13 @@ export default function AbstainReasonModal({ onSubmit, onCancel }: AbstainReason
           {selectedReason === 'A' && (
             <div className="p-4 bg-gray-50 rounded-lg">
               <p className="text-sm text-gray-700">
-                Deine Enthaltung wird akzeptiert. Da du nicht betroffen bist, ist kein weiterer
-                Schritt nötig.
+                Deine Enthaltung wird akzeptiert. Da du nicht betroffen bist, ist kein weiterer Schritt nötig.
               </p>
               <div className="mt-4 flex gap-3">
-                <button
-                  onClick={handleSubmit}
-                  className="px-4 py-2 bg-gray-600 text-white rounded-lg font-medium hover:bg-gray-700"
-                >
-                  Bestätigen
+                <button onClick={handleSubmit} disabled={submitting} className="px-4 py-2 bg-gray-600 text-white rounded-lg font-medium hover:bg-gray-700 disabled:opacity-50">
+                  {submitting ? 'Speichere…' : 'Bestätigen'}
                 </button>
-                <button
-                  onClick={() => setSelectedReason(null)}
-                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg"
-                >
-                  Zurück
-                </button>
+                <button onClick={() => setSelectedReason(null)} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">Zurück</button>
               </div>
             </div>
           )}
@@ -137,8 +148,7 @@ export default function AbstainReasonModal({ onSubmit, onCancel }: AbstainReason
           {(selectedReason === 'B' || selectedReason === 'C') && (
             <div className="p-4 bg-indigo-50 rounded-lg">
               <p className="text-sm text-indigo-800 mb-3">
-                Formuliere konkret, welche {selectedReason === 'B' ? 'Informationen' : 'Klärung'} du
-                brauchst:
+                Formuliere konkret, welche {selectedReason === 'B' ? 'Informationen' : 'Klärung'} du brauchst:
               </p>
               <textarea
                 value={detail}
@@ -148,19 +158,10 @@ export default function AbstainReasonModal({ onSubmit, onCancel }: AbstainReason
                 placeholder={`Ich brauche ${selectedReason === 'B' ? 'Informationen' : 'Klärung'} zu: ...`}
               />
               <div className="flex gap-3">
-                <button
-                  onClick={handleSubmit}
-                  disabled={!detail.trim()}
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50"
-                >
-                  Anfrage senden
+                <button onClick={handleSubmit} disabled={!detail.trim() || submitting} className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50">
+                  {submitting ? 'Sende…' : 'Anfrage senden'}
                 </button>
-                <button
-                  onClick={() => setSelectedReason(null)}
-                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg"
-                >
-                  Zurück
-                </button>
+                <button onClick={() => setSelectedReason(null)} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">Zurück</button>
               </div>
             </div>
           )}
@@ -179,19 +180,10 @@ export default function AbstainReasonModal({ onSubmit, onCancel }: AbstainReason
                 placeholder="Deine anonymen Bedenken..."
               />
               <div className="flex gap-3">
-                <button
-                  onClick={handleSubmit}
-                  disabled={!detail.trim()}
-                  className="px-4 py-2 bg-amber-600 text-white rounded-lg font-medium hover:bg-amber-700 disabled:opacity-50"
-                >
-                  Anonym einreichen
+                <button onClick={handleSubmit} disabled={!detail.trim() || submitting} className="px-4 py-2 bg-amber-600 text-white rounded-lg font-medium hover:bg-amber-700 disabled:opacity-50">
+                  {submitting ? 'Sende…' : 'Anonym einreichen'}
                 </button>
-                <button
-                  onClick={() => setSelectedReason(null)}
-                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg"
-                >
-                  Zurück
-                </button>
+                <button onClick={() => setSelectedReason(null)} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">Zurück</button>
               </div>
             </div>
           )}
@@ -200,32 +192,16 @@ export default function AbstainReasonModal({ onSubmit, onCancel }: AbstainReason
           {selectedReason === 'E' && !showReflexion && (
             <div className="p-4 bg-purple-50 rounded-lg">
               <div className="mb-4 p-3 bg-purple-100 rounded-lg text-sm text-purple-800">
-                💡 <strong>Soziokratischer Hinweis:</strong> In der Soziokratie trägt jede
-                beteiligte Person Mitverantwortung für Entscheidungen. Enthaltung ohne Grund
-                bedeutet: Du hast keinen Einwand. Hast du vielleicht doch einen — auch einen
-                kleinen?
+                💡 <strong>Soziokratischer Hinweis:</strong> In der Soziokratie trägt jede beteiligte Person Mitverantwortung für Entscheidungen. Enthaltung ohne Grund bedeutet: Du hast keinen Einwand. Hast du vielleicht doch einen — auch einen kleinen?
               </div>
               <div className="flex gap-3">
-                <button
-                  onClick={() => setShowReflexion(true)}
-                  className="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700"
-                >
+                <button onClick={() => setShowReflexion(true)} className="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700">
                   Selbstreflexion starten
                 </button>
-                <button
-                  onClick={() => {
-                    setFinalChoice('abstain')
-                  }}
-                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg"
-                >
+                <button onClick={() => setFinalChoice('abstain')} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">
                   Trotzdem enthalten bleiben
                 </button>
-                <button
-                  onClick={() => setSelectedReason(null)}
-                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg"
-                >
-                  Zurück
-                </button>
+                <button onClick={() => setSelectedReason(null)} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">Zurück</button>
               </div>
             </div>
           )}
@@ -233,19 +209,13 @@ export default function AbstainReasonModal({ onSubmit, onCancel }: AbstainReason
           {/* Reason E — reflexion questions */}
           {selectedReason === 'E' && showReflexion && !finalChoice && (
             <div className="p-4 bg-purple-50 rounded-lg">
-              <h4 className="text-sm font-semibold text-purple-800 mb-3">
-                Geführte Selbstreflexion (optional)
-              </h4>
+              <h4 className="text-sm font-semibold text-purple-800 mb-3">Geführte Selbstreflexion (optional)</h4>
               {reflexionQuestions.map((q, i) => (
                 <div key={i} className="mb-3">
                   <p className="text-sm text-purple-700 mb-1">{q}</p>
                   <textarea
                     value={reflexionAnswers[i]}
-                    onChange={(e) => {
-                      const newAnswers = [...reflexionAnswers]
-                      newAnswers[i] = e.target.value
-                      setReflexionAnswers(newAnswers)
-                    }}
+                    onChange={(e) => { const a = [...reflexionAnswers]; a[i] = e.target.value; setReflexionAnswers(a) }}
                     className="w-full p-2 border border-purple-200 rounded-lg text-sm"
                     rows={2}
                     placeholder="Deine Gedanken..."
@@ -254,28 +224,16 @@ export default function AbstainReasonModal({ onSubmit, onCancel }: AbstainReason
               ))}
               <div className="space-y-2 mt-4">
                 <p className="text-sm font-medium text-purple-800">Was möchtest du tun?</p>
-                <button
-                  onClick={() => setFinalChoice('abstain')}
-                  className="w-full text-left px-4 py-3 rounded-lg border border-gray-200 hover:border-purple-300 text-sm"
-                >
+                <button onClick={() => setFinalChoice('abstain')} className="w-full text-left px-4 py-3 rounded-lg border border-gray-200 hover:border-purple-300 text-sm">
                   ⏸️ Ich möchte trotzdem enthalten bleiben
                 </button>
-                <button
-                  onClick={() => setFinalChoice('minor')}
-                  className="w-full text-left px-4 py-3 rounded-lg border border-yellow-200 hover:border-yellow-300 bg-yellow-50 text-sm"
-                >
+                <button onClick={() => setFinalChoice('minor')} className="w-full text-left px-4 py-3 rounded-lg border border-yellow-200 hover:border-yellow-300 bg-yellow-50 text-sm">
                   💛 Ich habe doch einen leichten Einwand
                 </button>
-                <button
-                  onClick={() => setFinalChoice('major')}
-                  className="w-full text-left px-4 py-3 rounded-lg border border-red-200 hover:border-red-300 bg-red-50 text-sm"
-                >
+                <button onClick={() => setFinalChoice('major')} className="w-full text-left px-4 py-3 rounded-lg border border-red-200 hover:border-red-300 bg-red-50 text-sm">
                   🔴 Ich habe einen schwerwiegenden Einwand
                 </button>
-                <button
-                  onClick={() => setFinalChoice('anonymous')}
-                  className="w-full text-left px-4 py-3 rounded-lg border border-amber-200 hover:border-amber-300 bg-amber-50 text-sm"
-                >
+                <button onClick={() => setFinalChoice('anonymous')} className="w-full text-left px-4 py-3 rounded-lg border border-amber-200 hover:border-amber-300 bg-amber-50 text-sm">
                   🔒 Ich möchte anonym Bedenken äußern
                 </button>
               </div>
@@ -286,53 +244,34 @@ export default function AbstainReasonModal({ onSubmit, onCancel }: AbstainReason
           {selectedReason === 'E' && finalChoice && (
             <div className="p-4 bg-purple-50 rounded-lg">
               {finalChoice === 'abstain' && (
-                <p className="text-sm text-gray-700">
-                  Deine Enthaltung wird gespeichert. Sie ist kein Blocker.
-                </p>
+                <p className="text-sm text-gray-700">Deine Enthaltung wird gespeichert. Sie ist kein Blocker.</p>
               )}
               {finalChoice === 'minor' && (
-                <p className="text-sm text-yellow-700">
-                  Du wirst zum leichten Einwand weitergeleitet.
-                </p>
+                <p className="text-sm text-yellow-700">Du wirst zum leichten Einwand weitergeleitet.</p>
               )}
               {finalChoice === 'major' && (
-                <p className="text-sm text-red-700">
-                  Du wirst zum schwerwiegenden Einwand weitergeleitet.
-                </p>
+                <p className="text-sm text-red-700">Du wirst zum schwerwiegenden Einwand weitergeleitet.</p>
               )}
               {finalChoice === 'anonymous' && (
-                <>
-                  <textarea
-                    value={detail}
-                    onChange={(e) => setDetail(e.target.value)}
-                    className="w-full p-3 border border-amber-200 rounded-lg mb-3"
-                    rows={3}
-                    placeholder="Deine anonymen Bedenken..."
-                  />
-                </>
+                <textarea
+                  value={detail}
+                  onChange={(e) => setDetail(e.target.value)}
+                  className="w-full p-3 border border-amber-200 rounded-lg mb-3"
+                  rows={3}
+                  placeholder="Deine anonymen Bedenken..."
+                />
               )}
               <div className="mt-4 flex gap-3">
-                <button
-                  onClick={handleSubmit}
-                  className="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700"
-                >
-                  Bestätigen
+                <button onClick={handleSubmit} disabled={submitting} className="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 disabled:opacity-50">
+                  {submitting ? 'Speichere…' : 'Bestätigen'}
                 </button>
-                <button
-                  onClick={() => setFinalChoice(null)}
-                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg"
-                >
-                  Zurück
-                </button>
+                <button onClick={() => setFinalChoice(null)} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">Zurück</button>
               </div>
             </div>
           )}
 
           {/* Global cancel */}
-          <button
-            onClick={onCancel}
-            className="mt-4 w-full text-center text-sm text-gray-500 hover:text-gray-700"
-          >
+          <button onClick={onCancel} className="mt-4 w-full text-center text-sm text-gray-500 hover:text-gray-700">
             Abbrechen
           </button>
         </div>

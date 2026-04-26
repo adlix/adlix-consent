@@ -594,6 +594,7 @@ export default function ProjectDetailPage() {
                   {userVote === 'abstain' && showAbstainModal && (
                     <Suspense fallback={null}>
                       <AbstainReasonModal
+                        roundId={selectedRound.id}
                         onSubmit={handleAbstainSubmit}
                         onCancel={() => { setShowAbstainModal(false); setUserVote(null) }}
                       />
