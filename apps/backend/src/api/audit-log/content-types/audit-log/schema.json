@@ -24,7 +24,9 @@
         "change_vote",
         "submit_objection",
         "adjust_proposal",
-        "complete_round"
+        "complete_round",
+        "join_circle",
+        "create_circle"
       ],
       "required": true
     },

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
+import AuthProvider from '../components/AuthProvider'
 import './globals.css'
 
 const geistSans = Geist({
@@ -118,10 +119,12 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col">
-        <a href="#main-content" className="skip-to-content">
-          Zum Hauptinhalt springen
-        </a>
-        {children}
+        <AuthProvider>
+          <a href="#main-content" className="skip-to-content">
+            Zum Hauptinhalt springen
+          </a>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   )

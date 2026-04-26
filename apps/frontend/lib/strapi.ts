@@ -19,9 +19,21 @@ interface StrapiResponse<T> {
 
 class StrapiClient {
   private baseUrl: string
+  private jwt: string | null = null
 
-  constructor(baseUrl: string = STRAPI_URL) {
+  constructor(baseUrl: string = STRAPI_URL, jwt?: string) {
     this.baseUrl = baseUrl
+    this.jwt = jwt ?? null
+  }
+
+  /** Set the JWT from NextAuth session (mutates this instance) */
+  setJwt(jwt: string | null) {
+    this.jwt = jwt
+  }
+
+  /** Return a new client that authenticates with the given JWT */
+  withToken(token: string): StrapiClient {
+    return new StrapiClient(this.baseUrl, token)
   }
 
   private async request<T>(
@@ -33,9 +45,10 @@ class StrapiClient {
     const headers = new Headers(options.headers)
     headers.set('Content-Type', 'application/json')
 
-    const token = process.env.STRAPI_API_TOKEN
-    if (token) {
-      headers.set('Authorization', `Bearer ${token}`)
+    // Prefer user JWT (auth), fall back to API token
+    const bearer = this.jwt || process.env.STRAPI_API_TOKEN
+    if (bearer) {
+      headers.set('Authorization', `Bearer ${bearer}`)
     }
 
     const response = await fetch(url, {
@@ -178,6 +191,56 @@ class StrapiClient {
   async getComments(roundId: number | string) {
     return this.request<unknown[]>(
       `/comments?filters[round][id][$eq]=${roundId}&populate=user&sort=createdAt:asc`
+    )
+  }
+
+  // Circles
+  async getCircles() {
+    return this.request<unknown[]>('/circles?populate=owner,members&sort=createdAt:desc')
+  }
+
+  async getCircle(id: number | string) {
+    return this.request<unknown>(`/circles/${id}?populate=owner,members,projects`)
+  }
+
+  async createCircle(data: { name: string; description?: string }) {
+    return this.request<unknown>('/circles', {
+      method: 'POST',
+      body: JSON.stringify({ data }),
+    })
+  }
+
+  async generateInvite(circleId: number | string) {
+    return this.request<unknown>(`/circles/${circleId}/generate-invite`, {
+      method: 'POST',
+    })
+  }
+
+  async joinCircle(token: string) {
+    return this.request<unknown>(`/circles/join/${token}`, {
+      method: 'POST',
+    })
+  }
+
+  async getCircleMembers(circleId: number | string) {
+    return this.request<unknown>(`/circles/${circleId}/members`)
+  }
+
+  // Auth
+  async register(data: { username: string; email: string; password: string }) {
+    return this.request<unknown>('/auth/local/register', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    })
+  }
+
+  async login(identifier: string, password: string) {
+    return this.request<{ jwt: string; user: { id: number; email: string; username: string } }>(
+      '/auth/local',
+      {
+        method: 'POST',
+        body: JSON.stringify({ identifier, password }),
+      }
     )
   }
 }

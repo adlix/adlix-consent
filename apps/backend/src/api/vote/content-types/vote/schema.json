@@ -40,6 +40,12 @@
       "relation": "manyToOne",
       "target": "api::round.round",
       "required": true
+    },
+    "abstention": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::abstention.abstention",
+      "mappedBy": "vote"
     }
   }
 }

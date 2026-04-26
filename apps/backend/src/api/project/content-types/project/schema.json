@@ -20,6 +20,12 @@
       "type": "text",
       "required": true
     },
+    "goal": {
+      "type": "text"
+    },
+    "tension": {
+      "type": "text"
+    },
     "status": {
       "type": "enumeration",
       "enum": ["draft", "active", "completed", "beschlossen", "archived"],
@@ -59,6 +65,12 @@
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "required": true
+    },
+    "circle": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::circle.circle",
+      "inversedBy": "projects"
     }
   }
 }

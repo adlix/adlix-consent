@@ -1,0 +1,58 @@
+{
+  "collectionName": "abstentions",
+  "info": {
+    "singularName": "abstention",
+    "pluralName": "abstentions",
+    "displayName": "Abstention",
+    "description": "Enthaltung mit Grund und Folgeprozess"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "reason": {
+      "type": "enumeration",
+      "enum": ["A", "B", "C", "D", "E"],
+      "required": true
+    },
+    "detail": {
+      "type": "text"
+    },
+    "reflexionAnswers": {
+      "type": "json"
+    },
+    "finalChoice": {
+      "type": "enumeration",
+      "enum": ["abstain", "minor_objection", "major_objection", "anonymous"]
+    },
+    "anonymousConcern": {
+      "type": "text"
+    },
+    "isResolved": {
+      "type": "boolean",
+      "default": false
+    },
+    "resolvedAt": {
+      "type": "datetime"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "required": true
+    },
+    "vote": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::vote.vote",
+      "inversedBy": "abstention"
+    },
+    "round": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::round.round",
+      "required": true
+    }
+  }
+}

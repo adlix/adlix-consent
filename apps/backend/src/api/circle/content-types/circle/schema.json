@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "circles",
+  "info": {
+    "singularName": "circle",
+    "pluralName": "circles",
+    "displayName": "Circle",
+    "description": "Kreis (Organisationseinheit)"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "maxLength": 200
+    },
+    "description": {
+      "type": "text"
+    },
+    "owner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "circleMembers": {
+      "type": "relation",
+      "relation": "hasMany",
+      "target": "api::circle-member.circle-member",
+      "mappedBy": "circle"
+    },
+    "projects": {
+      "type": "relation",
+      "relation": "hasMany",
+      "target": "api::project.project",
+      "mappedBy": "circle"
+    },
+    "inviteToken": {
+      "type": "string",
+      "unique": true
+    }
+  }
+}
