@@ -125,7 +125,7 @@ class StrapiClient {
   }
 
   // Votes
-  async castVote(roundId: number | string, choice: 'yes' | 'no' | 'abstain', userId: number) {
+  async castVote(roundId: number | string, choice: 'consent' | 'minor_objection' | 'major_objection' | 'abstain', userId: number, reason?: string) {
     return this.request<unknown>('/votes', {
       method: 'POST',
       body: JSON.stringify({
@@ -133,6 +133,7 @@ class StrapiClient {
           choice,
           round: roundId,
           user: userId,
+          reason: reason || undefined,
         },
       }),
     })
