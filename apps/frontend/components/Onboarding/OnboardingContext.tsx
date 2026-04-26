@@ -38,25 +38,16 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
 
   // Check if onboarding is already completed
   useEffect(() => {
-    const checkOnboarding = async () => {
-      try {
-        const res = await fetch('/api/user/onboarding-status')
-        if (res.ok) {
-          const data = await res.json()
-          if (data.completed) {
-            setIsCompleted(true)
-          }
-        }
-      } catch {
-        // Ignore
+    if (typeof window !== 'undefined') {
+      const completed = localStorage.getItem('onboarding_completed')
+      if (completed === 'true') {
+        setIsCompleted(true)
       }
     }
-    checkOnboarding()
   }, [])
 
   const completeOnboarding = () => {
     setIsCompleted(true)
-    // Save to localStorage as backup
     if (typeof window !== 'undefined') {
       localStorage.setItem('onboarding_completed', 'true')
     }

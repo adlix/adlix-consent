@@ -4,7 +4,11 @@
  */
 'use client'
 
+'use client'
+
 import { useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { strapi } from '../../lib/strapi'
 import { useOnboarding } from './OnboardingContext'
 
 // Progress Bar
@@ -211,29 +215,54 @@ function CircleStep({ onNext }: { onNext: () => void }) {
 }
 
 // Complete Step
-function CompleteStep({ onComplete }: { onComplete: () => void }) {
+function CompleteStep({ onComplete, jwt }: { onComplete: () => void; jwt?: string }) {
   const { userData, circleData } = useOnboarding()
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleComplete = async () => {
+    setSaving(true)
+    setError('')
+    strapi.setJwt(jwt || null)
+
+    try {
+      if (circleData.name) {
+        // Create new circle
+        await strapi.createCircle({
+          name: circleData.name,
+          description: circleData.description || undefined,
+        })
+      } else if (circleData.inviteCode) {
+        // Join existing circle
+        await strapi.joinCircle(circleData.inviteCode)
+      }
+      onComplete()
+    } catch (err) {
+      setError('Etwas ist schiefgelaufen. Bitte versuche es erneut.')
+    } finally {
+      setSaving(false)
+    }
+  }
 
   return (
     <div className="text-center">
       <div className="text-6xl mb-4">🎉</div>
       <h2 className="text-2xl font-bold mb-4">Fast fertig!</h2>
-      <p className="text-gray-600 mb-8">Wir richten jetzt deinen Circle ein...</p>
+      <p className="text-gray-600 mb-8">Wir richten jetzt deinen Kreis ein…</p>
 
       <div className="bg-gray-50 p-6 rounded-lg text-left max-w-md mx-auto mb-8">
-        <p>
-          <strong>Name:</strong> {userData.name}
-        </p>
-        <p>
-          <strong>Kreis:</strong> {circleData.name || 'wird beigetreten'}
-        </p>
+        <p><strong>Name:</strong> {userData.name}</p>
+        <p><strong>Kreis:</strong> {circleData.name || 'wird beigetreten'}</p>
       </div>
 
+      {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
       <button
-        onClick={onComplete}
-        className="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+        onClick={handleComplete}
+        disabled={saving}
+        className="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium disabled:opacity-50"
       >
-        Zum Dashboard →
+        {saving ? 'Wird eingerichtet…' : 'Zum Dashboard →'}
       </button>
     </div>
   )
@@ -244,6 +273,8 @@ const STEPS = [WelcomeStep, ProfileStep, CircleStep, CompleteStep]
 
 export function OnboardingFlow() {
   const { step, setStep, completeOnboarding } = useOnboarding()
+  const { data: session } = useSession()
+  const jwt = (session as unknown as { jwt?: string })?.jwt
   const totalSteps = STEPS.length
 
   const CurrentStep = STEPS[step]
@@ -256,13 +287,12 @@ export function OnboardingFlow() {
 
   const handleComplete = async () => {
     completeOnboarding()
-    // API call to complete onboarding would go here
   }
 
   return (
     <div className="min-h-screen bg-white py-12 px-4">
       <ProgressBar current={step} total={totalSteps} />
-      <CurrentStep onNext={handleNext} onComplete={handleComplete} />
+      <CurrentStep onNext={handleNext} onComplete={handleComplete} jwt={jwt} />
     </div>
   )
 }
