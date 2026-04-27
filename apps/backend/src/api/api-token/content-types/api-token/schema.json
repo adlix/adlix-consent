@@ -1,0 +1,42 @@
+{
+  "collectionName": "api_tokens_custom",
+  "info": {
+    "singularName": "api-token",
+    "pluralName": "api-tokens",
+    "displayName": "ApiToken",
+    "description": "Custom API token for third-party access to the public API"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "token": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "scope": {
+      "type": "enumeration",
+      "enum": ["read", "write", "admin"],
+      "default": "read",
+      "required": true
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "lastUsedAt": {
+      "type": "datetime"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

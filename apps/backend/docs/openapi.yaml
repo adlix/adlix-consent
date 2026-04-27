@@ -1,0 +1,402 @@
+openapi: 3.0.3
+info:
+  title: adlix-consent Public API
+  description: |
+    Public API für Drittanbieter zum Lesen und Erstellen von Consent-Daten.
+    Authentifizierung über custom API-Token im Authorization-Header.
+  version: 1.0.0
+  contact:
+    name: adlix-consent Support
+
+servers:
+  - url: /api
+    description: Relative Server-URL
+
+security:
+  - BearerToken: []
+
+paths:
+  /public/projects:
+    get:
+      summary: Liste aller Vorhaben
+      description: Gibt eine Liste aller Projekte zurück. Erfordert scope: read+
+      operationId: listProjects
+      tags: [Projects]
+      responses:
+        '200':
+          description: Liste der Projekte
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Project'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+    post:
+      summary: Neues Vorhaben erstellen
+      description: Erstellt ein neues Projekt. Erfordert scope: write+
+      operationId: createProject
+      tags: [Projects]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [data]
+              properties:
+                data:
+                  type: object
+                  required: [name, description]
+                  properties:
+                    name:
+                      type: string
+                      maxLength: 200
+                    description:
+                      type: string
+                    goal:
+                      type: string
+                    tension:
+                      type: string
+                    circle:
+                      type: string
+                      description: documentId des Kreises
+      responses:
+        '201':
+          description: Projekt erstellt
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Project'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  /public/projects/{id}:
+    get:
+      summary: Einzelnes Vorhaben abrufen
+      operationId: getProject
+      tags: [Projects]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: documentId des Projekts
+      responses:
+        '200':
+          description: Projektdetails
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Project'
+        '404':
+          description: Projekt nicht gefunden
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /public/circles:
+    get:
+      summary: Liste aller Kreise
+      description: Gibt eine Liste aller Kreise zurück. Erfordert scope: read+
+      operationId: listCircles
+      tags: [Circles]
+      responses:
+        '200':
+          description: Liste der Kreise
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Circle'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /public/circles/{id}:
+    get:
+      summary: Einzelnen Kreis abrufen
+      operationId: getCircle
+      tags: [Circles]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: documentId des Kreises
+      responses:
+        '200':
+          description: Kreisdetails
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Circle'
+        '404':
+          description: Kreis nicht gefunden
+
+  /public/rounds:
+    get:
+      summary: Liste aller Abstimmungsrunden
+      description: Gibt eine Liste aller Runden zurück. Erfordert scope: read+
+      operationId: listRounds
+      tags: [Rounds]
+      responses:
+        '200':
+          description: Liste der Runden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Round'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /public/rounds/{id}:
+    get:
+      summary: Einzelne Abstimmungsrunde abrufen
+      operationId: getRound
+      tags: [Rounds]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: documentId der Runde
+      responses:
+        '200':
+          description: Rundendetails
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Round'
+        '404':
+          description: Runde nicht gefunden
+
+  /tokens:
+    get:
+      summary: Eigene API-Token auflisten
+      description: JWT-authentifiziert. Gibt Token ohne den Secret-Wert zurück.
+      operationId: listTokens
+      tags: [Token Management]
+      security:
+        - JwtAuth: []
+      responses:
+        '200':
+          description: Liste der eigenen Token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ApiTokenSafe'
+    post:
+      summary: Neues API-Token erstellen
+      operationId: createToken
+      tags: [Token Management]
+      security:
+        - JwtAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [data]
+              properties:
+                data:
+                  type: object
+                  required: [name, scope]
+                  properties:
+                    name:
+                      type: string
+                    scope:
+                      type: string
+                      enum: [read, write, admin]
+      responses:
+        '201':
+          description: Token erstellt (Secret nur hier sichtbar)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ApiTokenFull'
+
+  /tokens/{id}:
+    delete:
+      summary: API-Token löschen
+      operationId: deleteToken
+      tags: [Token Management]
+      security:
+        - JwtAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: documentId des Tokens
+      responses:
+        '200':
+          description: Token gelöscht
+        '403':
+          description: Nicht Ihr Token
+        '404':
+          description: Token nicht gefunden
+
+components:
+  securitySchemes:
+    BearerToken:
+      type: http
+      scheme: bearer
+      description: Custom API-Token (nicht Strapi API-Token)
+    JwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Strapi JWT für Token-Management
+
+  schemas:
+    Project:
+      type: object
+      properties:
+        documentId:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        goal:
+          type: string
+        tension:
+          type: string
+        status:
+          type: string
+          enum: [draft, active, completed, beschlossen, archived]
+        circle:
+          $ref: '#/components/schemas/CircleRef'
+        owner:
+          $ref: '#/components/schemas/UserRef'
+        rounds:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoundRef'
+
+    Circle:
+      type: object
+      properties:
+        documentId:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        owner:
+          $ref: '#/components/schemas/UserRef'
+
+    Round:
+      type: object
+      properties:
+        documentId:
+          type: string
+        roundNumber:
+          type: integer
+        proposal:
+          type: string
+        status:
+          type: string
+          enum: [information, reaction, adjustment, voting, integration, completed]
+        project:
+          $ref: '#/components/schemas/ProjectRef'
+
+    CircleRef:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+
+    UserRef:
+      type: object
+      properties:
+        id: { type: number }
+        username: { type: string }
+
+    ProjectRef:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+
+    RoundRef:
+      type: object
+      properties:
+        id: { type: string }
+        roundNumber: { type: integer }
+        status: { type: string }
+
+    ApiTokenSafe:
+      type: object
+      properties:
+        documentId: { type: string }
+        name: { type: string }
+        scope: { type: string, enum: [read, write, admin] }
+        isActive: { type: boolean }
+        lastUsedAt: { type: string, format: date-time, nullable: true }
+        createdAt: { type: string, format: date-time }
+
+    ApiTokenFull:
+      type: object
+      properties:
+        documentId: { type: string }
+        name: { type: string }
+        scope: { type: string, enum: [read, write, admin] }
+        token: { type: string, description: 64-char hex secret – nur bei Erstellung sichtbar }
+        isActive: { type: boolean }
+        createdAt: { type: string, format: date-time }
+
+  responses:
+    Unauthorized:
+      description: Fehlender oder ungültiger Authorization-Header
+    Forbidden:
+      description: Unzureichende Berechtigung (scope)
+    RateLimited:
+      description: Rate-Limit überschritten
+      headers:
+        Retry-After:
+          schema: { type: integer }
+          description: Sekunden bis zum Reset
