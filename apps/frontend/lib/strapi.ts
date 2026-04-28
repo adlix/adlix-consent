@@ -267,6 +267,36 @@ class StrapiClient {
     )
   }
 
+  async getAnonymousConcerns(roundId: number | string) {
+    const url = `${this.baseUrl}/api/abstentions/${roundId}/anonymous-concerns`
+    const headers = new Headers()
+    headers.set('Content-Type', 'application/json')
+    const bearer = this.jwt || process.env.STRAPI_API_TOKEN
+    if (bearer) headers.set('Authorization', `Bearer ${bearer}`)
+
+    const res = await fetch(url, { headers })
+    if (!res.ok) throw new Error(`API Error: ${res.status}`)
+    return res.json()
+  }
+
+  async analyseAbstentions(roundId: number | string) {
+    const url = `${this.baseUrl}/api/abstentions/${roundId}/analyse`
+    const headers = new Headers()
+    headers.set('Content-Type', 'application/json')
+    const bearer = this.jwt || process.env.STRAPI_API_TOKEN
+    if (bearer) headers.set('Authorization', `Bearer ${bearer}`)
+
+    const res = await fetch(url, { method: 'POST', headers })
+    if (!res.ok) throw new Error(`API Error: ${res.status}`)
+    return res.json()
+  }
+
+  async getAnonymousConcerns(roundId: number | string) {
+    return this.request<{ groups: { theme: string; concerns: string[]; count: number }[]; total: number }>(
+      `/abstentions/${roundId}/anonymous-concerns`
+    )
+  }
+
   async analyseAbstentions(roundId: number | string) {
     return this.request<{
       total: number
