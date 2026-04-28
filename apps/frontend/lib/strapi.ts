@@ -266,6 +266,24 @@ class StrapiClient {
       `/abstentions?filters[round][id][$eq]=${roundId}&populate=user`
     )
   }
+
+  async analyseAbstentions(roundId: number | string) {
+    return this.request<{
+      total: number
+      clusters: Array<{
+        id: string
+        label: string
+        reasonCodes: string[]
+        description: string
+        count: number
+        keywords: string[]
+      }>
+      recommendations: string[]
+      analysedAt: string
+    }>(`/abstentions/${roundId}/analyse`, {
+      method: 'POST',
+    })
+  }
 }
 
 // Singleton instance
