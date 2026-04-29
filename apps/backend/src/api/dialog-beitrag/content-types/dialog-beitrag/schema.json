@@ -1,0 +1,36 @@
+{
+  "collectionName": "dialog_beitraege",
+  "info": {
+    "singularName": "dialog-beitrag",
+    "pluralName": "dialog-beitraege",
+    "displayName": "DialogBeitrag",
+    "description": "Beitrag eines Kreismitglieds in einer Dialog-Phase"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "type": {
+      "type": "enumeration",
+      "enum": ["idea", "question", "support", "passe"],
+      "required": true
+    },
+    "content": {
+      "type": "text"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "required": true
+    },
+    "phase": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::dialog-phase.dialog-phase",
+      "inversedBy": "beitraege",
+      "required": true
+    }
+  }
+}

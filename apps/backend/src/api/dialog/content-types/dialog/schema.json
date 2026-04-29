@@ -1,0 +1,45 @@
+{
+  "collectionName": "dialogs",
+  "info": {
+    "singularName": "dialog",
+    "pluralName": "dialogs",
+    "displayName": "Dialog",
+    "description": "Integrationsprozess für schwerwiegende Einwände — 6 Phasen"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "currentPhase": {
+      "type": "integer",
+      "default": 1,
+      "min": 1,
+      "max": 6
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["active", "completed", "escalated"],
+      "default": "active",
+      "required": true
+    },
+    "objection": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::objection.objection",
+      "required": true
+    },
+    "project": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::project.project",
+      "required": true
+    },
+    "phases": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::dialog-phase.dialog-phase",
+      "mappedBy": "dialog"
+    }
+  }
+}

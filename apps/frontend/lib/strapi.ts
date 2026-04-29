@@ -268,30 +268,6 @@ class StrapiClient {
   }
 
   async getAnonymousConcerns(roundId: number | string) {
-    const url = `${this.baseUrl}/api/abstentions/${roundId}/anonymous-concerns`
-    const headers = new Headers()
-    headers.set('Content-Type', 'application/json')
-    const bearer = this.jwt || process.env.STRAPI_API_TOKEN
-    if (bearer) headers.set('Authorization', `Bearer ${bearer}`)
-
-    const res = await fetch(url, { headers })
-    if (!res.ok) throw new Error(`API Error: ${res.status}`)
-    return res.json()
-  }
-
-  async analyseAbstentions(roundId: number | string) {
-    const url = `${this.baseUrl}/api/abstentions/${roundId}/analyse`
-    const headers = new Headers()
-    headers.set('Content-Type', 'application/json')
-    const bearer = this.jwt || process.env.STRAPI_API_TOKEN
-    if (bearer) headers.set('Authorization', `Bearer ${bearer}`)
-
-    const res = await fetch(url, { method: 'POST', headers })
-    if (!res.ok) throw new Error(`API Error: ${res.status}`)
-    return res.json()
-  }
-
-  async getAnonymousConcerns(roundId: number | string) {
     return this.request<{ groups: { theme: string; concerns: string[]; count: number }[]; total: number }>(
       `/abstentions/${roundId}/anonymous-concerns`
     )
@@ -313,6 +289,56 @@ class StrapiClient {
     }>(`/abstentions/${roundId}/analyse`, {
       method: 'POST',
     })
+  }
+}
+
+  // Dialog
+  async createDialog(data: { objection: number; project: number }) {
+    return this.request<unknown>('/dialogs', {
+      method: 'POST',
+      body: JSON.stringify({ data }),
+    })
+  }
+
+  async getDialog(id: number | string) {
+    return this.request<unknown>(
+      `/dialogs/${id}?populate[phases][populate]=beitraege,beitraege.user&populate[objection]=true&populate[project]=true`
+    )
+  }
+
+  async getDialogByObjection(objectionId: number | string) {
+    return this.request<unknown[]>(
+      `/dialogs?filters[objection][id][$eq]=${objectionId}&populate[phases][populate]=beitraege,beitraege.user&populate[objection]=true&populate[project]=true`
+    )
+  }
+
+  async advanceDialog(id: number | string) {
+    return this.request<unknown>(`/dialogs/${id}/advance`, { method: 'POST' })
+  }
+
+  async completeDialog(id: number | string, status: 'completed' | 'escalated') {
+    return this.request<unknown>(`/dialogs/${id}/complete`, {
+      method: 'POST',
+      body: JSON.stringify({ status }),
+    })
+  }
+
+  async createDialogBeitrag(data: {
+    type: 'idea' | 'question' | 'support' | 'passe'
+    content?: string
+    phase: number
+    user: number
+  }) {
+    return this.request<unknown>('/dialog-beitraege', {
+      method: 'POST',
+      body: JSON.stringify({ data }),
+    })
+  }
+
+  async getDialogBeitraege(phaseId: number | string) {
+    return this.request<unknown[]>(
+      `/dialog-beitraege?filters[phase][id][$eq]=${phaseId}&populate=user&sort=createdAt:asc`
+    )
   }
 }
 

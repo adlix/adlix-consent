@@ -1,0 +1,51 @@
+{
+  "collectionName": "dialog_phases",
+  "info": {
+    "singularName": "dialog-phase",
+    "pluralName": "dialog-phases",
+    "displayName": "DialogPhase",
+    "description": "Eine Phase im Dialog-Integrationsprozess"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "phaseNumber": {
+      "type": "integer",
+      "required": true,
+      "min": 1,
+      "max": 6
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": ["understand", "validate", "solutions", "synthesize", "present", "escalate"],
+      "required": true
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["active", "completed", "skipped"],
+      "default": "active",
+      "required": true
+    },
+    "startedAt": {
+      "type": "datetime"
+    },
+    "completedAt": {
+      "type": "datetime"
+    },
+    "dialog": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::dialog.dialog",
+      "inversedBy": "phases",
+      "required": true
+    },
+    "beitraege": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::dialog-beitrag.dialog-beitrag",
+      "mappedBy": "phase"
+    }
+  }
+}
