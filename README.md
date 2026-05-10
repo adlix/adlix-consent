@@ -80,3 +80,22 @@ docker compose logs -f postgres
   ```bash
   docker compose build --no-cache
   ```
+
+### Demo-Daten (Seed)
+
+Entwicklung, Demo und E2E-Tests profitieren von reproduzierbaren Testdaten.
+
+```bash
+# Seed ausführen (macht DB-Zugriff erforderlich)
+node apps/backend/scripts/seed.js
+```
+
+**Was wird angelegt:**
+- 1 Kreis: "Demo-Kreis"
+- 5 Nutzer: demo1–5@example.com (Password: demo1234)
+- 3 Vorhaben in verschiedenen Phasen (beschlossen, in Abstimmung, Entwurf)
+- Voting-Runde mit gemischten Votes
+
+**Idempotent:** Kein Fehler bei wiederholtem Aufruf — existierende Demo-Daten werden übersprungen.
+
+**Zurücksetzen:** Demo-Nutzer manuell in Strapi löschen oder `DELETE FROM users WHERE email LIKE 'demo%'`
