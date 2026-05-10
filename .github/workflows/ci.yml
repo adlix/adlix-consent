@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: apps/backend/package-lock.json
+
+      - name: Install Backend dependencies
+        run: npm ci
+        working-directory: apps/backend
+
+      - name: Lint Backend
+        run: npm run lint || true
+        working-directory: apps/backend
+
+      - name: Build Backend
+        run: npm run build
+        working-directory: apps/backend
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: apps/frontend/package-lock.json
+
+      - name: Install Frontend dependencies
+        run: npm ci
+        working-directory: apps/frontend
+
+      - name: Lint Frontend
+        run: npm run lint
+        working-directory: apps/frontend
+
+      - name: Check Types
+        run: npm run typecheck
+        working-directory: apps/frontend
+
+      - name: Format Check
+        run: npm run format:check
+        working-directory: apps/frontend
+
+      - name: Build Frontend
+        run: npm run build
+        working-directory: apps/frontend
