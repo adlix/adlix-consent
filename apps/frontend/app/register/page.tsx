@@ -1,25 +1,26 @@
 'use client'
 
 import { useState } from 'react'
-import { signIn } from 'next-auth/react'
 import Link from 'next/link'
-
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
+import { useRouter } from 'next/navigation'
 
 export default function RegisterPage() {
-  const [username, setUsername] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const router = useRouter()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError('')
     setLoading(true)
 
+    const formData = new FormData(e.currentTarget)
+    const username = formData.get('username') as string
+    const email = formData.get('email') as string
+    const password = formData.get('password') as string
+
     try {
-      const res = await fetch(`${STRAPI_URL}/api/auth/local/register`, {
+      const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password }),
@@ -27,25 +28,14 @@ export default function RegisterPage() {
 
       if (!res.ok) {
         const data = await res.json()
-        setError(data.error?.message || 'Registrierung fehlgeschlagen.')
-        setLoading(false)
+        setError(data.error || 'Registrierung fehlgeschlagen.')
         return
       }
 
-      // Auto-login after registration
-      const result = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
-      })
-
-      if (result?.ok) {
-        window.location.href = '/dashboard'
-      } else {
-        window.location.href = '/login'
-      }
+      router.push('/dashboard')
+      router.refresh()
     } catch {
-      setError('Ein Fehler ist aufgetreten.')
+      setError('Verbindungsfehler. Bitte versuche es erneut.')
     } finally {
       setLoading(false)
     }
@@ -77,9 +67,8 @@ export default function RegisterPage() {
               </label>
               <input
                 id="username"
+                name="username"
                 type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
                 autoComplete="username"
@@ -92,9 +81,8 @@ export default function RegisterPage() {
               </label>
               <input
                 id="email"
+                name="email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
                 autoComplete="email"
@@ -107,9 +95,8 @@ export default function RegisterPage() {
               </label>
               <input
                 id="password"
+                name="password"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
                 minLength={6}

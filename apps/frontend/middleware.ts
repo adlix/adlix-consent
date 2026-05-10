@@ -1,26 +1,30 @@
-import { auth } from '@/lib/auth'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { getJwtFromRequest } from './lib/session'
 
-export default auth((req) => {
+const PUBLIC_PREFIXES = ['/', '/login', '/register', '/pricing', '/api/auth']
+
+function isPublic(pathname: string): boolean {
+  if (pathname === '/') return true
+  return PUBLIC_PREFIXES.some(
+    (p) => p !== '/' && (pathname === p || pathname.startsWith(p + '/') || pathname.startsWith(p + '?'))
+  )
+}
+
+export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
-  const isLoggedIn = !!req.auth
 
-  // Public routes
-  const publicRoutes = ['/login', '/register', '/', '/projects']
-  if (publicRoutes.some((r) => pathname.startsWith(r)) || pathname.startsWith('/api/')) {
-    return NextResponse.next()
-  }
+  if (isPublic(pathname)) return NextResponse.next()
 
-  // Protected routes — redirect to login if not authenticated
-  if (!isLoggedIn) {
+  const jwt = getJwtFromRequest(req)
+  if (!jwt) {
     const loginUrl = new URL('/login', req.url)
     loginUrl.searchParams.set('callbackUrl', pathname)
     return NextResponse.redirect(loginUrl)
   }
 
   return NextResponse.next()
-})
+}
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|og-image.png).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:ico|png|jpg|jpeg|svg|css|js|woff2?)).*)'],
 }

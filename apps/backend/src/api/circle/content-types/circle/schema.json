@@ -27,13 +27,13 @@
     },
     "circleMembers": {
       "type": "relation",
-      "relation": "hasMany",
+      "relation": "oneToMany",
       "target": "api::circle-member.circle-member",
       "mappedBy": "circle"
     },
     "projects": {
       "type": "relation",
-      "relation": "hasMany",
+      "relation": "oneToMany",
       "target": "api::project.project",
       "mappedBy": "circle"
     },

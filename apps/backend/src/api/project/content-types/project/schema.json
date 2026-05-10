@@ -45,20 +45,19 @@
     },
     "currentRound": {
       "type": "relation",
-      "relation": "hasOne",
+      "relation": "oneToOne",
       "target": "api::round.round"
     },
     "rounds": {
       "type": "relation",
-      "relation": "hasMany",
-      "target": "api::round.round"
+      "relation": "oneToMany",
+      "target": "api::round.round",
+      "mappedBy": "project"
     },
     "participants": {
       "type": "relation",
       "relation": "manyToMany",
-      "target": "plugin::users-permissions.user",
-      "through": "api::project-participant.project-participant",
-      "inverse": "projects"
+      "target": "plugin::users-permissions.user"
     },
     "owner": {
       "type": "relation",

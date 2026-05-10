@@ -43,23 +43,27 @@
     },
     "votes": {
       "type": "relation",
-      "relation": "hasMany",
-      "target": "api::vote.vote"
+      "relation": "oneToMany",
+      "target": "api::vote.vote",
+      "mappedBy": "round"
     },
     "objections": {
       "type": "relation",
-      "relation": "hasMany",
-      "target": "api::objection.objection"
+      "relation": "oneToMany",
+      "target": "api::objection.objection",
+      "mappedBy": "round"
     },
     "comments": {
       "type": "relation",
-      "relation": "hasMany",
-      "target": "api::comment.comment"
+      "relation": "oneToMany",
+      "target": "api::comment.comment",
+      "mappedBy": "round"
     },
     "project": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::project.project",
+      "inversedBy": "rounds",
       "required": true
     }
   }
