@@ -1,6 +1,9 @@
 import type { NextConfig } from 'next'
 
+const isDev = process.env.NODE_ENV !== 'production'
+
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ['consent.adlix-club.de'],
   images: {
     remotePatterns: [
       {
@@ -10,6 +13,22 @@ const nextConfig: NextConfig = {
     ],
   },
   async headers() {
+    if (isDev) {
+      return [
+        {
+          // In development, do not override Next.js asset caching.
+          // Custom cache headers can break hydration and stale dev bundles.
+          source: '/api/(.*)',
+          headers: [
+            {
+              key: 'Cache-Control',
+              value: 'no-store',
+            },
+          ],
+        },
+      ]
+    }
+
     return [
       {
         // Immutable cache for hashed static assets
