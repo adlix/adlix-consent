@@ -290,7 +290,6 @@ class StrapiClient {
       method: 'POST',
     })
   }
-}
 
   // Dialog
   async createDialog(data: { objection: number; project: number }) {
