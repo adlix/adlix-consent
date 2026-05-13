@@ -16,7 +16,7 @@ interface Phase2Props {
 
 type Vote = 'sachlich' | 'praeferenz' | null
 
-export default function Phase2Validate({ members, currentUserId, onNext }: Phase2Props) {
+export default function Phase2Validate({ members: _members, currentUserId, onNext }: Phase2Props) {
   const [votes, setVotes] = useState<Record<number, Vote>>({})
   const [myVote, setMyVote] = useState<Vote>(null)
 

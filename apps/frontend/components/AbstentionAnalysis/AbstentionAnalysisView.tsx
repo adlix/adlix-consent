@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { strapi } from '../../lib/strapi'
 
 interface ReasonCounts {
   A: number

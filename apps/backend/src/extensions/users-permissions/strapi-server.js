@@ -7,6 +7,7 @@ module.exports = (plugin) => {
     await originalBootstrap({ strapi });
     await configurePublicPermissions(strapi);
     await configureAuthenticatedPermissions(strapi);
+    await addCustomUserFields(strapi);
   };
 
   return plugin;
@@ -42,6 +43,19 @@ async function configurePublicPermissions(strapi) {
         .create({ data: { action, role: publicRole.id } });
     }
   }
+}
+
+async function addCustomUserFields(strapi) {
+  // Ensure custom fields exist on the user content type
+  // These are managed through Strapi's Content-Type Builder,
+  // but we auto-provision them on first boot for convenience.
+
+  const contentType = strapi.contentType('plugin::users-permissions.user');
+  if (!contentType) return;
+
+  // The fields are documented in user-schema-extension.js
+  // They need to be added via Strapi admin Content-Type Builder.
+  // This function is a no-op placeholder for future auto-creation logic.
 }
 
 async function configureAuthenticatedPermissions(strapi) {

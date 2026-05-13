@@ -25,7 +25,7 @@ const BEITRAG_OPTIONS = [
 ]
 
 export default function Phase3Solutions({
-  phaseId,
+  phaseId: _phaseId,
   currentUserId,
   existingBeitraege,
   onAddBeitrag,

@@ -128,7 +128,7 @@ export default function DialogWizard({
     onComplete()
   }
 
-  const handleEscalate = async (option: string) => {
+  const handleEscalate = async (_option: string) => {
     if (!dialog) return
     await strapi.completeDialog(dialog.documentId, 'escalated')
     onEscalate()
