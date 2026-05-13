@@ -3,10 +3,10 @@
 import { useState, Suspense } from 'react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import { OnboardingProvider } from '../../components/Onboarding/OnboardingContext'
+import { OnboardingProvider } from '@/components/Onboarding/OnboardingContext'
 
 const OnboardingFlow = dynamic(
-  () => import('../../components/Onboarding/OnboardingFlow').then((m) => ({ default: m.OnboardingFlow })),
+  () => import('@/components/Onboarding/OnboardingFlow').then((m) => ({ default: m.OnboardingFlow })),
   { ssr: false }
 )
 
@@ -116,44 +116,6 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200" role="banner">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl" aria-hidden="true">🗳️</span>
-            <span className="text-xl font-bold">adlix consent</span>
-          </div>
-          <nav aria-label="Hauptnavigation">
-            <ul className="flex items-center gap-4 list-none">
-              <li>
-                <Link href="/dashboard" className="text-primary font-medium" aria-current="page">
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link href="/circles" className="text-gray-600 hover:text-gray-900">
-                  Kreise
-                </Link>
-              </li>
-              <li>
-                <Link href="/proposals" className="text-gray-600 hover:text-gray-900">
-                  Vorhaben
-                </Link>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  aria-label="Benutzerprofil öffnen"
-                  className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm hover:opacity-90"
-                >
-                  M
-                </button>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </header>
-
       <main id="main-content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-2xl font-bold mb-8">Willkommen zurück!</h1>
 

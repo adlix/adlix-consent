@@ -1,12 +1,20 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    const err = searchParams.get('error')
+    if (err === 'abgelehnt') setError('Anmeldung abgelehnt.')
+    else if (err === 'social_login_failed') setError('Social-Login fehlgeschlagen. Bitte erneut versuchen.')
+    else if (err === 'no_token') setError('Keine Anmeldedaten erhalten. Bitte erneut versuchen.')
+  }, [searchParams])
   const [loading, setLoading] = useState(false)
   const [otpMode, setOtpMode] = useState(false)
   const [otpEmail, setOtpEmail] = useState('')
@@ -40,7 +48,8 @@ export default function LoginPage() {
         return
       }
 
-      router.push('/dashboard')
+      const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
+      router.push(callbackUrl)
       router.refresh()
     } catch {
       setError('Verbindungsfehler. Bitte versuche es erneut.')
@@ -86,7 +95,8 @@ export default function LoginPage() {
         return
       }
 
-      router.push('/dashboard')
+      const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
+      router.push(callbackUrl)
       router.refresh()
     } catch {
       setError('Verbindungsfehler.')
@@ -290,5 +300,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
   )
 }

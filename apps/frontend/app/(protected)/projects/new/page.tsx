@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import strapi from '../../../lib/strapi'
+import strapi from '@/lib/strapi'
 
 interface FieldErrors {
   title?: string

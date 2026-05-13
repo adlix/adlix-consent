@@ -3,9 +3,9 @@
 import Link from 'next/link'
 import { useState, Suspense } from 'react'
 import dynamic from 'next/dynamic'
-import type { SearchableProject } from '../../components/ProjectSearch/ProjectSearch'
+import type { SearchableProject } from '@/components/ProjectSearch/ProjectSearch'
 
-const ProjectSearch = dynamic(() => import('../../components/ProjectSearch/ProjectSearch'), {
+const ProjectSearch = dynamic(() => import('@/components/ProjectSearch/ProjectSearch'), {
   ssr: false,
 })
 

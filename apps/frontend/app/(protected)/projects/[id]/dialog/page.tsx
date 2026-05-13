@@ -5,10 +5,10 @@ import { useParams, useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import { strapi } from '../../../../lib/strapi'
+import { strapi } from '@/lib/strapi'
 
 const DialogWizard = dynamic(
-  () => import('../../../../components/Dialog/DialogWizard'),
+  () => import('@/components/Dialog/DialogWizard'),
   { ssr: false }
 )
 

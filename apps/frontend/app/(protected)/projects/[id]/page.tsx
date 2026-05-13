@@ -5,12 +5,12 @@ import { useState, useEffect, Suspense } from 'react'
 import { useParams } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import dynamic from 'next/dynamic'
-import { strapi } from '../../../lib/strapi'
-import OutcomeForm from '../../../components/Outcome/OutcomeForm'
-import AuditTrail from '../../../components/AuditTrail/AuditTrail'
+import { strapi } from '@/lib/strapi'
+import OutcomeForm from '@/components/Outcome/OutcomeForm'
+import AuditTrail from '@/components/AuditTrail/AuditTrail'
 
 const AbstainReasonModal = dynamic(
-  () => import('../../../components/AbstainReason/AbstainReasonModal'),
+  () => import('@/components/AbstainReason/AbstainReasonModal'),
   { ssr: false }
 )
 
