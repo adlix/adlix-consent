@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "up_users",
+  "info": {
+    "singularName": "user",
+    "pluralName": "users",
+    "displayName": "User"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "stripeCustomerId": {
+      "type": "string",
+      "private": true
+    },
+    "plan": {
+      "type": "enumeration",
+      "enum": ["free", "pro", "enterprise"],
+      "default": "free"
+    }
+  }
+}

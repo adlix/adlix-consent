@@ -105,6 +105,10 @@ async function configureAuthenticatedPermissions(strapi) {
     "api::abstention.abstention.findOne",
     "api::abstention.abstention.create",
     "api::abstention.abstention.update",
+    // Custom actions (from today's consent-loop MVP)
+    "api::project.project.createWithRound",
+    "api::round.round.transitionPhase",
+    "api::round.round.sendReminders",
   ];
 
   for (const action of apiActions) {
