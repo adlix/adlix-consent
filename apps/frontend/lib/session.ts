@@ -11,7 +11,8 @@ export interface SessionUser {
   jwt: string
 }
 
-const STRAPI_URL = process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
+const STRAPI_URL =
+  process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
 
 /** Server-Component / Server-Action: aktuelle Session lesen */
 export async function getSession(): Promise<SessionUser | null> {

@@ -1,3 +1,3 @@
-'use strict'
-const { createCoreService } = require('@strapi/strapi').factories
-module.exports = createCoreService('api::dialog.dialog')
+"use strict";
+const { createCoreService } = require("@strapi/strapi").factories;
+module.exports = createCoreService("api::dialog.dialog");

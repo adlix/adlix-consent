@@ -63,9 +63,7 @@ export default function OutcomeForm({ onSubmit, minorObjections = [] }: OutcomeF
 
   return (
     <form onSubmit={handleSubmit} className="p-6 bg-blue-50 rounded-xl border border-blue-200">
-      <h3 className="text-lg font-semibold text-blue-800 mb-4">
-        📋 Ergebnis dokumentieren
-      </h3>
+      <h3 className="text-lg font-semibold text-blue-800 mb-4">📋 Ergebnis dokumentieren</h3>
 
       {minorObjections.length > 0 && (
         <div className="mb-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
@@ -83,9 +81,7 @@ export default function OutcomeForm({ onSubmit, minorObjections = [] }: OutcomeF
       )}
 
       <div className="mb-4">
-        <label className="block text-sm font-medium text-blue-800 mb-1">
-          Ergebnis *
-        </label>
+        <label className="block text-sm font-medium text-blue-800 mb-1">Ergebnis *</label>
         <textarea
           value={outcome}
           onChange={(e) => setOutcome(e.target.value)}
@@ -97,9 +93,7 @@ export default function OutcomeForm({ onSubmit, minorObjections = [] }: OutcomeF
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium text-blue-800 mb-1">
-          Nächste Schritte
-        </label>
+        <label className="block text-sm font-medium text-blue-800 mb-1">Nächste Schritte</label>
         <textarea
           value={nextSteps}
           onChange={(e) => setNextSteps(e.target.value)}
@@ -110,18 +104,14 @@ export default function OutcomeForm({ onSubmit, minorObjections = [] }: OutcomeF
       </div>
 
       <div className="mb-6">
-        <label className="block text-sm font-medium text-blue-800 mb-1">
-          Evaluationsdatum
-        </label>
+        <label className="block text-sm font-medium text-blue-800 mb-1">Evaluationsdatum</label>
         <input
           type="date"
           value={evaluationDate}
           onChange={(e) => setEvaluationDate(e.target.value)}
           className="w-full p-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none"
         />
-        <p className="text-xs text-blue-600 mt-1">
-          Wann wird diese Entscheidung überprüft?
-        </p>
+        <p className="text-xs text-blue-600 mt-1">Wann wird diese Entscheidung überprüft?</p>
       </div>
 
       <div className="flex gap-3">

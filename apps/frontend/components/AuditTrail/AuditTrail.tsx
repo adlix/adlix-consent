@@ -105,12 +105,8 @@ export default function AuditTrail({ projectId, fallbackEntries }: AuditTrailPro
             <span className="text-base shrink-0">{info.icon}</span>
             <div className="min-w-0">
               <span className="text-gray-700 font-medium">{info.label}</span>
-              {entry.userName && (
-                <span className="text-gray-500"> — {entry.userName}</span>
-              )}
-              {entry.details && (
-                <span className="text-gray-500">: {entry.details}</span>
-              )}
+              {entry.userName && <span className="text-gray-500"> — {entry.userName}</span>}
+              {entry.details && <span className="text-gray-500">: {entry.details}</span>}
               <div className="text-xs text-gray-400">{formatTime(entry.createdAt)}</div>
             </div>
           </div>

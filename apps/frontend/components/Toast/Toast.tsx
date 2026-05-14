@@ -51,7 +51,9 @@ function ToastItem({ toast, onDismiss }: { toast: ToastMessage; onDismiss: (id: 
       aria-atomic="true"
       className={`flex items-start gap-3 p-4 rounded-lg border shadow-md ${styles[type]} animate-in slide-in-from-right`}
     >
-      <span aria-hidden="true" className="text-lg shrink-0">{icons[type]}</span>
+      <span aria-hidden="true" className="text-lg shrink-0">
+        {icons[type]}
+      </span>
       <div className="flex-1 min-w-0">
         <p className="font-medium text-sm">{ariaLabels[type]}</p>
         <p className="text-sm mt-0.5">{message}</p>

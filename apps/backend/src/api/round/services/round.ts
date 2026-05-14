@@ -1,15 +1,19 @@
-'use strict'
+"use strict";
 
-const { createCoreService } = require('@strapi/strapi').factories;
+const { createCoreService } = require("@strapi/strapi").factories;
 
-module.exports = createCoreService('api::round.round', ({ strapi }) => ({
+module.exports = createCoreService("api::round.round", ({ strapi }) => ({
   /**
    * Find participants who haven't voted yet in a round
    */
   async getNonVoters(roundId) {
-    const round = await strapi.entityService.findOne('api::round.round', roundId, {
-      populate: ['project', 'project.participants', 'votes', 'votes.user'],
-    });
+    const round = await strapi.entityService.findOne(
+      "api::round.round",
+      roundId,
+      {
+        populate: ["project", "project.participants", "votes", "votes.user"],
+      },
+    );
 
     if (!round) return [];
 
@@ -27,13 +31,13 @@ module.exports = createCoreService('api::round.round', ({ strapi }) => ({
     const threshold = new Date();
     threshold.setHours(threshold.getHours() - reminderAfterHours);
 
-    const rounds = await strapi.entityService.findMany('api::round.round', {
+    const rounds = await strapi.entityService.findMany("api::round.round", {
       filters: {
-        status: 'voting',
+        status: "voting",
         phaseStartedAt: { $lt: threshold.toISOString() },
         reminderSent: { $ne: true },
       },
-      populate: ['project', 'project.participants', 'votes', 'votes.user'],
+      populate: ["project", "project.participants", "votes", "votes.user"],
     });
 
     return rounds;
@@ -53,10 +57,10 @@ module.exports = createCoreService('api::round.round', ({ strapi }) => ({
         // In production, this would trigger email/notification
         // For now, log the reminder
         try {
-          await strapi.entityService.create('api::audit-log.audit-log', {
+          await strapi.entityService.create("api::audit-log.audit-log", {
             data: {
-              action: 'phase_transition',
-              entityType: 'round',
+              action: "phase_transition",
+              entityType: "round",
               entityId: String(round.id),
               details: `Erinnerung gesendet an ${nonVoters.length} Nicht-Abstimmende`,
               project: round.project?.id,
@@ -74,7 +78,7 @@ module.exports = createCoreService('api::round.round', ({ strapi }) => ({
       }
 
       // Mark reminder as sent (only one per round)
-      await strapi.entityService.update('api::round.round', round.id, {
+      await strapi.entityService.update("api::round.round", round.id, {
         data: { reminderSent: true },
       });
     }

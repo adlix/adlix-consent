@@ -76,7 +76,9 @@ export default function AbstentionAnalysisView({
       <div className="flex items-center justify-between mb-2">
         <h4 className="font-semibold text-indigo-800 flex items-center gap-2">
           📊 Enthaltungs-Analyse
-          <span className="text-xs bg-indigo-200 text-indigo-700 px-2 py-0.5 rounded-full">Pro</span>
+          <span className="text-xs bg-indigo-200 text-indigo-700 px-2 py-0.5 rounded-full">
+            Pro
+          </span>
         </h4>
         {!data && (
           <button
@@ -102,7 +104,10 @@ export default function AbstentionAnalysisView({
             <h5 className="text-sm font-medium text-indigo-900 mb-2">Verteilung nach Grund</h5>
             <div className="grid grid-cols-5 gap-2">
               {Object.entries(data.reasonCounts).map(([key, count]) => (
-                <div key={key} className="bg-white rounded-lg p-2 text-center border border-indigo-100">
+                <div
+                  key={key}
+                  className="bg-white rounded-lg p-2 text-center border border-indigo-100"
+                >
                   <div className="text-lg font-bold text-indigo-700">{count}</div>
                   <div className="text-xs text-indigo-500">{reasonLabels[key]}</div>
                 </div>

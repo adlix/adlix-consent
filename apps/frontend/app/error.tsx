@@ -17,7 +17,9 @@ export default function GlobalError({ error, reset }: ErrorProps) {
       <header className="border-b border-gray-200 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center gap-2">
-            <span className="text-2xl" aria-hidden="true">🗳️</span>
+            <span className="text-2xl" aria-hidden="true">
+              🗳️
+            </span>
             <span className="text-xl font-bold">adlix consent</span>
           </div>
         </div>
@@ -25,7 +27,9 @@ export default function GlobalError({ error, reset }: ErrorProps) {
 
       <main id="main-content" className="flex-1 flex items-center justify-center p-8">
         <div className="max-w-md w-full text-center">
-          <div className="text-5xl mb-4" aria-hidden="true">⚠️</div>
+          <div className="text-5xl mb-4" aria-hidden="true">
+            ⚠️
+          </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Etwas ist schiefgelaufen</h1>
           <p className="text-gray-600 mb-2">
             Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut.

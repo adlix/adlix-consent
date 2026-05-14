@@ -27,12 +27,29 @@ function diffWords(original: string, adapted: string): React.ReactNode[] {
     if (o === a) {
       result.push(<span key={i}>{a} </span>)
     } else if (!o && a) {
-      result.push(<mark key={i} className="bg-green-200 px-0.5 rounded">{a} </mark>)
+      result.push(
+        <mark key={i} className="bg-green-200 px-0.5 rounded">
+          {a}{' '}
+        </mark>
+      )
     } else if (o && !a) {
-      result.push(<del key={i} className="text-red-400">{o} </del>)
+      result.push(
+        <del key={i} className="text-red-400">
+          {o}{' '}
+        </del>
+      )
     } else {
-      result.push(<del key={i} className="text-red-400">{o} </del>)
-      if (a) result.push(<mark key={`${i}n`} className="bg-green-200 px-0.5 rounded">{a} </mark>)
+      result.push(
+        <del key={i} className="text-red-400">
+          {o}{' '}
+        </del>
+      )
+      if (a)
+        result.push(
+          <mark key={`${i}n`} className="bg-green-200 px-0.5 rounded">
+            {a}{' '}
+          </mark>
+        )
     }
   }
   return result
@@ -59,7 +76,10 @@ export default function Phase4Synthesize({ originalProposal, beitraege, onNext }
           <p className="text-sm font-medium mb-2">💡 Ideen aus der Runde</p>
           <ul className="space-y-2">
             {ideas.map((b) => (
-              <li key={b.id} className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm">
+              <li
+                key={b.id}
+                className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm"
+              >
                 <span className="text-gray-500 text-xs">{b.user?.username}: </span>
                 {b.content}
               </li>
@@ -103,7 +123,8 @@ export default function Phase4Synthesize({ originalProposal, beitraege, onNext }
       {showDiff && (
         <div className="bg-gray-50 border rounded-lg p-4 text-sm leading-relaxed">
           <p className="text-xs text-gray-500 mb-2">
-            <del className="text-red-400">entfernt</del> / <mark className="bg-green-200 px-0.5 rounded">hinzugefügt</mark>
+            <del className="text-red-400">entfernt</del> /{' '}
+            <mark className="bg-green-200 px-0.5 rounded">hinzugefügt</mark>
           </p>
           <p>{diffWords(originalProposal, adapted)}</p>
         </div>

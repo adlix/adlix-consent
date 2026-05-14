@@ -27,7 +27,11 @@ interface TeamsNotification {
   webhookUrl: string;
   projectName: string;
   roundNumber: number;
-  eventType: "new_round" | "vote_started" | "objection_raised" | "round_completed";
+  eventType:
+    | "new_round"
+    | "vote_started"
+    | "objection_raised"
+    | "round_completed";
   details?: {
     proposal?: string;
     userName?: string;
@@ -69,12 +73,18 @@ class TeamsWebhookService {
     }
 
     if (notification.details?.objectionSeverity) {
-      facts.push({ name: "Schweregrad", value: notification.details.objectionSeverity });
+      facts.push({
+        name: "Schweregrad",
+        value: notification.details.objectionSeverity,
+      });
     }
 
     if (notification.details?.voteResults) {
       const { yes, no, abstain } = notification.details.voteResults;
-      facts.push({ name: "Ergebnis", value: `👍 ${yes} | 👎 ${no} | ➖ ${abstain}` });
+      facts.push({
+        name: "Ergebnis",
+        value: `👍 ${yes} | 👎 ${no} | ➖ ${abstain}`,
+      });
     }
 
     let text = "";
@@ -117,7 +127,7 @@ class TeamsWebhookService {
 
   async send(notification: TeamsNotification): Promise<boolean> {
     const webhookUrl = this.webhookUrl || process.env.TEAMS_WEBHOOK_URL;
-    
+
     if (!webhookUrl) {
       console.warn("Teams webhook URL not configured");
       return false;
@@ -146,7 +156,11 @@ class TeamsWebhookService {
     }
   }
 
-  async notifyNewRound(projectName: string, roundNumber: number, proposal: string) {
+  async notifyNewRound(
+    projectName: string,
+    roundNumber: number,
+    proposal: string,
+  ) {
     return this.send({
       webhookUrl: "",
       projectName,
@@ -156,7 +170,11 @@ class TeamsWebhookService {
     });
   }
 
-  async notifyVoteStarted(projectName: string, roundNumber: number, proposal: string) {
+  async notifyVoteStarted(
+    projectName: string,
+    roundNumber: number,
+    proposal: string,
+  ) {
     return this.send({
       webhookUrl: "",
       projectName,
@@ -171,21 +189,25 @@ class TeamsWebhookService {
     roundNumber: number,
     userName: string,
     reason: string,
-    severity: string
+    severity: string,
   ) {
     return this.send({
       webhookUrl: "",
       projectName,
       roundNumber,
       eventType: "objection_raised",
-      details: { userName, objectionReason: reason, objectionSeverity: severity },
+      details: {
+        userName,
+        objectionReason: reason,
+        objectionSeverity: severity,
+      },
     });
   }
 
   async notifyRoundCompleted(
     projectName: string,
     roundNumber: number,
-    results: { yes: number; no: number; abstain: number }
+    results: { yes: number; no: number; abstain: number },
   ) {
     return this.send({
       webhookUrl: "",

@@ -22,7 +22,14 @@
     },
     "status": {
       "type": "enumeration",
-      "enum": ["information", "reaction", "adjustment", "voting", "integration", "completed"],
+      "enum": [
+        "information",
+        "reaction",
+        "adjustment",
+        "voting",
+        "integration",
+        "completed"
+      ],
       "default": "information"
     },
     "startDate": {

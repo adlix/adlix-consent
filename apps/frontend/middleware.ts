@@ -1,12 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getJwtFromRequest } from './lib/session'
 
-const PUBLIC_PREFIXES = ['/', '/login', '/register', '/forgot-password', '/reset-password', '/pricing', '/api/auth', '/api/billing/webhook']
+const PUBLIC_PREFIXES = [
+  '/',
+  '/login',
+  '/register',
+  '/forgot-password',
+  '/reset-password',
+  '/pricing',
+  '/api/auth',
+  '/api/billing/webhook',
+  '/api/billing/checkout',
+]
 
 function isPublic(pathname: string): boolean {
   if (pathname === '/') return true
   return PUBLIC_PREFIXES.some(
-    (p) => p !== '/' && (pathname === p || pathname.startsWith(p + '/') || pathname.startsWith(p + '?'))
+    (p) =>
+      p !== '/' && (pathname === p || pathname.startsWith(p + '/') || pathname.startsWith(p + '?'))
   )
 }
 

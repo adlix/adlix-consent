@@ -9,10 +9,9 @@ import { strapi } from '@/lib/strapi'
 import OutcomeForm from '@/components/Outcome/OutcomeForm'
 import AuditTrail from '@/components/AuditTrail/AuditTrail'
 
-const AbstainReasonModal = dynamic(
-  () => import('@/components/AbstainReason/AbstainReasonModal'),
-  { ssr: false }
-)
+const AbstainReasonModal = dynamic(() => import('@/components/AbstainReason/AbstainReasonModal'), {
+  ssr: false,
+})
 
 type ConsentChoice = 'consent' | 'minor_objection' | 'major_objection' | 'abstain'
 
@@ -39,16 +38,48 @@ interface RoundData {
   status: string
   startDate?: string
   endDate?: string
-  votes: { id: number; choice: ConsentChoice; reason?: string; user?: { id: number; username?: string } }[]
-  objections: { id: number; reason: string; severity: string; user?: { id: number; username?: string }; status: string }[]
-  comments: { id: number; content: string; type: string; user?: { id: number; username?: string }; createdAt: string }[]
+  votes: {
+    id: number
+    choice: ConsentChoice
+    reason?: string
+    user?: { id: number; username?: string }
+  }[]
+  objections: {
+    id: number
+    reason: string
+    severity: string
+    user?: { id: number; username?: string }
+    status: string
+  }[]
+  comments: {
+    id: number
+    content: string
+    type: string
+    user?: { id: number; username?: string }
+    createdAt: string
+  }[]
 }
 
 // Consent Flow Phases (matching CONCEPT.md)
 const flowPhases = [
-  { key: 'information', label: 'Informationsrunde', icon: '❓', hint: 'Nur Verständnisfragen — keine Meinungen' },
-  { key: 'reaction', label: 'Reaktionsrunde', icon: '💬', hint: 'Nur Perspektiven — kein Gegenargumentieren' },
-  { key: 'adjustment', label: 'Anpassung', icon: '🔄', hint: 'Einreicher überarbeitet den Vorschlag' },
+  {
+    key: 'information',
+    label: 'Informationsrunde',
+    icon: '❓',
+    hint: 'Nur Verständnisfragen — keine Meinungen',
+  },
+  {
+    key: 'reaction',
+    label: 'Reaktionsrunde',
+    icon: '💬',
+    hint: 'Nur Perspektiven — kein Gegenargumentieren',
+  },
+  {
+    key: 'adjustment',
+    label: 'Anpassung',
+    icon: '🔄',
+    hint: 'Einreicher überarbeitet den Vorschlag',
+  },
   { key: 'voting', label: 'Abstimmung', icon: '🗳️', hint: 'Konsent-Abstimmung' },
   { key: 'integration', label: 'Integration', icon: '🤝', hint: 'Einwände werden integriert' },
   { key: 'completed', label: 'Ergebnis', icon: '✅', hint: 'Beschluss gefasst' },
@@ -57,10 +88,26 @@ const flowPhases = [
 const phaseOrder = flowPhases.map((p) => p.key)
 
 const choiceLabels: Record<ConsentChoice, { emoji: string; label: string; color: string }> = {
-  consent: { emoji: '✅', label: 'Konsent', color: 'bg-green-50 text-green-700 hover:bg-green-100 ring-green-200' },
-  minor_objection: { emoji: '💛', label: 'Leichter Einwand', color: 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100 ring-yellow-200' },
-  major_objection: { emoji: '🔴', label: 'Schwerwiegender Einwand', color: 'bg-red-50 text-red-700 hover:bg-red-100 ring-red-200' },
-  abstain: { emoji: '⏸️', label: 'Enthalten', color: 'bg-gray-50 text-gray-700 hover:bg-gray-200 ring-gray-300' },
+  consent: {
+    emoji: '✅',
+    label: 'Konsent',
+    color: 'bg-green-50 text-green-700 hover:bg-green-100 ring-green-200',
+  },
+  minor_objection: {
+    emoji: '💛',
+    label: 'Leichter Einwand',
+    color: 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100 ring-yellow-200',
+  },
+  major_objection: {
+    emoji: '🔴',
+    label: 'Schwerwiegender Einwand',
+    color: 'bg-red-50 text-red-700 hover:bg-red-100 ring-red-200',
+  },
+  abstain: {
+    emoji: '⏸️',
+    label: 'Enthalten',
+    color: 'bg-gray-50 text-gray-700 hover:bg-gray-200 ring-gray-300',
+  },
 }
 
 export default function ProjectDetailPage() {
@@ -80,11 +127,19 @@ export default function ProjectDetailPage() {
   const [showObjectionForm, setShowObjectionForm] = useState(false)
   const [question, setQuestion] = useState('')
   const [reaction, setReaction] = useState('')
-  const [objection, setObjection] = useState<{ reason: string; severity: 'minor' | 'major' | 'blocking' }>({ reason: '', severity: 'minor' })
+  const [objection, setObjection] = useState<{
+    reason: string
+    severity: 'minor' | 'major' | 'blocking'
+  }>({ reason: '', severity: 'minor' })
   const [showAbstainModal, setShowAbstainModal] = useState(false)
   const [outcomeSubmitted, setOutcomeSubmitted] = useState(false)
-  const [outcomeData, setOutcomeData] = useState<{ outcome: string; nextSteps: string; evaluationDate: string } | null>(null)
+  const [outcomeData, setOutcomeData] = useState<{
+    outcome: string
+    nextSteps: string
+    evaluationDate: string
+  } | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  const [advancing, setAdvancing] = useState(false)
 
   const jwt = (session as unknown as { jwt?: string })?.jwt
 
@@ -94,7 +149,10 @@ export default function ProjectDetailPage() {
       if (!params.id) return
       strapi.setJwt(jwt || null)
       try {
-        const res = await strapi.getProject(params.id, 'owner,participants,circle,circle.members,currentRound')
+        const res = await strapi.getProject(
+          params.id,
+          'owner,participants,circle,circle.members,currentRound'
+        )
         const data = res.data as any
         setProject({
           id: data.id,
@@ -184,17 +242,36 @@ export default function ProjectDetailPage() {
       // Reload rounds to get updated votes
       const roundsRes = await strapi.getRounds(params.id)
       const roundsData = (roundsRes.data as any[]) || []
-      setRounds(roundsData.map((r: any) => ({
-        id: r.id,
-        roundNumber: r.roundNumber,
-        proposal: r.proposal,
-        status: r.status,
-        startDate: r.startDate,
-        endDate: r.endDate,
-        votes: (r.votes || []).map((v: any) => ({ id: v.id, choice: v.choice, reason: v.reason, user: v.user })),
-        objections: (r.objections || []).map((o: any) => ({ id: o.id, reason: o.reason, severity: o.severity, user: o.user, status: o.status || 'open' })),
-        comments: (r.comments || []).map((c: any) => ({ id: c.id, content: c.content, type: c.type || 'question', user: c.user, createdAt: c.createdAt })),
-      })))
+      setRounds(
+        roundsData.map((r: any) => ({
+          id: r.id,
+          roundNumber: r.roundNumber,
+          proposal: r.proposal,
+          status: r.status,
+          startDate: r.startDate,
+          endDate: r.endDate,
+          votes: (r.votes || []).map((v: any) => ({
+            id: v.id,
+            choice: v.choice,
+            reason: v.reason,
+            user: v.user,
+          })),
+          objections: (r.objections || []).map((o: any) => ({
+            id: o.id,
+            reason: o.reason,
+            severity: o.severity,
+            user: o.user,
+            status: o.status || 'open',
+          })),
+          comments: (r.comments || []).map((c: any) => ({
+            id: c.id,
+            content: c.content,
+            type: c.type || 'question',
+            user: c.user,
+            createdAt: c.createdAt,
+          })),
+        }))
+      )
     } catch (err) {
       setError('Abstimmung fehlgeschlagen.')
     } finally {
@@ -214,7 +291,60 @@ export default function ProjectDetailPage() {
     }
   }
 
-  const handleOutcomeSubmit = (data: { outcome: string; nextSteps: string; evaluationDate: string; status: string }) => {
+  const handleAdvancePhase = async () => {
+    if (!selectedRound) return
+    setAdvancing(true)
+    strapi.setJwt(jwt || null)
+    try {
+      await strapi.transitionRoundPhase(selectedRound.id)
+      // Reload rounds
+      const roundsRes = await strapi.getRounds(params.id)
+      const roundsData = (roundsRes.data as any[]) || []
+      const formatted = roundsData.map((r: any) => ({
+        id: r.id,
+        roundNumber: r.roundNumber,
+        proposal: r.proposal,
+        status: r.status,
+        startDate: r.startDate,
+        endDate: r.endDate,
+        votes: (r.votes || []).map((v: any) => ({
+          id: v.id,
+          choice: v.choice,
+          reason: v.reason,
+          user: v.user,
+        })),
+        objections: (r.objections || []).map((o: any) => ({
+          id: o.id,
+          reason: o.reason,
+          severity: o.severity,
+          user: o.user,
+          status: o.status || 'open',
+        })),
+        comments: (r.comments || []).map((c: any) => ({
+          id: c.id,
+          content: c.content,
+          type: c.type || 'question',
+          user: c.user,
+          createdAt: c.createdAt,
+        })),
+      }))
+      setRounds(formatted)
+      setSelectedRound(
+        formatted.find((r) => r.id === selectedRound.id) || formatted[formatted.length - 1]
+      )
+    } catch (_) {
+      setError('Phase konnte nicht gewechselt werden.')
+    } finally {
+      setAdvancing(false)
+    }
+  }
+
+  const handleOutcomeSubmit = (data: {
+    outcome: string
+    nextSteps: string
+    evaluationDate: string
+    status: string
+  }) => {
     setOutcomeData(data)
     setOutcomeSubmitted(true)
   }
@@ -225,7 +355,11 @@ export default function ProjectDetailPage() {
     setSubmitting(true)
     strapi.setJwt(jwt || null)
     try {
-      await strapi.createComment({ content: question, round: selectedRound!.id, user: Number(userId) })
+      await strapi.createComment({
+        content: question,
+        round: selectedRound!.id,
+        user: Number(userId),
+      })
       setQuestion('')
       setShowQuestionForm(false)
     } catch (_) {
@@ -241,7 +375,11 @@ export default function ProjectDetailPage() {
     setSubmitting(true)
     strapi.setJwt(jwt || null)
     try {
-      await strapi.createComment({ content: reaction, round: selectedRound!.id, user: Number(userId) })
+      await strapi.createComment({
+        content: reaction,
+        round: selectedRound!.id,
+        user: Number(userId),
+      })
       setReaction('')
       setShowReactionForm(false)
     } catch (_) {
@@ -289,7 +427,9 @@ export default function ProjectDetailPage() {
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <p className="text-red-600 mb-4">{error || 'Projekt nicht gefunden'}</p>
-          <Link href="/projects" className="text-blue-600 hover:text-blue-700">← Zurück zu Projekten</Link>
+          <Link href="/projects" className="text-blue-600 hover:text-blue-700">
+            ← Zurück zu Projekten
+          </Link>
         </div>
       </div>
     )
@@ -310,7 +450,9 @@ export default function ProjectDetailPage() {
             </Link>
           </div>
           <nav className="flex items-center gap-4">
-            <Link href="/projects" className="text-gray-600 hover:text-gray-900">← Projekte</Link>
+            <Link href="/projects" className="text-gray-600 hover:text-gray-900">
+              ← Projekte
+            </Link>
           </nav>
         </div>
       </header>
@@ -318,7 +460,9 @@ export default function ProjectDetailPage() {
       <main className="flex-1">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">{error}</div>
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+              {error}
+            </div>
           )}
 
           {/* Project Header */}
@@ -327,16 +471,35 @@ export default function ProjectDetailPage() {
               <div>
                 <h1 className="text-2xl font-bold mb-2">{project.name}</h1>
                 <p className="text-gray-600">{project.description}</p>
-                {project.goal && <p className="text-sm text-gray-500 mt-1"><strong>Ziel:</strong> {project.goal}</p>}
-                {project.tension && <p className="text-sm text-gray-500 mt-1"><strong>Spannung:</strong> {project.tension}</p>}
+                {project.goal && (
+                  <p className="text-sm text-gray-500 mt-1">
+                    <strong>Ziel:</strong> {project.goal}
+                  </p>
+                )}
+                {project.tension && (
+                  <p className="text-sm text-gray-500 mt-1">
+                    <strong>Spannung:</strong> {project.tension}
+                  </p>
+                )}
               </div>
-              <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                project.status === 'active' ? 'bg-green-100 text-green-700' :
-                project.status === 'beschlossen' ? 'bg-blue-100 text-blue-700' :
-                project.status === 'completed' ? 'bg-gray-100 text-gray-700' :
-                'bg-yellow-100 text-yellow-700'
-              }`}>
-                {project.status === 'active' ? 'Aktiv' : project.status === 'beschlossen' ? 'Beschlossen' : project.status === 'completed' ? 'Abgeschlossen' : 'Entwurf'}
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-medium ${
+                  project.status === 'active'
+                    ? 'bg-green-100 text-green-700'
+                    : project.status === 'beschlossen'
+                      ? 'bg-blue-100 text-blue-700'
+                      : project.status === 'completed'
+                        ? 'bg-gray-100 text-gray-700'
+                        : 'bg-yellow-100 text-yellow-700'
+                }`}
+              >
+                {project.status === 'active'
+                  ? 'Aktiv'
+                  : project.status === 'beschlossen'
+                    ? 'Beschlossen'
+                    : project.status === 'completed'
+                      ? 'Abgeschlossen'
+                      : 'Entwurf'}
               </span>
             </div>
             <div className="flex items-center gap-6 text-sm text-gray-500">
@@ -357,19 +520,27 @@ export default function ProjectDetailPage() {
                 return (
                   <div key={phase.key} className="flex items-center min-w-0">
                     <div className="flex flex-col items-center">
-                      <div className={`w-12 h-12 rounded-full flex items-center justify-center text-xl mb-2 shrink-0 transition-colors ${
-                        isCompleted ? 'bg-green-500 text-white' :
-                        isActive ? 'bg-blue-600 text-white ring-4 ring-blue-200' :
-                        'bg-gray-200 text-gray-500'
-                      }`}>
+                      <div
+                        className={`w-12 h-12 rounded-full flex items-center justify-center text-xl mb-2 shrink-0 transition-colors ${
+                          isCompleted
+                            ? 'bg-green-500 text-white'
+                            : isActive
+                              ? 'bg-blue-600 text-white ring-4 ring-blue-200'
+                              : 'bg-gray-200 text-gray-500'
+                        }`}
+                      >
                         {phase.icon}
                       </div>
-                      <div className={`text-xs font-medium text-center max-w-[80px] ${isActive ? 'text-blue-600' : ''}`}>
+                      <div
+                        className={`text-xs font-medium text-center max-w-[80px] ${isActive ? 'text-blue-600' : ''}`}
+                      >
                         {phase.label}
                       </div>
                     </div>
                     {index < flowPhases.length - 1 && (
-                      <div className={`w-6 sm:w-12 h-0.5 mx-1 sm:mx-2 shrink-0 transition-colors ${isCompleted ? 'bg-green-500' : 'bg-gray-200'}`} />
+                      <div
+                        className={`w-6 sm:w-12 h-0.5 mx-1 sm:mx-2 shrink-0 transition-colors ${isCompleted ? 'bg-green-500' : 'bg-gray-200'}`}
+                      />
                     )}
                   </div>
                 )
@@ -380,6 +551,23 @@ export default function ProjectDetailPage() {
                 💡 <strong>{currentPhase.label}:</strong> {currentPhase.hint}
               </div>
             )}
+
+            {String(userId) === String(project?.owner?.id) &&
+              selectedRound &&
+              selectedRound.status !== 'completed' &&
+              selectedRound.status !== 'voting' && (
+                <div className="mt-4 flex justify-end">
+                  <button
+                    onClick={handleAdvancePhase}
+                    disabled={advancing}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 text-sm"
+                  >
+                    {advancing
+                      ? 'Wechsle Phase…'
+                      : `→ ${flowPhases[(currentPhaseIndex ?? 0) + 1]?.label || 'Nächste Phase'} starten`}
+                  </button>
+                </div>
+              )}
           </div>
 
           {/* Round Selector */}
@@ -392,7 +580,9 @@ export default function ProjectDetailPage() {
                     key={round.id}
                     onClick={() => setSelectedRound(round)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                      selectedRound?.id === round.id ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      selectedRound?.id === round.id
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
                     Runde {round.roundNumber}
@@ -409,14 +599,21 @@ export default function ProjectDetailPage() {
             <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-semibold">Runde {selectedRound.roundNumber}</h2>
-                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  selectedRound.status === 'voting' ? 'bg-blue-600 text-white' :
-                  selectedRound.status === 'completed' ? 'bg-green-500 text-white' :
-                  selectedRound.status === 'information' ? 'bg-indigo-100 text-indigo-700' :
-                  selectedRound.status === 'reaction' ? 'bg-purple-100 text-purple-700' :
-                  'bg-gray-100 text-gray-700'
-                }`}>
-                  {flowPhases[phaseOrder.indexOf(selectedRound.status)]?.label || selectedRound.status}
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    selectedRound.status === 'voting'
+                      ? 'bg-blue-600 text-white'
+                      : selectedRound.status === 'completed'
+                        ? 'bg-green-500 text-white'
+                        : selectedRound.status === 'information'
+                          ? 'bg-indigo-100 text-indigo-700'
+                          : selectedRound.status === 'reaction'
+                            ? 'bg-purple-100 text-purple-700'
+                            : 'bg-gray-100 text-gray-700'
+                  }`}
+                >
+                  {flowPhases[phaseOrder.indexOf(selectedRound.status)]?.label ||
+                    selectedRound.status}
                 </span>
               </div>
 
@@ -431,19 +628,27 @@ export default function ProjectDetailPage() {
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold mb-2">Informationsrunde</h3>
                   <p className="text-sm text-gray-500 mb-4">
-                    Stelle Verständnisfragen zum Vorschlag. Keine Meinungen oder Diskussion — nur Klärung.
+                    Stelle Verständnisfragen zum Vorschlag. Keine Meinungen oder Diskussion — nur
+                    Klärung.
                   </p>
                   {selectedRound.comments
                     .filter((c) => c.type === 'question' || c.type === 'answer')
                     .map((cmt) => (
-                      <div key={cmt.id} className={`p-4 rounded-lg mb-2 ${
-                        cmt.type === 'question' ? 'bg-indigo-50 border-l-4 border-indigo-300' : 'bg-blue-50 border-l-4 border-blue-300'
-                      }`}>
+                      <div
+                        key={cmt.id}
+                        className={`p-4 rounded-lg mb-2 ${
+                          cmt.type === 'question'
+                            ? 'bg-indigo-50 border-l-4 border-indigo-300'
+                            : 'bg-blue-50 border-l-4 border-blue-300'
+                        }`}
+                      >
                         <div className="flex items-center justify-between mb-1">
                           <span className="font-medium text-sm">
                             {cmt.type === 'question' ? '❓' : '💡'} {cmt.user?.username || 'Anonym'}
                           </span>
-                          <span className="text-xs text-gray-500">{new Date(cmt.createdAt).toLocaleDateString('de-DE')}</span>
+                          <span className="text-xs text-gray-500">
+                            {new Date(cmt.createdAt).toLocaleDateString('de-DE')}
+                          </span>
                         </div>
                         <p className="text-gray-700 text-sm">{cmt.content}</p>
                       </div>
@@ -455,7 +660,10 @@ export default function ProjectDetailPage() {
                     ❓ Frage stellen
                   </button>
                   {showQuestionForm && (
-                    <form onSubmit={handleSubmitQuestion} className="mt-4 p-4 bg-indigo-5 rounded-lg border border-indigo-200">
+                    <form
+                      onSubmit={handleSubmitQuestion}
+                      className="mt-4 p-4 bg-indigo-5 rounded-lg border border-indigo-200"
+                    >
                       <textarea
                         value={question}
                         onChange={(e) => setQuestion(e.target.value)}
@@ -465,13 +673,25 @@ export default function ProjectDetailPage() {
                         required
                       />
                       {question && !question.includes('?') && (
-                        <p className="text-xs text-red-500 mb-2">Fragen müssen ein Fragezeichen (?) enthalten.</p>
+                        <p className="text-xs text-red-500 mb-2">
+                          Fragen müssen ein Fragezeichen (?) enthalten.
+                        </p>
                       )}
                       <div className="flex gap-2">
-                        <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium" disabled={!question.includes('?') || submitting}>
+                        <button
+                          type="submit"
+                          className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium"
+                          disabled={!question.includes('?') || submitting}
+                        >
                           {submitting ? 'Sende…' : 'Frage einreichen'}
                         </button>
-                        <button type="button" onClick={() => setShowQuestionForm(false)} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">Abbrechen</button>
+                        <button
+                          type="button"
+                          onClick={() => setShowQuestionForm(false)}
+                          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg"
+                        >
+                          Abbrechen
+                        </button>
                       </div>
                     </form>
                   )}
@@ -488,10 +708,17 @@ export default function ProjectDetailPage() {
                   {selectedRound.comments
                     .filter((c) => c.type === 'reaction' || c.type === 'perspective')
                     .map((cmt) => (
-                      <div key={cmt.id} className="p-4 rounded-lg mb-2 bg-purple-50 border-l-4 border-purple-300">
+                      <div
+                        key={cmt.id}
+                        className="p-4 rounded-lg mb-2 bg-purple-50 border-l-4 border-purple-300"
+                      >
                         <div className="flex items-center justify-between mb-1">
-                          <span className="font-medium text-sm">💬 {cmt.user?.username || 'Anonym'}</span>
-                          <span className="text-xs text-gray-500">{new Date(cmt.createdAt).toLocaleDateString('de-DE')}</span>
+                          <span className="font-medium text-sm">
+                            💬 {cmt.user?.username || 'Anonym'}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            {new Date(cmt.createdAt).toLocaleDateString('de-DE')}
+                          </span>
                         </div>
                         <p className="text-gray-700 text-sm">{cmt.content}</p>
                       </div>
@@ -503,7 +730,10 @@ export default function ProjectDetailPage() {
                     💬 Perspektive teilen
                   </button>
                   {showReactionForm && (
-                    <form onSubmit={handleSubmitReaction} className="mt-4 p-4 bg-purple-5 rounded-lg border border-purple-200">
+                    <form
+                      onSubmit={handleSubmitReaction}
+                      className="mt-4 p-4 bg-purple-5 rounded-lg border border-purple-200"
+                    >
                       <textarea
                         value={reaction}
                         onChange={(e) => setReaction(e.target.value)}
@@ -513,10 +743,20 @@ export default function ProjectDetailPage() {
                         required
                       />
                       <div className="flex gap-2">
-                        <button type="submit" className="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium" disabled={submitting}>
+                        <button
+                          type="submit"
+                          className="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium"
+                          disabled={submitting}
+                        >
                           {submitting ? 'Sende…' : 'Einreichen'}
                         </button>
-                        <button type="button" onClick={() => setShowReactionForm(false)} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">Abbrechen</button>
+                        <button
+                          type="button"
+                          onClick={() => setShowReactionForm(false)}
+                          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg"
+                        >
+                          Abbrechen
+                        </button>
                       </div>
                     </form>
                   )}
@@ -534,14 +774,20 @@ export default function ProjectDetailPage() {
                   {/* Reminder for non-voters */}
                   {nonVotersCount > 0 && (
                     <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
-                      ⏰ {nonVotersCount} {nonVotersCount === 1 ? 'Person hat' : 'Personen haben'} noch nicht abgestimmt.
+                      ⏰ {nonVotersCount} {nonVotersCount === 1 ? 'Person hat' : 'Personen haben'}{' '}
+                      noch nicht abgestimmt.
                     </div>
                   )}
 
                   {/* Vote Buttons — 4 consent options */}
                   {!userHasVoted && !userVote && (
                     <div className="grid grid-cols-2 gap-3 mb-4">
-                      {(Object.entries(choiceLabels) as [ConsentChoice, typeof choiceLabels.consent][]).map(([key, { emoji, label, color }]) => (
+                      {(
+                        Object.entries(choiceLabels) as [
+                          ConsentChoice,
+                          typeof choiceLabels.consent,
+                        ][]
+                      ).map(([key, { emoji, label, color }]) => (
                         <button
                           key={key}
                           onClick={() => setUserVote(key)}
@@ -575,13 +821,18 @@ export default function ProjectDetailPage() {
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleVote(userVote)}
-                          disabled={submitting || (userVote === 'major_objection' && !voteReason.trim())}
+                          disabled={
+                            submitting || (userVote === 'major_objection' && !voteReason.trim())
+                          }
                           className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50"
                         >
                           {submitting ? 'Sende…' : 'Abstimmung bestätigen'}
                         </button>
                         <button
-                          onClick={() => { setUserVote(null); setVoteReason('') }}
+                          onClick={() => {
+                            setUserVote(null)
+                            setVoteReason('')
+                          }}
                           className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg"
                         >
                           Zurück
@@ -596,7 +847,10 @@ export default function ProjectDetailPage() {
                       <AbstainReasonModal
                         roundId={selectedRound.id}
                         onSubmit={handleAbstainSubmit}
-                        onCancel={() => { setShowAbstainModal(false); setUserVote(null) }}
+                        onCancel={() => {
+                          setShowAbstainModal(false)
+                          setUserVote(null)
+                        }}
                       />
                     </Suspense>
                   )}
@@ -621,7 +875,14 @@ export default function ProjectDetailPage() {
                         Bisherige Stimmen ({votesCount}/{participantCount})
                       </h4>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                        {(['consent', 'minor_objection', 'major_objection', 'abstain'] as ConsentChoice[]).map((key) => {
+                        {(
+                          [
+                            'consent',
+                            'minor_objection',
+                            'major_objection',
+                            'abstain',
+                          ] as ConsentChoice[]
+                        ).map((key) => {
                           const count = selectedRound.votes.filter((v) => v.choice === key).length
                           return (
                             <div key={key} className="p-3 rounded-lg bg-gray-50 text-center">
@@ -647,19 +908,23 @@ export default function ProjectDetailPage() {
                   )}
 
                   {/* Objection Form */}
-                  {(userVote === 'minor_objection' || userVote === 'major_objection') && !userHasVoted && (
-                    <div className="mt-4">
-                      <button
-                        onClick={() => setShowObjectionForm(!showObjectionForm)}
-                        className="px-4 py-2 bg-yellow-600 text-white rounded-lg font-medium hover:bg-yellow-700"
-                      >
-                        ✋ Einwand begründen
-                      </button>
-                    </div>
-                  )}
+                  {(userVote === 'minor_objection' || userVote === 'major_objection') &&
+                    !userHasVoted && (
+                      <div className="mt-4">
+                        <button
+                          onClick={() => setShowObjectionForm(!showObjectionForm)}
+                          className="px-4 py-2 bg-yellow-600 text-white rounded-lg font-medium hover:bg-yellow-700"
+                        >
+                          ✋ Einwand begründen
+                        </button>
+                      </div>
+                    )}
 
                   {showObjectionForm && (
-                    <form onSubmit={handleSubmitObjection} className="mt-4 p-4 bg-yellow-5 rounded-lg border border-yellow-200">
+                    <form
+                      onSubmit={handleSubmitObjection}
+                      className="mt-4 p-4 bg-yellow-5 rounded-lg border border-yellow-200"
+                    >
                       <div className="mb-3">
                         <label className="block text-sm font-medium mb-1">Begründung</label>
                         <textarea
@@ -675,7 +940,12 @@ export default function ProjectDetailPage() {
                         <label className="block text-sm font-medium mb-1">Schweregrad</label>
                         <select
                           value={objection.severity}
-                          onChange={(e) => setObjection({ ...objection, severity: e.target.value as 'minor' | 'major' | 'blocking' })}
+                          onChange={(e) =>
+                            setObjection({
+                              ...objection,
+                              severity: e.target.value as 'minor' | 'major' | 'blocking',
+                            })
+                          }
                           className="w-full p-3 border rounded-lg"
                         >
                           <option value="minor">Geringfügig</option>
@@ -684,10 +954,20 @@ export default function ProjectDetailPage() {
                         </select>
                       </div>
                       <div className="flex gap-2">
-                        <button type="submit" className="px-4 py-2 bg-yellow-600 text-white rounded-lg font-medium" disabled={submitting}>
+                        <button
+                          type="submit"
+                          className="px-4 py-2 bg-yellow-600 text-white rounded-lg font-medium"
+                          disabled={submitting}
+                        >
                           {submitting ? 'Sende…' : 'Einreichen'}
                         </button>
-                        <button type="button" onClick={() => setShowObjectionForm(false)} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">Abbrechen</button>
+                        <button
+                          type="button"
+                          onClick={() => setShowObjectionForm(false)}
+                          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg"
+                        >
+                          Abbrechen
+                        </button>
                       </div>
                     </form>
                   )}
@@ -702,7 +982,9 @@ export default function ProjectDetailPage() {
                       <span className="text-2xl">✅</span>
                       <h3 className="text-lg font-semibold text-green-800">Beschluss gefasst</h3>
                     </div>
-                    <p className="text-sm text-green-700">Konsent erreicht — kein schwerwiegender Einwand.</p>
+                    <p className="text-sm text-green-700">
+                      Konsent erreicht — kein schwerwiegender Einwand.
+                    </p>
                   </div>
 
                   {!outcomeSubmitted && (
@@ -719,10 +1001,15 @@ export default function ProjectDetailPage() {
                       <h4 className="text-sm font-semibold text-green-800 mb-2">📋 Ergebnis</h4>
                       <p className="text-sm text-green-700 mb-2">{outcomeData.outcome}</p>
                       {outcomeData.nextSteps && (
-                        <p className="text-sm text-green-700 mb-1"><strong>Nächste Schritte:</strong> {outcomeData.nextSteps}</p>
+                        <p className="text-sm text-green-700 mb-1">
+                          <strong>Nächste Schritte:</strong> {outcomeData.nextSteps}
+                        </p>
                       )}
                       {outcomeData.evaluationDate && (
-                        <p className="text-sm text-green-700"><strong>Evaluationsdatum:</strong> {new Date(outcomeData.evaluationDate).toLocaleDateString('de-DE')}</p>
+                        <p className="text-sm text-green-700">
+                          <strong>Evaluationsdatum:</strong>{' '}
+                          {new Date(outcomeData.evaluationDate).toLocaleDateString('de-DE')}
+                        </p>
                       )}
                     </div>
                   )}
@@ -735,19 +1022,32 @@ export default function ProjectDetailPage() {
                   <h3 className="text-lg font-semibold mb-4">Einwände</h3>
                   <div className="space-y-3">
                     {selectedRound.objections.map((obj) => (
-                      <div key={obj.id} className={`p-4 rounded-lg border ${
-                        obj.severity === 'blocking' ? 'bg-red-50 border-red-200' :
-                        obj.severity === 'major' ? 'bg-orange-50 border-orange-200' :
-                        'bg-yellow-50 border-yellow-200'
-                      }`}>
+                      <div
+                        key={obj.id}
+                        className={`p-4 rounded-lg border ${
+                          obj.severity === 'blocking'
+                            ? 'bg-red-50 border-red-200'
+                            : obj.severity === 'major'
+                              ? 'bg-orange-50 border-orange-200'
+                              : 'bg-yellow-50 border-yellow-200'
+                        }`}
+                      >
                         <div className="flex items-center justify-between mb-2">
                           <span className="font-medium">{obj.user?.username || 'Anonym'}</span>
-                          <span className={`px-2 py-0.5 rounded text-xs font-medium ${
-                            obj.severity === 'blocking' ? 'bg-red-200 text-red-800' :
-                            obj.severity === 'major' ? 'bg-orange-200 text-orange-800' :
-                            'bg-yellow-200 text-yellow-800'
-                          }`}>
-                            {obj.severity === 'blocking' ? 'Blockierend' : obj.severity === 'major' ? 'Erheblich' : 'Geringfügig'}
+                          <span
+                            className={`px-2 py-0.5 rounded text-xs font-medium ${
+                              obj.severity === 'blocking'
+                                ? 'bg-red-200 text-red-800'
+                                : obj.severity === 'major'
+                                  ? 'bg-orange-200 text-orange-800'
+                                  : 'bg-yellow-200 text-yellow-800'
+                            }`}
+                          >
+                            {obj.severity === 'blocking'
+                              ? 'Blockierend'
+                              : obj.severity === 'major'
+                                ? 'Erheblich'
+                                : 'Geringfügig'}
                           </span>
                         </div>
                         <p className="text-gray-700">{obj.reason}</p>
@@ -763,9 +1063,19 @@ export default function ProjectDetailPage() {
                 <AuditTrail
                   projectId={project.id}
                   fallbackEntries={[
-                    { action: 'create', label: 'Vorhaben eingereicht', timestamp: new Date().toLocaleDateString('de-DE') },
+                    {
+                      action: 'create',
+                      label: 'Vorhaben eingereicht',
+                      timestamp: new Date().toLocaleDateString('de-DE'),
+                    },
                     ...(selectedRound.status === 'completed'
-                      ? [{ action: 'complete', label: 'Beschluss gefasst', timestamp: new Date().toLocaleDateString('de-DE') }]
+                      ? [
+                          {
+                            action: 'complete',
+                            label: 'Beschluss gefasst',
+                            timestamp: new Date().toLocaleDateString('de-DE'),
+                          },
+                        ]
                       : []),
                   ]}
                 />

@@ -2,7 +2,7 @@
  * Rate Limiting Middleware
  * 100 req/min per IP, 1000 req/min per User, 60 req/min per API Token
  */
-import type { Core } from '@strapi/strapi';
+import type { Core } from "@strapi/strapi";
 
 // In-Memory Store (später: Redis für Production)
 const ipRequests = new Map<string, { count: number; resetAt: number }>();
@@ -17,7 +17,7 @@ const TOKEN_LIMIT = 60;
 const createRateLimitMiddleware = () => {
   return async (ctx: any, next: () => Promise<void>) => {
     const now = Date.now();
-    const ip = ctx.ip || ctx.request.ip || 'unknown';
+    const ip = ctx.ip || ctx.request.ip || "unknown";
     const userId = ctx.state?.user?.id;
     const apiToken = ctx.state?.apiToken?.token;
 
@@ -27,12 +27,12 @@ const createRateLimitMiddleware = () => {
       ipData = { count: 0, resetAt: now + WINDOW_MS };
       ipRequests.set(ip, ipData);
     }
-    
+
     ipData.count++;
-    
+
     if (ipData.count > IP_LIMIT) {
-      ctx.set('Retry-After', String(Math.ceil((ipData.resetAt - now) / 1000)));
-      ctx.throw(429, 'Rate limit exceeded. Try again later.');
+      ctx.set("Retry-After", String(Math.ceil((ipData.resetAt - now) / 1000)));
+      ctx.throw(429, "Rate limit exceeded. Try again later.");
       return;
     }
 
@@ -43,12 +43,15 @@ const createRateLimitMiddleware = () => {
         userData = { count: 0, resetAt: now + WINDOW_MS };
         userRequests.set(userId, userData);
       }
-      
+
       userData.count++;
-      
+
       if (userData.count > USER_LIMIT) {
-        ctx.set('Retry-After', String(Math.ceil((userData.resetAt - now) / 1000)));
-        ctx.throw(429, 'User rate limit exceeded. Try again later.');
+        ctx.set(
+          "Retry-After",
+          String(Math.ceil((userData.resetAt - now) / 1000)),
+        );
+        ctx.throw(429, "User rate limit exceeded. Try again later.");
         return;
       }
     }
@@ -64,8 +67,11 @@ const createRateLimitMiddleware = () => {
       tokenData.count++;
 
       if (tokenData.count > TOKEN_LIMIT) {
-        ctx.set('Retry-After', String(Math.ceil((tokenData.resetAt - now) / 1000)));
-        ctx.throw(429, 'API token rate limit exceeded. Try again later.');
+        ctx.set(
+          "Retry-After",
+          String(Math.ceil((tokenData.resetAt - now) / 1000)),
+        );
+        ctx.throw(429, "API token rate limit exceeded. Try again later.");
         return;
       }
     }
@@ -76,14 +82,15 @@ const createRateLimitMiddleware = () => {
 
     if (apiToken) {
       effectiveLimit = TOKEN_LIMIT;
-      effectiveRemaining = TOKEN_LIMIT - (tokenRequests.get(apiToken)?.count || 0);
+      effectiveRemaining =
+        TOKEN_LIMIT - (tokenRequests.get(apiToken)?.count || 0);
     } else if (userId) {
       effectiveLimit = USER_LIMIT;
       effectiveRemaining = USER_LIMIT - (userRequests.get(userId)?.count || 0);
     }
 
-    ctx.set('X-RateLimit-Limit', String(effectiveLimit));
-    ctx.set('X-RateLimit-Remaining', String(effectiveRemaining));
+    ctx.set("X-RateLimit-Limit", String(effectiveLimit));
+    ctx.set("X-RateLimit-Remaining", String(effectiveRemaining));
 
     await next();
   };

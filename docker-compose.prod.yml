@@ -1,6 +1,21 @@
+# Produktionsumgebung: Optimierter Build, kein Volume-Mount
+# Verwendung: make prod  ODER  docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
 services:
   backend:
+    build:
+      target: prod
     command: npm run start
+    environment:
+      NODE_ENV: production
+    volumes:
+      - ./apps/backend/uploads:/app/public/uploads
 
   frontend:
-    command: npm run start
+    build:
+      target: prod
+    command: node server.js
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: 3000

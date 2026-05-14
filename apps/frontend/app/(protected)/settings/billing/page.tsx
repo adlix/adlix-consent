@@ -184,8 +184,7 @@ function BillingContent() {
         {data?.subscription && (
           <div className="mt-4 pt-4 border-t border-gray-200">
             <p className="text-sm text-gray-600">
-              Abo läuft bis zum{' '}
-              <strong>{formatDate(data.subscription.currentPeriodEnd)}</strong>
+              Abo läuft bis zum <strong>{formatDate(data.subscription.currentPeriodEnd)}</strong>
             </p>
             <button
               onClick={handleManage}
@@ -228,17 +227,17 @@ function BillingContent() {
                           inv.status === 'paid'
                             ? 'bg-green-100 text-green-800'
                             : inv.status === 'open'
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-gray-100 text-gray-800'
+                              ? 'bg-yellow-100 text-yellow-800'
+                              : 'bg-gray-100 text-gray-800'
                         }`}
                       >
                         {inv.status === 'paid'
                           ? 'Bezahlt'
                           : inv.status === 'open'
-                          ? 'Offen'
-                          : inv.status === 'void'
-                          ? 'Storniert'
-                          : inv.status}
+                            ? 'Offen'
+                            : inv.status === 'void'
+                              ? 'Storniert'
+                              : inv.status}
                       </span>
                     </td>
                     <td className="py-2 text-right">
@@ -266,7 +265,13 @@ function BillingContent() {
 
 export default function BillingPage() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="animate-pulse text-gray-400">Lädt…</div></div>}>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center py-12">
+          <div className="animate-pulse text-gray-400">Lädt…</div>
+        </div>
+      }
+    >
       <BillingContent />
     </Suspense>
   )

@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 
 /**
  * Custom routes for abstention API
@@ -9,22 +9,22 @@
 module.exports = {
   routes: [
     {
-      method: 'GET',
-      path: '/abstentions/:roundId/anonymous-concerns',
-      handler: 'abstention.anonymousConcerns',
+      method: "GET",
+      path: "/abstentions/:roundId/anonymous-concerns",
+      handler: "abstention.anonymousConcerns",
       config: {
-        auth: { strategies: ['api-token', 'jwt'] },
+        auth: { strategies: ["api-token", "jwt"] },
         policies: [],
       },
     },
     {
-      method: 'POST',
-      path: '/abstentions/:roundId/analyse',
-      handler: 'abstention.analyse',
+      method: "POST",
+      path: "/abstentions/:roundId/analyse",
+      handler: "abstention.analyse",
       config: {
-        auth: { strategies: ['api-token', 'jwt'] },
+        auth: { strategies: ["api-token", "jwt"] },
         policies: [],
       },
     },
   ],
-}
+};

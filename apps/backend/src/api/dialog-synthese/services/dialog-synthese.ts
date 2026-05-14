@@ -1,4 +1,4 @@
-import type { Strapi } from '@strapi/strapi';
+import type { Strapi } from "@strapi/strapi";
 
 const SYSTEM_PROMPT = `Du bist ein Experte für Soziokratie und Konsent-basierte Entscheidungsfindung.
 Deine Aufgabe ist es, eine Synthese aus einem Einwand und mehreren Lösungsideen aus einem Dialog zu erstellen.
@@ -31,14 +31,14 @@ Regeln:
 const FALLBACK_RESPONSE = {
   kiVerfuegbar: false,
   manuell: true,
-  status: 'entwurf',
+  status: "entwurf",
   hinweis:
-    'KI-Synthese momentan nicht verfügbar. Bitte führe die Einwands-Synthese manuell durch: Analysiere gemeinsam den Einwand und die Lösungsideen, um einen integrierten Entwurf zu erarbeiten.',
+    "KI-Synthese momentan nicht verfügbar. Bitte führe die Einwands-Synthese manuell durch: Analysiere gemeinsam den Einwand und die Lösungsideen, um einen integrierten Entwurf zu erarbeiten.",
 };
 
 export default ({ strapi }: { strapi: Strapi }) => ({
   async synthese(dialogId: string) {
-    const dialog = await strapi.documents('api::dialog.dialog').findOne({
+    const dialog = await strapi.documents("api::dialog.dialog").findOne({
       documentId: dialogId,
       populate: {
         objection: true,
@@ -52,34 +52,36 @@ export default ({ strapi }: { strapi: Strapi }) => ({
     });
 
     if (!dialog) {
-      return { error: 'Dialog nicht gefunden.' };
+      return { error: "Dialog nicht gefunden." };
     }
 
     if (!dialog.objection) {
-      return { error: 'Dialog hat keinen zugeordneten Einwand.' };
+      return { error: "Dialog hat keinen zugeordneten Einwand." };
     }
 
     const phases = (dialog.phases as any[]) ?? [];
-    const solutionsPhase = phases.find((p) => p.type === 'solutions');
+    const solutionsPhase = phases.find((p) => p.type === "solutions");
 
     if (!solutionsPhase) {
-      return { error: 'Lösungsphase (Phase 3) noch nicht gestartet.' };
+      return { error: "Lösungsphase (Phase 3) noch nicht gestartet." };
     }
 
     const beitraege = (solutionsPhase.beitraege as any[]) ?? [];
     const ideas = beitraege
-      .filter((b) => b.type === 'idea' && b.content?.trim())
+      .filter((b) => b.type === "idea" && b.content?.trim())
       .map((b) => b.content.trim());
 
     if (ideas.length === 0) {
-      return { error: 'Keine Lösungsideen (type: idea) in Phase 3 vorhanden.' };
+      return { error: "Keine Lösungsideen (type: idea) in Phase 3 vorhanden." };
     }
 
     const objectionText = (dialog.objection as any).reason as string;
     const apiKey = process.env.OPENAI_API_KEY;
 
     if (!apiKey) {
-      strapi.log.warn('[dialog-synthese] OPENAI_API_KEY nicht gesetzt — Fallback aktiv.');
+      strapi.log.warn(
+        "[dialog-synthese] OPENAI_API_KEY nicht gesetzt — Fallback aktiv.",
+      );
       return {
         ...FALLBACK_RESPONSE,
         dialogId,
@@ -90,29 +92,34 @@ export default ({ strapi }: { strapi: Strapi }) => ({
 
     const userMessage = [
       `Einwand:\n${objectionText}`,
-      `\nLösungsideen aus dem Dialog (Phase 3):\n${ideas.map((idea, i) => `${i + 1}. ${idea}`).join('\n')}`,
-    ].join('\n');
+      `\nLösungsideen aus dem Dialog (Phase 3):\n${ideas.map((idea, i) => `${i + 1}. ${idea}`).join("\n")}`,
+    ].join("\n");
 
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            temperature: 0.3,
+            response_format: { type: "json_object" },
+            messages: [
+              { role: "system", content: SYSTEM_PROMPT },
+              { role: "user", content: userMessage },
+            ],
+          }),
         },
-        body: JSON.stringify({
-          model: 'gpt-4o-mini',
-          temperature: 0.3,
-          response_format: { type: 'json_object' },
-          messages: [
-            { role: 'system', content: SYSTEM_PROMPT },
-            { role: 'user', content: userMessage },
-          ],
-        }),
-      });
+      );
 
       if (!response.ok) {
-        strapi.log.warn(`[dialog-synthese] OpenAI API error: ${response.status} ${response.statusText}`);
+        strapi.log.warn(
+          `[dialog-synthese] OpenAI API error: ${response.status} ${response.statusText}`,
+        );
         return { ...FALLBACK_RESPONSE, dialogId };
       }
 
@@ -120,28 +127,30 @@ export default ({ strapi }: { strapi: Strapi }) => ({
       const content = data.choices?.[0]?.message?.content;
 
       if (!content) {
-        throw new Error('Leere Antwort von OpenAI');
+        throw new Error("Leere Antwort von OpenAI");
       }
 
       const parsed = JSON.parse(content);
 
       return {
         kiVerfuegbar: true,
-        status: 'entwurf',
+        status: "entwurf",
         dialogId,
         einwand: objectionText,
-        kernspannungen: parsed.kernspannungen ?? '',
-        integrierterEntwurf: parsed.integrierterEntwurf ?? '',
+        kernspannungen: parsed.kernspannungen ?? "",
+        integrierterEntwurf: parsed.integrierterEntwurf ?? "",
         transparenzLog: Array.isArray(parsed.transparenzLog)
-          ? (parsed.transparenzLog as { idee: string; aenderung: string }[]).map((entry) => ({
-              idee: String(entry.idee ?? ''),
-              aenderung: String(entry.aenderung ?? ''),
+          ? (
+              parsed.transparenzLog as { idee: string; aenderung: string }[]
+            ).map((entry) => ({
+              idee: String(entry.idee ?? ""),
+              aenderung: String(entry.aenderung ?? ""),
             }))
           : [],
         ungelosteSpannung: parsed.ungelosteSpannung ?? null,
       };
     } catch (error) {
-      strapi.log.error('[dialog-synthese] Service error:', error);
+      strapi.log.error("[dialog-synthese] Service error:", error);
       return { ...FALLBACK_RESPONSE, dialogId };
     }
   },

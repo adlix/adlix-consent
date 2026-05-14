@@ -33,7 +33,9 @@ export default function Phase5Present({
         </div>
 
         <div>
-          <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Angepasst</p>
+          <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+            Angepasst
+          </p>
           <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-sm text-gray-800">
             {adaptedProposal}
           </div>

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { setSession } from '@/lib/session'
 
-const STRAPI_URL = process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
+const STRAPI_URL =
+  process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
 
 /**
  * Verify a one-time login code and authenticate the user.
@@ -46,7 +47,10 @@ export async function POST(req: NextRequest) {
 
     // Check expiry
     if (user.loginCodeExpires && new Date(user.loginCodeExpires) < new Date()) {
-      return NextResponse.json({ error: 'Code abgelaufen. Bitte fordere einen neuen an.' }, { status: 401 })
+      return NextResponse.json(
+        { error: 'Code abgelaufen. Bitte fordere einen neuen an.' },
+        { status: 401 }
+      )
     }
 
     // Clear the code

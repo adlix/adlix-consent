@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
 /**
  * Project service
  */
 
-const { createCoreService } = require('@strapi/strapi').factories;
+const { createCoreService } = require("@strapi/strapi").factories;
 
-module.exports = createCoreService('api::project.project');
+module.exports = createCoreService("api::project.project");

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 
-const STRAPI_URL = process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
+const STRAPI_URL =
+  process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || process.env.AUTH_URL || 'http://localhost:3000'
 
 /**
@@ -8,10 +9,7 @@ const APP_URL = process.env.NEXT_PUBLIC_APP_URL || process.env.AUTH_URL || 'http
  * Redirects the user to Strapi's connect endpoint, which handles the OAuth dance
  * and redirects back with a JWT.
  */
-export async function GET(
-  _req: Request,
-  { params }: { params: Promise<{ provider: string }> }
-) {
+export async function GET(_req: Request, { params }: { params: Promise<{ provider: string }> }) {
   const { provider } = await params
 
   const validProviders = ['github', 'facebook', 'google']

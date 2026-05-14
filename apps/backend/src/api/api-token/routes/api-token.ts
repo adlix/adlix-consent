@@ -1,5 +1,5 @@
-'use strict';
+"use strict";
 
-const { createCoreRouter } = require('@strapi/strapi').factories;
+const { createCoreRouter } = require("@strapi/strapi").factories;
 
-module.exports = createCoreRouter('api::api-token.api-token');
+module.exports = createCoreRouter("api::api-token.api-token");

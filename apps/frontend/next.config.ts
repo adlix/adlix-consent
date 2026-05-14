@@ -3,6 +3,7 @@ import type { NextConfig } from 'next'
 const isDev = process.env.NODE_ENV !== 'production'
 
 const nextConfig: NextConfig = {
+  output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
   allowedDevOrigins: ['consent.adlix-club.de'],
   images: {
     remotePatterns: [

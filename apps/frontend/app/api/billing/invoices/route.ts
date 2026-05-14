@@ -5,7 +5,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2026-04-22.dahlia',
 })
 
-const STRAPI_URL = process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
+const STRAPI_URL =
+  process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
 
 export async function GET(req: NextRequest) {
   const cookieStore = req.cookies
@@ -71,7 +72,8 @@ export async function GET(req: NextRequest) {
             id: activeSub.id,
             status: activeSub.status,
             // Stripe v22 uses camelCase for TypeScript types
-            currentPeriodEnd: (activeSub as unknown as Record<string, unknown>).current_period_end as number,
+            currentPeriodEnd: (activeSub as unknown as Record<string, unknown>)
+              .current_period_end as number,
             cancelAtPeriodEnd: activeSub.cancel_at_period_end,
           }
         : null,

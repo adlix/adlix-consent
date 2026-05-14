@@ -146,7 +146,9 @@ export default function DialogWizard({
     return (
       <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
         {error}
-        <button onClick={initDialog} className="ml-3 underline">Erneut versuchen</button>
+        <button onClick={initDialog} className="ml-3 underline">
+          Erneut versuchen
+        </button>
       </div>
     )
   }
@@ -169,8 +171,8 @@ export default function DialogWizard({
                 p.num < currentPhaseNum
                   ? 'text-green-600'
                   : p.num === currentPhaseNum
-                  ? 'text-blue-600'
-                  : 'text-gray-300'
+                    ? 'text-blue-600'
+                    : 'text-gray-300'
               }`}
             >
               <span className="text-lg">{p.num < currentPhaseNum ? '✅' : p.icon}</span>
@@ -237,9 +239,7 @@ export default function DialogWizard({
           />
         )}
 
-        {currentPhaseNum === 6 && (
-          <Phase6Escalate onEscalate={handleEscalate} />
-        )}
+        {currentPhaseNum === 6 && <Phase6Escalate onEscalate={handleEscalate} />}
       </div>
     </div>
   )

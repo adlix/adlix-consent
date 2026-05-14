@@ -29,16 +29,22 @@ export default function Phase2Validate({ members: _members, currentUserId, onNex
   const praeferenzCount = Object.values(votes).filter((v) => v === 'praeferenz').length
   const totalVoted = sachlichCount + praeferenzCount
 
-  const majority = totalVoted > 0
-    ? sachlichCount > praeferenzCount ? 'sachlich' : praeferenzCount > sachlichCount ? 'praeferenz' : null
-    : null
+  const majority =
+    totalVoted > 0
+      ? sachlichCount > praeferenzCount
+        ? 'sachlich'
+        : praeferenzCount > sachlichCount
+          ? 'praeferenz'
+          : null
+      : null
 
   return (
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-semibold mb-1">Einwand validieren</h3>
         <p className="text-sm text-gray-600">
-          Ist dies ein sachlicher Einwand (betrifft das Vorhaben objektiv) oder eine Präferenz (persönlicher Wunsch)?
+          Ist dies ein sachlicher Einwand (betrifft das Vorhaben objektiv) oder eine Präferenz
+          (persönlicher Wunsch)?
         </p>
       </div>
 
@@ -72,15 +78,21 @@ export default function Phase2Validate({ members: _members, currentUserId, onNex
 
       {totalVoted > 0 && (
         <div className="bg-gray-50 rounded-lg p-4">
-          <p className="text-sm font-medium mb-3">Zwischenergebnis ({totalVoted} Stimme{totalVoted !== 1 ? 'n' : ''})</p>
+          <p className="text-sm font-medium mb-3">
+            Zwischenergebnis ({totalVoted} Stimme{totalVoted !== 1 ? 'n' : ''})
+          </p>
           <div className="flex gap-4 text-sm">
             <span className="text-blue-700">🎯 Sachlich: {sachlichCount}</span>
             <span className="text-orange-700">💭 Präferenz: {praeferenzCount}</span>
           </div>
           {majority && (
-            <div className={`mt-3 p-3 rounded-lg text-sm font-medium ${
-              majority === 'sachlich' ? 'bg-blue-100 text-blue-800' : 'bg-orange-100 text-orange-800'
-            }`}>
+            <div
+              className={`mt-3 p-3 rounded-lg text-sm font-medium ${
+                majority === 'sachlich'
+                  ? 'bg-blue-100 text-blue-800'
+                  : 'bg-orange-100 text-orange-800'
+              }`}
+            >
               {majority === 'sachlich'
                 ? 'Mehrheit: Sachlicher Einwand — Dialog wird fortgesetzt.'
                 : 'Mehrheit: Präferenz — Einwand kann als Leichter Einwand behandelt werden.'}

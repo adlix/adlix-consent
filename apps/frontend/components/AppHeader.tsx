@@ -36,15 +36,17 @@ export default function AppHeader({ user }: AppHeaderProps) {
   const initials = user?.username
     ? user.username.slice(0, 2).toUpperCase()
     : user?.email
-    ? user.email.slice(0, 2).toUpperCase()
-    : '??'
+      ? user.email.slice(0, 2).toUpperCase()
+      : '??'
 
   return (
     <header className="bg-white border-b border-gray-200" role="banner">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <span className="text-2xl" aria-hidden="true">🗳️</span>
+            <span className="text-2xl" aria-hidden="true">
+              🗳️
+            </span>
             <span className="text-xl font-bold">adlix consent</span>
           </Link>
         </div>

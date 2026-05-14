@@ -1,3 +1,6 @@
+# Basis-Konfiguration — wird von dev/prod überschrieben
+# Direkt starten: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+
 services:
   postgres:
     container_name: consent_postgres
@@ -21,7 +24,9 @@ services:
       - internal
 
   backend:
-    build: ./apps/backend
+    build:
+      context: ./apps/backend
+      target: dev
     restart: unless-stopped
     container_name: consent_strapi
     env_file:
@@ -36,7 +41,9 @@ services:
       - proxy
 
   frontend:
-    build: ./apps/frontend
+    build:
+      context: ./apps/frontend
+      target: dev
     restart: unless-stopped
     container_name: consent_next
     env_file:

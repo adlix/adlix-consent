@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { setSession } from '@/lib/session'
 
-const STRAPI_URL = process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
+const STRAPI_URL =
+  process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
 
 export async function POST(req: NextRequest) {
   const body = await req.json()
@@ -12,7 +13,10 @@ export async function POST(req: NextRequest) {
   }
 
   if (password.length < 6) {
-    return NextResponse.json({ error: 'Passwort muss mindestens 6 Zeichen lang sein.' }, { status: 400 })
+    return NextResponse.json(
+      { error: 'Passwort muss mindestens 6 Zeichen lang sein.' },
+      { status: 400 }
+    )
   }
 
   try {
@@ -29,7 +33,10 @@ export async function POST(req: NextRequest) {
     if (!res.ok) {
       const data = await res.json()
       return NextResponse.json(
-        { error: data.error?.message || 'Zurücksetzen fehlgeschlagen. Der Link könnte abgelaufen sein.' },
+        {
+          error:
+            data.error?.message || 'Zurücksetzen fehlgeschlagen. Der Link könnte abgelaufen sein.',
+        },
         { status: 400 }
       )
     }

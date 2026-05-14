@@ -91,8 +91,7 @@ const softwareJsonLd = {
   applicationCategory: 'BusinessApplication',
   operatingSystem: 'Web',
   url: siteUrl,
-  description:
-    'Consent-Plattform für faire, transparente und inklusive Gruppenentscheidungen.',
+  description: 'Consent-Plattform für faire, transparente und inklusive Gruppenentscheidungen.',
   offers: {
     '@type': 'Offer',
     price: '0',

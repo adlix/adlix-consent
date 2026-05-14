@@ -1,5 +1,5 @@
 module.exports = ({ env }) => ({
-  'users-permissions': {
+  "users-permissions": {
     enabled: true,
     config: {
       password: {

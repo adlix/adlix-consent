@@ -1,12 +1,15 @@
 'use client'
 
-import { useState, Suspense } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
+import { useSession } from 'next-auth/react'
+import { strapi } from '@/lib/strapi'
 import { OnboardingProvider } from '@/components/Onboarding/OnboardingContext'
 
 const OnboardingFlow = dynamic(
-  () => import('@/components/Onboarding/OnboardingFlow').then((m) => ({ default: m.OnboardingFlow })),
+  () =>
+    import('@/components/Onboarding/OnboardingFlow').then((m) => ({ default: m.OnboardingFlow })),
   { ssr: false }
 )
 
@@ -34,52 +37,22 @@ interface Activity {
   timestamp: string
 }
 
-// Mock data (später durch API-Calls ersetzen)
-const mockCircles: Circle[] = [
-  { id: 1, name: 'Agile Tribe Gründer', memberCount: 12, role: 'admin', lastActivity: '2h' },
-  { id: 2, name: 'Die Problemlöser', memberCount: 28, role: 'member', lastActivity: '1d' },
-  { id: 3, name: 'Herzkohärenz Kreis', memberCount: 8, role: 'admin', lastActivity: '3d' },
-]
+function formatRelativeTime(isoString: string): string {
+  const ms = Date.now() - new Date(isoString).getTime()
+  const minutes = Math.floor(ms / 60000)
+  if (minutes < 60) return `${minutes}m`
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) return `${hours}h`
+  return `${Math.floor(hours / 24)}d`
+}
 
-const mockProposals: Proposal[] = [
-  {
-    id: 1,
-    title: 'Neues Onboarding einführen',
-    circleName: 'Agile Tribe Gründer',
-    phase: 'voting',
-    needsVote: true,
-  },
-  {
-    id: 2,
-    title: 'Budget für Q3 2026',
-    circleName: 'Die Problemlöser',
-    phase: 'description',
-    needsVote: false,
-  },
-  {
-    id: 3,
-    title: 'Slack-Integration aktivieren',
-    circleName: 'Herzkohärenz Kreis',
-    phase: 'integration',
-    needsVote: false,
-  },
-]
-
-const mockActivities: Activity[] = [
-  {
-    id: 1,
-    type: 'invitation',
-    message: 'Du wurdest eingeladen zu „Agile Tribe Gründer"',
-    timestamp: '2h',
-  },
-  {
-    id: 2,
-    type: 'proposal',
-    message: 'Neues Vorhaben „Neues Onboarding" in „Agile Tribe Gründer"',
-    timestamp: '3h',
-  },
-  { id: 3, type: 'consent', message: 'Konsent erreicht in „Herzkohärenz Kreis"', timestamp: '1d' },
-]
+function mapPhase(status: string): 'description' | 'reaction' | 'voting' | 'integration' {
+  if (status === 'information' || status === 'adjustment') return 'description'
+  if (status === 'reaction') return 'reaction'
+  if (status === 'voting') return 'voting'
+  if (status === 'integration') return 'integration'
+  return 'description'
+}
 
 const phaseLabels: Record<string, string> = {
   description: 'Beschreibung',
@@ -89,28 +62,98 @@ const phaseLabels: Record<string, string> = {
 }
 
 export default function DashboardPage() {
-  const [circles] = useState<Circle[]>(mockCircles)
-  const [proposals] = useState<Proposal[]>(mockProposals)
-  const [activities] = useState<Activity[]>(mockActivities)
+  const { data: session } = useSession()
+  const jwt = (session as unknown as { jwt?: string })?.jwt
+  const [circles, setCircles] = useState<Circle[]>([])
+  const [proposals, setProposals] = useState<Proposal[]>([])
+  const [activities, setActivities] = useState<Activity[]>([])
+  const [loading, setLoading] = useState(true)
   const [showOnboarding, setShowOnboarding] = useState(false)
+
+  useEffect(() => {
+    if (!jwt) return
+    strapi.setJwt(jwt)
+
+    Promise.all([
+      strapi.getCircles(),
+      strapi.getProjects({
+        populate: 'owner,currentRound,circle',
+        sort: 'createdAt:desc',
+        pagination: { pageSize: 10 },
+      }),
+    ])
+      .then(([circlesRes, projectsRes]) => {
+        const circlesData = (circlesRes.data as any[]) || []
+        setCircles(
+          circlesData.map((c: any) => ({
+            id: c.id,
+            name: c.name,
+            memberCount: (c.circleMembers || []).length,
+            role: c.owner?.id === (session?.user as any)?.id ? 'admin' : 'member',
+            lastActivity: c.updatedAt ? formatRelativeTime(c.updatedAt) : '—',
+          }))
+        )
+
+        const projectsData = (projectsRes.data as any[]) || []
+        const mapped: Proposal[] = projectsData
+          .filter((p: any) => p.status === 'active' || p.currentRound)
+          .map((p: any) => ({
+            id: p.id,
+            title: p.name,
+            circleName: p.circle?.name || 'Kein Kreis',
+            phase: mapPhase(p.currentRound?.status || 'information'),
+            needsVote: p.currentRound?.status === 'voting',
+          }))
+        setProposals(mapped)
+
+        // Activities: recent projects as activities
+        const acts: Activity[] = projectsData.slice(0, 5).map((p: any) => ({
+          id: p.id,
+          type: 'proposal' as const,
+          message: `Vorhaben „${p.name}“ ${p.status === 'beschlossen' ? '→ Beschlossen ✅' : 'aktiv'}`,
+          timestamp: formatRelativeTime(p.createdAt || p.updatedAt),
+        }))
+        setActivities(acts)
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [jwt])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-pulse text-gray-400">Lade Dashboard…</div>
+      </div>
+    )
+  }
 
   const getActivityIcon = (type: string) => {
     switch (type) {
-      case 'invitation': return '📩'
-      case 'proposal': return '📝'
-      case 'consent': return '✅'
-      case 'objection': return '✋'
-      default: return '📌'
+      case 'invitation':
+        return '📩'
+      case 'proposal':
+        return '📝'
+      case 'consent':
+        return '✅'
+      case 'objection':
+        return '✋'
+      default:
+        return '📌'
     }
   }
 
   const getActivityIconLabel = (type: string) => {
     switch (type) {
-      case 'invitation': return 'Einladung'
-      case 'proposal': return 'Vorhaben'
-      case 'consent': return 'Konsent'
-      case 'objection': return 'Einspruch'
-      default: return 'Aktivität'
+      case 'invitation':
+        return 'Einladung'
+      case 'proposal':
+        return 'Vorhaben'
+      case 'consent':
+        return 'Konsent'
+      case 'objection':
+        return 'Einspruch'
+      default:
+        return 'Aktivität'
     }
   }
 
@@ -123,9 +166,14 @@ export default function DashboardPage() {
           {/* Linke Spalte: Kreise + Vorhaben */}
           <div className="lg:col-span-2 space-y-8">
             {/* Meine Kreise */}
-            <section aria-labelledby="circles-heading" className="bg-white rounded-xl shadow-sm p-6">
+            <section
+              aria-labelledby="circles-heading"
+              className="bg-white rounded-xl shadow-sm p-6"
+            >
               <div className="flex items-center justify-between mb-4">
-                <h2 id="circles-heading" className="text-lg font-semibold">Meine Kreise</h2>
+                <h2 id="circles-heading" className="text-lg font-semibold">
+                  Meine Kreise
+                </h2>
                 <Link href="/circles/new" className="text-sm text-primary hover:underline">
                   + Kreis erstellen
                 </Link>
@@ -135,9 +183,7 @@ export default function DashboardPage() {
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none">
                   {circles.map((circle) => (
                     <li key={circle.id}>
-                      <div
-                        className="border border-gray-200 rounded-lg p-4 hover:border-primary transition-colors"
-                      >
+                      <div className="border border-gray-200 rounded-lg p-4 hover:border-primary transition-colors">
                         <div className="flex items-start justify-between">
                           <h3 className="font-medium">{circle.name}</h3>
                           <span
@@ -152,8 +198,13 @@ export default function DashboardPage() {
                           </span>
                         </div>
                         <div className="mt-2 flex items-center gap-4 text-sm text-gray-500">
-                          <span><span aria-hidden="true">👥 </span>{circle.memberCount} Mitglieder</span>
-                          <span><span aria-hidden="true">🕐 </span>vor {circle.lastActivity}</span>
+                          <span>
+                            <span aria-hidden="true">👥 </span>
+                            {circle.memberCount} Mitglieder
+                          </span>
+                          <span>
+                            <span aria-hidden="true">🕐 </span>vor {circle.lastActivity}
+                          </span>
                         </div>
                       </div>
                     </li>
@@ -170,8 +221,13 @@ export default function DashboardPage() {
             </section>
 
             {/* Aktive Vorhaben */}
-            <section aria-labelledby="proposals-heading" className="bg-white rounded-xl shadow-sm p-6">
-              <h2 id="proposals-heading" className="text-lg font-semibold mb-4">Aktive Vorhaben</h2>
+            <section
+              aria-labelledby="proposals-heading"
+              className="bg-white rounded-xl shadow-sm p-6"
+            >
+              <h2 id="proposals-heading" className="text-lg font-semibold mb-4">
+                Aktive Vorhaben
+              </h2>
 
               {proposals.length > 0 ? (
                 <ul className="space-y-3 list-none">
@@ -191,7 +247,7 @@ export default function DashboardPage() {
                       </div>
                       {proposal.needsVote && (
                         <Link
-                          href={`/proposals/${proposal.id}/vote`}
+                          href={`/projects/${proposal.id}`}
                           className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark"
                           aria-label={`Abstimmen: ${proposal.title}`}
                         >
@@ -210,8 +266,13 @@ export default function DashboardPage() {
           {/* Rechte Spalte: Aktivitäten + Schnellaktionen */}
           <div className="space-y-8">
             {/* Letzte Aktivitäten */}
-            <section aria-labelledby="activities-heading" className="bg-white rounded-xl shadow-sm p-6">
-              <h2 id="activities-heading" className="text-lg font-semibold mb-4">Letzte Aktivitäten</h2>
+            <section
+              aria-labelledby="activities-heading"
+              className="bg-white rounded-xl shadow-sm p-6"
+            >
+              <h2 id="activities-heading" className="text-lg font-semibold mb-4">
+                Letzte Aktivitäten
+              </h2>
 
               {activities.length > 0 ? (
                 <ul className="space-y-4 list-none">
@@ -233,8 +294,13 @@ export default function DashboardPage() {
             </section>
 
             {/* Schnellaktionen */}
-            <section aria-labelledby="quick-actions-heading" className="bg-white rounded-xl shadow-sm p-6">
-              <h2 id="quick-actions-heading" className="text-lg font-semibold mb-4">Schnellaktionen</h2>
+            <section
+              aria-labelledby="quick-actions-heading"
+              className="bg-white rounded-xl shadow-sm p-6"
+            >
+              <h2 id="quick-actions-heading" className="text-lg font-semibold mb-4">
+                Schnellaktionen
+              </h2>
 
               <nav aria-label="Schnellaktionen">
                 <ul className="space-y-3 list-none">
@@ -243,7 +309,9 @@ export default function DashboardPage() {
                       href="/circles/new"
                       className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-primary transition-colors"
                     >
-                      <span className="text-xl" aria-hidden="true">🆕</span>
+                      <span className="text-xl" aria-hidden="true">
+                        🆕
+                      </span>
                       <span className="font-medium">Kreis erstellen</span>
                     </Link>
                   </li>
@@ -252,7 +320,9 @@ export default function DashboardPage() {
                       href="/proposals/new"
                       className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-primary transition-colors"
                     >
-                      <span className="text-xl" aria-hidden="true">📝</span>
+                      <span className="text-xl" aria-hidden="true">
+                        📝
+                      </span>
                       <span className="font-medium">Vorhaben einreichen</span>
                     </Link>
                   </li>
@@ -266,7 +336,9 @@ export default function DashboardPage() {
                       aria-label="Einladungslink in Zwischenablage kopieren"
                       className="w-full flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-primary transition-colors"
                     >
-                      <span className="text-xl" aria-hidden="true">🔗</span>
+                      <span className="text-xl" aria-hidden="true">
+                        🔗
+                      </span>
                       <span className="font-medium">Einladung teilen</span>
                     </button>
                   </li>
@@ -277,7 +349,9 @@ export default function DashboardPage() {
                       aria-label="Onboarding starten"
                       className="w-full flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-primary transition-colors"
                     >
-                      <span className="text-xl" aria-hidden="true">🚀</span>
+                      <span className="text-xl" aria-hidden="true">
+                        🚀
+                      </span>
                       <span className="font-medium">Onboarding starten</span>
                     </button>
                   </li>

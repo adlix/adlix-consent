@@ -107,6 +107,26 @@ class StrapiClient {
     })
   }
 
+  async createProjectWithRound(data: {
+    name: string
+    description: string
+    goal?: string
+    tension?: string
+    circle?: number
+  }) {
+    return this.request<{ project: unknown; round: unknown }>('/projects/create-with-round', {
+      method: 'POST',
+      body: JSON.stringify({ data }),
+    })
+  }
+
+  async transitionRoundPhase(roundId: number | string, targetPhase?: string) {
+    return this.request<unknown>(`/rounds/${roundId}/transition`, {
+      method: 'POST',
+      body: JSON.stringify({ targetPhase }),
+    })
+  }
+
   // Rounds
   async getRounds(projectId: number | string) {
     return this.request<unknown[]>(`/rounds?filters[project][id][$eq]=${projectId}&populate=*`)
@@ -125,7 +145,12 @@ class StrapiClient {
   }
 
   // Votes
-  async castVote(roundId: number | string, choice: 'consent' | 'minor_objection' | 'major_objection' | 'abstain', userId: number, reason?: string) {
+  async castVote(
+    roundId: number | string,
+    choice: 'consent' | 'minor_objection' | 'major_objection' | 'abstain',
+    userId: number,
+    reason?: string
+  ) {
     return this.request<unknown>('/votes', {
       method: 'POST',
       body: JSON.stringify({
@@ -161,13 +186,16 @@ class StrapiClient {
   }
 
   // Outcome
-  async setOutcome(projectId: number | string, data: {
-    outcome: string
-    nextSteps?: string
-    evaluationDate?: string
-    minorObjectionsLog?: unknown[]
-    status?: string
-  }) {
+  async setOutcome(
+    projectId: number | string,
+    data: {
+      outcome: string
+      nextSteps?: string
+      evaluationDate?: string
+      minorObjectionsLog?: unknown[]
+      status?: string
+    }
+  ) {
     return this.request<unknown>(`/projects/${projectId}`, {
       method: 'PUT',
       body: JSON.stringify({ data }),
@@ -197,7 +225,7 @@ class StrapiClient {
 
   // Circles
   async getCircles() {
-    return this.request<unknown[]>('/circles?populate=owner,members&sort=createdAt:desc')
+    return this.request<unknown[]>('/circles?populate=owner,circleMembers&sort=createdAt:desc')
   }
 
   async getCircle(id: number | string) {
@@ -262,15 +290,14 @@ class StrapiClient {
   }
 
   async getAbstentions(roundId: number | string) {
-    return this.request<unknown[]>(
-      `/abstentions?filters[round][id][$eq]=${roundId}&populate=user`
-    )
+    return this.request<unknown[]>(`/abstentions?filters[round][id][$eq]=${roundId}&populate=user`)
   }
 
   async getAnonymousConcerns(roundId: number | string) {
-    return this.request<{ groups: { theme: string; concerns: string[]; count: number }[]; total: number }>(
-      `/abstentions/${roundId}/anonymous-concerns`
-    )
+    return this.request<{
+      groups: { theme: string; concerns: string[]; count: number }[]
+      total: number
+    }>(`/abstentions/${roundId}/anonymous-concerns`)
   }
 
   async analyseAbstentions(roundId: number | string) {

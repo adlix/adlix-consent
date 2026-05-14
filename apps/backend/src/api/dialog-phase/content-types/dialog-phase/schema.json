@@ -19,7 +19,14 @@
     },
     "type": {
       "type": "enumeration",
-      "enum": ["understand", "validate", "solutions", "synthesize", "present", "escalate"],
+      "enum": [
+        "understand",
+        "validate",
+        "solutions",
+        "synthesize",
+        "present",
+        "escalate"
+      ],
       "required": true
     },
     "status": {

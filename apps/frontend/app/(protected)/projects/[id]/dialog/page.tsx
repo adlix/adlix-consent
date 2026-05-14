@@ -7,10 +7,7 @@ import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { strapi } from '@/lib/strapi'
 
-const DialogWizard = dynamic(
-  () => import('@/components/Dialog/DialogWizard'),
-  { ssr: false }
-)
+const DialogWizard = dynamic(() => import('@/components/Dialog/DialogWizard'), { ssr: false })
 
 interface Objection {
   id: number
@@ -77,11 +74,14 @@ export default function DialogPage() {
 
       const roundsRes = await strapi.getRounds(params.id)
       const rounds = (roundsRes as { data: RoundData[] }).data
-      const activeRound = rounds.find((r) => (r as unknown as { status: string }).status === 'integration') || rounds[rounds.length - 1]
+      const activeRound =
+        rounds.find((r) => (r as unknown as { status: string }).status === 'integration') ||
+        rounds[rounds.length - 1]
 
       if (activeRound) {
         setRound(activeRound)
-        const objection = activeRound.objections?.find((o) => o.severity === 'major' && o.status === 'open') || null
+        const objection =
+          activeRound.objections?.find((o) => o.severity === 'major' && o.status === 'open') || null
         setMajorObjection(objection)
       }
 
@@ -110,7 +110,9 @@ export default function DialogPage() {
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md w-full text-center">
           <p className="text-red-700 mb-4">{error}</p>
-          <button onClick={loadData} className="text-blue-600 underline text-sm">Erneut versuchen</button>
+          <button onClick={loadData} className="text-blue-600 underline text-sm">
+            Erneut versuchen
+          </button>
         </div>
       </div>
     )
@@ -123,7 +125,8 @@ export default function DialogPage() {
           <div className="text-6xl mb-4">✅</div>
           <h1 className="text-2xl font-bold mb-2">Dialog abgeschlossen</h1>
           <p className="text-gray-600 mb-6">
-            Der Einwand wurde erfolgreich integriert. Der Vorschlag kann zur Abstimmung weitergegeben werden.
+            Der Einwand wurde erfolgreich integriert. Der Vorschlag kann zur Abstimmung
+            weitergegeben werden.
           </p>
           <Link
             href={`/projects/${params.id}`}
@@ -165,10 +168,7 @@ export default function DialogPage() {
           <p className="text-gray-600 mb-6 text-sm">
             Der Dialog-Prozess wird gestartet wenn ein schwerwiegender Einwand offen ist.
           </p>
-          <Link
-            href={`/projects/${params.id}`}
-            className="text-blue-600 underline text-sm"
-          >
+          <Link href={`/projects/${params.id}`} className="text-blue-600 underline text-sm">
             ← Zurück zum Projekt
           </Link>
         </div>
@@ -182,12 +182,17 @@ export default function DialogPage() {
       <div className="bg-white border-b px-4 py-4">
         <div className="max-w-xl mx-auto">
           <div className="flex items-center gap-3 mb-1">
-            <Link href={`/projects/${params.id}`} className="text-gray-400 hover:text-gray-600 text-sm">
+            <Link
+              href={`/projects/${params.id}`}
+              className="text-gray-400 hover:text-gray-600 text-sm"
+            >
               ← {project?.name}
             </Link>
           </div>
           <h1 className="text-lg font-bold text-gray-900">Dialog zur Lösungsfindung</h1>
-          <p className="text-sm text-gray-500">Einwand von {majorObjection.user?.username || 'Unbekannt'}</p>
+          <p className="text-sm text-gray-500">
+            Einwand von {majorObjection.user?.username || 'Unbekannt'}
+          </p>
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 
 /**
  * Strapi User Schema Extension
@@ -21,21 +21,21 @@ module.exports = {
   // Field definitions for reference — add these via Strapi admin
   customUserFields: {
     loginCode: {
-      type: 'string',
+      type: "string",
       private: true, // Not exposed via API
     },
     loginCodeExpires: {
-      type: 'datetime',
+      type: "datetime",
       private: true,
     },
     stripeCustomerId: {
-      type: 'string',
+      type: "string",
       private: true,
     },
     plan: {
-      type: 'enumeration',
-      enum: ['free', 'pro'],
-      default: 'free',
+      type: "enumeration",
+      enum: ["free", "pro"],
+      default: "free",
     },
   },
-}
+};

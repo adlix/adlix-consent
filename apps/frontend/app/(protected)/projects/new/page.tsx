@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
 import strapi from '@/lib/strapi'
 
 interface FieldErrors {
@@ -18,6 +19,22 @@ export default function NewProjectPage() {
   const [networkError, setNetworkError] = useState<string | null>(null)
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [createdId, setCreatedId] = useState<string | number | null>(null)
+
+  const { data: session } = useSession()
+  const jwt = (session as unknown as { jwt?: string })?.jwt
+  const [circles, setCircles] = useState<{ id: number; name: string }[]>([])
+  const [selectedCircle, setSelectedCircle] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (!jwt) return
+    strapi.setJwt(jwt)
+    strapi
+      .getCircles()
+      .then((res) => {
+        setCircles((res.data as any[]).map((c: any) => ({ id: c.id, name: c.name })))
+      })
+      .catch(() => {})
+  }, [jwt])
 
   const validate = (): FieldErrors => {
     const errors: FieldErrors = {}
@@ -44,18 +61,28 @@ export default function NewProjectPage() {
     e.preventDefault()
     setTouched({ title: true, description: true })
 
-    if (!title.trim() || title.trim().length < 3 || !description.trim() || description.trim().length < 10) return
+    if (
+      !title.trim() ||
+      title.trim().length < 3 ||
+      !description.trim() ||
+      description.trim().length < 10
+    )
+      return
 
     setSubmitting(true)
     setNetworkError(null)
 
     try {
-      const result = await strapi.createProject({
+      strapi.setJwt(jwt || null)
+      const result = await strapi.createProjectWithRound({
         name: title.trim(),
         description: description.trim(),
-        status: 'draft',
+        goal: goal.trim() || undefined,
+        tension: tension.trim() || undefined,
+        circle: selectedCircle || undefined,
       })
-      const id = (result.data as { id?: number | string })?.id
+      const projectData = (result.data as any).project
+      const id = projectData?.id
       if (id) {
         setCreatedId(id)
       } else {
@@ -80,15 +107,23 @@ export default function NewProjectPage() {
       <div className="min-h-screen flex flex-col bg-gray-50">
         <header className="border-b border-gray-200 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center gap-2">
-            <Link href="/" className="flex items-center gap-2 hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded" aria-label="adlix consent Startseite">
-              <span className="text-2xl" aria-hidden="true">🗳️</span>
+            <Link
+              href="/"
+              className="flex items-center gap-2 hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded"
+              aria-label="adlix consent Startseite"
+            >
+              <span className="text-2xl" aria-hidden="true">
+                🗳️
+              </span>
               <span className="text-xl font-bold">adlix consent</span>
             </Link>
           </div>
         </header>
         <main id="main-content" className="flex-1 flex items-center justify-center">
           <div className="text-center p-8">
-            <div className="text-5xl mb-4" aria-hidden="true">🎉</div>
+            <div className="text-5xl mb-4" aria-hidden="true">
+              🎉
+            </div>
             <h1 className="text-2xl font-bold mb-2">Vorhaben eingereicht!</h1>
             <p className="text-gray-600 mb-6">
               Dein Vorhaben wurde erstellt. Der Consent-Loop kann jetzt starten.
@@ -105,20 +140,28 @@ export default function NewProjectPage() {
     )
   }
 
-  const isSubmittable =
-    title.trim().length >= 3 && description.trim().length >= 10 && !submitting
+  const isSubmittable = title.trim().length >= 3 && description.trim().length >= 10 && !submitting
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <header className="border-b border-gray-200 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Link href="/" className="flex items-center gap-2 hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded" aria-label="adlix consent Startseite">
-              <span className="text-2xl" aria-hidden="true">🗳️</span>
+            <Link
+              href="/"
+              className="flex items-center gap-2 hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded"
+              aria-label="adlix consent Startseite"
+            >
+              <span className="text-2xl" aria-hidden="true">
+                🗳️
+              </span>
               <span className="text-xl font-bold">adlix consent</span>
             </Link>
           </div>
-          <Link href="/projects" className="text-gray-600 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded">
+          <Link
+            href="/projects"
+            className="text-gray-600 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded"
+          >
             ← Projekte
           </Link>
         </div>
@@ -148,11 +191,19 @@ export default function NewProjectPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6" noValidate aria-label="Neues Vorhaben einreichen">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-6"
+            noValidate
+            aria-label="Neues Vorhaben einreichen"
+          >
             {/* Titel */}
             <div>
               <label htmlFor="field-title" className="block text-sm font-medium mb-1">
-                Titel <span aria-hidden="true" className="text-red-500">*</span>
+                Titel{' '}
+                <span aria-hidden="true" className="text-red-500">
+                  *
+                </span>
                 <span className="sr-only">(Pflichtfeld)</span>
               </label>
               <input
@@ -183,7 +234,10 @@ export default function NewProjectPage() {
             {/* Beschreibung */}
             <div>
               <label htmlFor="field-description" className="block text-sm font-medium mb-1">
-                Beschreibung <span aria-hidden="true" className="text-red-500">*</span>
+                Beschreibung{' '}
+                <span aria-hidden="true" className="text-red-500">
+                  *
+                </span>
                 <span className="sr-only">(Pflichtfeld)</span>
               </label>
               <textarea
@@ -240,6 +294,33 @@ export default function NewProjectPage() {
                 Optional — hilft dem Kreis, den Kontext zu verstehen.
               </p>
             </div>
+
+            {/* Kreis */}
+            {circles.length > 0 && (
+              <div>
+                <label htmlFor="field-circle" className="block text-sm font-medium mb-1">
+                  Kreis
+                </label>
+                <select
+                  id="field-circle"
+                  value={selectedCircle ?? ''}
+                  onChange={(e) =>
+                    setSelectedCircle(e.target.value ? Number(e.target.value) : null)
+                  }
+                  className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none"
+                >
+                  <option value="">Kein Kreis</option>
+                  {circles.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-xs text-gray-500 mt-1">
+                  Alle Kreismitglieder werden eingeladen.
+                </p>
+              </div>
+            )}
 
             {/* Submit */}
             <div className="flex gap-3 pt-4">

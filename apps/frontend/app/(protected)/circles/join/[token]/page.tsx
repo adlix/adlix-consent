@@ -38,7 +38,10 @@ export default function JoinCirclePage() {
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <p className="mb-4">Bitte melde dich an, um dem Kreis beizutreten.</p>
-          <Link href={`/login?callbackUrl=/circles/join/${token}`} className="text-blue-600 font-medium">
+          <Link
+            href={`/login?callbackUrl=/circles/join/${token}`}
+            className="text-blue-600 font-medium"
+          >
             Anmelden
           </Link>
         </div>
@@ -64,9 +67,7 @@ export default function JoinCirclePage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white rounded-xl p-8 shadow-sm text-center max-w-md">
         <h1 className="text-xl font-semibold mb-4">Einladung zum Kreis</h1>
-        {error && (
-          <div className="mb-4 p-3 bg-red-50 rounded-lg text-sm text-red-700">{error}</div>
-        )}
+        {error && <div className="mb-4 p-3 bg-red-50 rounded-lg text-sm text-red-700">{error}</div>}
         <button
           onClick={handleJoin}
           className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"

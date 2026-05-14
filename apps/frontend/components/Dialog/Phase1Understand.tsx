@@ -18,14 +18,30 @@ export default function Phase1Understand({ objectionReason, onNext }: Phase1Prop
     setTimeout(() => {
       const keywords = objectionReason.toLowerCase()
       let hint = 'Der Einwand bezieht sich auf '
-      if (keywords.includes('ressourc') || keywords.includes('kosten') || keywords.includes('budget')) {
-        hint += 'Ressourcen oder Kosten. Möglicher Ansatz: Prüfe ob eine schrittweise Umsetzung möglich ist.'
-      } else if (keywords.includes('zeit') || keywords.includes('termin') || keywords.includes('dauer')) {
-        hint += 'Zeitplanung. Möglicher Ansatz: Kläre ob ein angepasster Zeitrahmen den Einwand auflöst.'
-      } else if (keywords.includes('qualität') || keywords.includes('risiko') || keywords.includes('sicherheit')) {
-        hint += 'Qualität oder Risiko. Möglicher Ansatz: Definiere Mindestandards oder Rückfall-Kriterien.'
+      if (
+        keywords.includes('ressourc') ||
+        keywords.includes('kosten') ||
+        keywords.includes('budget')
+      ) {
+        hint +=
+          'Ressourcen oder Kosten. Möglicher Ansatz: Prüfe ob eine schrittweise Umsetzung möglich ist.'
+      } else if (
+        keywords.includes('zeit') ||
+        keywords.includes('termin') ||
+        keywords.includes('dauer')
+      ) {
+        hint +=
+          'Zeitplanung. Möglicher Ansatz: Kläre ob ein angepasster Zeitrahmen den Einwand auflöst.'
+      } else if (
+        keywords.includes('qualität') ||
+        keywords.includes('risiko') ||
+        keywords.includes('sicherheit')
+      ) {
+        hint +=
+          'Qualität oder Risiko. Möglicher Ansatz: Definiere Mindestandards oder Rückfall-Kriterien.'
       } else {
-        hint += 'einem grundsätzlichen Bedenken. Möglicher Ansatz: Formuliere den Einwand als konkrete Bedingung.'
+        hint +=
+          'einem grundsätzlichen Bedenken. Möglicher Ansatz: Formuliere den Einwand als konkrete Bedingung.'
       }
       setAiHint(hint)
       setAnalysing(false)
@@ -47,9 +63,7 @@ export default function Phase1Understand({ objectionReason, onNext }: Phase1Prop
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-2">
-          Zusammenfassung in eigenen Worten
-        </label>
+        <label className="block text-sm font-medium mb-2">Zusammenfassung in eigenen Worten</label>
         <textarea
           value={summary}
           onChange={(e) => setSummary(e.target.value)}

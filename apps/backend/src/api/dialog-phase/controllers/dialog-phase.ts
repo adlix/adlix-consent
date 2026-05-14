@@ -1,3 +1,3 @@
-'use strict'
-const { createCoreController } = require('@strapi/strapi').factories
-module.exports = createCoreController('api::dialog-phase.dialog-phase')
+"use strict";
+const { createCoreController } = require("@strapi/strapi").factories;
+module.exports = createCoreController("api::dialog-phase.dialog-phase");

@@ -17,7 +17,10 @@ export async function GET(
   const error = searchParams.get('error')
   if (error) {
     const loginUrl = new URL('/login', APP_URL)
-    loginUrl.searchParams.set('error', error === 'access_denied' ? 'abgelehnt' : 'social_login_failed')
+    loginUrl.searchParams.set(
+      'error',
+      error === 'access_denied' ? 'abgelehnt' : 'social_login_failed'
+    )
     return NextResponse.redirect(loginUrl)
   }
 

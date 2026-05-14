@@ -1,4 +1,4 @@
-import type { Strapi } from '@strapi/strapi';
+import type { Strapi } from "@strapi/strapi";
 
 const SYSTEM_PROMPT = `Du bist ein Experte für Soziokratie und Konsent-basierte Entscheidungsfindung.
 Analysiere den folgenden Einwand eines Teilnehmers in einem Konsent-Prozess.
@@ -34,7 +34,8 @@ Gültige Werte für rueckmeldung: "valide" | "eher_andere_idee" | "unklar"
 const FALLBACK_RESPONSE = {
   kiVerfuegbar: false,
   manuell: true,
-  hinweis: 'KI-Analyse momentan nicht verfügbar. Bitte prüfe deinen Einwand manuell anhand der 4 Validitätskriterien: Explicit, Impersonal, Evidenced, Not safe to fail.',
+  hinweis:
+    "KI-Analyse momentan nicht verfügbar. Bitte prüfe deinen Einwand manuell anhand der 4 Validitätskriterien: Explicit, Impersonal, Evidenced, Not safe to fail.",
 };
 
 export default ({ strapi }: { strapi: Strapi }) => ({
@@ -46,25 +47,30 @@ export default ({ strapi }: { strapi: Strapi }) => ({
     }
 
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            temperature: 0,
+            response_format: { type: "json_object" },
+            messages: [
+              { role: "system", content: SYSTEM_PROMPT },
+              { role: "user", content: einwandText },
+            ],
+          }),
         },
-        body: JSON.stringify({
-          model: 'gpt-4o-mini',
-          temperature: 0,
-          response_format: { type: 'json_object' },
-          messages: [
-            { role: 'system', content: SYSTEM_PROMPT },
-            { role: 'user', content: einwandText },
-          ],
-        }),
-      });
+      );
 
       if (!response.ok) {
-        strapi.log.warn(`[einwand-analyse] OpenAI API error: ${response.status} ${response.statusText}`);
+        strapi.log.warn(
+          `[einwand-analyse] OpenAI API error: ${response.status} ${response.statusText}`,
+        );
         return FALLBACK_RESPONSE;
       }
 
@@ -72,7 +78,7 @@ export default ({ strapi }: { strapi: Strapi }) => ({
       const content = data.choices?.[0]?.message?.content;
 
       if (!content) {
-        throw new Error('Empty response from OpenAI');
+        throw new Error("Empty response from OpenAI");
       }
 
       const parsed = JSON.parse(content);
@@ -80,22 +86,24 @@ export default ({ strapi }: { strapi: Strapi }) => ({
       return {
         kiVerfuegbar: true,
         kiEinschaetzung: true,
-        kernproblem: parsed.kernproblem ?? '',
+        kernproblem: parsed.kernproblem ?? "",
         validitaet: {
           explicit: Boolean(parsed.validitaet?.explicit),
           impersonal: Boolean(parsed.validitaet?.impersonal),
           evidenced: Boolean(parsed.validitaet?.evidenced),
           not_safe_to_fail: Boolean(parsed.validitaet?.not_safe_to_fail),
         },
-        rueckmeldung: (['valide', 'eher_andere_idee', 'unklar'] as const).includes(parsed.rueckmeldung)
+        rueckmeldung: (
+          ["valide", "eher_andere_idee", "unklar"] as const
+        ).includes(parsed.rueckmeldung)
           ? parsed.rueckmeldung
-          : 'unklar',
+          : "unklar",
         schaerfungsfragen: Array.isArray(parsed.schaerfungsfragen)
           ? (parsed.schaerfungsfragen as string[]).slice(0, 3)
           : [],
       };
     } catch (error) {
-      strapi.log.error('[einwand-analyse] Service error:', error);
+      strapi.log.error("[einwand-analyse] Service error:", error);
       return FALLBACK_RESPONSE;
     }
   },

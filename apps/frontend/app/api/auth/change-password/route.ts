@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const STRAPI_URL = process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
+const STRAPI_URL =
+  process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
 
 export async function POST(req: NextRequest) {
   const cookieStore = req.cookies
@@ -14,11 +15,17 @@ export async function POST(req: NextRequest) {
   const { currentPassword, newPassword } = body
 
   if (!currentPassword || !newPassword) {
-    return NextResponse.json({ error: 'Aktuelles und neues Passwort erforderlich.' }, { status: 400 })
+    return NextResponse.json(
+      { error: 'Aktuelles und neues Passwort erforderlich.' },
+      { status: 400 }
+    )
   }
 
   if (newPassword.length < 6) {
-    return NextResponse.json({ error: 'Neues Passwort muss mindestens 6 Zeichen lang sein.' }, { status: 400 })
+    return NextResponse.json(
+      { error: 'Neues Passwort muss mindestens 6 Zeichen lang sein.' },
+      { status: 400 }
+    )
   }
 
   try {

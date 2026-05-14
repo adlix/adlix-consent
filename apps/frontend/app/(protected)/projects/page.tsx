@@ -62,7 +62,9 @@ export default function ProjectsPage() {
               className="flex items-center gap-2 hover:opacity-80"
               aria-label="adlix consent Startseite"
             >
-              <span className="text-2xl" aria-hidden="true">🗳️</span>
+              <span className="text-2xl" aria-hidden="true">
+                🗳️
+              </span>
               <span className="text-xl font-bold">adlix consent</span>
             </Link>
           </div>
@@ -109,11 +111,11 @@ export default function ProjectsPage() {
 
           {filteredProjects.length === 0 ? (
             <div className="bg-white rounded-xl p-12 text-center">
-              <div className="text-5xl mb-4" aria-hidden="true">📋</div>
+              <div className="text-5xl mb-4" aria-hidden="true">
+                📋
+              </div>
               <h2 className="text-xl font-semibold mb-2">Keine Projekte gefunden</h2>
-              <p className="text-gray-600 mb-6">
-                Keine Projekte entsprechen deinen Suchkriterien.
-              </p>
+              <p className="text-gray-600 mb-6">Keine Projekte entsprechen deinen Suchkriterien.</p>
               <Link
                 href="/projects/new"
                 className="inline-block px-6 py-3 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark"
@@ -122,7 +124,10 @@ export default function ProjectsPage() {
               </Link>
             </div>
           ) : (
-            <ul className="grid gap-4 list-none" aria-label={`${filteredProjects.length} Projekt${filteredProjects.length !== 1 ? 'e' : ''}`}>
+            <ul
+              className="grid gap-4 list-none"
+              aria-label={`${filteredProjects.length} Projekt${filteredProjects.length !== 1 ? 'e' : ''}`}
+            >
               {filteredProjects.map((project) => {
                 const status = statusLabels[project.status] || statusLabels.draft
                 return (

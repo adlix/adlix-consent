@@ -155,8 +155,14 @@ export default function CirclesPage() {
 
         {inviteToken && (
           <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
-            Einladungslink: <code className="bg-blue-100 px-1 rounded">/circles/join/{inviteToken}</code>
-            <button onClick={() => { navigator.clipboard.writeText(inviteToken) }} className="ml-2 text-blue-800 underline text-xs">
+            Einladungslink:{' '}
+            <code className="bg-blue-100 px-1 rounded">/circles/join/{inviteToken}</code>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(inviteToken)
+              }}
+              className="ml-2 text-blue-800 underline text-xs"
+            >
               Token kopieren
             </button>
           </div>
@@ -200,7 +206,9 @@ export default function CirclesPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Beschreibung (optional)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Beschreibung (optional)
+                </label>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -232,7 +240,9 @@ export default function CirclesPage() {
         {/* Circle list */}
         {circles.length === 0 && loaded ? (
           <div className="bg-white rounded-xl p-8 shadow-sm text-center">
-            <p className="text-gray-500">Noch keine Kreise. Erstelle einen Kreis oder tritt einem bei.</p>
+            <p className="text-gray-500">
+              Noch keine Kreise. Erstelle einen Kreis oder tritt einem bei.
+            </p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -240,9 +250,7 @@ export default function CirclesPage() {
               <div key={c.id} className="bg-white rounded-xl p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-lg font-semibold">{c.name}</h3>
-                  <span className="text-sm text-gray-500">
-                    {c.members?.length || 0} Mitglieder
-                  </span>
+                  <span className="text-sm text-gray-500">{c.members?.length || 0} Mitglieder</span>
                 </div>
                 {c.description && <p className="text-sm text-gray-600 mb-3">{c.description}</p>}
                 <button

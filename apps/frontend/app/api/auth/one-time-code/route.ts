@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const STRAPI_URL = process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
+const STRAPI_URL =
+  process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
 
 /**
  * Request a one-time login code sent to the user's email.
@@ -24,7 +25,10 @@ export async function POST(req: NextRequest) {
     const adminToken = process.env.STRAPI_API_TOKEN
     if (!adminToken) {
       // Fallback: try to generate code via custom endpoint
-      return NextResponse.json({ ok: true, message: 'Wenn ein Konto existiert, wird ein Code verschickt.' })
+      return NextResponse.json({
+        ok: true,
+        message: 'Wenn ein Konto existiert, wird ein Code verschickt.',
+      })
     }
 
     // Find user by email
@@ -37,13 +41,19 @@ export async function POST(req: NextRequest) {
 
     if (!userRes.ok) {
       // Don't reveal whether user exists
-      return NextResponse.json({ ok: true, message: 'Wenn ein Konto existiert, wird ein Code verschickt.' })
+      return NextResponse.json({
+        ok: true,
+        message: 'Wenn ein Konto existiert, wird ein Code verschickt.',
+      })
     }
 
     const users = await userRes.json()
     if (!users || users.length === 0) {
       // Don't reveal whether user exists
-      return NextResponse.json({ ok: true, message: 'Wenn ein Konto existiert, wird ein Code verschickt.' })
+      return NextResponse.json({
+        ok: true,
+        message: 'Wenn ein Konto existiert, wird ein Code verschickt.',
+      })
     }
 
     const user = users[0]
@@ -84,8 +94,14 @@ export async function POST(req: NextRequest) {
     })
 
     // Always return same message regardless of whether user was found
-    return NextResponse.json({ ok: true, message: 'Wenn ein Konto existiert, wird ein Code verschickt.' })
+    return NextResponse.json({
+      ok: true,
+      message: 'Wenn ein Konto existiert, wird ein Code verschickt.',
+    })
   } catch {
-    return NextResponse.json({ ok: true, message: 'Wenn ein Konto existiert, wird ein Code verschickt.' })
+    return NextResponse.json({
+      ok: true,
+      message: 'Wenn ein Konto existiert, wird ein Code verschickt.',
+    })
   }
 }

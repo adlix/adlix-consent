@@ -45,8 +45,8 @@ export default function ForgotPasswordPage() {
             <>
               <h1 className="text-xl font-semibold mb-4">E-Mail verschickt</h1>
               <p className="text-gray-600 mb-6">
-                Falls ein Konto mit <strong>{email}</strong> existiert, haben wir eine E-Mail mit einem
-                Link zum Zurücksetzen des Passworts geschickt.
+                Falls ein Konto mit <strong>{email}</strong> existiert, haben wir eine E-Mail mit
+                einem Link zum Zurücksetzen des Passworts geschickt.
               </p>
               <Link
                 href="/login"

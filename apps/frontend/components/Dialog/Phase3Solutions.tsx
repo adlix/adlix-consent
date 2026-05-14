@@ -18,10 +18,34 @@ interface Phase3Props {
 }
 
 const BEITRAG_OPTIONS = [
-  { type: 'idea' as const, emoji: '💡', label: 'Idee', hint: 'Lösungsvorschlag einbringen', needsText: true },
-  { type: 'question' as const, emoji: '❓', label: 'Frage', hint: 'Klärungsbedarf benennen', needsText: true },
-  { type: 'support' as const, emoji: '➕', label: 'Unterstützung', hint: 'Bestehende Idee unterstützen', needsText: false },
-  { type: 'passe' as const, emoji: '⏭️', label: 'Passe', hint: 'Keinen Beitrag in dieser Runde', needsText: false },
+  {
+    type: 'idea' as const,
+    emoji: '💡',
+    label: 'Idee',
+    hint: 'Lösungsvorschlag einbringen',
+    needsText: true,
+  },
+  {
+    type: 'question' as const,
+    emoji: '❓',
+    label: 'Frage',
+    hint: 'Klärungsbedarf benennen',
+    needsText: true,
+  },
+  {
+    type: 'support' as const,
+    emoji: '➕',
+    label: 'Unterstützung',
+    hint: 'Bestehende Idee unterstützen',
+    needsText: false,
+  },
+  {
+    type: 'passe' as const,
+    emoji: '⏭️',
+    label: 'Passe',
+    hint: 'Keinen Beitrag in dieser Runde',
+    needsText: false,
+  },
 ]
 
 export default function Phase3Solutions({
@@ -31,7 +55,9 @@ export default function Phase3Solutions({
   onAddBeitrag,
   onNext,
 }: Phase3Props) {
-  const [selectedType, setSelectedType] = useState<'idea' | 'question' | 'support' | 'passe' | null>(null)
+  const [selectedType, setSelectedType] = useState<
+    'idea' | 'question' | 'support' | 'passe' | null
+  >(null)
   const [content, setContent] = useState('')
   const [saving, setSaving] = useState(false)
 
@@ -58,7 +84,9 @@ export default function Phase3Solutions({
 
       {existingBeitraege.length > 0 && (
         <div className="space-y-2">
-          <p className="text-sm font-medium text-gray-700">Bisherige Beiträge ({existingBeitraege.length})</p>
+          <p className="text-sm font-medium text-gray-700">
+            Bisherige Beiträge ({existingBeitraege.length})
+          </p>
           {existingBeitraege.map((b) => {
             const opt = BEITRAG_OPTIONS.find((o) => o.type === b.type)
             return (
@@ -113,7 +141,8 @@ export default function Phase3Solutions({
               onClick={handleSubmit}
               disabled={
                 saving ||
-                (!!BEITRAG_OPTIONS.find((o) => o.type === selectedType)?.needsText && !content.trim())
+                (!!BEITRAG_OPTIONS.find((o) => o.type === selectedType)?.needsText &&
+                  !content.trim())
               }
               className="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-40"
             >

@@ -251,8 +251,12 @@ function CompleteStep({ onComplete, jwt }: { onComplete: () => void; jwt?: strin
       <p className="text-gray-600 mb-8">Wir richten jetzt deinen Kreis ein…</p>
 
       <div className="bg-gray-50 p-6 rounded-lg text-left max-w-md mx-auto mb-8">
-        <p><strong>Name:</strong> {userData.name}</p>
-        <p><strong>Kreis:</strong> {circleData.name || 'wird beigetreten'}</p>
+        <p>
+          <strong>Name:</strong> {userData.name}
+        </p>
+        <p>
+          <strong>Kreis:</strong> {circleData.name || 'wird beigetreten'}
+        </p>
       </div>
 
       {error && <p className="text-red-500 text-sm mb-4">{error}</p>}

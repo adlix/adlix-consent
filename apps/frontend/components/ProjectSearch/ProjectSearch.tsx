@@ -33,9 +33,7 @@ export default function ProjectSearch({ projects, onFilterChange }: ProjectSearc
     if (searchTerm.trim()) {
       const term = searchTerm.toLowerCase()
       result = result.filter(
-        (p) =>
-          p.name.toLowerCase().includes(term) ||
-          p.description.toLowerCase().includes(term)
+        (p) => p.name.toLowerCase().includes(term) || p.description.toLowerCase().includes(term)
       )
     }
 
