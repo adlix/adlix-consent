@@ -117,3 +117,9 @@ shell-fe:
 .PHONY: shell-be
 shell-be:
 	docker exec -it consent_strapi sh
+
+# ── Seeding ───────────────────────────────────────────────────────────────────
+.PHONY: seed-abos
+seed-abos:
+	STRAPI_URL=http://localhost:1337 STRAPI_API_TOKEN=$(STRAPI_API_TOKEN) \
+	  node apps/backend/scripts/seed-abos.js

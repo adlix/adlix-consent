@@ -1,0 +1,82 @@
+{
+  "kind": "collectionType",
+  "collectionName": "abos",
+  "info": {
+    "singularName": "abo",
+    "pluralName": "abos",
+    "displayName": "Abo",
+    "description": "Abonnement-Pläne für adlix consent"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "maxLength": 100
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "price": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "currency": {
+      "type": "enumeration",
+      "enum": ["EUR", "USD", "CHF"],
+      "default": "EUR",
+      "required": true
+    },
+    "interval": {
+      "type": "enumeration",
+      "enum": ["month", "year"],
+      "default": "month",
+      "required": true
+    },
+    "stripePriceId": {
+      "type": "string",
+      "private": true
+    },
+    "planKey": {
+      "type": "enumeration",
+      "enum": ["free", "pro", "enterprise"],
+      "required": true
+    },
+    "features": {
+      "type": "json"
+    },
+    "maxCircles": {
+      "type": "integer",
+      "min": 0
+    },
+    "maxVorhaben": {
+      "type": "integer",
+      "min": 0
+    },
+    "hasKI": {
+      "type": "boolean",
+      "default": false
+    },
+    "hasAnonymization": {
+      "type": "boolean",
+      "default": false
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}
