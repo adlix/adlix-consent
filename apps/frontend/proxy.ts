@@ -21,7 +21,7 @@ function isPublic(pathname: string): boolean {
   )
 }
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
 
   if (isPublic(pathname)) return NextResponse.next()
