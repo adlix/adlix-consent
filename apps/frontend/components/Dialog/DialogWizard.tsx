@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { strapi } from '../../lib/strapi'
 import Phase1Understand from './Phase1Understand'
 import Phase2Validate from './Phase2Validate'
@@ -54,12 +54,12 @@ interface DialogWizardProps {
 }
 
 const PHASE_LABELS = [
-  { num: 1, label: 'Verstehen', icon: '🔍' },
-  { num: 2, label: 'Validieren', icon: '⚖️' },
-  { num: 3, label: 'Lösungen', icon: '💡' },
-  { num: 4, label: 'Synthese', icon: '🔄' },
-  { num: 5, label: 'Präsentation', icon: '📋' },
-  { num: 6, label: 'Eskalation', icon: '🚨' },
+  { num: 1, label: 'Verstehen', icon: '🔍', color: 'bg-blue-500' },
+  { num: 2, label: 'Validieren', icon: '⚖️', color: 'bg-indigo-500' },
+  { num: 3, label: 'Lösungen', icon: '💡', color: 'bg-amber-500' },
+  { num: 4, label: 'Synthese', icon: '🔄', color: 'bg-violet-500' },
+  { num: 5, label: 'Präsentation', icon: '📋', color: 'bg-teal-500' },
+  { num: 6, label: 'Eskalation', icon: '🚨', color: 'bg-red-500' },
 ]
 
 export default function DialogWizard({
@@ -79,12 +79,7 @@ export default function DialogWizard({
   const [error, setError] = useState('')
   const [adaptedProposal, setAdaptedProposal] = useState(originalProposal)
 
-  useEffect(() => {
-    strapi.setJwt(jwt)
-    initDialog()
-  }, [jwt])
-
-  const initDialog = async () => {
+  const initDialog = useCallback(async () => {
     setLoading(true)
     setError('')
     try {
@@ -96,12 +91,18 @@ export default function DialogWizard({
         const created = await strapi.createDialog({ objection: objectionId, project: projectId })
         setDialog((created as { data: DialogData }).data)
       }
-    } catch (e) {
+    } catch {
       setError('Dialog konnte nicht geladen werden.')
     } finally {
       setLoading(false)
     }
-  }
+  }, [objectionId, projectId])
+
+  useEffect(() => {
+    strapi.setJwt(jwt)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    initDialog()
+  }, [jwt, initDialog])
 
   const advance = async () => {
     if (!dialog) return
@@ -136,17 +137,19 @@ export default function DialogWizard({
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-16 text-gray-500">
-        <span className="animate-spin mr-2">⏳</span> Dialog wird geladen…
+      <div className="flex flex-col items-center justify-center py-16 gap-3 text-gray-500">
+        <div className="w-8 h-8 rounded-full border-2 border-blue-400 border-t-transparent animate-spin" />
+        <p className="text-sm">Dialog wird geladen…</p>
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
-        {error}
-        <button onClick={initDialog} className="ml-3 underline">
+      <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-red-700 text-sm flex items-center gap-3">
+        <span className="text-lg">⚠️</span>
+        <span className="flex-1">{error}</span>
+        <button onClick={initDialog} className="text-red-700 underline font-medium shrink-0">
           Erneut versuchen
         </button>
       </div>
@@ -162,32 +165,45 @@ export default function DialogWizard({
   return (
     <div className="max-w-xl mx-auto">
       {/* Progress indicator */}
-      <div className="mb-8">
-        <div className="flex justify-between mb-2">
-          {PHASE_LABELS.map((p) => (
-            <div
-              key={p.num}
-              className={`flex flex-col items-center text-center flex-1 ${
-                p.num < currentPhaseNum
-                  ? 'text-green-600'
-                  : p.num === currentPhaseNum
-                    ? 'text-blue-600'
-                    : 'text-gray-300'
-              }`}
-            >
-              <span className="text-lg">{p.num < currentPhaseNum ? '✅' : p.icon}</span>
-              <span className="text-xs mt-1 hidden sm:block">{p.label}</span>
-            </div>
-          ))}
+      <div className="mb-6 bg-white rounded-xl border shadow-sm p-4">
+        <div className="flex justify-between mb-3">
+          {PHASE_LABELS.map((p) => {
+            const isDone = p.num < currentPhaseNum
+            const isActive = p.num === currentPhaseNum
+            return (
+              <div
+                key={p.num}
+                className={`flex flex-col items-center text-center flex-1 transition-all ${
+                  isDone ? 'opacity-100' : isActive ? 'opacity-100' : 'opacity-40'
+                }`}
+              >
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm mb-1 transition-all ${
+                    isDone
+                      ? 'bg-emerald-100 text-emerald-700'
+                      : isActive
+                        ? `${p.color} text-white shadow-md scale-110`
+                        : 'bg-gray-100 text-gray-400'
+                  }`}
+                >
+                  {isDone ? '✓' : p.icon}
+                </div>
+                <span className="text-xs font-medium hidden sm:block">{p.label}</span>
+              </div>
+            )
+          })}
         </div>
-        <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+        <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
           <div
-            className="h-full bg-blue-500 transition-all duration-500"
+            className="h-full bg-gradient-to-r from-blue-400 to-blue-600 transition-all duration-700 ease-out"
             style={{ width: `${((currentPhaseNum - 1) / 5) * 100}%` }}
           />
         </div>
-        <p className="text-xs text-gray-500 mt-2 text-center">
-          Phase {currentPhaseNum} von 6 · {PHASE_LABELS[currentPhaseNum - 1]?.label}
+        <p className="text-xs text-gray-400 mt-2 text-center">
+          Phase {currentPhaseNum} von 6 ·{' '}
+          <span className="font-medium text-gray-600">
+            {PHASE_LABELS[currentPhaseNum - 1]?.label}
+          </span>
         </p>
       </div>
 

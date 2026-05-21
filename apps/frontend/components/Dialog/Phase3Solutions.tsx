@@ -89,15 +89,27 @@ export default function Phase3Solutions({
           </p>
           {existingBeitraege.map((b) => {
             const opt = BEITRAG_OPTIONS.find((o) => o.type === b.type)
+            const bgMap: Record<string, string> = {
+              idea: 'bg-amber-50 border-amber-200',
+              question: 'bg-blue-50 border-blue-200',
+              support: 'bg-emerald-50 border-emerald-200',
+              passe: 'bg-gray-50 border-gray-200',
+            }
             return (
-              <div key={b.id} className="flex items-start gap-3 bg-gray-50 rounded-lg p-3">
-                <span className="text-lg">{opt?.emoji}</span>
+              <div
+                key={b.id}
+                className={`flex items-start gap-3 rounded-xl p-3 border ${bgMap[b.type] || 'bg-gray-50 border-gray-200'}`}
+              >
+                <span className="text-xl">{opt?.emoji}</span>
                 <div className="flex-1 min-w-0">
                   <p className="text-xs text-gray-500 mb-0.5">
-                    {b.user?.username || 'Unbekannt'} · {opt?.label}
+                    <span className="font-medium">{b.user?.username || 'Unbekannt'}</span> ·{' '}
+                    {opt?.label}
                   </p>
-                  {b.content && <p className="text-sm text-gray-800">{b.content}</p>}
-                  {!b.content && <p className="text-sm text-gray-400 italic">{opt?.hint}</p>}
+                  {b.content && (
+                    <p className="text-sm text-gray-800 leading-relaxed">{b.content}</p>
+                  )}
+                  {!b.content && <p className="text-xs text-gray-400 italic">{opt?.hint}</p>}
                 </div>
               </div>
             )
@@ -107,32 +119,45 @@ export default function Phase3Solutions({
 
       {!myBeitrag ? (
         <div className="space-y-4">
-          <p className="text-sm font-medium">Dein Beitrag</p>
+          <p className="text-sm font-semibold text-gray-700">Dein Beitrag</p>
           <div className="grid grid-cols-2 gap-3">
             {BEITRAG_OPTIONS.map((opt) => (
               <button
                 key={opt.type}
                 onClick={() => setSelectedType(opt.type)}
-                className={`p-3 rounded-lg border-2 text-left transition-all ${
+                className={`p-4 rounded-xl border-2 text-left transition-all group ${
                   selectedType === opt.type
-                    ? 'border-blue-500 bg-blue-50'
-                    : 'border-gray-200 hover:border-blue-300'
+                    ? 'border-blue-500 bg-blue-50 shadow-sm'
+                    : 'border-gray-200 hover:border-blue-300 hover:shadow-sm'
                 }`}
               >
-                <p className="text-xl mb-1">{opt.emoji}</p>
-                <p className="font-medium text-sm">{opt.label}</p>
-                <p className="text-xs text-gray-500">{opt.hint}</p>
+                <p className="text-2xl mb-1.5 group-hover:scale-110 transition-transform origin-left">
+                  {opt.emoji}
+                </p>
+                <p className="font-semibold text-sm">{opt.label}</p>
+                <p className="text-xs text-gray-400 mt-0.5">{opt.hint}</p>
               </button>
             ))}
+          </div>
+
+          {/* Regel-Hinweis */}
+          <div className="text-xs text-gray-400 bg-gray-50 rounded-lg p-3 leading-relaxed">
+            💫 Keine Kritik an anderen Ideen in dieser Phase. Nur Beiträge sammeln. Einreicher ist
+            Zuhörer, nicht Verteidiger.
           </div>
 
           {selectedType && BEITRAG_OPTIONS.find((o) => o.type === selectedType)?.needsText && (
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder={selectedType === 'idea' ? 'Was schlägst du vor?' : 'Was ist unklar?'}
+              placeholder={
+                selectedType === 'idea'
+                  ? 'Was schlägst du vor? Wie könnte der Vorschlag angepasst werden?'
+                  : 'Was ist noch unklar?'
+              }
               rows={3}
-              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 resize-none text-sm"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none text-sm transition-shadow"
+              autoFocus
             />
           )}
 
@@ -144,15 +169,16 @@ export default function Phase3Solutions({
                 (!!BEITRAG_OPTIONS.find((o) => o.type === selectedType)?.needsText &&
                   !content.trim())
               }
-              className="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-40"
+              className="w-full py-3 bg-blue-600 text-white rounded-xl font-semibold text-sm hover:bg-blue-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {saving ? 'Wird gespeichert…' : 'Beitrag einreichen'}
             </button>
           )}
         </div>
       ) : (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-sm text-green-800">
-          Dein Beitrag wurde eingereicht.
+        <div className="flex items-center gap-3 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-sm text-emerald-800">
+          <span className="text-xl">✅</span>
+          <span>Dein Beitrag wurde eingereicht. Warte auf die anderen Kreismitglieder.</span>
         </div>
       )}
 

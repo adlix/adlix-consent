@@ -18,6 +18,36 @@
   --gray-700: #374151;
   --gray-800: #1f2937;
   --gray-900: #111827;
+
+  /* Kreiskultur / Consent Design-Tokens */
+  --forest: #2d5016;
+  --forest-mid: #3d6b20;
+  --sage: #5a7a3a;
+  --sage-light: #8aab5e;
+  --sage-pale: #f0f5e8;
+  --amber-warm: #d97706;
+  --amber-pale: #fffbeb;
+  --earth: #92400e;
+  --earth-pale: #fef3c7;
+
+  /* Consent-Signal-Farben */
+  --consent-bg: #f0fdf4;
+  --consent-border: #86efac;
+  --consent-text: #15803d;
+  --minor-bg: #fffbeb;
+  --minor-border: #fcd34d;
+  --minor-text: #92400e;
+  --major-bg: #fff1f2;
+  --major-border: #fca5a5;
+  --major-text: #b91c1c;
+  --abstain-bg: #f8fafc;
+  --abstain-border: #cbd5e1;
+  --abstain-text: #475569;
+
+  /* Proposal-Block */
+  --proposal-bg: #f7f9f4;
+  --proposal-border: #c3d5a8;
+  --proposal-accent: #5a7a3a;
 }
 
 /* Dark Mode */

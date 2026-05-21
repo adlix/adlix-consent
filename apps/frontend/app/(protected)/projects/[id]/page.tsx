@@ -8,6 +8,7 @@ import dynamic from 'next/dynamic'
 import { strapi } from '@/lib/strapi'
 import OutcomeForm from '@/components/Outcome/OutcomeForm'
 import AuditTrail from '@/components/AuditTrail/AuditTrail'
+import ConsentVotePanel from '@/components/ConsentVote/ConsentVotePanel'
 
 const AbstainReasonModal = dynamic(() => import('@/components/AbstainReason/AbstainReasonModal'), {
   ssr: false,
@@ -122,6 +123,7 @@ export default function ProjectDetailPage() {
 
   const [userVote, setUserVote] = useState<ConsentChoice | null>(null)
   const [voteReason, setVoteReason] = useState('')
+  const [allowChangeVote, setAllowChangeVote] = useState(false)
   const [showQuestionForm, setShowQuestionForm] = useState(false)
   const [showReactionForm, setShowReactionForm] = useState(false)
   const [showObjectionForm, setShowObjectionForm] = useState(false)
@@ -513,42 +515,68 @@ export default function ProjectDetailPage() {
           {/* Consent Flow Progress */}
           <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
             <h2 className="text-lg font-semibold mb-4">Consent-Prozess</h2>
+            {/* Only show 'integration' phase node if there actually are objections or we're in/past integration */}
             <div className="flex items-center justify-between overflow-x-auto pb-2">
-              {flowPhases.map((phase, index) => {
-                const isCompleted = index < currentPhaseIndex
-                const isActive = index === currentPhaseIndex
-                return (
-                  <div key={phase.key} className="flex items-center min-w-0">
-                    <div className="flex flex-col items-center">
-                      <div
-                        className={`w-12 h-12 rounded-full flex items-center justify-center text-xl mb-2 shrink-0 transition-colors ${
-                          isCompleted
-                            ? 'bg-green-500 text-white'
-                            : isActive
-                              ? 'bg-blue-600 text-white ring-4 ring-blue-200'
-                              : 'bg-gray-200 text-gray-500'
-                        }`}
-                      >
-                        {phase.icon}
+              {flowPhases
+                .filter((p) => {
+                  if (p.key === 'integration') {
+                    const hasObjections = (selectedRound?.objections?.length ?? 0) > 0
+                    const inOrPastIntegration =
+                      currentPhaseIndex >= phaseOrder.indexOf('integration')
+                    return hasObjections || inOrPastIntegration
+                  }
+                  return true
+                })
+                .map((phase, index, visiblePhases) => {
+                  const originalIndex = flowPhases.indexOf(phase)
+                  const isCompleted = originalIndex < currentPhaseIndex
+                  const isActive = originalIndex === currentPhaseIndex
+                  return (
+                    <div key={phase.key} className="flex items-center min-w-0">
+                      <div className="flex flex-col items-center">
+                        <div
+                          className={`w-10 h-10 rounded-full flex items-center justify-center text-lg mb-1.5 shrink-0 transition-all duration-300 ${
+                            isCompleted
+                              ? 'bg-emerald-500 text-white shadow-sm'
+                              : isActive
+                                ? 'bg-blue-600 text-white ring-4 ring-blue-100 shadow-md scale-110'
+                                : 'bg-gray-100 text-gray-400'
+                          }`}
+                        >
+                          {isCompleted ? '✓' : phase.icon}
+                        </div>
+                        <div
+                          className={`text-xs font-medium text-center max-w-[72px] leading-tight ${
+                            isActive
+                              ? 'text-blue-600'
+                              : isCompleted
+                                ? 'text-emerald-600'
+                                : 'text-gray-400'
+                          }`}
+                        >
+                          {phase.label}
+                        </div>
                       </div>
-                      <div
-                        className={`text-xs font-medium text-center max-w-[80px] ${isActive ? 'text-blue-600' : ''}`}
-                      >
-                        {phase.label}
-                      </div>
+                      {index < visiblePhases.length - 1 && (
+                        <div
+                          className={`w-5 sm:w-10 h-0.5 mx-1 sm:mx-2 shrink-0 transition-colors duration-300 ${
+                            isCompleted ? 'bg-emerald-400' : 'bg-gray-200'
+                          }`}
+                        />
+                      )}
                     </div>
-                    {index < flowPhases.length - 1 && (
-                      <div
-                        className={`w-6 sm:w-12 h-0.5 mx-1 sm:mx-2 shrink-0 transition-colors ${isCompleted ? 'bg-green-500' : 'bg-gray-200'}`}
-                      />
-                    )}
-                  </div>
-                )
-              })}
+                  )
+                })}
             </div>
             {currentPhase && (
-              <div className="mt-4 p-3 bg-blue-50 rounded-lg text-sm text-blue-800">
-                💡 <strong>{currentPhase.label}:</strong> {currentPhase.hint}
+              <div
+                className="mt-4 p-3 rounded-xl text-sm"
+                style={{ background: 'var(--sage-pale)', color: 'var(--forest-mid)' }}
+              >
+                <span className="font-semibold">
+                  {currentPhase.icon} {currentPhase.label}:
+                </span>{' '}
+                {currentPhase.hint}
               </div>
             )}
 
@@ -617,10 +645,21 @@ export default function ProjectDetailPage() {
                 </span>
               </div>
 
-              {/* Proposal */}
-              <div className="bg-gray-50 rounded-lg p-4 mb-6">
-                <h3 className="text-sm font-medium text-gray-500 mb-2">Vorschlag</h3>
-                <p className="text-gray-900">{selectedRound.proposal}</p>
+              {/* Proposal — das Herzstück des Prozesses */}
+              <div
+                className="rounded-xl p-5 mb-6 border-l-4"
+                style={{ background: 'var(--proposal-bg)', borderColor: 'var(--proposal-accent)' }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-base">📜</span>
+                  <h3
+                    className="text-xs font-semibold uppercase tracking-widest"
+                    style={{ color: 'var(--proposal-accent)' }}
+                  >
+                    Vorschlag
+                  </h3>
+                </div>
+                <p className="text-gray-900 leading-relaxed text-base">{selectedRound.proposal}</p>
               </div>
 
               {/* Information Phase — Questions */}
@@ -763,85 +802,83 @@ export default function ProjectDetailPage() {
                 </div>
               )}
 
-              {/* Voting Phase — Consent Vote (4 options) */}
+              {/* Voting Phase — Consent Vote (via ConsentVotePanel) */}
               {selectedRound.status === 'voting' && (
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold mb-2">Konsent-Abstimmung</h3>
-                  <p className="text-sm text-gray-500 mb-4">
-                    Konsent bedeutet: Niemand hat einen schwerwiegenden, begründeten Einwand.
-                  </p>
 
-                  {/* Reminder for non-voters */}
-                  {nonVotersCount > 0 && (
-                    <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
-                      ⏰ {nonVotersCount} {nonVotersCount === 1 ? 'Person hat' : 'Personen haben'}{' '}
-                      noch nicht abgestimmt.
-                    </div>
-                  )}
-
-                  {/* Vote Buttons — 4 consent options */}
-                  {!userHasVoted && !userVote && (
-                    <div className="grid grid-cols-2 gap-3 mb-4">
-                      {(
-                        Object.entries(choiceLabels) as [
-                          ConsentChoice,
-                          typeof choiceLabels.consent,
-                        ][]
-                      ).map(([key, { emoji, label, color }]) => (
-                        <button
-                          key={key}
-                          onClick={() => setUserVote(key)}
-                          className={`py-4 px-4 rounded-xl font-medium transition-all ${color}`}
-                        >
-                          <div className="text-2xl mb-1">{emoji}</div>
-                          <div className="text-sm">{label}</div>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Reason field after choice */}
-                  {userVote && userVote !== 'abstain' && (
-                    <div className="mb-4 p-4 bg-gray-50 rounded-lg">
-                      <p className="text-sm font-medium mb-2">
-                        Du wählst: {choiceLabels[userVote].emoji} {choiceLabels[userVote].label}
-                      </p>
-                      <textarea
-                        value={voteReason}
-                        onChange={(e) => setVoteReason(e.target.value)}
-                        className="w-full p-3 border rounded-lg mb-3"
-                        rows={2}
-                        placeholder={
-                          userVote === 'major_objection'
-                            ? 'Begründung (Pflicht bei schwerwiegendem Einwand)...'
-                            : 'Optionale Begründung...'
+                  <ConsentVotePanel
+                    votes={selectedRound.votes}
+                    userHasVoted={!!userHasVoted && !allowChangeVote}
+                    participantCount={participantCount}
+                    submitting={submitting}
+                    onVote={async (choice, reason) => {
+                      setSubmitting(true)
+                      strapi.setJwt(jwt || null)
+                      try {
+                        await strapi.castVote(selectedRound!.id, choice, Number(userId))
+                        if (
+                          reason &&
+                          (choice === 'minor_objection' || choice === 'major_objection')
+                        ) {
+                          await strapi.createObjection({
+                            reason,
+                            severity: choice === 'major_objection' ? 'major' : 'minor',
+                            round: selectedRound!.id,
+                            user: Number(userId),
+                          })
                         }
-                        required={userVote === 'major_objection'}
-                      />
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => handleVote(userVote)}
-                          disabled={
-                            submitting || (userVote === 'major_objection' && !voteReason.trim())
-                          }
-                          className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50"
-                        >
-                          {submitting ? 'Sende…' : 'Abstimmung bestätigen'}
-                        </button>
-                        <button
-                          onClick={() => {
-                            setUserVote(null)
-                            setVoteReason('')
-                          }}
-                          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg"
-                        >
-                          Zurück
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                        setUserVote(choice)
+                        setAllowChangeVote(false)
+                        const roundsRes = await strapi.getRounds(params.id)
+                        const roundsData = (roundsRes.data as any[]) || []
+                        const formatted = roundsData.map((r: any) => ({
+                          id: r.id,
+                          roundNumber: r.roundNumber,
+                          proposal: r.proposal,
+                          status: r.status,
+                          startDate: r.startDate,
+                          endDate: r.endDate,
+                          votes: (r.votes || []).map((v: any) => ({
+                            id: v.id,
+                            choice: v.choice,
+                            reason: v.reason,
+                            user: v.user,
+                          })),
+                          objections: (r.objections || []).map((o: any) => ({
+                            id: o.id,
+                            reason: o.reason,
+                            severity: o.severity,
+                            user: o.user,
+                            status: o.status || 'open',
+                          })),
+                          comments: (r.comments || []).map((c: any) => ({
+                            id: c.id,
+                            content: c.content,
+                            type: c.type || 'question',
+                            user: c.user,
+                            createdAt: c.createdAt,
+                          })),
+                        }))
+                        setRounds(formatted)
+                        setSelectedRound(
+                          formatted.find((r) => r.id === selectedRound!.id) ||
+                            formatted[formatted.length - 1]
+                        )
+                      } catch (_) {
+                        setError('Abstimmung fehlgeschlagen.')
+                      } finally {
+                        setSubmitting(false)
+                      }
+                    }}
+                    onAbstain={() => {
+                      setUserVote('abstain')
+                      setShowAbstainModal(true)
+                    }}
+                    onChangeVote={() => setAllowChangeVote(true)}
+                  />
 
-                  {/* Abstain → modal */}
+                  {/* Abstain modal */}
                   {userVote === 'abstain' && showAbstainModal && (
                     <Suspense fallback={null}>
                       <AbstainReasonModal
@@ -853,123 +890,6 @@ export default function ProjectDetailPage() {
                         }}
                       />
                     </Suspense>
-                  )}
-
-                  {/* Already voted — show current vote + change option */}
-                  {userHasVoted && !userVote && (
-                    <div className="p-3 bg-blue-50 rounded-lg text-sm text-blue-800">
-                      ✅ Du hast bereits abgestimmt.{' '}
-                      <button
-                        onClick={() => setUserVote(null)}
-                        className="underline hover:text-blue-900"
-                      >
-                        Stimme ändern
-                      </button>
-                    </div>
-                  )}
-
-                  {/* Vote Results */}
-                  {selectedRound.votes.length > 0 && (
-                    <div className="mt-6">
-                      <h4 className="text-sm font-medium text-gray-500 mb-2">
-                        Bisherige Stimmen ({votesCount}/{participantCount})
-                      </h4>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                        {(
-                          [
-                            'consent',
-                            'minor_objection',
-                            'major_objection',
-                            'abstain',
-                          ] as ConsentChoice[]
-                        ).map((key) => {
-                          const count = selectedRound.votes.filter((v) => v.choice === key).length
-                          return (
-                            <div key={key} className="p-3 rounded-lg bg-gray-50 text-center">
-                              <div className="text-lg">{choiceLabels[key].emoji}</div>
-                              <div className="text-xl font-bold">{count}</div>
-                              <div className="text-xs text-gray-500">{choiceLabels[key].label}</div>
-                            </div>
-                          )
-                        })}
-                      </div>
-
-                      {/* Individual votes with reasons */}
-                      <div className="mt-3 space-y-2">
-                        {selectedRound.votes.map((v) => (
-                          <div key={v.id} className="flex items-center gap-2 text-sm">
-                            <span>{choiceLabels[v.choice]?.emoji}</span>
-                            <span className="font-medium">{v.user?.username || 'Anonym'}</span>
-                            {v.reason && <span className="text-gray-500">— {v.reason}</span>}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Objection Form */}
-                  {(userVote === 'minor_objection' || userVote === 'major_objection') &&
-                    !userHasVoted && (
-                      <div className="mt-4">
-                        <button
-                          onClick={() => setShowObjectionForm(!showObjectionForm)}
-                          className="px-4 py-2 bg-yellow-600 text-white rounded-lg font-medium hover:bg-yellow-700"
-                        >
-                          ✋ Einwand begründen
-                        </button>
-                      </div>
-                    )}
-
-                  {showObjectionForm && (
-                    <form
-                      onSubmit={handleSubmitObjection}
-                      className="mt-4 p-4 bg-yellow-5 rounded-lg border border-yellow-200"
-                    >
-                      <div className="mb-3">
-                        <label className="block text-sm font-medium mb-1">Begründung</label>
-                        <textarea
-                          value={objection.reason}
-                          onChange={(e) => setObjection({ ...objection, reason: e.target.value })}
-                          className="w-full p-3 border rounded-lg"
-                          rows={3}
-                          placeholder="Warum erhebst du diesen Einwand?"
-                          required
-                        />
-                      </div>
-                      <div className="mb-4">
-                        <label className="block text-sm font-medium mb-1">Schweregrad</label>
-                        <select
-                          value={objection.severity}
-                          onChange={(e) =>
-                            setObjection({
-                              ...objection,
-                              severity: e.target.value as 'minor' | 'major' | 'blocking',
-                            })
-                          }
-                          className="w-full p-3 border rounded-lg"
-                        >
-                          <option value="minor">Geringfügig</option>
-                          <option value="major">Erheblich</option>
-                          <option value="blocking">Blockierend</option>
-                        </select>
-                      </div>
-                      <div className="flex gap-2">
-                        <button
-                          type="submit"
-                          className="px-4 py-2 bg-yellow-600 text-white rounded-lg font-medium"
-                          disabled={submitting}
-                        >
-                          {submitting ? 'Sende…' : 'Einreichen'}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setShowObjectionForm(false)}
-                          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg"
-                        >
-                          Abbrechen
-                        </button>
-                      </div>
-                    </form>
                   )}
                 </div>
               )}
