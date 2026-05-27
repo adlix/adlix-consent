@@ -121,9 +121,11 @@ class StrapiClient {
   }
 
   async transitionRoundPhase(roundId: number | string, targetPhase?: string) {
+    const body: Record<string, string> = {}
+    if (targetPhase) body.targetPhase = targetPhase
     return this.request<unknown>(`/rounds/${roundId}/transition`, {
       method: 'POST',
-      body: JSON.stringify({ targetPhase }),
+      body: JSON.stringify(body),
     })
   }
 

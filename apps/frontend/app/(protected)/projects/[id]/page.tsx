@@ -9,6 +9,8 @@ import { strapi } from '@/lib/strapi'
 import OutcomeForm from '@/components/Outcome/OutcomeForm'
 import AuditTrail from '@/components/AuditTrail/AuditTrail'
 import ConsentVotePanel from '@/components/ConsentVote/ConsentVotePanel'
+import AnonymousConcernsView from '@/components/AnonymousConcerns/AnonymousConcernsView'
+import AbstentionAnalysisView from '@/components/AbstentionAnalysis/AbstentionAnalysisView'
 
 const AbstainReasonModal = dynamic(() => import('@/components/AbstainReason/AbstainReasonModal'), {
   ssr: false,
@@ -341,14 +343,28 @@ export default function ProjectDetailPage() {
     }
   }
 
-  const handleOutcomeSubmit = (data: {
+  const handleOutcomeSubmit = async (data: {
     outcome: string
     nextSteps: string
     evaluationDate: string
     status: string
   }) => {
-    setOutcomeData(data)
-    setOutcomeSubmitted(true)
+    strapi.setJwt(jwt || null)
+    try {
+      await strapi.setOutcome(project!.id, {
+        outcome: data.outcome,
+        nextSteps: data.nextSteps,
+        evaluationDate: data.evaluationDate,
+        status: 'beschlossen',
+        minorObjectionsLog: selectedRound?.objections
+          ?.filter((o) => o.severity === 'minor')
+          .map((o) => ({ user: o.user?.username || 'Anonym', reason: o.reason })),
+      })
+      setOutcomeData(data)
+      setOutcomeSubmitted(true)
+    } catch (_) {
+      setError('Ergebnis konnte nicht gespeichert werden.')
+    }
   }
 
   const handleSubmitQuestion = async (e: React.FormEvent) => {
@@ -802,6 +818,119 @@ export default function ProjectDetailPage() {
                 </div>
               )}
 
+              {/* Adjustment Phase — Proposal Edit */}
+              {selectedRound.status === 'adjustment' && (
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold mb-2">Vorschlag anpassen</h3>
+                  <p className="text-sm text-gray-500 mb-4">
+                    {String(userId) === String(project?.owner?.id)
+                      ? 'Basierend auf den Reaktionen des Kreises kannst du den Vorschlag überarbeiten. Änderungen werden versioniert.'
+                      : 'Der Einreicher überarbeitet den Vorschlag auf Basis der Rückmeldungen.'}
+                  </p>
+
+                  {/* Reaktionen aus der vorherigen Phase */}
+                  {selectedRound.comments
+                    .filter((c) => c.type === 'reaction' || c.type === 'perspective')
+                    .length > 0 && (
+                    <details className="mb-4 bg-purple-50 border border-purple-200 rounded-xl">
+                      <summary className="px-4 py-3 cursor-pointer text-sm font-medium text-purple-800 hover:text-purple-900">
+                        💬 Reaktionen anzeigen ({selectedRound.comments.filter((c) => c.type === 'reaction' || c.type === 'perspective').length})
+                      </summary>
+                      <div className="px-4 pb-3 space-y-2">
+                        {selectedRound.comments
+                          .filter((c) => c.type === 'reaction' || c.type === 'perspective')
+                          .map((cmt) => (
+                            <div key={cmt.id} className="p-3 rounded-lg bg-white border border-purple-100">
+                              <span className="text-xs text-gray-500">{cmt.user?.username}:</span>
+                              <p className="text-sm text-gray-700">{cmt.content}</p>
+                            </div>
+                          ))}
+                      </div>
+                    </details>
+                  )}
+
+                  {String(userId) === String(project?.owner?.id) ? (
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Ursprünglicher Vorschlag</label>
+                        <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-500 line-through opacity-60">
+                          {selectedRound.proposal}
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Angepasster Vorschlag</label>
+                        <textarea
+                          defaultValue={selectedRound.proposal}
+                          id="adjusted-proposal"
+                          rows={4}
+                          className="w-full px-4 py-3 border border-blue-300 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none text-sm"
+                          placeholder="Überarbeite den Vorschlag basierend auf den Reaktionen…"
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-500">
+                      ⏳ Warte auf die Anpassung des Vorschlags durch den Einreicher.
+                    </div>
+                  )}
+
+                  {/* Einreicher-Buttons */}
+                  {String(userId) === String(project?.owner?.id) && (
+                    <div className="mt-4 flex gap-3">
+                      <button
+                        onClick={async () => {
+                          const input = document.getElementById('adjusted-proposal') as HTMLTextAreaElement
+                          if (!input?.value.trim()) return
+                          setAdvancing(true)
+                          strapi.setJwt(jwt || null)
+                          try {
+                            // Save adapted proposal to round via API
+                            const apiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
+                            const putRes = await fetch(`${apiUrl}/api/rounds/${selectedRound!.id}`, {
+                              method: 'PUT',
+                              headers: {
+                                'Content-Type': 'application/json',
+                                ...(jwt ? { Authorization: `Bearer ${jwt}` } : {}),
+                              },
+                              body: JSON.stringify({ data: { proposal: input.value.trim() } }),
+                            })
+                            if (!putRes.ok) throw new Error('Save failed')
+                            // Then advance phase to voting
+                            await strapi.transitionRoundPhase(selectedRound!.id)
+                            // Reload rounds
+                            const roundsRes = await strapi.getRounds(params.id)
+                            const roundsData = (roundsRes.data as any[]) || []
+                            const remapRound = (r: any) => ({
+                              id: r.id,
+                              roundNumber: r.roundNumber,
+                              proposal: r.proposal,
+                              status: r.status,
+                              startDate: r.startDate,
+                              endDate: r.endDate,
+                              votes: (r.votes || []).map((v: any) => ({ id: v.id, choice: v.choice, reason: v.reason, user: v.user })),
+                              objections: (r.objections || []).map((o: any) => ({ id: o.id, reason: o.reason, severity: o.severity, user: o.user, status: o.status || 'open' })),
+                              comments: (r.comments || []).map((c: any) => ({ id: c.id, content: c.content, type: c.type || 'question', user: c.user, createdAt: c.createdAt })),
+                            })
+                            setRounds(roundsData.map(remapRound))
+                            setSelectedRound(
+                              remapRound(roundsData.find((r: any) => r.id === selectedRound!.id) || roundsData[roundsData.length - 1])
+                            )
+                          } catch (_) {
+                            setError('Vorschlag konnte nicht gespeichert werden.')
+                          } finally {
+                            setAdvancing(false)
+                          }
+                        }}
+                        disabled={advancing}
+                        className="px-6 py-2.5 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50 text-sm"
+                      >
+                        {advancing ? 'Speichere…' : '💾 Vorschlag speichern & zur Abstimmung'}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* Voting Phase — Consent Vote (via ConsentVotePanel) */}
               {selectedRound.status === 'voting' && (
                 <div className="mb-6">
@@ -810,6 +939,7 @@ export default function ProjectDetailPage() {
                   <ConsentVotePanel
                     votes={selectedRound.votes}
                     userHasVoted={!!userHasVoted && !allowChangeVote}
+                    currentUserId={Number(userId)}
                     participantCount={participantCount}
                     submitting={submitting}
                     onVote={async (choice, reason) => {
@@ -891,6 +1021,92 @@ export default function ProjectDetailPage() {
                       />
                     </Suspense>
                   )}
+
+                  {/* Auto-Transition: Alle Stimmen drin - keine Major Objection */}
+                  {participantCount > 0 && selectedRound.votes.length >= participantCount && (
+                    <div className="mt-4 p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+                      <div className="flex items-center gap-3 mb-3">
+                        <span className="text-2xl">✅</span>
+                        <div>
+                          <p className="font-semibold text-emerald-800 text-sm">
+                            Alle {participantCount} Teilnehmer haben abgestimmt.
+                          </p>
+                          {selectedRound.objections.some(
+                            (o) => o.severity === 'major' || o.severity === 'blocking'
+                          ) ? (
+                            <p className="text-xs text-amber-700 mt-0.5">
+                              ⚠️ Es liegen schwerwiegende Einwände vor — bitte den Dialog zur
+                              Lösungsfindung starten.
+                            </p>
+                          ) : (
+                            <p className="text-xs text-emerald-700 mt-0.5">
+                              Keine schwerwiegenden Einwände — Konsent ist möglich.
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex gap-3">
+                        {selectedRound.objections.some(
+                          (o) => o.severity === 'major' || o.severity === 'blocking'
+                        ) ? (
+                          <Link
+                            href={`/projects/${params.id}/dialog`}
+                            className="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors text-sm"
+                          >
+                            🔴 Dialog starten
+                          </Link>
+                        ) : (
+                          <button
+                            onClick={async () => {
+                              setAdvancing(true)
+                              strapi.setJwt(jwt || null)
+                              try {
+                                await strapi.transitionRoundPhase(selectedRound!.id, 'completed')
+                                const roundsRes = await strapi.getRounds(params.id)
+                                const roundsData = (roundsRes.data as any[]) || []
+                                const remapRound = (r: any) => ({
+                                  id: r.id,
+                                  roundNumber: r.roundNumber,
+                                  proposal: r.proposal,
+                                  status: r.status,
+                                  startDate: r.startDate,
+                                  endDate: r.endDate,
+                                  votes: (r.votes || []).map((v: any) => ({ id: v.id, choice: v.choice, reason: v.reason, user: v.user })),
+                                  objections: (r.objections || []).map((o: any) => ({ id: o.id, reason: o.reason, severity: o.severity, user: o.user, status: o.status || 'open' })),
+                                  comments: (r.comments || []).map((c: any) => ({ id: c.id, content: c.content, type: c.type || 'question', user: c.user, createdAt: c.createdAt })),
+                                })
+                                setRounds(roundsData.map(remapRound))
+                                setSelectedRound(
+                                  remapRound(roundsData.find((r: any) => r.id === selectedRound!.id) || roundsData[roundsData.length - 1])
+                                )
+                              } catch (_) {
+                                setError('Phase konnte nicht abgeschlossen werden.')
+                              } finally {
+                                setAdvancing(false)
+                              }
+                            }}
+                            disabled={advancing}
+                            className="px-4 py-2 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 disabled:opacity-50 text-sm"
+                          >
+                            {advancing ? 'Schließe ab…' : '✅ Runde abschließen'}
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Enthaltungs-Analyse (nur für Owner, bei >2 Enthaltungen) */}
+                  <div className="mt-6 space-y-4">
+                    <AnonymousConcernsView
+                      roundId={selectedRound.id}
+                      isOwner={String(userId) === String(project?.owner?.id)}
+                    />
+                    <AbstentionAnalysisView
+                      roundId={selectedRound.id}
+                      abstentionCount={selectedRound.votes.filter((v) => v.choice === 'abstain').length}
+                      isOwner={String(userId) === String(project?.owner?.id)}
+                    />
+                  </div>
                 </div>
               )}
 
@@ -939,7 +1155,20 @@ export default function ProjectDetailPage() {
               {/* Objections (always visible if present) */}
               {selectedRound.objections.length > 0 && (
                 <div className="mb-6">
-                  <h3 className="text-lg font-semibold mb-4">Einwände</h3>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold">Einwände</h3>
+                    {/* Dialog-Link bei schwerwiegenden Einwänden */}
+                    {selectedRound.objections.some(
+                      (o) => o.severity === 'major' || o.severity === 'blocking'
+                    ) && selectedRound.status !== 'completed' && (
+                      <Link
+                        href={`/projects/${params.id}/dialog`}
+                        className="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors text-sm whitespace-nowrap"
+                      >
+                        🔴 Dialog zur Lösungsfindung starten
+                      </Link>
+                    )}
+                  </div>
                   <div className="space-y-3">
                     {selectedRound.objections.map((obj) => (
                       <div

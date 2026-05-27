@@ -45,6 +45,7 @@ interface DialogWizardProps {
   objectionReason: string
   objectorName: string
   projectId: number
+  roundId: number
   originalProposal: string
   members: Member[]
   currentUserId: number
@@ -67,6 +68,7 @@ export default function DialogWizard({
   objectionReason,
   objectorName,
   projectId,
+  roundId,
   originalProposal,
   members,
   currentUserId,
@@ -125,6 +127,22 @@ export default function DialogWizard({
 
   const handleComplete = async () => {
     if (!dialog) return
+    // Save adapted proposal back to the round
+    if (adaptedProposal !== originalProposal) {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
+        await fetch(`${apiUrl}/api/rounds/${roundId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(jwt ? { Authorization: `Bearer ${jwt}` } : {}),
+          },
+          body: JSON.stringify({ data: { proposal: adaptedProposal } }),
+        })
+      } catch (_) {
+        console.error('Failed to save adapted proposal')
+      }
+    }
     await strapi.completeDialog(dialog.documentId, 'completed')
     onComplete()
   }

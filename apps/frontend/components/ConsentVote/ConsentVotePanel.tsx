@@ -16,6 +16,8 @@ interface ConsentVotePanelProps {
   votes: Vote[]
   /** Has the current user already voted? */
   userHasVoted: boolean
+  /** Current user's id (for matching their vote) */
+  currentUserId?: number
   /** Total participant count for "X of Y voted" display */
   participantCount: number
   /** Is a submission in progress? */
@@ -97,6 +99,7 @@ const CHOICES = [
 export default function ConsentVotePanel({
   votes,
   userHasVoted,
+  currentUserId,
   participantCount,
   submitting,
   onVote,
@@ -133,7 +136,9 @@ export default function ConsentVotePanel({
 
   // --- Already voted state ---
   if (userHasVoted) {
-    const myVote = votes.find((v) => String(v.user?.id)) // could be checked by caller
+    const myVote = currentUserId
+      ? votes.find((v) => v.user?.id === currentUserId)
+      : undefined
     return (
       <div className="space-y-4">
         <div className="flex items-center gap-3 p-4 rounded-xl bg-emerald-50 border border-emerald-200">

@@ -203,6 +203,7 @@ export default function DialogPage() {
           objectionReason={majorObjection.reason}
           objectorName={majorObjection.user?.username || 'Unbekannt'}
           projectId={project?.id || 0}
+          roundId={round?.id || 0}
           originalProposal={round?.proposal || ''}
           members={members}
           currentUserId={currentUser?.id || 0}
