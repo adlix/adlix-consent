@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { getSession } from '@/lib/session'
+import PasskeySection from '@/components/PasskeySection'
 
 export default async function SettingsPage() {
   const user = await getSession()
@@ -21,6 +22,7 @@ export default async function SettingsPage() {
           </div>
         </dl>
       </div>
+      <PasskeySection />
     </div>
   )
 }

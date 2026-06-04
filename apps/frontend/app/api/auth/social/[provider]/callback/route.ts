@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { setSession } from '@/lib/session'
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || process.env.AUTH_URL || 'http://localhost:3000'
 
@@ -34,14 +35,6 @@ export async function GET(
   }
 
   // Set session and redirect to dashboard
-  const response = NextResponse.redirect(new URL('/dashboard', APP_URL))
-  response.cookies.set('consent_session', jwt, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    maxAge: 60 * 60 * 24 * 30,
-    path: '/',
-  })
-
-  return response
+  await setSession(jwt)
+  return NextResponse.redirect(new URL('/dashboard', APP_URL))
 }

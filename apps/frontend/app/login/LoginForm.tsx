@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, Suspense } from 'react'
+import { useState, useEffect, useRef, useCallback, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 
@@ -18,6 +18,9 @@ function LoginFormInner() {
   }, [searchParams])
 
   const [loading, setLoading] = useState(false)
+  const [passkeyLoading, setPasskeyLoading] = useState(false)
+  const telegramContainerRef = useRef<HTMLDivElement>(null)
+  const telegramLoadedRef = useRef(false)
 
   // Schritt 1: E-Mail | Schritt 2: Passwort
   const [step, setStep] = useState<1 | 2>(1)
@@ -33,6 +36,93 @@ function LoginFormInner() {
 
   const handleSocialLogin = (provider: string) => {
     window.location.href = `/api/auth/social/${provider}`
+  }
+
+  // Load Telegram widget once on mount — user must click the rendered button directly
+  // (dynamic script loading on button-click prevents popup from opening due to async gap)
+  const setupTelegramCallback = useCallback(() => {
+    const telegramWindow = window as Window & {
+      onTelegramAuth?: (user: Record<string, string>) => void
+    }
+    telegramWindow.onTelegramAuth = async (user) => {
+      setLoading(true)
+      setError('')
+      try {
+        const res = await fetch('/api/auth/telegram/callback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(user),
+        })
+        if (!res.ok) {
+          const data = await res.json()
+          setError(data.error || 'Telegram-Anmeldung fehlgeschlagen.')
+          return
+        }
+        const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
+        router.push(callbackUrl)
+        router.refresh()
+      } catch {
+        setError('Verbindungsfehler.')
+      } finally {
+        setLoading(false)
+      }
+    }
+  }, [router, searchParams])
+
+  useEffect(() => {
+    if (telegramLoadedRef.current || !telegramContainerRef.current) return
+    if (!process.env.NEXT_PUBLIC_TELEGRAM_BOT_NAME) return
+    telegramLoadedRef.current = true
+    setupTelegramCallback()
+    const script = document.createElement('script')
+    script.src = 'https://telegram.org/js/telegram-widget.js?22'
+    script.setAttribute('data-telegram-login', process.env.NEXT_PUBLIC_TELEGRAM_BOT_NAME)
+    script.setAttribute('data-size', 'large')
+    script.setAttribute('data-onauth', 'onTelegramAuth(user)')
+    script.setAttribute('data-request-access', 'write')
+    script.async = true
+    telegramContainerRef.current.appendChild(script)
+  }, [setupTelegramCallback])
+
+  const handlePasskeyLogin = async () => {
+    setPasskeyLoading(true)
+    setError('')
+    try {
+      const { startAuthentication } = await import('@simplewebauthn/browser')
+
+      // Get challenge
+      const optRes = await fetch('/api/auth/passkey/authenticate-options', { method: 'POST' })
+      const options = await optRes.json()
+      const { sessionId, ...authOptions } = options
+
+      // Open passkey dialog
+      const authResponse = await startAuthentication({ optionsJSON: authOptions })
+
+      // Verify
+      const verifyRes = await fetch('/api/auth/passkey/authenticate-verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...authResponse, sessionId }),
+      })
+
+      if (!verifyRes.ok) {
+        const data = await verifyRes.json()
+        setError(data.error || 'Passkey-Anmeldung fehlgeschlagen.')
+        return
+      }
+
+      const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
+      router.push(callbackUrl)
+      router.refresh()
+    } catch (err: unknown) {
+      if (err instanceof Error && err.name === 'NotAllowedError') {
+        setError('Passkey-Anmeldung abgebrochen.')
+      } else {
+        setError('Passkey-Anmeldung fehlgeschlagen.')
+      }
+    } finally {
+      setPasskeyLoading(false)
+    }
   }
 
   const handleEmailStep = (e: React.FormEvent<HTMLFormElement>) => {
@@ -283,6 +373,21 @@ function LoginFormInner() {
                 <div className="flex-1 border-t border-gray-300" />
               </div>
 
+              {/* Passkey */}
+              <button
+                type="button"
+                onClick={handlePasskeyLogin}
+                disabled={passkeyLoading}
+                className="w-full flex items-center justify-center gap-3 py-2 px-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 transition-colors mb-3"
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="8" cy="7" r="4"/>
+                  <path d="M20 21v-1a4 4 0 0 0-4-4h-1"/>
+                  <path d="M16 11h6m-3-3v6"/>
+                </svg>
+                {passkeyLoading ? 'Warte auf Passkey…' : 'Mit Passkey anmelden'}
+              </button>
+
               <div className="space-y-3">
                 <button
                   type="button"
@@ -329,6 +434,21 @@ function LoginFormInner() {
                   </svg>
                   Mit Google anmelden
                 </button>
+                <button
+                  type="button"
+                  onClick={() => handleSocialLogin('apple')}
+                  className="w-full flex items-center justify-center gap-3 py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                  </svg>
+                  Mit Apple anmelden
+                </button>
+                {/* Telegram widget renders its own button — must be clicked directly */}
+                <div
+                  ref={telegramContainerRef}
+                  className="w-full flex items-center justify-center min-h-[42px]"
+                />
               </div>
 
               <p className="mt-6 text-center text-sm text-gray-600">

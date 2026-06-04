@@ -12,7 +12,7 @@ const APP_URL = process.env.NEXT_PUBLIC_APP_URL || process.env.AUTH_URL || 'http
 export async function GET(_req: Request, { params }: { params: Promise<{ provider: string }> }) {
   const { provider } = await params
 
-  const validProviders = ['github', 'facebook', 'google']
+  const validProviders = ['github', 'facebook', 'google', 'apple']
   if (!validProviders.includes(provider)) {
     return NextResponse.json({ error: 'Unbekannter Provider.' }, { status: 400 })
   }
