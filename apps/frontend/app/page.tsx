@@ -25,6 +25,46 @@ const flowSteps = [
   { label: 'Neuer Loop', icon: '🔁', description: 'Zurück zur Abstimmung' },
 ]
 
+// Use Cases for teams
+const useCases = [
+  {
+    icon: '🏢',
+    title: 'Agile Teams & Scrum-Kreise',
+    scenario: 'Sprint-Ziel, Team-Normen, Rollenverteilung',
+    text: 'Entscheidungen, die das ganze Team mittragen — nicht nur der Product Owner. Einwände werden im Prozess aufgefangen, nicht in Retrospektiven nachbehandelt.',
+  },
+  {
+    icon: '🤝',
+    title: 'Selbstorganisierte Kreise',
+    scenario: 'Soziokratie, Holacracy, Kreisarbeit',
+    text: 'Der Consent-Prozess ist die natürliche Entscheidungsform im Kreis. adlix consent bringt ihn digital — async, dokumentiert, mit Prozessgedächtnis.',
+  },
+  {
+    icon: '🌱',
+    title: 'Vereine & NGOs',
+    scenario: 'Satzungsänderungen, Projekte, Vorstands-Entschlüsse',
+    text: 'Transparente Entscheidungen für alle Mitglieder — auch für die, die beim Treffen nicht dabei waren. Alles dokumentiert, nachvollziehbar, fair.',
+  },
+  {
+    icon: '🚀',
+    title: 'Startups & Scale-ups',
+    scenario: 'Strategie, Produkt, Kultur-Entscheidungen',
+    text: 'Wenn das Team wächst, wächst auch die Komplexität. Consent hält die Entscheidungsqualität hoch — ohne Meetings die endlos dauern.',
+  },
+  {
+    icon: '🏘️',
+    title: 'Communities & Initiativen',
+    scenario: 'Regeln, Events, Ressourcen, Konflikte',
+    text: 'Jeder hat eine Stimme. Niemand kann einfach überstimmt werden. Consent schafft das Vertrauen, das lebendige Communities brauchen.',
+  },
+  {
+    icon: '🎓',
+    title: 'Bildungseinrichtungen',
+    scenario: 'Schulentwicklung, Gremienarbeit, Klassenrat',
+    text: 'Consent funktioniert auch mit jungen Menschen — gerade weil er fair ist. Ein Einwand zählt nicht wegen der Lautstärke, sondern wegen der Begründung.',
+  },
+]
+
 // Why Consent reasons
 const whyConsentReasons = [
   {
@@ -233,6 +273,100 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Agile Tribes */}
+        <section
+          className="bg-gradient-to-b from-indigo-50 to-white py-16"
+          aria-labelledby="tribes-heading"
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium mb-6">
+                <span aria-hidden="true">🌀</span> Die Bewegung dahinter
+              </div>
+              <h2 id="tribes-heading" className="text-3xl font-bold mb-4">
+                Agile Tribes — Entscheidungen, die verbinden
+              </h2>
+              <p className="text-gray-600 text-lg">
+                Ein Tribe ist mehr als ein Team. Es ist eine Gemeinschaft, die durch gemeinsame
+                Werte zusammengehalten wird — nicht durch Organigramme. adlix consent ist das
+                Werkzeug. Der Tribe ist das Ziel.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6 mb-12">
+              <article className="bg-white rounded-xl p-6 shadow-sm border border-indigo-100 text-center">
+                <div className="text-4xl mb-3" aria-hidden="true">
+                  🤝
+                </div>
+                <h3 className="font-semibold mb-2">Vertrauen durch Prozess</h3>
+                <p className="text-gray-600 text-sm">
+                  Wer gemeinsam Consent-Entscheidungen trifft, baut Vertrauen auf. Nicht weil es
+                  vorgeschrieben ist — sondern weil jeder gehört wurde.
+                </p>
+              </article>
+              <article className="bg-white rounded-xl p-6 shadow-sm border border-indigo-100 text-center">
+                <div className="text-4xl mb-3" aria-hidden="true">
+                  🔄
+                </div>
+                <h3 className="font-semibold mb-2">Iterativ, nicht perfekt</h3>
+                <p className="text-gray-600 text-sm">
+                  Kein Tribe ist von Anfang an perfekt. Consent-Entscheidungen sind bewusst
+                  vorläufig — mit Evaluationsdatum. So kann der Tribe wachsen.
+                </p>
+              </article>
+              <article className="bg-white rounded-xl p-6 shadow-sm border border-indigo-100 text-center">
+                <div className="text-4xl mb-3" aria-hidden="true">
+                  🌍
+                </div>
+                <h3 className="font-semibold mb-2">Mitákuye Oyásʼiŋ</h3>
+                <p className="text-gray-600 text-sm">
+                  &bdquo;Alle meine Verwandten&ldquo; — das stille Fundament. Consent, weil der andere mein
+                  Verwandter ist. Einwände als Geschenk, nicht als Angriff.
+                </p>
+              </article>
+            </div>
+
+            <blockquote className="bg-indigo-600 rounded-2xl p-8 text-white text-center">
+              <p className="text-xl font-medium mb-2">
+                &ldquo;Der stärkste Tribe gewinnt — nicht durch Macht, sondern durch Kohärenz.&rdquo;
+              </p>
+              <footer className="text-indigo-200 text-sm not-italic">Dave Logan, Tribal Leadership</footer>
+            </blockquote>
+          </div>
+        </section>
+
+        {/* Use Cases */}
+        <section className="py-16" aria-labelledby="usecases-heading">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 id="usecases-heading" className="text-3xl font-bold text-center mb-4">
+              Für welche Teams?
+            </h2>
+            <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+              adlix consent funktioniert überall dort, wo Menschen gemeinsam Entscheidungen treffen
+              — und dabei niemanden verlieren wollen.
+            </p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {useCases.map(({ icon, title, scenario, text }) => (
+                <article
+                  key={title}
+                  className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+                >
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="text-3xl shrink-0" aria-hidden="true">
+                      {icon}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">{title}</h3>
+                      <p className="text-xs text-primary font-medium mt-0.5">{scenario}</p>
+                    </div>
+                  </div>
+                  <p className="text-gray-600 text-sm leading-relaxed">{text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Konsens vs Konsent */}
         <section className="bg-gray-50 py-16" aria-labelledby="comparison-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -430,7 +564,7 @@ export default function HomePage() {
           </div>
           <div className="border-t border-gray-200 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-gray-500 text-sm">© 2026 adlix. Consent trifft Einfachheit.</p>
-            <p className="text-gray-400 text-xs">Mit Ĩ reservespect gebaut — Omitakuyasin</p>
+            <p className="text-gray-400 text-xs">Mit ♥ Respekt gebaut — Omitakuyasin</p>
           </div>
         </div>
       </footer>

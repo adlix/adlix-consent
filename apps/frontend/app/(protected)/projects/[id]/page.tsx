@@ -90,28 +90,6 @@ const flowPhases = [
 
 const phaseOrder = flowPhases.map((p) => p.key)
 
-const choiceLabels: Record<ConsentChoice, { emoji: string; label: string; color: string }> = {
-  consent: {
-    emoji: '✅',
-    label: 'Konsent',
-    color: 'bg-green-50 text-green-700 hover:bg-green-100 ring-green-200',
-  },
-  minor_objection: {
-    emoji: '💛',
-    label: 'Leichter Einwand',
-    color: 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100 ring-yellow-200',
-  },
-  major_objection: {
-    emoji: '🔴',
-    label: 'Schwerwiegender Einwand',
-    color: 'bg-red-50 text-red-700 hover:bg-red-100 ring-red-200',
-  },
-  abstain: {
-    emoji: '⏸️',
-    label: 'Enthalten',
-    color: 'bg-gray-50 text-gray-700 hover:bg-gray-200 ring-gray-300',
-  },
-}
 
 export default function ProjectDetailPage() {
   const params = useParams<{ id: string }>()
@@ -124,17 +102,11 @@ export default function ProjectDetailPage() {
   const [error, setError] = useState('')
 
   const [userVote, setUserVote] = useState<ConsentChoice | null>(null)
-  const [voteReason, setVoteReason] = useState('')
   const [allowChangeVote, setAllowChangeVote] = useState(false)
   const [showQuestionForm, setShowQuestionForm] = useState(false)
   const [showReactionForm, setShowReactionForm] = useState(false)
-  const [showObjectionForm, setShowObjectionForm] = useState(false)
   const [question, setQuestion] = useState('')
   const [reaction, setReaction] = useState('')
-  const [objection, setObjection] = useState<{
-    reason: string
-    severity: 'minor' | 'major' | 'blocking'
-  }>({ reason: '', severity: 'minor' })
   const [showAbstainModal, setShowAbstainModal] = useState(false)
   const [outcomeSubmitted, setOutcomeSubmitted] = useState(false)
   const [outcomeData, setOutcomeData] = useState<{
@@ -224,64 +196,6 @@ export default function ProjectDetailPage() {
   // Check if current user has already voted
   const userId = session?.user?.id
   const userHasVoted = selectedRound?.votes.some((v) => String(v.user?.id) === userId)
-
-  const handleVote = async (choice: ConsentChoice) => {
-    if (choice === 'abstain') {
-      setShowAbstainModal(true)
-      setUserVote(choice)
-      return
-    }
-
-    // For major_objection: reason is required
-    if (choice === 'major_objection' && !voteReason.trim()) {
-      setUserVote(choice)
-      return // Show reason field first
-    }
-
-    setSubmitting(true)
-    strapi.setJwt(jwt || null)
-    try {
-      await strapi.castVote(selectedRound!.id, choice, Number(userId))
-      setUserVote(choice)
-      // Reload rounds to get updated votes
-      const roundsRes = await strapi.getRounds(params.id)
-      const roundsData = (roundsRes.data as any[]) || []
-      setRounds(
-        roundsData.map((r: any) => ({
-          id: r.id,
-          roundNumber: r.roundNumber,
-          proposal: r.proposal,
-          status: r.status,
-          startDate: r.startDate,
-          endDate: r.endDate,
-          votes: (r.votes || []).map((v: any) => ({
-            id: v.id,
-            choice: v.choice,
-            reason: v.reason,
-            user: v.user,
-          })),
-          objections: (r.objections || []).map((o: any) => ({
-            id: o.id,
-            reason: o.reason,
-            severity: o.severity,
-            user: o.user,
-            status: o.status || 'open',
-          })),
-          comments: (r.comments || []).map((c: any) => ({
-            id: c.id,
-            content: c.content,
-            type: c.type || 'question',
-            user: c.user,
-            createdAt: c.createdAt,
-          })),
-        }))
-      )
-    } catch (err) {
-      setError('Abstimmung fehlgeschlagen.')
-    } finally {
-      setSubmitting(false)
-    }
-  }
 
   const handleAbstainSubmit = (data: {
     reason: string
@@ -407,27 +321,6 @@ export default function ProjectDetailPage() {
     }
   }
 
-  const handleSubmitObjection = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!objection.reason.trim()) return
-    setSubmitting(true)
-    strapi.setJwt(jwt || null)
-    try {
-      await strapi.createObjection({
-        reason: objection.reason,
-        severity: objection.severity,
-        round: selectedRound!.id,
-        user: Number(userId),
-      })
-      setObjection({ reason: '', severity: 'minor' })
-      setShowObjectionForm(false)
-    } catch (_) {
-      setError('Einwand konnte nicht eingereicht werden.')
-    } finally {
-      setSubmitting(false)
-    }
-  }
-
   // Loading state
   if (loading) {
     return (
@@ -454,8 +347,6 @@ export default function ProjectDetailPage() {
   }
 
   const participantCount = project.participants?.length || project.circle?.members?.length || 0
-  const votesCount = selectedRound?.votes.length || 0
-  const nonVotersCount = Math.max(0, participantCount - votesCount)
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -717,7 +608,7 @@ export default function ProjectDetailPage() {
                   {showQuestionForm && (
                     <form
                       onSubmit={handleSubmitQuestion}
-                      className="mt-4 p-4 bg-indigo-5 rounded-lg border border-indigo-200"
+                      className="mt-4 p-4 bg-indigo-50 rounded-lg border border-indigo-200"
                     >
                       <textarea
                         value={question}
@@ -787,7 +678,7 @@ export default function ProjectDetailPage() {
                   {showReactionForm && (
                     <form
                       onSubmit={handleSubmitReaction}
-                      className="mt-4 p-4 bg-purple-5 rounded-lg border border-purple-200"
+                      className="mt-4 p-4 bg-purple-50 rounded-lg border border-purple-200"
                     >
                       <textarea
                         value={reaction}

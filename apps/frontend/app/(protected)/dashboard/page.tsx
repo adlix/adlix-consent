@@ -84,6 +84,10 @@ export default function DashboardPage() {
     ])
       .then(([circlesRes, projectsRes]) => {
         const circlesData = (circlesRes.data as any[]) || []
+        // Auto-show onboarding for fresh accounts with no circles
+        if (circlesData.length === 0) {
+          setShowOnboarding(true)
+        }
         setCircles(
           circlesData.map((c: any) => ({
             id: c.id,
