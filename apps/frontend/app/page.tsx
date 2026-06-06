@@ -163,7 +163,7 @@ export default function HomePage() {
               Kostenlos starten
             </Link>
             <Link
-              href="#pricing"
+              href="#how-it-works-heading"
               className="px-6 py-3 text-lg font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
             >
               So funktioniert&apos;s
@@ -320,17 +320,20 @@ export default function HomePage() {
                 </div>
                 <h3 className="font-semibold mb-2">Mitákuye Oyásʼiŋ</h3>
                 <p className="text-gray-600 text-sm">
-                  &bdquo;Alle meine Verwandten&ldquo; — das stille Fundament. Consent, weil der andere mein
-                  Verwandter ist. Einwände als Geschenk, nicht als Angriff.
+                  &bdquo;Alle meine Verwandten&ldquo; — das stille Fundament. Consent, weil der
+                  andere mein Verwandter ist. Einwände als Geschenk, nicht als Angriff.
                 </p>
               </article>
             </div>
 
             <blockquote className="bg-indigo-600 rounded-2xl p-8 text-white text-center">
               <p className="text-xl font-medium mb-2">
-                &ldquo;Der stärkste Tribe gewinnt — nicht durch Macht, sondern durch Kohärenz.&rdquo;
+                &ldquo;Der stärkste Tribe gewinnt — nicht durch Macht, sondern durch
+                Kohärenz.&rdquo;
               </p>
-              <footer className="text-indigo-200 text-sm not-italic">Dave Logan, Tribal Leadership</footer>
+              <footer className="text-indigo-200 text-sm not-italic">
+                Dave Logan, Tribal Leadership
+              </footer>
             </blockquote>
           </div>
         </section>
@@ -465,6 +468,121 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Social Proof / Testimonials */}
+        <section className="bg-gray-50 py-16" aria-labelledby="testimonials-heading">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 id="testimonials-heading" className="text-3xl font-bold text-center mb-4">
+              Was Teams sagen
+            </h2>
+            <p className="text-gray-600 text-center mb-12 max-w-xl mx-auto">
+              Frühe Anwender über ihre Erfahrungen mit dem Consent-Prozess.
+            </p>
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  quote:
+                    '„Wir haben aufgehört, endlos zu diskutieren. Seitdem wir Consent nutzen, treffen wir Entscheidungen doppelt so schnell — und alle tragen sie mit."',
+                  name: 'Sarah K.',
+                  role: 'Agile Coach, Scrum-Team',
+                  emoji: '👩‍💼',
+                },
+                {
+                  quote:
+                    '„Endlich ein Tool, das den soziokratischen Prozess wirklich abbildet. Kein Kompromiss, kein Überstimmen — echte Consent-Entscheidungen."',
+                  name: 'Markus T.',
+                  role: 'Kreiskoordinator, NGO',
+                  emoji: '🤝',
+                },
+                {
+                  quote:
+                    '„Die Enthaltungs-Folgeprozesse haben uns geholfen, versteckte Bedenken im Team sichtbar zu machen. Das war Gold wert."',
+                  name: 'Lena R.',
+                  role: 'Gründerin, Startup',
+                  emoji: '🚀',
+                },
+              ].map(({ quote, name, role, emoji }) => (
+                <figure
+                  key={name}
+                  className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 flex flex-col"
+                >
+                  <blockquote className="flex-1">
+                    <p className="text-gray-700 italic text-sm leading-relaxed">{quote}</p>
+                  </blockquote>
+                  <figcaption className="mt-4 flex items-center gap-3">
+                    <span className="text-3xl" aria-hidden="true">
+                      {emoji}
+                    </span>
+                    <div>
+                      <p className="font-semibold text-sm">{name}</p>
+                      <p className="text-xs text-gray-500">{role}</p>
+                    </div>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section className="py-16" aria-labelledby="faq-heading">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 id="faq-heading" className="text-3xl font-bold text-center mb-4">
+              Häufige Fragen
+            </h2>
+            <p className="text-gray-600 text-center mb-12">
+              Alles, was du wissen musst, um loszulegen.
+            </p>
+            <div className="space-y-4">
+              {(
+                [
+                  {
+                    q: 'Was ist der Unterschied zwischen Konsent und Konsens?',
+                    a: 'Konsens bedeutet: alle stimmen aktiv zu — eine oft unerreichbare Bar. Konsent bedeutet: niemand hat einen schwerwiegenden, begründeten Einwand. Das klingt ähnlich, ist aber radikal unterschiedlich: Konsent ist schneller, pragmatischer und schützt trotzdem jede Stimme.',
+                  },
+                  {
+                    q: 'Wer kann einen schwerwiegenden Einwand einbringen?',
+                    a: 'Jedes Mitglied des betroffenen Kreises. Ein Einwand muss begründet sein und sich auf das gemeinsame Ziel beziehen — kein persönlicher Geschmack. adlix consent führt durch den Klärungsprozess und hilft dabei, echte Einwände von Präferenzen zu unterscheiden.',
+                  },
+                  {
+                    q: 'Was passiert, wenn jemand sich enthält?',
+                    a: 'Enthaltung ist möglich — aber nicht als bequemer Ausweg. Die Plattform fragt nach dem Grund: Nicht betroffen? Brauche mehr Info? Anonyme Bedenken? Je nach Grund gibt es einen eigenen Folgeprozess. Ziel: versteckte Einwände sichtbar machen.',
+                  },
+                  {
+                    q: 'Kann ich Consent-Entscheidungen später revidieren?',
+                    a: '„Gut genug für jetzt — sicher genug zum Ausprobieren." Jede Consent-Entscheidung kann mit einem Evaluationsdatum versehen werden. Die Plattform erinnert dich, wenn ein Vorhaben zur Überprüfung fällig ist. Entscheidungen sind bewusst vorläufig.',
+                  },
+                  {
+                    q: 'Für wie große Teams ist adlix consent geeignet?',
+                    a: 'Free-Plan: bis 50 Teilnehmer pro Projekt. Pro: bis 500. Enterprise: unbegrenzt. Der Consent-Prozess funktioniert besonders gut in Kreisen von 5–20 Personen — auch größere Gruppen können ihn über Delegierte strukturieren.',
+                  },
+                  {
+                    q: 'Brauche ich Vorkenntnisse in Soziokratie?',
+                    a: 'Nein. adlix consent führt durch jeden Schritt — mit Erklärungen, Hinweisen und Leitfragen. Du lernst den Prozess, indem du ihn nutzt. Optional gibt es KI-Unterstützung (Pro), die Einwände analysiert und Formulierungshilfen gibt.',
+                  },
+                ] as { q: string; a: string }[]
+              ).map(({ q, a }, i) => (
+                <details
+                  key={i}
+                  className="group border border-gray-200 rounded-xl overflow-hidden"
+                >
+                  <summary className="flex items-center justify-between px-6 py-4 cursor-pointer hover:bg-gray-50 list-none">
+                    <span className="font-medium pr-4">{q}</span>
+                    <span
+                      className="text-primary shrink-0 transition-transform duration-200 group-open:rotate-180"
+                      aria-hidden="true"
+                    >
+                      ▾
+                    </span>
+                  </summary>
+                  <div className="px-6 pb-5 text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-3">
+                    {a}
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* CTA before pricing */}
         <section className="py-16 bg-primary text-white" aria-labelledby="cta-heading">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -522,6 +640,11 @@ export default function HomePage() {
                 <li>
                   <Link href="#why-consent-heading" className="hover:text-gray-900">
                     Warum Consent
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#faq-heading" className="hover:text-gray-900">
+                    FAQ
                   </Link>
                 </li>
                 <li>

@@ -28,6 +28,8 @@ interface Proposal {
   circleName: string
   phase: 'description' | 'reaction' | 'voting' | 'integration'
   needsVote: boolean
+  status: string
+  evaluationDate?: string
 }
 
 interface Activity {
@@ -100,13 +102,15 @@ export default function DashboardPage() {
 
         const projectsData = (projectsRes.data as any[]) || []
         const mapped: Proposal[] = projectsData
-          .filter((p: any) => p.status === 'active' || p.currentRound)
+          .filter((p: any) => p.status === 'active' || p.currentRound || p.evaluationDate)
           .map((p: any) => ({
             id: p.id,
             title: p.name,
             circleName: p.circle?.name || 'Kein Kreis',
             phase: mapPhase(p.currentRound?.status || 'information'),
             needsVote: p.currentRound?.status === 'voting',
+            status: p.status,
+            evaluationDate: p.evaluationDate || undefined,
           }))
         setProposals(mapped)
 
@@ -240,24 +244,69 @@ export default function DashboardPage() {
                       key={proposal.id}
                       className="flex items-center justify-between border border-gray-200 rounded-lg p-4"
                     >
-                      <div>
-                        <h3 className="font-medium">{proposal.title}</h3>
-                        <div className="flex items-center gap-3 mt-1 text-sm text-gray-500">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium truncate">{proposal.title}</h3>
+                        <div className="flex items-center gap-2 flex-wrap mt-1 text-sm text-gray-500">
                           <span>{proposal.circleName}</span>
-                          <span className="px-2 py-0.5 bg-gray-100 rounded text-xs">
-                            {phaseLabels[proposal.phase]}
-                          </span>
+                          {proposal.status === 'beschlossen' ? (
+                            <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs font-medium">
+                              ✅ Beschlossen
+                            </span>
+                          ) : (
+                            <span className="px-2 py-0.5 bg-gray-100 rounded text-xs">
+                              {phaseLabels[proposal.phase]}
+                            </span>
+                          )}
+                          {proposal.evaluationDate &&
+                            (() => {
+                              const evalDate = new Date(proposal.evaluationDate)
+                              const now = new Date()
+                              const daysUntil = Math.ceil(
+                                (evalDate.getTime() - now.getTime()) / 86400000
+                              )
+                              if (daysUntil < 0) {
+                                return (
+                                  <span
+                                    className="px-2 py-0.5 bg-red-100 text-red-700 rounded text-xs font-medium"
+                                    title={`Evaluationsdatum: ${evalDate.toLocaleDateString('de-DE')}`}
+                                  >
+                                    ⏰ Evaluation überfällig
+                                  </span>
+                                )
+                              }
+                              if (daysUntil <= 7) {
+                                return (
+                                  <span
+                                    className="px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-xs font-medium"
+                                    title={`Evaluationsdatum: ${evalDate.toLocaleDateString('de-DE')}`}
+                                  >
+                                    🔔 Evaluation in {daysUntil}d
+                                  </span>
+                                )
+                              }
+                              return null
+                            })()}
                         </div>
                       </div>
-                      {proposal.needsVote && (
-                        <Link
-                          href={`/projects/${proposal.id}`}
-                          className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark"
-                          aria-label={`Abstimmen: ${proposal.title}`}
-                        >
-                          Abstimmen
-                        </Link>
-                      )}
+                      <div className="shrink-0">
+                        {proposal.needsVote ? (
+                          <Link
+                            href={`/projects/${proposal.id}`}
+                            className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark"
+                            aria-label={`Abstimmen: ${proposal.title}`}
+                          >
+                            Abstimmen
+                          </Link>
+                        ) : (
+                          <Link
+                            href={`/projects/${proposal.id}`}
+                            className="px-3 py-1.5 text-sm text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50"
+                            aria-label={`Vorhaben ansehen: ${proposal.title}`}
+                          >
+                            Ansehen
+                          </Link>
+                        )}
+                      </div>
                     </li>
                   ))}
                 </ul>

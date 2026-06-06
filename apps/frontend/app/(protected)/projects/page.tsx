@@ -22,8 +22,7 @@ const statusLabels: Record<string, { label: string; color: string }> = {
 function mapProject(p: any): SearchableProject {
   const roundCount = p.rounds?.length ?? 0
   const latestRound = p.rounds?.[roundCount - 1]
-  const participantCount =
-    p.circle?.circleMembers?.length ?? p.participants?.length ?? 0
+  const participantCount = p.circle?.circleMembers?.length ?? p.participants?.length ?? 0
 
   return {
     id: p.id,
@@ -39,6 +38,7 @@ function mapProject(p: any): SearchableProject {
           year: 'numeric',
         })
       : undefined,
+    evaluationDate: p.evaluationDate || undefined,
   }
 }
 
@@ -233,19 +233,38 @@ export default function ProjectsPage() {
                               {status.label}
                             </span>
                           </div>
-                          <div className="flex items-center gap-6 text-sm text-gray-500">
+                          <div className="flex items-center gap-4 flex-wrap text-sm text-gray-500">
                             {project.currentRound != null && project.currentRound > 0 && (
                               <span>Runde {project.currentRound}</span>
                             )}
-                            {project.participantCount != null &&
-                              project.participantCount > 0 && (
-                                <span>
-                                  {project.participantCount}{' '}
-                                  {project.participantCount === 1
-                                    ? 'Teilnehmer'
-                                    : 'Teilnehmer'}
-                                </span>
-                              )}
+                            {project.participantCount != null && project.participantCount > 0 && (
+                              <span>
+                                {project.participantCount}{' '}
+                                {project.participantCount === 1 ? 'Teilnehmer' : 'Teilnehmer'}
+                              </span>
+                            )}
+                            {project.evaluationDate &&
+                              (() => {
+                                const evalDate = new Date(project.evaluationDate)
+                                const daysUntil = Math.ceil(
+                                  (evalDate.getTime() - Date.now()) / 86400000
+                                )
+                                if (daysUntil < 0) {
+                                  return (
+                                    <span className="px-2 py-0.5 bg-red-100 text-red-600 rounded text-xs font-medium">
+                                      ⏰ Evaluation überfällig
+                                    </span>
+                                  )
+                                }
+                                if (daysUntil <= 14) {
+                                  return (
+                                    <span className="px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-xs font-medium">
+                                      🔔 Evaluation in {daysUntil}d
+                                    </span>
+                                  )
+                                }
+                                return null
+                              })()}
                             {project.updatedAt && (
                               <span className="ml-auto text-xs">
                                 Aktualisiert: {project.updatedAt}

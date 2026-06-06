@@ -90,6 +90,52 @@ const flowPhases = [
 
 const phaseOrder = flowPhases.map((p) => p.key)
 
+// Shared helper: normalize a raw Strapi round object into typed RoundData
+function normalizeRound(r: any): RoundData {
+  return {
+    id: r.id,
+    roundNumber: r.roundNumber,
+    proposal: r.proposal,
+    status: r.status,
+    startDate: r.startDate,
+    endDate: r.endDate,
+    votes: (r.votes || []).map((v: any) => ({
+      id: v.id,
+      choice: v.choice,
+      reason: v.reason,
+      user: v.user,
+    })),
+    objections: (r.objections || []).map((o: any) => ({
+      id: o.id,
+      reason: o.reason,
+      severity: o.severity,
+      user: o.user,
+      status: o.status || 'open',
+    })),
+    comments: (r.comments || []).map((c: any) => ({
+      id: c.id,
+      content: c.content,
+      type: c.type || 'question',
+      user: c.user,
+      createdAt: c.createdAt,
+    })),
+  }
+}
+
+// Helper: reload all rounds and sync selected round
+async function reloadRounds(
+  projectId: string,
+  currentRoundId: number | undefined
+): Promise<{ all: RoundData[]; selected: RoundData | null }> {
+  const res = await strapi.getRounds(projectId)
+  const rawData = (res.data as any[]) || []
+  const all = rawData.map(normalizeRound)
+  const selected =
+    (currentRoundId ? all.find((r) => r.id === currentRoundId) : undefined) ??
+    all[all.length - 1] ??
+    null
+  return { all, selected }
+}
 
 export default function ProjectDetailPage() {
   const params = useParams<{ id: string }>()
@@ -147,39 +193,10 @@ export default function ProjectDetailPage() {
         })
 
         // Load rounds
-        const roundsRes = await strapi.getRounds(params.id)
-        const roundsData = (roundsRes.data as any[]) || []
-        const formatted = roundsData.map((r: any) => ({
-          id: r.id,
-          roundNumber: r.roundNumber,
-          proposal: r.proposal,
-          status: r.status,
-          startDate: r.startDate,
-          endDate: r.endDate,
-          votes: (r.votes || []).map((v: any) => ({
-            id: v.id,
-            choice: v.choice,
-            reason: v.reason,
-            user: v.user,
-          })),
-          objections: (r.objections || []).map((o: any) => ({
-            id: o.id,
-            reason: o.reason,
-            severity: o.severity,
-            user: o.user,
-            status: o.status || 'open',
-          })),
-          comments: (r.comments || []).map((c: any) => ({
-            id: c.id,
-            content: c.content,
-            type: c.type || 'question',
-            user: c.user,
-            createdAt: c.createdAt,
-          })),
-        }))
+        const { all: formatted, selected: latestRound } = await reloadRounds(params.id, undefined)
         setRounds(formatted)
-        if (formatted.length > 0) {
-          setSelectedRound(formatted[formatted.length - 1])
+        if (latestRound) {
+          setSelectedRound(latestRound)
         }
       } catch (err) {
         setError('Projekt konnte nicht geladen werden.')
@@ -216,40 +233,12 @@ export default function ProjectDetailPage() {
     try {
       await strapi.transitionRoundPhase(selectedRound.id)
       // Reload rounds
-      const roundsRes = await strapi.getRounds(params.id)
-      const roundsData = (roundsRes.data as any[]) || []
-      const formatted = roundsData.map((r: any) => ({
-        id: r.id,
-        roundNumber: r.roundNumber,
-        proposal: r.proposal,
-        status: r.status,
-        startDate: r.startDate,
-        endDate: r.endDate,
-        votes: (r.votes || []).map((v: any) => ({
-          id: v.id,
-          choice: v.choice,
-          reason: v.reason,
-          user: v.user,
-        })),
-        objections: (r.objections || []).map((o: any) => ({
-          id: o.id,
-          reason: o.reason,
-          severity: o.severity,
-          user: o.user,
-          status: o.status || 'open',
-        })),
-        comments: (r.comments || []).map((c: any) => ({
-          id: c.id,
-          content: c.content,
-          type: c.type || 'question',
-          user: c.user,
-          createdAt: c.createdAt,
-        })),
-      }))
-      setRounds(formatted)
-      setSelectedRound(
-        formatted.find((r) => r.id === selectedRound.id) || formatted[formatted.length - 1]
+      const { all: formatted, selected: updatedRound } = await reloadRounds(
+        params.id,
+        selectedRound.id
       )
+      setRounds(formatted)
+      setSelectedRound(updatedRound)
     } catch (_) {
       setError('Phase konnte nicht gewechselt werden.')
     } finally {
@@ -720,18 +709,27 @@ export default function ProjectDetailPage() {
                   </p>
 
                   {/* Reaktionen aus der vorherigen Phase */}
-                  {selectedRound.comments
-                    .filter((c) => c.type === 'reaction' || c.type === 'perspective')
-                    .length > 0 && (
+                  {selectedRound.comments.filter(
+                    (c) => c.type === 'reaction' || c.type === 'perspective'
+                  ).length > 0 && (
                     <details className="mb-4 bg-purple-50 border border-purple-200 rounded-xl">
                       <summary className="px-4 py-3 cursor-pointer text-sm font-medium text-purple-800 hover:text-purple-900">
-                        💬 Reaktionen anzeigen ({selectedRound.comments.filter((c) => c.type === 'reaction' || c.type === 'perspective').length})
+                        💬 Reaktionen anzeigen (
+                        {
+                          selectedRound.comments.filter(
+                            (c) => c.type === 'reaction' || c.type === 'perspective'
+                          ).length
+                        }
+                        )
                       </summary>
                       <div className="px-4 pb-3 space-y-2">
                         {selectedRound.comments
                           .filter((c) => c.type === 'reaction' || c.type === 'perspective')
                           .map((cmt) => (
-                            <div key={cmt.id} className="p-3 rounded-lg bg-white border border-purple-100">
+                            <div
+                              key={cmt.id}
+                              className="p-3 rounded-lg bg-white border border-purple-100"
+                            >
                               <span className="text-xs text-gray-500">{cmt.user?.username}:</span>
                               <p className="text-sm text-gray-700">{cmt.content}</p>
                             </div>
@@ -743,13 +741,17 @@ export default function ProjectDetailPage() {
                   {String(userId) === String(project?.owner?.id) ? (
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Ursprünglicher Vorschlag</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                          Ursprünglicher Vorschlag
+                        </label>
                         <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-500 line-through opacity-60">
                           {selectedRound.proposal}
                         </div>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Angepasster Vorschlag</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                          Angepasster Vorschlag
+                        </label>
                         <textarea
                           defaultValue={selectedRound.proposal}
                           id="adjusted-proposal"
@@ -770,42 +772,35 @@ export default function ProjectDetailPage() {
                     <div className="mt-4 flex gap-3">
                       <button
                         onClick={async () => {
-                          const input = document.getElementById('adjusted-proposal') as HTMLTextAreaElement
+                          const input = document.getElementById(
+                            'adjusted-proposal'
+                          ) as HTMLTextAreaElement
                           if (!input?.value.trim()) return
                           setAdvancing(true)
                           strapi.setJwt(jwt || null)
                           try {
                             // Save adapted proposal to round via API
-                            const apiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
-                            const putRes = await fetch(`${apiUrl}/api/rounds/${selectedRound!.id}`, {
-                              method: 'PUT',
-                              headers: {
-                                'Content-Type': 'application/json',
-                                ...(jwt ? { Authorization: `Bearer ${jwt}` } : {}),
-                              },
-                              body: JSON.stringify({ data: { proposal: input.value.trim() } }),
-                            })
+                            const apiUrl =
+                              process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
+                            const putRes = await fetch(
+                              `${apiUrl}/api/rounds/${selectedRound!.id}`,
+                              {
+                                method: 'PUT',
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  ...(jwt ? { Authorization: `Bearer ${jwt}` } : {}),
+                                },
+                                body: JSON.stringify({ data: { proposal: input.value.trim() } }),
+                              }
+                            )
                             if (!putRes.ok) throw new Error('Save failed')
                             // Then advance phase to voting
                             await strapi.transitionRoundPhase(selectedRound!.id)
                             // Reload rounds
-                            const roundsRes = await strapi.getRounds(params.id)
-                            const roundsData = (roundsRes.data as any[]) || []
-                            const remapRound = (r: any) => ({
-                              id: r.id,
-                              roundNumber: r.roundNumber,
-                              proposal: r.proposal,
-                              status: r.status,
-                              startDate: r.startDate,
-                              endDate: r.endDate,
-                              votes: (r.votes || []).map((v: any) => ({ id: v.id, choice: v.choice, reason: v.reason, user: v.user })),
-                              objections: (r.objections || []).map((o: any) => ({ id: o.id, reason: o.reason, severity: o.severity, user: o.user, status: o.status || 'open' })),
-                              comments: (r.comments || []).map((c: any) => ({ id: c.id, content: c.content, type: c.type || 'question', user: c.user, createdAt: c.createdAt })),
-                            })
-                            setRounds(roundsData.map(remapRound))
-                            setSelectedRound(
-                              remapRound(roundsData.find((r: any) => r.id === selectedRound!.id) || roundsData[roundsData.length - 1])
-                            )
+                            const { all: updatedRounds, selected: updatedRound } =
+                              await reloadRounds(params.id, selectedRound!.id)
+                            setRounds(updatedRounds)
+                            setSelectedRound(updatedRound)
                           } catch (_) {
                             setError('Vorschlag konnte nicht gespeichert werden.')
                           } finally {
@@ -851,41 +846,10 @@ export default function ProjectDetailPage() {
                         }
                         setUserVote(choice)
                         setAllowChangeVote(false)
-                        const roundsRes = await strapi.getRounds(params.id)
-                        const roundsData = (roundsRes.data as any[]) || []
-                        const formatted = roundsData.map((r: any) => ({
-                          id: r.id,
-                          roundNumber: r.roundNumber,
-                          proposal: r.proposal,
-                          status: r.status,
-                          startDate: r.startDate,
-                          endDate: r.endDate,
-                          votes: (r.votes || []).map((v: any) => ({
-                            id: v.id,
-                            choice: v.choice,
-                            reason: v.reason,
-                            user: v.user,
-                          })),
-                          objections: (r.objections || []).map((o: any) => ({
-                            id: o.id,
-                            reason: o.reason,
-                            severity: o.severity,
-                            user: o.user,
-                            status: o.status || 'open',
-                          })),
-                          comments: (r.comments || []).map((c: any) => ({
-                            id: c.id,
-                            content: c.content,
-                            type: c.type || 'question',
-                            user: c.user,
-                            createdAt: c.createdAt,
-                          })),
-                        }))
-                        setRounds(formatted)
-                        setSelectedRound(
-                          formatted.find((r) => r.id === selectedRound!.id) ||
-                            formatted[formatted.length - 1]
-                        )
+                        const { all: refreshedRounds, selected: refreshedRound } =
+                          await reloadRounds(params.id, selectedRound!.id)
+                        setRounds(refreshedRounds)
+                        setSelectedRound(refreshedRound)
                       } catch (_) {
                         setError('Abstimmung fehlgeschlagen.')
                       } finally {
@@ -953,23 +917,10 @@ export default function ProjectDetailPage() {
                               strapi.setJwt(jwt || null)
                               try {
                                 await strapi.transitionRoundPhase(selectedRound!.id, 'completed')
-                                const roundsRes = await strapi.getRounds(params.id)
-                                const roundsData = (roundsRes.data as any[]) || []
-                                const remapRound = (r: any) => ({
-                                  id: r.id,
-                                  roundNumber: r.roundNumber,
-                                  proposal: r.proposal,
-                                  status: r.status,
-                                  startDate: r.startDate,
-                                  endDate: r.endDate,
-                                  votes: (r.votes || []).map((v: any) => ({ id: v.id, choice: v.choice, reason: v.reason, user: v.user })),
-                                  objections: (r.objections || []).map((o: any) => ({ id: o.id, reason: o.reason, severity: o.severity, user: o.user, status: o.status || 'open' })),
-                                  comments: (r.comments || []).map((c: any) => ({ id: c.id, content: c.content, type: c.type || 'question', user: c.user, createdAt: c.createdAt })),
-                                })
-                                setRounds(roundsData.map(remapRound))
-                                setSelectedRound(
-                                  remapRound(roundsData.find((r: any) => r.id === selectedRound!.id) || roundsData[roundsData.length - 1])
-                                )
+                                const { all: completedRounds, selected: completedRound } =
+                                  await reloadRounds(params.id, selectedRound!.id)
+                                setRounds(completedRounds)
+                                setSelectedRound(completedRound)
                               } catch (_) {
                                 setError('Phase konnte nicht abgeschlossen werden.')
                               } finally {
@@ -994,7 +945,9 @@ export default function ProjectDetailPage() {
                     />
                     <AbstentionAnalysisView
                       roundId={selectedRound.id}
-                      abstentionCount={selectedRound.votes.filter((v) => v.choice === 'abstain').length}
+                      abstentionCount={
+                        selectedRound.votes.filter((v) => v.choice === 'abstain').length
+                      }
                       isOwner={String(userId) === String(project?.owner?.id)}
                     />
                   </div>
@@ -1051,14 +1004,15 @@ export default function ProjectDetailPage() {
                     {/* Dialog-Link bei schwerwiegenden Einwänden */}
                     {selectedRound.objections.some(
                       (o) => o.severity === 'major' || o.severity === 'blocking'
-                    ) && selectedRound.status !== 'completed' && (
-                      <Link
-                        href={`/projects/${params.id}/dialog`}
-                        className="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors text-sm whitespace-nowrap"
-                      >
-                        🔴 Dialog zur Lösungsfindung starten
-                      </Link>
-                    )}
+                    ) &&
+                      selectedRound.status !== 'completed' && (
+                        <Link
+                          href={`/projects/${params.id}/dialog`}
+                          className="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors text-sm whitespace-nowrap"
+                        >
+                          🔴 Dialog zur Lösungsfindung starten
+                        </Link>
+                      )}
                   </div>
                   <div className="space-y-3">
                     {selectedRound.objections.map((obj) => (

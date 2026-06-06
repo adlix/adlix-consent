@@ -11,6 +11,7 @@ export interface SearchableProject {
   participantCount?: number
   updatedAt?: string
   owner?: string
+  evaluationDate?: string
 }
 
 interface ProjectSearchProps {
