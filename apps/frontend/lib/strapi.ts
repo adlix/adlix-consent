@@ -188,6 +188,22 @@ class StrapiClient {
   }
 
   // Outcome
+  async updateProject(
+    projectId: number | string,
+    data: {
+      name?: string
+      description?: string
+      goal?: string
+      tension?: string
+      circle?: number | null
+    }
+  ) {
+    return this.request<unknown>(`/projects/${projectId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ data }),
+    })
+  }
+
   async setOutcome(
     projectId: number | string,
     data: {

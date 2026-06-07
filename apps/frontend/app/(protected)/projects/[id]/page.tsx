@@ -383,25 +383,37 @@ export default function ProjectDetailPage() {
                   </p>
                 )}
               </div>
-              <span
-                className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  project.status === 'active'
-                    ? 'bg-green-100 text-green-700'
+              <div className="flex items-center gap-2">
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    project.status === 'active'
+                      ? 'bg-green-100 text-green-700'
+                      : project.status === 'beschlossen'
+                        ? 'bg-blue-100 text-blue-700'
+                        : project.status === 'completed'
+                          ? 'bg-gray-100 text-gray-700'
+                          : 'bg-yellow-100 text-yellow-700'
+                  }`}
+                >
+                  {project.status === 'active'
+                    ? 'Aktiv'
                     : project.status === 'beschlossen'
-                      ? 'bg-blue-100 text-blue-700'
+                      ? 'Beschlossen'
                       : project.status === 'completed'
-                        ? 'bg-gray-100 text-gray-700'
-                        : 'bg-yellow-100 text-yellow-700'
-                }`}
-              >
-                {project.status === 'active'
-                  ? 'Aktiv'
-                  : project.status === 'beschlossen'
-                    ? 'Beschlossen'
-                    : project.status === 'completed'
-                      ? 'Abgeschlossen'
-                      : 'Entwurf'}
-              </span>
+                        ? 'Abgeschlossen'
+                        : 'Entwurf'}
+                </span>
+                {String(userId) === String(project.owner?.id) &&
+                  project.status !== 'beschlossen' &&
+                  project.status !== 'completed' && (
+                    <Link
+                      href={`/projects/${params.id}/edit`}
+                      className="px-3 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+                    >
+                      ✏️ Bearbeiten
+                    </Link>
+                  )}
+              </div>
             </div>
             <div className="flex items-center gap-6 text-sm text-gray-500">
               <span>Erstellt von: {project.owner?.username || 'Unbekannt'}</span>
