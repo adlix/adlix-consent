@@ -370,7 +370,7 @@ export default function DashboardPage() {
                   </li>
                   <li>
                     <Link
-                      href="/proposals/new"
+                      href="/projects/new"
                       className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-primary transition-colors"
                     >
                       <span className="text-xl" aria-hidden="true">
@@ -383,8 +383,11 @@ export default function DashboardPage() {
                     <button
                       type="button"
                       onClick={() => {
-                        navigator.clipboard.writeText(window.location.origin + '/join')
-                        alert('Einladungslink kopiert!')
+                        navigator.clipboard
+                          .writeText(window.location.origin + '/circles/join')
+                          .then(() => setMessage('Einladungslink kopiert!'))
+                          .catch(() => setMessage('Fehler beim Kopieren.'))
+                        setTimeout(() => setMessage(''), 3000)
                       }}
                       aria-label="Einladungslink in Zwischenablage kopieren"
                       className="w-full flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-primary transition-colors"
