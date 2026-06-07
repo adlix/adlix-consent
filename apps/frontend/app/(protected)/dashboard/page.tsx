@@ -71,6 +71,7 @@ export default function DashboardPage() {
   const [activities, setActivities] = useState<Activity[]>([])
   const [loading, setLoading] = useState(true)
   const [showOnboarding, setShowOnboarding] = useState(false)
+  const [clipboardToast, setClipboardToast] = useState('')
 
   useEffect(() => {
     if (!jwt) return
@@ -168,6 +169,11 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <main id="main-content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {clipboardToast && (
+          <div className="mb-4 p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-sm text-emerald-700">
+            ✅ {clipboardToast}
+          </div>
+        )}
         <h1 className="text-2xl font-bold mb-8">Willkommen zurück!</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -385,9 +391,14 @@ export default function DashboardPage() {
                       onClick={() => {
                         navigator.clipboard
                           .writeText(window.location.origin + '/circles/join')
-                          .then(() => setMessage('Einladungslink kopiert!'))
-                          .catch(() => setMessage('Fehler beim Kopieren.'))
-                        setTimeout(() => setMessage(''), 3000)
+                          .then(() => {
+                            setClipboardToast('Einladungslink kopiert!')
+                            setTimeout(() => setClipboardToast(''), 3000)
+                          })
+                          .catch(() => {
+                            setClipboardToast('Fehler beim Kopieren.')
+                            setTimeout(() => setClipboardToast(''), 3000)
+                          })
                       }}
                       aria-label="Einladungslink in Zwischenablage kopieren"
                       className="w-full flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-primary transition-colors"

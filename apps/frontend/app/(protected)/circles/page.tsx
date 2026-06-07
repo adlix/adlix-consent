@@ -239,26 +239,48 @@ export default function CirclesPage() {
 
         {/* Circle list */}
         {circles.length === 0 && loaded ? (
-          <div className="bg-white rounded-xl p-8 shadow-sm text-center">
-            <p className="text-gray-500">
-              Noch keine Kreise. Erstelle einen Kreis oder tritt einem bei.
+          <div className="bg-white rounded-xl p-12 shadow-sm text-center">
+            <div className="text-5xl mb-4">🌀</div>
+            <h2 className="text-xl font-semibold mb-2">Noch kein Kreis</h2>
+            <p className="text-gray-500 mb-4">
+              Erstelle einen Kreis für dein Team oder tritt einem bestehenden bei.
             </p>
+            <button
+              onClick={() => setShowCreate(true)}
+              className="inline-block px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+            >
+              + Ersten Kreis erstellen
+            </button>
           </div>
         ) : (
           <div className="space-y-4">
             {circles.map((c) => (
               <div key={c.id} className="bg-white rounded-xl p-6 shadow-sm">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-lg font-semibold">{c.name}</h3>
-                  <span className="text-sm text-gray-500">{c.members?.length || 0} Mitglieder</span>
+                <div className="flex items-start justify-between mb-2">
+                  <Link href={`/circles/${c.id}`} className="group">
+                    <h3 className="text-lg font-semibold group-hover:text-blue-600 transition-colors">
+                      {c.name}
+                    </h3>
+                  </Link>
+                  <span className="text-sm text-gray-500 shrink-0 ml-4">
+                    {c.members?.length || 0} Mitglieder
+                  </span>
                 </div>
                 {c.description && <p className="text-sm text-gray-600 mb-3">{c.description}</p>}
-                <button
-                  onClick={() => handleInvite(c.id)}
-                  className="text-sm text-blue-600 hover:text-blue-700"
-                >
-                  📎 Einladungslink generieren
-                </button>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <Link
+                    href={`/circles/${c.id}`}
+                    className="text-sm text-blue-600 hover:text-blue-700"
+                  >
+                    Details ansehen →
+                  </Link>
+                  <button
+                    onClick={() => handleInvite(c.id)}
+                    className="text-sm text-gray-500 hover:text-gray-700"
+                  >
+                    📎 Einladungslink
+                  </button>
+                </div>
               </div>
             ))}
           </div>
