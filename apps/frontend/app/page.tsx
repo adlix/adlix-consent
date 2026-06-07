@@ -99,6 +99,70 @@ const whyConsentReasons = [
   },
 ]
 
+// Pain Points — Das Problem kennt jeder
+const decisionPainPoints = [
+  {
+    icon: '⏱️',
+    title: '3-Stunden-Meeting, keine Entscheidung',
+    text: 'Alle reden durcheinander. Zwei Personen dominieren. Am Ende wird vertagt. Alle sind erschöpft — das Thema kommt nächste Woche wieder.',
+    solution: 'Consent strukturiert den Prozess. Reihum, geführt, mit Ergebnis.',
+  },
+  {
+    icon: '😶',
+    title: 'Bedenken — die niemand ausspricht',
+    text: 'Wer merkt, dass sein Einwand überstimmt wird, hört auf, Bedenken zu äußern. Blinde Flecken häufen sich. Fehler werden teurer.',
+    solution:
+      'Consent gibt jedem das explizite Recht auf Einwand — mit Prozess, ihn konstruktiv einzubringen.',
+  },
+  {
+    icon: '🔄',
+    title: 'Beschlüsse, die keiner mitträgt',
+    text: '6:4-Abstimmung — die Minderheit geht ohne Commitment. Monate später taucht das Problem wieder auf, nur größer.',
+    solution:
+      'Consent-Entscheidungen werden mitgetragen. Kein schwerwiegender Einwand blieb offen.',
+  },
+]
+
+// Tribal Leadership Stages
+const tribalStages = [
+  {
+    stage: 1,
+    title: 'Isolation',
+    description: 'Jeder kämpft für sich. Kein gemeinsames Ziel, kein Vertrauen.',
+    color: 'bg-red-50 border-red-200 text-red-700',
+    dot: 'bg-red-400',
+  },
+  {
+    stage: 2,
+    title: 'Einzel-Kämpfer',
+    description: 'Kompetenz-Silos. Informationen werden gehortet, nicht geteilt.',
+    color: 'bg-orange-50 border-orange-200 text-orange-700',
+    dot: 'bg-orange-400',
+  },
+  {
+    stage: 3,
+    title: 'Teile & Herrsche',
+    description: 'Wettbewerb im Team. Meetings als Machtspiele. Konsens als Waffe.',
+    color: 'bg-yellow-50 border-yellow-200 text-yellow-700',
+    dot: 'bg-yellow-400',
+  },
+  {
+    stage: 4,
+    title: '← Consent hilft hier',
+    description: 'Gemeinsame Werte. Echter Dialog. Einwände als Geschenk. Tribe-Energie entsteht.',
+    color: 'bg-emerald-50 border-emerald-400 text-emerald-800',
+    dot: 'bg-emerald-500',
+    highlighted: true,
+  },
+  {
+    stage: 5,
+    title: 'Tribe im Flow',
+    description: 'Der Tribe gestaltet — mit Wirkung, die über das Team hinausgeht.',
+    color: 'bg-indigo-50 border-indigo-200 text-indigo-700',
+    dot: 'bg-indigo-500',
+  },
+]
+
 // Konsens vs Konsent Comparison
 const konsensVskonsent = [
   { aspect: 'Ziel', konsens: 'Alle stimmen aktiv zu', konsent: 'Kein schwerwiegender Einwand' },
@@ -168,6 +232,39 @@ export default function HomePage() {
             >
               So funktioniert&apos;s
             </Link>
+          </div>
+        </section>
+
+        {/* Das Problem kennt jeder */}
+        <section className="py-14 border-t border-gray-100" aria-labelledby="problem-heading">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <h2 id="problem-heading" className="text-2xl sm:text-3xl font-bold mb-3">
+                Kennt du das?
+              </h2>
+              <p className="text-gray-500 max-w-xl mx-auto">
+                Entscheidungen, die endlos dauern. Bedenken, die niemand äußert. Beschlüsse, die
+                niemand mitträgt. Das ist kein Versagen — das ist das falsche Werkzeug.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-6">
+              {decisionPainPoints.map(({ icon, title, text, solution }) => (
+                <article
+                  key={title}
+                  className="rounded-xl border border-gray-200 bg-white p-6 flex flex-col"
+                >
+                  <div className="text-3xl mb-3" aria-hidden="true">
+                    {icon}
+                  </div>
+                  <h3 className="font-semibold text-gray-900 mb-2">{title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed flex-1">{text}</p>
+                  <div className="mt-4 pt-4 border-t border-gray-100 flex items-start gap-2">
+                    <span className="text-emerald-500 text-sm font-bold shrink-0 mt-0.5">✔️</span>
+                    <p className="text-emerald-700 text-sm leading-relaxed">{solution}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -324,6 +421,35 @@ export default function HomePage() {
                   andere mein Verwandter ist. Einwände als Geschenk, nicht als Angriff.
                 </p>
               </article>
+            </div>
+
+            {/* Tribal Leadership Stages */}
+            <div className="mb-10">
+              <h3 className="text-center text-lg font-semibold text-gray-700 mb-6">
+                Wie Teams zu Tribes werden — und wo Consent der Katalysator ist
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                {tribalStages.map(({ stage, title, description, color, dot, highlighted }) => (
+                  <article
+                    key={stage}
+                    className={`rounded-xl border-2 p-4 flex flex-col relative ${
+                      highlighted ? 'shadow-md scale-105 z-10' : ''
+                    } ${color}`}
+                  >
+                    {highlighted && (
+                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap">
+                        ← hier hilft Consent
+                      </span>
+                    )}
+                    <div className={`w-6 h-6 rounded-full mb-2 ${dot}`} aria-hidden="true" />
+                    <span className="text-xs font-bold uppercase tracking-wider opacity-60 mb-1">
+                      Stufe {stage}
+                    </span>
+                    <p className="font-semibold text-sm mb-1.5">{title}</p>
+                    <p className="text-xs opacity-75 leading-relaxed">{description}</p>
+                  </article>
+                ))}
+              </div>
             </div>
 
             <blockquote className="bg-indigo-600 rounded-2xl p-8 text-white text-center">

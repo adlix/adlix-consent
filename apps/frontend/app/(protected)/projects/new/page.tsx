@@ -252,7 +252,7 @@ export default function NewProjectPage() {
                   fieldErrors.description ? 'border-red-400 bg-red-50' : 'border-gray-200'
                 }`}
                 rows={4}
-                placeholder="Was ist das Vorhaben? Worum geht es?"
+                placeholder="z. B. Wir wollen unsere wöchentlichen Status-Meetings auf 30 Minuten verkürzen und durch async Updates ersetzen. Hintergrund: Derzeit verbringt das Team 3 h/Woche in Meetings mit wenig Mehrwert."
               />
               {fieldErrors.description && (
                 <p id="error-description" role="alert" className="mt-1 text-sm text-red-600">
@@ -272,7 +272,7 @@ export default function NewProjectPage() {
                 onChange={(e) => setGoal(e.target.value)}
                 className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 rows={2}
-                placeholder="Was soll erreicht werden?"
+                placeholder="z. B. Das Team gewinnt 2 h/Woche zurück. Entscheidungen werden weiterhin getroffen — nur effizienter und dokumentiert."
               />
             </div>
 
@@ -287,11 +287,12 @@ export default function NewProjectPage() {
                 onChange={(e) => setTension(e.target.value)}
                 className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 rows={2}
-                placeholder="Welches Problem oder welche Spannung soll gelöst werden?"
+                placeholder="z. B. Die aktuellen Meetings sind zu lang und blockieren Tiefenarbeit. Gleichzeitig möchte niemand den Überblick verlieren."
                 aria-describedby="hint-tension"
               />
               <p id="hint-tension" className="text-xs text-gray-500 mt-1">
-                Optional — hilft dem Kreis, den Kontext zu verstehen.
+                Optional — hilft dem Kreis zu verstehen, <em>warum</em> das Vorhaben eingereicht
+                wird. Was ist die Reibung? Was fehlt?
               </p>
             </div>
 

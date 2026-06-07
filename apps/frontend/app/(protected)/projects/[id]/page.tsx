@@ -348,8 +348,11 @@ export default function ProjectDetailPage() {
             </Link>
           </div>
           <nav className="flex items-center gap-4">
-            <Link href="/projects" className="text-gray-600 hover:text-gray-900">
-              ← Projekte
+            <Link href="/projects" className="text-gray-600 hover:text-gray-900 text-sm">
+              ← Vorhaben
+            </Link>
+            <Link href="/dashboard" className="text-gray-400 hover:text-gray-600 text-sm">
+              Dashboard
             </Link>
           </nav>
         </div>
@@ -876,6 +879,59 @@ export default function ProjectDetailPage() {
                       />
                     </Suspense>
                   )}
+
+                  {/* Owner: Abstimmung vorzeitig schließen (falls Teilnehmer nicht erreicht) */}
+                  {String(userId) === String(project?.owner?.id) &&
+                    participantCount > 0 &&
+                    selectedRound.votes.length > 0 &&
+                    selectedRound.votes.length < participantCount &&
+                    !selectedRound.objections.some(
+                      (o) => o.severity === 'major' || o.severity === 'blocking'
+                    ) && (
+                      <details className="mt-4 rounded-xl border border-gray-200">
+                        <summary className="px-4 py-3 cursor-pointer text-sm text-gray-500 hover:text-gray-700 list-none flex items-center gap-2">
+                          <span>…</span>
+                          <span>
+                            {selectedRound.votes.length} von {participantCount} haben abgestimmt —
+                            Abstimmung trotzdem schließen?
+                          </span>
+                        </summary>
+                        <div className="px-4 pb-4 text-sm">
+                          <p className="text-amber-700 bg-amber-50 rounded-lg p-3 mb-3">
+                            ⚠️ Nicht alle Teilnehmer haben abgestimmt. Das Ergebnis basiert auf{' '}
+                            {selectedRound.votes.length} von {participantCount} Stimmen.
+                            Dokumentiere ggf. den Grund (Abwesenheit, Ausscheiden etc.).
+                          </p>
+                          <button
+                            onClick={async () => {
+                              if (
+                                !confirm(
+                                  `Abstimmung mit ${selectedRound!.votes.length}/${participantCount} Stimmen abschließen? Diese Aktion kann nicht rükgängig gemacht werden.`
+                                )
+                              )
+                                return
+                              setAdvancing(true)
+                              strapi.setJwt(jwt || null)
+                              try {
+                                await strapi.transitionRoundPhase(selectedRound!.id, 'completed')
+                                const { all: completedRounds, selected: completedRound } =
+                                  await reloadRounds(params.id, selectedRound!.id)
+                                setRounds(completedRounds)
+                                setSelectedRound(completedRound)
+                              } catch (_) {
+                                setError('Phase konnte nicht abgeschlossen werden.')
+                              } finally {
+                                setAdvancing(false)
+                              }
+                            }}
+                            disabled={advancing}
+                            className="px-4 py-2 bg-amber-600 text-white rounded-lg font-medium hover:bg-amber-700 disabled:opacity-50 text-sm"
+                          >
+                            {advancing ? 'Schließe ab…' : '⚠️ Vorzeitig abschließen'}
+                          </button>
+                        </div>
+                      </details>
+                    )}
 
                   {/* Auto-Transition: Alle Stimmen drin - keine Major Objection */}
                   {participantCount > 0 && selectedRound.votes.length >= participantCount && (
