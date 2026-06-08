@@ -237,18 +237,33 @@ export default function HomePage() {
             <span className="text-xl font-bold">adlix consent</span>
           </div>
           <nav aria-label="Hauptnavigation">
-            <ul className="flex items-center gap-4 list-none">
+            <ul className="flex items-center gap-3 sm:gap-4 list-none">
+              <li className="hidden sm:block">
+                <Link href="#team-benefits-heading" className="text-gray-600 hover:text-gray-900 text-sm">
+                  Für Teams
+                </Link>
+              </li>
+              <li className="hidden sm:block">
+                <Link href="#faq-heading" className="text-gray-600 hover:text-gray-900 text-sm">
+                  FAQ
+                </Link>
+              </li>
+              <li className="hidden sm:block">
+                <Link href="#pricing" className="text-gray-600 hover:text-gray-900 text-sm">
+                  Preise
+                </Link>
+              </li>
               <li>
-                <Link href="/projects" className="text-gray-600 hover:text-gray-900">
-                  Projekte
+                <Link href="/login" className="text-gray-600 hover:text-gray-900 text-sm">
+                  Anmelden
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/login"
+                  href="/register"
                   className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark"
                 >
-                  Anmelden
+                  Kostenlos starten
                 </Link>
               </li>
             </ul>
@@ -273,16 +288,16 @@ export default function HomePage() {
           </p>
           <div className="flex justify-center gap-4 flex-wrap">
             <Link
-              href="/projects/new"
+              href="/register"
               className="px-6 py-3 text-lg font-medium text-white bg-primary rounded-lg hover:bg-primary-dark"
             >
-              Kostenlos starten
+              Kostenlos starten →
             </Link>
             <Link
-              href="#how-it-works-heading"
+              href="#team-benefits-heading"
               className="px-6 py-3 text-lg font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
             >
-              So funktioniert&apos;s
+              Warum für Teams?
             </Link>
           </div>
         </section>
@@ -887,6 +902,11 @@ export default function HomePage() {
                 <li>
                   <Link href="#how-it-works-heading" className="hover:text-gray-900">
                     So funktioniert&apos;s
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#team-benefits-heading" className="hover:text-gray-900">
+                    Für Teams
                   </Link>
                 </li>
                 <li>

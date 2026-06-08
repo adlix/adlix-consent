@@ -969,6 +969,48 @@ export default function ProjectDetailPage() {
                       </details>
                     )}
 
+                  {/* Owner ohne Teilnehmerliste: Manuell abschließen */}
+                  {participantCount === 0 &&
+                    String(userId) === String(project?.owner?.id) &&
+                    selectedRound.votes.length > 0 && (
+                      <div className="mt-4 p-4 rounded-xl bg-blue-50 border border-blue-200">
+                        <p className="text-sm text-blue-800 mb-3">
+                          <strong>{selectedRound.votes.length} Stimme(n)</strong> eingegangen. Da keine Teilnehmerliste gepflegt wird, kannst du die Runde manuell abschließen.
+                        </p>
+                        {selectedRound.objections.some(
+                          (o) => o.severity === 'major' || o.severity === 'blocking'
+                        ) ? (
+                          <Link
+                            href={`/projects/${params.id}/dialog`}
+                            className="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors text-sm inline-block"
+                          >
+                            🔴 Dialog starten
+                          </Link>
+                        ) : (
+                          <button
+                            onClick={async () => {
+                              setAdvancing(true)
+                              strapi.setJwt(jwt || null)
+                              try {
+                                await strapi.transitionRoundPhase(selectedRound!.id, 'completed')
+                                const { all: r, selected: s } = await reloadRounds(params.id, selectedRound!.id)
+                                setRounds(r)
+                                setSelectedRound(s)
+                              } catch (_) {
+                                setError('Phase konnte nicht abgeschlossen werden.')
+                              } finally {
+                                setAdvancing(false)
+                              }
+                            }}
+                            disabled={advancing}
+                            className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 text-sm"
+                          >
+                            {advancing ? 'Schließe ab…' : '✅ Runde abschließen'}
+                          </button>
+                        )}
+                      </div>
+                    )}
+
                   {/* Auto-Transition: Alle Stimmen drin - keine Major Objection */}
                   {participantCount > 0 && selectedRound.votes.length >= participantCount && (
                     <div className="mt-4 p-4 rounded-xl bg-emerald-50 border border-emerald-200">
