@@ -31,7 +31,11 @@
     },
     "status": {
       "type": "enumeration",
-      "enum": ["active", "completed", "skipped"],
+      "enum": [
+        "active",
+        "completed",
+        "skipped"
+      ],
       "default": "active",
       "required": true
     },
@@ -54,5 +58,6 @@
       "target": "api::dialog-beitrag.dialog-beitrag",
       "mappedBy": "phase"
     }
-  }
+  },
+  "kind": "collectionType"
 }

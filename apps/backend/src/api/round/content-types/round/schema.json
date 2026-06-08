@@ -73,5 +73,6 @@
       "inversedBy": "rounds",
       "required": true
     }
-  }
+  },
+  "kind": "collectionType"
 }

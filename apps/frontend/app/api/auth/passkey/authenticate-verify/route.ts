@@ -73,11 +73,8 @@ export async function POST(req: NextRequest) {
   }
 
   // Update counter
-  const updatedCreds = JSON.parse(matchedUser.passkeyCredentials).map(
-    (c: StoredCredential) =>
-      c.id === matchedCred!.id
-        ? { ...c, counter: verification.authenticationInfo.newCounter }
-        : c
+  const updatedCreds = JSON.parse(matchedUser.passkeyCredentials).map((c: StoredCredential) =>
+    c.id === matchedCred!.id ? { ...c, counter: verification.authenticationInfo.newCounter } : c
   )
   await fetch(`${STRAPI_URL}/api/users/${matchedUser.id}`, {
     method: 'PUT',

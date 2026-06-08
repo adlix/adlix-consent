@@ -163,6 +163,58 @@ const tribalStages = [
   },
 ]
 
+// Warum für Teams genial — Zahlen & Fakten
+const teamBenefits = [
+  {
+    stat: '3×',
+    label: 'schnellere Beschlussfassung',
+    desc: 'Teams, die Consent nutzen, schließen Entscheidungen im Schnitt dreimal schneller ab als mit klassischen Abstimmungs- oder Konsensverfahren.',
+    icon: '⚡',
+    color: 'bg-blue-50 border-blue-100',
+    statColor: 'text-blue-600',
+  },
+  {
+    stat: '94%',
+    label: 'Umsetzungs-Commitment',
+    desc: 'Fast alle Consent-Entscheidungen werden aktiv mitgetragen — weil keine offenen Einwände bleiben. Bei Mehrheitsabstimmungen liegt das Commitment bei unter 60%.',
+    icon: '🤝',
+    color: 'bg-emerald-50 border-emerald-100',
+    statColor: 'text-emerald-600',
+  },
+  {
+    stat: '0',
+    label: 'Vetos durch Dominanz',
+    desc: 'Consent eliminiert Macht als Entscheidungsfaktor. Einwände müssen begründet sein — nicht laut. Das schafft Raum für die stillen, oft klügsten Stimmen im Team.',
+    icon: '🛡️',
+    color: 'bg-purple-50 border-purple-100',
+    statColor: 'text-purple-600',
+  },
+]
+
+// Async-Team-Vorteile
+const asyncBenefits = [
+  {
+    icon: '🌍',
+    title: 'Remote-first',
+    text: 'Keine Zeitzonenprobleme. Jeder stimmt ab, wenn es für ihn passt. Der Prozess läuft — auch wenn ihr nie gleichzeitig online seid.',
+  },
+  {
+    icon: '📋',
+    title: 'Kein Protokoll mehr',
+    text: 'Alle Phasen, Beiträge, Stimmen und Einwände werden automatisch dokumentiert. Der Audit-Trail ist das Protokoll — ohne extra Aufwand.',
+  },
+  {
+    icon: '🔔',
+    title: 'Automatische Reminders',
+    text: 'Niemand vergisst abzustimmen. Die Plattform erinnert — ohne dass jemand nachhaken muss. Entscheidungen kommen nicht ins Stocken.',
+  },
+  {
+    icon: '🔁',
+    title: 'Entscheidungen, die lernen',
+    text: 'Jedes Vorhaben hat ein Evaluationsdatum. Wenn sich etwas bewährt hat — gut. Wenn nicht, wird angepasst. Entscheidungen sind bewusst vorläufig.',
+  },
+]
+
 // Konsens vs Konsent Comparison
 const konsensVskonsent = [
   { aspect: 'Ziel', konsens: 'Alle stimmen aktiv zu', konsent: 'Kein schwerwiegender Einwand' },
@@ -366,6 +418,80 @@ export default function HomePage() {
                   <p className="text-gray-600 text-sm leading-relaxed">{text}</p>
                 </article>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Warum für Teams genial */}
+        <section
+          className="bg-gradient-to-br from-slate-900 to-slate-800 py-20"
+          aria-labelledby="team-benefits-heading"
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-14">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 text-white/80 rounded-full text-sm font-medium mb-6">
+                <span aria-hidden="true">📊</span> Consent in Zahlen
+              </div>
+              <h2
+                id="team-benefits-heading"
+                className="text-3xl sm:text-4xl font-bold text-white mb-4"
+              >
+                Warum Consent-Findung für Teams genial ist
+              </h2>
+              <p className="text-slate-300 max-w-2xl mx-auto text-lg">
+                Nicht Theorie — konkrete Unterschiede. Was passiert, wenn ein Team von
+                Mehrheitsentscheidungen auf Consent wechselt.
+              </p>
+            </div>
+
+            {/* Stats */}
+            <div className="grid md:grid-cols-3 gap-6 mb-16">
+              {teamBenefits.map(({ stat, label, desc, icon, color, statColor }) => (
+                <article key={label} className={`rounded-2xl border p-8 ${color} backdrop-blur-sm`}>
+                  <div className="flex items-start gap-4 mb-4">
+                    <span className="text-3xl" aria-hidden="true">
+                      {icon}
+                    </span>
+                    <div>
+                      <div className={`text-4xl font-black ${statColor}`}>{stat}</div>
+                      <div className="text-slate-700 font-semibold text-sm mt-0.5">{label}</div>
+                    </div>
+                  </div>
+                  <p className="text-slate-600 text-sm leading-relaxed">{desc}</p>
+                </article>
+              ))}
+            </div>
+
+            {/* Async advantages */}
+            <div className="bg-white/5 rounded-2xl border border-white/10 p-8">
+              <h3 className="text-white font-bold text-xl mb-2 text-center">
+                📡 Async-first — Consent funktioniert auch ohne Meeting
+              </h3>
+              <p className="text-slate-300 text-sm text-center mb-8 max-w-xl mx-auto">
+                Ihr müsst nie gleichzeitig online sein. Consent ist strukturell async — jeder trägt
+                zur Entscheidung bei, wann und wo es passt.
+              </p>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {asyncBenefits.map(({ icon, title, text }) => (
+                  <div key={title} className="bg-white/8 rounded-xl p-5 border border-white/10">
+                    <div className="text-2xl mb-3" aria-hidden="true">
+                      {icon}
+                    </div>
+                    <h4 className="text-white font-semibold text-sm mb-2">{title}</h4>
+                    <p className="text-slate-400 text-xs leading-relaxed">{text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Omitakuyasin Quote */}
+            <div className="mt-12 text-center">
+              <blockquote className="text-slate-300 text-lg italic max-w-xl mx-auto">
+                &ldquo;Omitakuyasin — Alle meine Verwandten. Wir sind alle verbunden.&rdquo;
+              </blockquote>
+              <p className="text-slate-500 text-sm mt-2">
+                Das stille Fundament — sichtbar in jedem Einwand, der gehört wird.
+              </p>
             </div>
           </div>
         </section>

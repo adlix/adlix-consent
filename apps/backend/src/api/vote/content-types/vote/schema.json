@@ -13,7 +13,12 @@
   "attributes": {
     "choice": {
       "type": "enumeration",
-      "enum": ["consent", "minor_objection", "major_objection", "abstain"],
+      "enum": [
+        "consent",
+        "minor_objection",
+        "major_objection",
+        "abstain"
+      ],
       "required": true
     },
     "reason": {
@@ -21,7 +26,12 @@
     },
     "previousChoice": {
       "type": "enumeration",
-      "enum": ["consent", "minor_objection", "major_objection", "abstain"]
+      "enum": [
+        "consent",
+        "minor_objection",
+        "major_objection",
+        "abstain"
+      ]
     },
     "reasonForChange": {
       "type": "text"
@@ -48,5 +58,6 @@
       "target": "api::abstention.abstention",
       "mappedBy": "vote"
     }
-  }
+  },
+  "kind": "collectionType"
 }

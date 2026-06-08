@@ -214,15 +214,39 @@ export default function ProjectDetailPage() {
   const userId = session?.user?.id
   const userHasVoted = selectedRound?.votes.some((v) => String(v.user?.id) === userId)
 
-  const handleAbstainSubmit = (data: {
+  const handleAbstainSubmit = async (data: {
     reason: string
     detail?: string
     isObjection?: boolean
     objectionSeverity?: 'minor' | 'major'
   }) => {
     setShowAbstainModal(false)
-    if (data.isObjection) {
-      setUserVote(data.objectionSeverity === 'major' ? 'major_objection' : 'minor_objection')
+    strapi.setJwt(jwt || null)
+    try {
+      // Always register the abstain vote so the vote count is accurate
+      await strapi.castVote(selectedRound!.id, 'abstain', Number(userId))
+      if (data.isObjection) {
+        // User revealed an objection during the abstain flow — register that too
+        const severity = data.objectionSeverity === 'major' ? 'major' : 'minor'
+        await strapi.createObjection({
+          reason: data.detail || 'Einwand aus Enthaltungs-Reflexionsprozess',
+          severity,
+          round: selectedRound!.id,
+          user: Number(userId),
+        })
+        setUserVote(severity === 'major' ? 'major_objection' : 'minor_objection')
+      } else {
+        setUserVote('abstain')
+      }
+      // Reload round so vote count and results update
+      const { all: refreshed, selected: refreshedRound } = await reloadRounds(
+        params.id,
+        selectedRound!.id
+      )
+      setRounds(refreshed)
+      setSelectedRound(refreshedRound)
+    } catch (_) {
+      setError('Enthaltung konnte nicht gespeichert werden.')
     }
   }
 

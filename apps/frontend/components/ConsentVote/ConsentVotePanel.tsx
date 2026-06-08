@@ -136,9 +136,7 @@ export default function ConsentVotePanel({
 
   // --- Already voted state ---
   if (userHasVoted) {
-    const myVote = currentUserId
-      ? votes.find((v) => v.user?.id === currentUserId)
-      : undefined
+    const myVote = currentUserId ? votes.find((v) => v.user?.id === currentUserId) : undefined
     return (
       <div className="space-y-4">
         <div className="flex items-center gap-3 p-4 rounded-xl bg-emerald-50 border border-emerald-200">

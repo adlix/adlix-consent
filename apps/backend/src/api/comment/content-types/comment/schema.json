@@ -17,7 +17,12 @@
     },
     "type": {
       "type": "enumeration",
-      "enum": ["question", "answer", "reaction", "perspective"],
+      "enum": [
+        "question",
+        "answer",
+        "reaction",
+        "perspective"
+      ],
       "default": "question"
     },
     "user": {
@@ -33,5 +38,6 @@
       "inversedBy": "comments",
       "required": true
     }
-  }
+  },
+  "kind": "collectionType"
 }

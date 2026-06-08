@@ -28,7 +28,13 @@
     },
     "status": {
       "type": "enumeration",
-      "enum": ["draft", "active", "completed", "beschlossen", "archived"],
+      "enum": [
+        "draft",
+        "active",
+        "completed",
+        "beschlossen",
+        "archived"
+      ],
       "default": "draft"
     },
     "outcome": {
@@ -71,5 +77,6 @@
       "target": "api::circle.circle",
       "inversedBy": "projects"
     }
-  }
+  },
+  "kind": "collectionType"
 }

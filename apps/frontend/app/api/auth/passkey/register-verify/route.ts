@@ -14,7 +14,8 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json()
   const expectedChallenge = getAndClearChallenge(session.id)
-  if (!expectedChallenge) return NextResponse.json({ error: 'Challenge abgelaufen.' }, { status: 400 })
+  if (!expectedChallenge)
+    return NextResponse.json({ error: 'Challenge abgelaufen.' }, { status: 400 })
 
   let verification
   try {

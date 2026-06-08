@@ -4,7 +4,7 @@
     "singularName": "audit-log",
     "pluralName": "audit-logs",
     "displayName": "AuditLog",
-    "description": "Zeitgestempelter Audit-Trail für alle Aktionen im Consent-Prozess"
+    "description": "Zeitgestempelter Audit-Trail f\u00fcr alle Aktionen im Consent-Prozess"
   },
   "options": {
     "draftAndPublish": false
@@ -53,5 +53,6 @@
       "relation": "manyToOne",
       "target": "api::project.project"
     }
-  }
+  },
+  "kind": "collectionType"
 }

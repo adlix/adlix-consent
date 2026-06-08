@@ -23,5 +23,6 @@
       "target": "plugin::users-permissions.user",
       "required": true
     }
-  }
+  },
+  "kind": "collectionType"
 }

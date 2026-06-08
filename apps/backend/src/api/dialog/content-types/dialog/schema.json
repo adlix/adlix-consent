@@ -4,7 +4,7 @@
     "singularName": "dialog",
     "pluralName": "dialogs",
     "displayName": "Dialog",
-    "description": "Integrationsprozess für schwerwiegende Einwände — 6 Phasen"
+    "description": "Integrationsprozess f\u00fcr schwerwiegende Einw\u00e4nde \u2014 6 Phasen"
   },
   "options": {
     "draftAndPublish": false
@@ -19,7 +19,11 @@
     },
     "status": {
       "type": "enumeration",
-      "enum": ["active", "completed", "escalated"],
+      "enum": [
+        "active",
+        "completed",
+        "escalated"
+      ],
       "default": "active",
       "required": true
     },
@@ -41,5 +45,6 @@
       "target": "api::dialog-phase.dialog-phase",
       "mappedBy": "dialog"
     }
-  }
+  },
+  "kind": "collectionType"
 }

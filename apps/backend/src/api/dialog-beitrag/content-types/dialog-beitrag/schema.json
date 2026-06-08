@@ -13,7 +13,12 @@
   "attributes": {
     "type": {
       "type": "enumeration",
-      "enum": ["idea", "question", "support", "passe"],
+      "enum": [
+        "idea",
+        "question",
+        "support",
+        "passe"
+      ],
       "required": true
     },
     "content": {
@@ -32,5 +37,6 @@
       "inversedBy": "beitraege",
       "required": true
     }
-  }
+  },
+  "kind": "collectionType"
 }

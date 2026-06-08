@@ -13,7 +13,13 @@
   "attributes": {
     "reason": {
       "type": "enumeration",
-      "enum": ["A", "B", "C", "D", "E"],
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
       "required": true
     },
     "detail": {
@@ -24,7 +30,12 @@
     },
     "finalChoice": {
       "type": "enumeration",
-      "enum": ["abstain", "minor_objection", "major_objection", "anonymous"]
+      "enum": [
+        "abstain",
+        "minor_objection",
+        "major_objection",
+        "anonymous"
+      ]
     },
     "anonymousConcern": {
       "type": "text"
@@ -54,5 +65,6 @@
       "target": "api::round.round",
       "required": true
     }
-  }
+  },
+  "kind": "collectionType"
 }

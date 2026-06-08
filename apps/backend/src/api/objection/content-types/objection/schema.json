@@ -17,12 +17,21 @@
     },
     "severity": {
       "type": "enumeration",
-      "enum": ["minor", "major", "blocking"],
+      "enum": [
+        "minor",
+        "major",
+        "blocking"
+      ],
       "default": "minor"
     },
     "status": {
       "type": "enumeration",
-      "enum": ["open", "addressed", "resolved", "dismissed"],
+      "enum": [
+        "open",
+        "addressed",
+        "resolved",
+        "dismissed"
+      ],
       "default": "open"
     },
     "user": {
@@ -38,5 +47,6 @@
       "inversedBy": "objections",
       "required": true
     }
-  }
+  },
+  "kind": "collectionType"
 }

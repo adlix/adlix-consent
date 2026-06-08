@@ -28,12 +28,9 @@ export function getAndClearTempChallenge(sessionId: string): string | null {
 }
 
 // Cleanup expired challenges
-setInterval(
-  () => {
-    const now = Date.now()
-    for (const [key, val] of challengeStore.entries()) {
-      if (val.expiresAt < now) challengeStore.delete(key)
-    }
-  },
-  60_000
-)
+setInterval(() => {
+  const now = Date.now()
+  for (const [key, val] of challengeStore.entries()) {
+    if (val.expiresAt < now) challengeStore.delete(key)
+  }
+}, 60_000)

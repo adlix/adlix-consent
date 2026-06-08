@@ -22,7 +22,11 @@
     },
     "scope": {
       "type": "enumeration",
-      "enum": ["read", "write", "admin"],
+      "enum": [
+        "read",
+        "write",
+        "admin"
+      ],
       "default": "read",
       "required": true
     },
@@ -38,5 +42,6 @@
       "type": "boolean",
       "default": true
     }
-  }
+  },
+  "kind": "collectionType"
 }

@@ -10,7 +10,8 @@ export async function POST(req: NextRequest) {
   const body = await req.json()
   const { id, first_name, last_name, username, photo_url, auth_date, hash } = body
 
-  if (!BOT_TOKEN) return NextResponse.json({ error: 'Telegram nicht konfiguriert.' }, { status: 500 })
+  if (!BOT_TOKEN)
+    return NextResponse.json({ error: 'Telegram nicht konfiguriert.' }, { status: 500 })
 
   // Verify hash per Telegram spec
   const dataCheckString = Object.entries({
@@ -38,14 +39,14 @@ export async function POST(req: NextRequest) {
   }
 
   const adminToken = process.env.STRAPI_API_TOKEN
-  if (!adminToken) return NextResponse.json({ error: 'Server nicht konfiguriert.' }, { status: 500 })
+  if (!adminToken)
+    return NextResponse.json({ error: 'Server nicht konfiguriert.' }, { status: 500 })
 
   // Search user by telegramId in Strapi
   const telegramId = String(id)
-  const searchRes = await fetch(
-    `${STRAPI_URL}/api/users?filters[telegramId][$eq]=${telegramId}`,
-    { headers: { Authorization: `Bearer ${adminToken}` } }
-  )
+  const searchRes = await fetch(`${STRAPI_URL}/api/users?filters[telegramId][$eq]=${telegramId}`, {
+    headers: { Authorization: `Bearer ${adminToken}` },
+  })
   const users = await searchRes.json()
 
   let jwt: string
