@@ -304,6 +304,7 @@ export default function ProjectDetailPage() {
         content: question,
         round: selectedRound!.id,
         user: Number(userId),
+        type: 'question',
       })
       setQuestion('')
       setShowQuestionForm(false)
@@ -324,6 +325,7 @@ export default function ProjectDetailPage() {
         content: reaction,
         round: selectedRound!.id,
         user: Number(userId),
+        type: 'reaction',
       })
       setReaction('')
       setShowReactionForm(false)

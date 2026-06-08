@@ -228,7 +228,7 @@ class StrapiClient {
   }
 
   // Comments
-  async createComment(data: { content: string; round: number; user: number }) {
+  async createComment(data: { content: string; round: number; user: number; type?: string }) {
     return this.request<unknown>('/comments', {
       method: 'POST',
       body: JSON.stringify({ data }),
