@@ -162,6 +162,9 @@ export default function ProjectDetailPage() {
   } | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [advancing, setAdvancing] = useState(false)
+  const [answeringCommentId, setAnsweringCommentId] = useState<number | null>(null)
+  const [answerText, setAnswerText] = useState('')
+  const [forceCloseConfirm, setForceCloseConfirm] = useState(false)
 
   const jwt = (session as unknown as { jwt?: string })?.jwt
 
@@ -331,6 +334,33 @@ export default function ProjectDetailPage() {
       setShowReactionForm(false)
     } catch (_) {
       setError('Reaktion konnte nicht gesendet werden.')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const handleSubmitAnswer = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!answerText.trim() || !selectedRound || !userId) return
+    setSubmitting(true)
+    strapi.setJwt(jwt || null)
+    try {
+      await strapi.createComment({
+        content: answerText.trim(),
+        round: selectedRound.id,
+        user: Number(userId),
+        type: 'answer',
+      })
+      setAnswerText('')
+      setAnsweringCommentId(null)
+      const { all: refreshed, selected: refreshedRound } = await reloadRounds(
+        params.id,
+        selectedRound.id
+      )
+      setRounds(refreshed)
+      setSelectedRound(refreshedRound)
+    } catch (_) {
+      setError('Antwort konnte nicht gespeichert werden.')
     } finally {
       setSubmitting(false)
     }
@@ -607,28 +637,103 @@ export default function ProjectDetailPage() {
                     Stelle Verständnisfragen zum Vorschlag. Keine Meinungen oder Diskussion — nur
                     Klärung.
                   </p>
-                  {selectedRound.comments
-                    .filter((c) => c.type === 'question' || c.type === 'answer')
-                    .map((cmt) => (
-                      <div
-                        key={cmt.id}
-                        className={`p-4 rounded-lg mb-2 ${
-                          cmt.type === 'question'
-                            ? 'bg-indigo-50 border-l-4 border-indigo-300'
-                            : 'bg-blue-50 border-l-4 border-blue-300'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="font-medium text-sm">
-                            {cmt.type === 'question' ? '❓' : '💡'} {cmt.user?.username || 'Anonym'}
-                          </span>
-                          <span className="text-xs text-gray-500">
-                            {new Date(cmt.createdAt).toLocaleDateString('de-DE')}
-                          </span>
+                  {/* Group: questions with their answers */}
+                  {(() => {
+                    const questions = selectedRound.comments.filter((c) => c.type === 'question')
+                    const answers = selectedRound.comments.filter((c) => c.type === 'answer')
+                    const isOwner = String(userId) === String(project?.owner?.id)
+                    if (questions.length === 0) {
+                      return (
+                        <p className="text-sm text-gray-400 italic mb-4">
+                          Noch keine Fragen — sei der Erste.
+                        </p>
+                      )
+                    }
+                    return questions.map((q, qi) => {
+                      // Find answers that come after this question and before the next
+                      const nextQ = questions[qi + 1]
+                      const relevantAnswers = answers.filter(
+                        (a) =>
+                          new Date(a.createdAt) > new Date(q.createdAt) &&
+                          (!nextQ || new Date(a.createdAt) < new Date(nextQ.createdAt))
+                      )
+                      return (
+                        <div key={q.id} className="mb-4">
+                          {/* Question */}
+                          <div className="p-4 rounded-xl bg-indigo-50 border-l-4 border-indigo-300">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="font-medium text-sm">
+                                ❓ {q.user?.username || 'Anonym'}
+                              </span>
+                              <span className="text-xs text-gray-400">
+                                {new Date(q.createdAt).toLocaleDateString('de-DE')}
+                              </span>
+                            </div>
+                            <p className="text-gray-800 text-sm">{q.content}</p>
+                            {/* Owner: answer button */}
+                            {isOwner && answeringCommentId !== q.id && (
+                              <button
+                                onClick={() => {
+                                  setAnsweringCommentId(q.id)
+                                  setAnswerText('')
+                                }}
+                                className="mt-2 text-xs text-indigo-600 hover:text-indigo-800 font-medium"
+                              >
+                                💡 Antworten
+                              </button>
+                            )}
+                            {/* Answer form */}
+                            {isOwner && answeringCommentId === q.id && (
+                              <form onSubmit={handleSubmitAnswer} className="mt-3 space-y-2">
+                                <textarea
+                                  value={answerText}
+                                  onChange={(e) => setAnswerText(e.target.value)}
+                                  rows={2}
+                                  className="w-full px-3 py-2 text-sm border border-indigo-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:border-transparent resize-none"
+                                  placeholder="Deine Antwort…"
+                                  autoFocus
+                                  required
+                                />
+                                <div className="flex gap-2">
+                                  <button
+                                    type="submit"
+                                    disabled={submitting || !answerText.trim()}
+                                    className="px-3 py-1.5 text-xs bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50"
+                                  >
+                                    {submitting ? 'Speichere…' : 'Antwort einreichen'}
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setAnsweringCommentId(null)}
+                                    className="px-3 py-1.5 text-xs bg-gray-100 text-gray-600 rounded-lg"
+                                  >
+                                    Abbrechen
+                                  </button>
+                                </div>
+                              </form>
+                            )}
+                          </div>
+                          {/* Answers */}
+                          {relevantAnswers.map((a) => (
+                            <div
+                              key={a.id}
+                              className="ml-6 mt-1 p-3 rounded-xl bg-blue-50 border-l-4 border-blue-300"
+                            >
+                              <div className="flex items-center justify-between mb-0.5">
+                                <span className="font-medium text-xs">
+                                  💡 {a.user?.username || 'Einreicher'}
+                                </span>
+                                <span className="text-xs text-gray-400">
+                                  {new Date(a.createdAt).toLocaleDateString('de-DE')}
+                                </span>
+                              </div>
+                              <p className="text-gray-700 text-sm">{a.content}</p>
+                            </div>
+                          ))}
                         </div>
-                        <p className="text-gray-700 text-sm">{cmt.content}</p>
-                      </div>
-                    ))}
+                      )
+                    })
+                  })()}
                   <button
                     onClick={() => setShowQuestionForm(!showQuestionForm)}
                     className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700"
@@ -940,33 +1045,55 @@ export default function ProjectDetailPage() {
                             {selectedRound.votes.length} von {participantCount} Stimmen.
                             Dokumentiere ggf. den Grund (Abwesenheit, Ausscheiden etc.).
                           </p>
-                          <button
-                            onClick={async () => {
-                              if (
-                                !confirm(
-                                  `Abstimmung mit ${selectedRound!.votes.length}/${participantCount} Stimmen abschließen? Diese Aktion kann nicht rükgängig gemacht werden.`
-                                )
-                              )
-                                return
-                              setAdvancing(true)
-                              strapi.setJwt(jwt || null)
-                              try {
-                                await strapi.transitionRoundPhase(selectedRound!.id, 'completed')
-                                const { all: completedRounds, selected: completedRound } =
-                                  await reloadRounds(params.id, selectedRound!.id)
-                                setRounds(completedRounds)
-                                setSelectedRound(completedRound)
-                              } catch (_) {
-                                setError('Phase konnte nicht abgeschlossen werden.')
-                              } finally {
-                                setAdvancing(false)
-                              }
-                            }}
-                            disabled={advancing}
-                            className="px-4 py-2 bg-amber-600 text-white rounded-lg font-medium hover:bg-amber-700 disabled:opacity-50 text-sm"
-                          >
-                            {advancing ? 'Schließe ab…' : '⚠️ Vorzeitig abschließen'}
-                          </button>
+                          {!forceCloseConfirm ? (
+                            <button
+                              onClick={() => setForceCloseConfirm(true)}
+                              disabled={advancing}
+                              className="px-4 py-2 bg-amber-600 text-white rounded-lg font-medium hover:bg-amber-700 disabled:opacity-50 text-sm"
+                            >
+                              ⚠️ Vorzeitig abschließen
+                            </button>
+                          ) : (
+                            <div className="flex items-center gap-3 p-3 bg-amber-100 border border-amber-300 rounded-xl">
+                              <p className="text-sm text-amber-800 flex-1">
+                                Wirklich abschließen mit {selectedRound!.votes.length}/
+                                {participantCount} Stimmen? Diese Aktion ist endgültig.
+                              </p>
+                              <div className="flex gap-2 shrink-0">
+                                <button
+                                  onClick={async () => {
+                                    setForceCloseConfirm(false)
+                                    setAdvancing(true)
+                                    strapi.setJwt(jwt || null)
+                                    try {
+                                      await strapi.transitionRoundPhase(
+                                        selectedRound!.id,
+                                        'completed'
+                                      )
+                                      const { all: completedRounds, selected: completedRound } =
+                                        await reloadRounds(params.id, selectedRound!.id)
+                                      setRounds(completedRounds)
+                                      setSelectedRound(completedRound)
+                                    } catch (_) {
+                                      setError('Phase konnte nicht abgeschlossen werden.')
+                                    } finally {
+                                      setAdvancing(false)
+                                    }
+                                  }}
+                                  disabled={advancing}
+                                  className="px-3 py-1.5 bg-amber-600 text-white rounded-lg font-medium hover:bg-amber-700 disabled:opacity-50 text-sm"
+                                >
+                                  {advancing ? 'Schließe ab…' : 'Ja, abschließen'}
+                                </button>
+                                <button
+                                  onClick={() => setForceCloseConfirm(false)}
+                                  className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200"
+                                >
+                                  Abbrechen
+                                </button>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </details>
                     )}
@@ -977,7 +1104,9 @@ export default function ProjectDetailPage() {
                     selectedRound.votes.length > 0 && (
                       <div className="mt-4 p-4 rounded-xl bg-blue-50 border border-blue-200">
                         <p className="text-sm text-blue-800 mb-3">
-                          <strong>{selectedRound.votes.length} Stimme(n)</strong> eingegangen. Da keine Teilnehmerliste gepflegt wird, kannst du die Runde manuell abschließen.
+                          <strong>{selectedRound.votes.length} Stimme(n)</strong> eingegangen. Da
+                          keine Teilnehmerliste gepflegt wird, kannst du die Runde manuell
+                          abschließen.
                         </p>
                         {selectedRound.objections.some(
                           (o) => o.severity === 'major' || o.severity === 'blocking'
@@ -995,7 +1124,10 @@ export default function ProjectDetailPage() {
                               strapi.setJwt(jwt || null)
                               try {
                                 await strapi.transitionRoundPhase(selectedRound!.id, 'completed')
-                                const { all: r, selected: s } = await reloadRounds(params.id, selectedRound!.id)
+                                const { all: r, selected: s } = await reloadRounds(
+                                  params.id,
+                                  selectedRound!.id
+                                )
                                 setRounds(r)
                                 setSelectedRound(s)
                               } catch (_) {
@@ -1087,6 +1219,68 @@ export default function ProjectDetailPage() {
                       isOwner={String(userId) === String(project?.owner?.id)}
                     />
                   </div>
+                </div>
+              )}
+
+              {/* Integration Phase — After dialog, start new round */}
+              {selectedRound.status === 'integration' && (
+                <div className="mb-6 p-5 rounded-xl bg-orange-50 border border-orange-200">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="text-2xl">🤝</span>
+                    <div>
+                      <h3 className="font-semibold text-orange-900">Integration läuft</h3>
+                      <p className="text-sm text-orange-700">
+                        Schwerwiegende Einwände müssen integriert werden, bevor eine neue Abstimmung
+                        stattfinden kann.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Link zum Dialog, falls noch offen */}
+                  <Link
+                    href={`/projects/${params.id}/dialog`}
+                    className="inline-block px-4 py-2 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 transition-colors text-sm mb-4"
+                  >
+                    🔴 Dialog zur Lösungsfindung öffnen
+                  </Link>
+
+                  {/* Owner: Neue Abstimmungsrunde starten */}
+                  {String(userId) === String(project?.owner?.id) && (
+                    <div className="mt-4 pt-4 border-t border-orange-200">
+                      <p className="text-sm text-orange-800 mb-3">
+                        <strong>Dialog abgeschlossen?</strong> Starte eine neue Abstimmungsrunde mit
+                        dem überarbeiteten Vorschlag.
+                      </p>
+                      <button
+                        onClick={async () => {
+                          setAdvancing(true)
+                          strapi.setJwt(jwt || null)
+                          try {
+                            await strapi.createRound({
+                              roundNumber: rounds.length + 1,
+                              proposal: selectedRound.proposal,
+                              status: 'voting',
+                              project: project!.id,
+                            })
+                            const { all: refreshed, selected: refreshedRound } = await reloadRounds(
+                              params.id,
+                              undefined
+                            )
+                            setRounds(refreshed)
+                            setSelectedRound(refreshedRound)
+                          } catch (_) {
+                            setError('Neue Runde konnte nicht gestartet werden.')
+                          } finally {
+                            setAdvancing(false)
+                          }
+                        }}
+                        disabled={advancing}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 text-sm"
+                      >
+                        {advancing ? 'Starte Runde…' : '🔄 Neue Abstimmungsrunde starten'}
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
 

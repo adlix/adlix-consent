@@ -239,7 +239,10 @@ export default function HomePage() {
           <nav aria-label="Hauptnavigation">
             <ul className="flex items-center gap-3 sm:gap-4 list-none">
               <li className="hidden sm:block">
-                <Link href="#team-benefits-heading" className="text-gray-600 hover:text-gray-900 text-sm">
+                <Link
+                  href="#team-benefits-heading"
+                  className="text-gray-600 hover:text-gray-900 text-sm"
+                >
                   Für Teams
                 </Link>
               </li>
@@ -679,6 +682,71 @@ export default function HomePage() {
               &ldquo;Gut genug für jetzt &mdash; sicher genug zum Ausprobieren.&rdquo;
               <footer className="mt-2 text-sm text-gray-500 not-italic">Das Consent-Prinzip</footer>
             </blockquote>
+          </div>
+        </section>
+
+        {/* Die Bewegung — Omitakuyasin */}
+        <section
+          className="py-20 bg-gradient-to-br from-slate-900 to-indigo-950 text-white"
+          aria-labelledby="movement-heading"
+        >
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="mb-8">
+              <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase bg-white/10 text-indigo-200 mb-6">
+                Mitákuye Oyásʼiŋ — Wir sind alle verbunden
+              </span>
+              <h2
+                id="movement-heading"
+                className="text-3xl sm:text-4xl font-bold mb-6 leading-tight"
+              >
+                Das Werkzeug. <span className="text-indigo-300">Die Bewegung.</span>
+              </h2>
+              <p className="text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
+                adlix consent ist mehr als Software. Es ist der digitale Ausdruck einer Haltung:
+                Jeder Mensch trägt etwas Einzigartiges bei. Einwände sind Geschenke. Entscheidungen
+                wachsen, wenn alle gehört werden.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6 mt-12 text-left">
+              <article className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/8 transition-colors">
+                <div className="text-3xl mb-4">🔵</div>
+                <h3 className="font-semibold text-white mb-2">Omitakuyasin</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  Lakota für &ldquo;Alle meine Verwandten&rdquo;. Keine Bitte — eine Weltanschauung.
+                  Consent, weil der andere mein Verwandter ist. Kreise, weil jeder Platz
+                  gleichwertig ist.
+                </p>
+              </article>
+              <article className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/8 transition-colors">
+                <div className="text-3xl mb-4">🌀</div>
+                <h3 className="font-semibold text-white mb-2">Agile Tribes</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  Teams, die mehr sind als Arbeitsgruppen. Tribes verbinden sich über Werte, nicht
+                  Verträge. Wer gemeinsam Consent-Entscheidungen trifft, baut Vertrauen — das
+                  Fundament eines lebendigen Tribe.
+                </p>
+              </article>
+              <article className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/8 transition-colors">
+                <div className="text-3xl mb-4">♾️</div>
+                <h3 className="font-semibold text-white mb-2">Die Problemlöser e.V.</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  adlix consent entstand aus einem Verein, der Kreisarbeit lebt. Die Plattform ist
+                  das <em>Wie</em> — die Bewegung ist das <em>Warum</em>. Spürbar in jeder
+                  Entscheidung, ohne es erklären zu müssen.
+                </p>
+              </article>
+            </div>
+
+            <div className="mt-12 p-6 bg-white/5 border border-indigo-400/20 rounded-2xl max-w-2xl mx-auto">
+              <p className="text-indigo-200 italic text-lg leading-relaxed">
+                &ldquo;Das Tool wird so gebaut, dass es sich <em>anders</em> anfühlt — spürbar, dass
+                hier eine andere Haltung dahintersteht. Ohne es zu erklären.&rdquo;
+              </p>
+              <p className="mt-3 text-xs text-slate-500 uppercase tracking-widest">
+                Aus dem Konzept — adlix consent
+              </p>
+            </div>
           </div>
         </section>
 
