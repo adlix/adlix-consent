@@ -165,6 +165,8 @@ export default function ProjectDetailPage() {
   const [answeringCommentId, setAnsweringCommentId] = useState<number | null>(null)
   const [answerText, setAnswerText] = useState('')
   const [forceCloseConfirm, setForceCloseConfirm] = useState(false)
+  const [showNewRoundForm, setShowNewRoundForm] = useState(false)
+  const [newRoundProposal, setNewRoundProposal] = useState('')
 
   const jwt = (session as unknown as { jwt?: string })?.jwt
 
@@ -311,6 +313,13 @@ export default function ProjectDetailPage() {
       })
       setQuestion('')
       setShowQuestionForm(false)
+      // Reload so the new question appears immediately
+      const { all: refreshed, selected: refreshedRound } = await reloadRounds(
+        params.id,
+        selectedRound!.id
+      )
+      setRounds(refreshed)
+      setSelectedRound(refreshedRound)
     } catch (_) {
       setError('Frage konnte nicht gesendet werden.')
     } finally {
@@ -332,6 +341,13 @@ export default function ProjectDetailPage() {
       })
       setReaction('')
       setShowReactionForm(false)
+      // Reload so the new reaction appears immediately
+      const { all: refreshed, selected: refreshedRound } = await reloadRounds(
+        params.id,
+        selectedRound!.id
+      )
+      setRounds(refreshed)
+      setSelectedRound(refreshedRound)
     } catch (_) {
       setError('Reaktion konnte nicht gesendet werden.')
     } finally {
@@ -1248,37 +1264,72 @@ export default function ProjectDetailPage() {
                   {String(userId) === String(project?.owner?.id) && (
                     <div className="mt-4 pt-4 border-t border-orange-200">
                       <p className="text-sm text-orange-800 mb-3">
-                        <strong>Dialog abgeschlossen?</strong> Starte eine neue Abstimmungsrunde mit
-                        dem überarbeiteten Vorschlag.
+                        <strong>Dialog abgeschlossen?</strong> Trage den überarbeiteten Vorschlag ein
+                        und starte eine neue Abstimmungsrunde.
                       </p>
-                      <button
-                        onClick={async () => {
-                          setAdvancing(true)
-                          strapi.setJwt(jwt || null)
-                          try {
-                            await strapi.createRound({
-                              roundNumber: rounds.length + 1,
-                              proposal: selectedRound.proposal,
-                              status: 'voting',
-                              project: project!.id,
-                            })
-                            const { all: refreshed, selected: refreshedRound } = await reloadRounds(
-                              params.id,
-                              undefined
-                            )
-                            setRounds(refreshed)
-                            setSelectedRound(refreshedRound)
-                          } catch (_) {
-                            setError('Neue Runde konnte nicht gestartet werden.')
-                          } finally {
-                            setAdvancing(false)
-                          }
-                        }}
-                        disabled={advancing}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 text-sm"
-                      >
-                        {advancing ? 'Starte Runde…' : '🔄 Neue Abstimmungsrunde starten'}
-                      </button>
+                      {!showNewRoundForm ? (
+                        <button
+                          onClick={() => {
+                            setNewRoundProposal(selectedRound.proposal)
+                            setShowNewRoundForm(true)
+                          }}
+                          className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 text-sm"
+                        >
+                          🔄 Überarbeiteten Vorschlag einreichen
+                        </button>
+                      ) : (
+                        <div className="space-y-3">
+                          <label className="block">
+                            <span className="text-xs font-semibold text-orange-800 uppercase tracking-wide">
+                              📝 Überarbeiteter Vorschlag (Runde {rounds.length + 1})
+                            </span>
+                            <textarea
+                              value={newRoundProposal}
+                              onChange={(e) => setNewRoundProposal(e.target.value)}
+                              rows={5}
+                              className="mt-2 w-full px-4 py-3 border border-blue-300 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none text-sm"
+                              placeholder="Trage hier den überarbeiteten Vorschlag ein, der den Einwand integriert…"
+                            />
+                          </label>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={async () => {
+                                if (!newRoundProposal.trim()) return
+                                setAdvancing(true)
+                                strapi.setJwt(jwt || null)
+                                try {
+                                  await strapi.createRound({
+                                    roundNumber: rounds.length + 1,
+                                    proposal: newRoundProposal.trim(),
+                                    status: 'voting',
+                                    project: project!.id,
+                                  })
+                                  setShowNewRoundForm(false)
+                                  setNewRoundProposal('')
+                                  const { all: refreshed, selected: refreshedRound } =
+                                    await reloadRounds(params.id, undefined)
+                                  setRounds(refreshed)
+                                  setSelectedRound(refreshedRound)
+                                } catch (_) {
+                                  setError('Neue Runde konnte nicht gestartet werden.')
+                                } finally {
+                                  setAdvancing(false)
+                                }
+                              }}
+                              disabled={advancing || !newRoundProposal.trim()}
+                              className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 text-sm"
+                            >
+                              {advancing ? 'Starte Runde…' : '✅ Abstimmungsrunde starten'}
+                            </button>
+                            <button
+                              onClick={() => setShowNewRoundForm(false)}
+                              className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200"
+                            >
+                              Abbrechen
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
