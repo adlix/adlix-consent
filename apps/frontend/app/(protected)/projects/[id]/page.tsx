@@ -487,12 +487,35 @@ export default function ProjectDetailPage() {
                   )}
               </div>
             </div>
-            <div className="flex items-center gap-6 text-sm text-gray-500">
+            <div className="flex items-center gap-6 text-sm text-gray-500 mb-3">
               <span>Erstellt von: {project.owner?.username || 'Unbekannt'}</span>
               <span>{participantCount} Teilnehmer</span>
               <span>{rounds.length} Runden</span>
               {project.circle && <span>Kreis: {project.circle.name}</span>}
             </div>
+            {/* Invite / Share */}
+            {project.circle && (
+              <div className="flex items-center gap-3 pt-3 border-t border-gray-100">
+                <span className="text-xs text-gray-400">Einladungslink:</span>
+                <code className="flex-1 text-xs bg-gray-50 px-3 py-1.5 rounded-lg text-gray-600 font-mono truncate">
+                  {typeof window !== 'undefined' ? window.location.origin : ''}/circles/join/[token]
+                </code>
+                <button
+                  onClick={async () => {
+                    try {
+                      await navigator.clipboard.writeText(
+                        `${window.location.origin}/circles/join/${project!.circle?.id}`
+                      )
+                    } catch {
+                      // clipboard not available
+                    }
+                  }}
+                  className="shrink-0 px-3 py-1.5 text-xs font-medium bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+                >
+                  🔗 Link kopieren
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Consent Flow Progress */}
@@ -984,6 +1007,47 @@ export default function ProjectDetailPage() {
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold mb-2">Konsent-Abstimmung</h3>
 
+                  {/* Participation Progress Bar */}
+                  {(() => {
+                    const voted = selectedRound.votes.length
+                    const total = participantCount
+                    const pct = total > 0 ? Math.round((voted / total) * 100) : 0
+                    return (
+                      <div className="mb-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-sm font-medium text-gray-700">
+                            Abstimmungsbeteiligung
+                          </span>
+                          <span className="text-sm font-semibold text-gray-900">
+                            {voted} / {total} abgestimmt
+                          </span>
+                        </div>
+                        <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-primary transition-all duration-500 rounded-full"
+                            style={{ width: `${pct}%` }}
+                            role="progressbar"
+                            aria-valuenow={pct}
+                            aria-valuemin={0}
+                            aria-valuemax={100}
+                            aria-label={`${voted} von ${total} abgestimmt`}
+                          />
+                        </div>
+                        {pct < 100 && (
+                          <p className="mt-2 text-xs text-gray-500">
+                            {total - voted} Person{total - voted !== 1 ? 'en' : ''} haben noch nicht
+                            abgestimmt. Reminder werden automatisch versendet.
+                          </p>
+                        )}
+                        {pct === 100 && (
+                          <p className="mt-2 text-xs text-emerald-600 font-medium">
+                            ✅ Alle Teilnehmer haben abgestimmt.
+                          </p>
+                        )}
+                      </div>
+                    )
+                  })()}
+
                   <ConsentVotePanel
                     votes={selectedRound.votes}
                     userHasVoted={!!userHasVoted && !allowChangeVote}
@@ -1264,8 +1328,8 @@ export default function ProjectDetailPage() {
                   {String(userId) === String(project?.owner?.id) && (
                     <div className="mt-4 pt-4 border-t border-orange-200">
                       <p className="text-sm text-orange-800 mb-3">
-                        <strong>Dialog abgeschlossen?</strong> Trage den überarbeiteten Vorschlag ein
-                        und starte eine neue Abstimmungsrunde.
+                        <strong>Dialog abgeschlossen?</strong> Trage den überarbeiteten Vorschlag
+                        ein und starte eine neue Abstimmungsrunde.
                       </p>
                       {!showNewRoundForm ? (
                         <button

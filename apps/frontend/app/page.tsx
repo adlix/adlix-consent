@@ -420,6 +420,137 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Consent vs. Traditionell — Entscheidungs-Vergleich */}
+        <section
+          className="py-16 bg-white border-t border-gray-100"
+          aria-labelledby="comparison-heading"
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <h2 id="comparison-heading" className="text-3xl font-bold mb-4">
+                Warum Consent-Findung für Teams genial ist
+              </h2>
+              <p className="text-gray-500 max-w-xl mx-auto">
+                Die meisten Teams entscheiden noch immer mit den falschen Werkzeugen. Hier der
+                direkte Vergleich.
+              </p>
+            </div>
+
+            <div className="overflow-x-auto rounded-2xl border border-gray-200 shadow-sm">
+              <table
+                className="w-full text-sm"
+                aria-label="Vergleich: Traditionelle Entscheidungen vs. Consent"
+              >
+                <thead>
+                  <tr className="bg-gray-50 border-b border-gray-200">
+                    <th className="text-left px-6 py-4 font-semibold text-gray-700 w-1/4">
+                      Kriterium
+                    </th>
+                    <th className="text-center px-6 py-4 font-semibold text-gray-400 w-1/3">
+                      ❌ Traditionell
+                    </th>
+                    <th className="text-center px-6 py-4 font-semibold text-emerald-700 bg-emerald-50 w-1/3">
+                      ✅ Consent
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {[
+                    {
+                      aspect: 'Wer entscheidet?',
+                      old: 'Mehrheit oder Chef — alle anderen haben verloren',
+                      new: 'Jedes Kreismitglied mit gleichem Gewicht',
+                    },
+                    {
+                      aspect: 'Was passiert mit Bedenken?',
+                      old: 'Verstummen oder Überstimmtwerden',
+                      new: 'Strukturierter Einwand-Prozess mit Integrationsweg',
+                    },
+                    {
+                      aspect: 'Wie schnell?',
+                      old: 'Endlose Diskussionen bis Kompromiss oder Aufgabe',
+                      new: 'Konsent ist pragmatisch — kein 100%-Stopp',
+                    },
+                    {
+                      aspect: 'Nachvollziehbarkeit?',
+                      old: 'Wer hat zugestimmt? Warum? Oft unklar',
+                      new: 'Vollständiger Audit-Trail: Phasen, Stimmen, Einwände',
+                    },
+                    {
+                      aspect: 'Lerneffekt?',
+                      old: 'Entscheidung getroffen — Thema abgeschlossen',
+                      new: 'Evaluationsdatum macht jede Entscheidung zur Iteration',
+                    },
+                    {
+                      aspect: 'Psychologische Sicherheit?',
+                      old: 'Meinungsdruck, politisches Stimmungsverhalten',
+                      new: 'Recht auf Einwand — kein persönlicher Angriff',
+                    },
+                    {
+                      aspect: 'Dokumentation?',
+                      old: 'Protokoll ist Extra-Aufwand — oft lückenhaft',
+                      new: 'Automatisch: alle Phasen, Beiträge, Stimmen',
+                    },
+                    {
+                      aspect: 'Remote-fähig?',
+                      old: 'Meist nur mit Timing und Video-Kalender',
+                      new: 'Vollständig async — über Tage, ohne Synchron-Meeting',
+                    },
+                  ].map(({ aspect, old: oldText, new: newText }) => (
+                    <tr key={aspect}>
+                      <td className="px-6 py-4 font-medium text-gray-800">{aspect}</td>
+                      <td className="px-6 py-4 text-center text-gray-500 bg-gray-50">{oldText}</td>
+                      <td className="px-6 py-4 text-center text-gray-700 bg-emerald-50 font-medium">
+                        {newText}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="mt-8 text-center">
+              <p className="text-gray-500 mb-4">
+                Teams, die Consent nutzen, berichten von <strong>weniger Konflikten</strong>,{' '}
+                <strong>höherer Beteiligung</strong> und <strong>schnelleren Entscheidungen</strong>
+                .
+              </p>
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2 px-6 py-3 text-base font-medium text-white bg-primary rounded-lg hover:bg-primary-dark"
+              >
+                Für mein Team starten →
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Trust Signals / Stats */}
+        <section
+          className="py-14 bg-gray-50 border-t border-gray-100"
+          aria-labelledby="trust-heading"
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 id="trust-heading" className="sr-only">
+              Zahlen & Fakten
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+              {[
+                { value: '0', label: 'Kosten loslegen', sub: 'Free-Plan für Teams bis 50' },
+                { value: '6', label: 'Phasen pro Vorhaben', sub: 'Vom Entwurf bis zum Beschluss' },
+                { value: '100%', label: 'Async-fähig', sub: 'Kein Meeting nötig' },
+                { value: '∞', label: 'Audit-Trail', sub: 'Jede Entscheidung dokumentiert' },
+              ].map(({ value, label, sub }) => (
+                <div key={label}>
+                  <p className="text-4xl font-bold text-primary mb-1">{value}</p>
+                  <p className="text-sm font-semibold text-gray-800 mb-1">{label}</p>
+                  <p className="text-xs text-gray-500">{sub}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Why Consent */}
         <section className="py-16" aria-labelledby="why-consent-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -700,27 +831,28 @@ export default function HomePage() {
               <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium mb-6">
                 <span aria-hidden="true">▶️</span> Live-Beispiel
               </div>
-              <h2
-                id="practice-heading"
-                className="text-3xl sm:text-4xl font-bold mb-4"
-              >
+              <h2 id="practice-heading" className="text-3xl sm:text-4xl font-bold mb-4">
                 So läuft ein echter Consent-Loop
               </h2>
               <p className="text-gray-500 max-w-xl mx-auto">
-                Ein 6-köpfiges Scrum-Team entscheidet über die Einführung der 4-Tage-Woche.
-                Hier siehst du, wie Consent-Findung in der Praxis aussieht.
+                Ein 6-köpfiges Scrum-Team entscheidet über die Einführung der 4-Tage-Woche. Hier
+                siehst du, wie Consent-Findung in der Praxis aussieht.
               </p>
             </div>
 
             {/* Vorhaben */}
             <div className="rounded-2xl border border-blue-200 bg-blue-50 p-6 mb-4">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-xs font-bold uppercase tracking-widest text-blue-500">📜 Vorhaben</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-blue-500">
+                  📜 Vorhaben
+                </span>
               </div>
-              <h3 className="font-bold text-lg text-gray-900 mb-1">Einführung 4-Tage-Woche (Pilotprojekt)</h3>
+              <h3 className="font-bold text-lg text-gray-900 mb-1">
+                Einführung 4-Tage-Woche (Pilotprojekt)
+              </h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Wir probieren für 3 Monate die 4-Tage-Woche: Mo–Do Vollzeit, Freitag frei.
-                Ziel: Mehr Erholung, höhere Fokuszeiten, weniger Meetingkultur.
+                Wir probieren für 3 Monate die 4-Tage-Woche: Mo–Do Vollzeit, Freitag frei. Ziel:
+                Mehr Erholung, höhere Fokuszeiten, weniger Meetingkultur.
               </p>
               <div className="mt-3 flex items-center gap-4 text-xs text-gray-400">
                 <span>👤 Einreicher: Lea (Product Owner)</span>
@@ -730,26 +862,35 @@ export default function HomePage() {
 
             {/* Phase-Karten */}
             <div className="space-y-3">
-
               {/* Informationsrunde */}
               <details className="group rounded-2xl border border-gray-200 overflow-hidden" open>
                 <summary className="flex items-center gap-3 px-6 py-4 cursor-pointer bg-gray-50 hover:bg-gray-100 list-none">
-                  <span className="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold shrink-0">1</span>
+                  <span className="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold shrink-0">
+                    1
+                  </span>
                   <div className="flex-1">
                     <span className="font-semibold text-gray-900">Informationsrunde</span>
                     <span className="ml-2 text-xs text-gray-400">Nur Verständnisfragen</span>
                   </div>
-                  <span className="text-gray-400 group-open:rotate-180 transition-transform text-xs">▾</span>
+                  <span className="text-gray-400 group-open:rotate-180 transition-transform text-xs">
+                    ▾
+                  </span>
                 </summary>
                 <div className="px-6 py-5 space-y-3 border-t border-gray-100">
                   <div className="flex gap-3">
                     <span className="text-lg">❓</span>
                     <div className="bg-indigo-50 rounded-xl px-4 py-3 flex-1">
                       <p className="text-sm font-medium text-indigo-800">Marco fragt:</p>
-                      <p className="text-sm text-gray-700 mt-1">&ldquo;Gilt das auch für Teilzeitkräfte, oder nur für Vollzeitangestellte?&rdquo;</p>
+                      <p className="text-sm text-gray-700 mt-1">
+                        &ldquo;Gilt das auch für Teilzeitkräfte, oder nur für
+                        Vollzeitangestellte?&rdquo;
+                      </p>
                       <div className="mt-3 bg-white/70 rounded-lg px-3 py-2 border-l-4 border-indigo-300">
                         <p className="text-xs font-medium text-gray-500">💡 Lea antwortet:</p>
-                        <p className="text-xs text-gray-700 mt-0.5">Aktuell nur Vollzeit — für Teilzeit wird eine separate Regelung erarbeitet, falls der Pilot erfolgreich ist.</p>
+                        <p className="text-xs text-gray-700 mt-0.5">
+                          Aktuell nur Vollzeit — für Teilzeit wird eine separate Regelung
+                          erarbeitet, falls der Pilot erfolgreich ist.
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -759,19 +900,41 @@ export default function HomePage() {
               {/* Reaktionsrunde */}
               <details className="group rounded-2xl border border-gray-200 overflow-hidden">
                 <summary className="flex items-center gap-3 px-6 py-4 cursor-pointer bg-gray-50 hover:bg-gray-100 list-none">
-                  <span className="w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center text-sm font-bold shrink-0">2</span>
+                  <span className="w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center text-sm font-bold shrink-0">
+                    2
+                  </span>
                   <div className="flex-1">
                     <span className="font-semibold text-gray-900">Reaktionsrunde</span>
-                    <span className="ml-2 text-xs text-gray-400">Perspektiven — kein Gegenargumentieren</span>
+                    <span className="ml-2 text-xs text-gray-400">
+                      Perspektiven — kein Gegenargumentieren
+                    </span>
                   </div>
-                  <span className="text-gray-400 group-open:rotate-180 transition-transform text-xs">▾</span>
+                  <span className="text-gray-400 group-open:rotate-180 transition-transform text-xs">
+                    ▾
+                  </span>
                 </summary>
                 <div className="px-6 py-5 space-y-2 border-t border-gray-100">
                   {[
-                    { name: 'Anna', emoji: '😊', text: 'Ich freue mich sehr — Freitagszeit mit meinen Kindern wäre ein echter Gewinn.' },
-                    { name: 'Tom', emoji: '🤔', text: 'Ich bin neugierig, wie wir Kundentermine handhaben. Freitags haben einige Kunden nur dann Zeit.' },
-                    { name: 'Sarah', emoji: '👍', text: 'Gut. Fokustage Mo–Do könnten die Qualität unserer Sprints deutlich heben.' },
-                    { name: 'Jan', emoji: '💬', text: 'Ich wünsche mir ein klares Evaluationsframework — sonst verlängert sich der Pilot einfach.' },
+                    {
+                      name: 'Anna',
+                      emoji: '😊',
+                      text: 'Ich freue mich sehr — Freitagszeit mit meinen Kindern wäre ein echter Gewinn.',
+                    },
+                    {
+                      name: 'Tom',
+                      emoji: '🤔',
+                      text: 'Ich bin neugierig, wie wir Kundentermine handhaben. Freitags haben einige Kunden nur dann Zeit.',
+                    },
+                    {
+                      name: 'Sarah',
+                      emoji: '👍',
+                      text: 'Gut. Fokustage Mo–Do könnten die Qualität unserer Sprints deutlich heben.',
+                    },
+                    {
+                      name: 'Jan',
+                      emoji: '💬',
+                      text: 'Ich wünsche mir ein klares Evaluationsframework — sonst verlängert sich der Pilot einfach.',
+                    },
                   ].map(({ name, emoji, text }) => (
                     <div key={name} className="flex gap-3 items-start">
                       <span className="text-lg">{emoji}</span>
@@ -787,12 +950,16 @@ export default function HomePage() {
               {/* Abstimmung */}
               <details className="group rounded-2xl border border-gray-200 overflow-hidden">
                 <summary className="flex items-center gap-3 px-6 py-4 cursor-pointer bg-gray-50 hover:bg-gray-100 list-none">
-                  <span className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold shrink-0">3</span>
+                  <span className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold shrink-0">
+                    3
+                  </span>
                   <div className="flex-1">
                     <span className="font-semibold text-gray-900">Konsent-Abstimmung</span>
                     <span className="ml-2 text-xs text-gray-400">6 von 6 abgestimmt</span>
                   </div>
-                  <span className="text-gray-400 group-open:rotate-180 transition-transform text-xs">▾</span>
+                  <span className="text-gray-400 group-open:rotate-180 transition-transform text-xs">
+                    ▾
+                  </span>
                 </summary>
                 <div className="px-6 py-5 border-t border-gray-100">
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -801,29 +968,49 @@ export default function HomePage() {
                       { name: 'Anna', vote: 'consent', label: '✅ Konsent' },
                       { name: 'Sarah', vote: 'consent', label: '✅ Konsent' },
                       { name: 'Marco', vote: 'consent', label: '✅ Konsent' },
-                      { name: 'Jan', vote: 'minor', label: '💛 Leichter Einwand', note: 'Evaluation braucht klare Kriterien' },
-                      { name: 'Tom', vote: 'major', label: '🔴 Schwerwiegender Einwand', note: 'Kundenfreitag ungeklärt' },
+                      {
+                        name: 'Jan',
+                        vote: 'minor',
+                        label: '💛 Leichter Einwand',
+                        note: 'Evaluation braucht klare Kriterien',
+                      },
+                      {
+                        name: 'Tom',
+                        vote: 'major',
+                        label: '🔴 Schwerwiegender Einwand',
+                        note: 'Kundenfreitag ungeklärt',
+                      },
                     ].map(({ name, vote, label, note }) => (
                       <div
                         key={name}
                         className={`rounded-xl p-3 border text-sm ${
-                          vote === 'consent' ? 'bg-emerald-50 border-emerald-200' :
-                          vote === 'minor' ? 'bg-yellow-50 border-yellow-200' :
-                          'bg-red-50 border-red-200'
+                          vote === 'consent'
+                            ? 'bg-emerald-50 border-emerald-200'
+                            : vote === 'minor'
+                              ? 'bg-yellow-50 border-yellow-200'
+                              : 'bg-red-50 border-red-200'
                         }`}
                       >
                         <p className="font-semibold text-gray-800">{name}</p>
-                        <p className={`text-xs mt-0.5 font-medium ${
-                          vote === 'consent' ? 'text-emerald-700' :
-                          vote === 'minor' ? 'text-yellow-700' :
-                          'text-red-700'
-                        }`}>{label}</p>
+                        <p
+                          className={`text-xs mt-0.5 font-medium ${
+                            vote === 'consent'
+                              ? 'text-emerald-700'
+                              : vote === 'minor'
+                                ? 'text-yellow-700'
+                                : 'text-red-700'
+                          }`}
+                        >
+                          {label}
+                        </p>
                         {note && <p className="text-xs text-gray-500 mt-1 italic">{note}</p>}
                       </div>
                     ))}
                   </div>
                   <div className="mt-4 p-3 rounded-xl bg-red-50 border border-red-200">
-                    <p className="text-xs text-red-800 font-medium">⚠️ Schwerwiegender Einwand von Tom — Dialog zur Integration wird gestartet.</p>
+                    <p className="text-xs text-red-800 font-medium">
+                      ⚠️ Schwerwiegender Einwand von Tom — Dialog zur Integration wird gestartet.
+                    </p>
                   </div>
                 </div>
               </details>
@@ -831,31 +1018,55 @@ export default function HomePage() {
               {/* Integration */}
               <details className="group rounded-2xl border border-gray-200 overflow-hidden">
                 <summary className="flex items-center gap-3 px-6 py-4 cursor-pointer bg-gray-50 hover:bg-gray-100 list-none">
-                  <span className="w-8 h-8 rounded-full bg-orange-600 text-white flex items-center justify-center text-sm font-bold shrink-0">4</span>
+                  <span className="w-8 h-8 rounded-full bg-orange-600 text-white flex items-center justify-center text-sm font-bold shrink-0">
+                    4
+                  </span>
                   <div className="flex-1">
                     <span className="font-semibold text-gray-900">Dialog &amp; Integration</span>
                     <span className="ml-2 text-xs text-gray-400">Einwand integrieren</span>
                   </div>
-                  <span className="text-gray-400 group-open:rotate-180 transition-transform text-xs">▾</span>
+                  <span className="text-gray-400 group-open:rotate-180 transition-transform text-xs">
+                    ▾
+                  </span>
                 </summary>
                 <div className="px-6 py-5 border-t border-gray-100 space-y-4">
                   <div className="bg-orange-50 rounded-xl p-4 border border-orange-200">
-                    <p className="text-xs font-bold text-orange-700 uppercase tracking-wide mb-1">Toms Einwand (strukturiert)</p>
-                    <p className="text-sm text-gray-800">&ldquo;Einige Kunden haben freitags ihre einzige freie Zeitfenster. Ohne Verfügbarkeit am Freitag riskieren wir Kundenverlust — das gefährdet das Projektziel.&rdquo;</p>
+                    <p className="text-xs font-bold text-orange-700 uppercase tracking-wide mb-1">
+                      Toms Einwand (strukturiert)
+                    </p>
+                    <p className="text-sm text-gray-800">
+                      &ldquo;Einige Kunden haben freitags ihre einzige freie Zeitfenster. Ohne
+                      Verfügbarkeit am Freitag riskieren wir Kundenverlust — das gefährdet das
+                      Projektziel.&rdquo;
+                    </p>
                   </div>
                   <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-                    <p className="text-xs font-bold text-blue-700 uppercase tracking-wide mb-1">Lösungsideen aus dem Team</p>
+                    <p className="text-xs font-bold text-blue-700 uppercase tracking-wide mb-1">
+                      Lösungsideen aus dem Team
+                    </p>
                     <ul className="text-sm text-gray-700 space-y-1 mt-1">
-                      <li>💡 <strong>Jan:</strong> Freitag-Verfügbarkeit freiwillig — wer Kundenkontakt hat, trägt sich ein</li>
-                      <li>💡 <strong>Anna:</strong> Alternativ: Freitag-Morgen (8–12h) als optionaler Kundenpuffer</li>
-                      <li>➕ <strong>Tom:</strong> Unterstützt Annas Idee</li>
+                      <li>
+                        💡 <strong>Jan:</strong> Freitag-Verfügbarkeit freiwillig — wer
+                        Kundenkontakt hat, trägt sich ein
+                      </li>
+                      <li>
+                        💡 <strong>Anna:</strong> Alternativ: Freitag-Morgen (8–12h) als optionaler
+                        Kundenpuffer
+                      </li>
+                      <li>
+                        ➕ <strong>Tom:</strong> Unterstützt Annas Idee
+                      </li>
                     </ul>
                   </div>
                   <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-200">
-                    <p className="text-xs font-bold text-emerald-700 uppercase tracking-wide mb-1">Überarbeiteter Vorschlag</p>
+                    <p className="text-xs font-bold text-emerald-700 uppercase tracking-wide mb-1">
+                      Überarbeiteter Vorschlag
+                    </p>
                     <p className="text-sm text-gray-800">
-                      4-Tage-Woche Pilot: Mo–Do Kernzeit. Freitag frei — außer Freitag-Morgen 8–12h als optionaler Kundenpuffer für Teammitglieder mit Kundenkontakt.
-                      Evaluation nach 6 Wochen anhand von: Kundenzufriedenheit, Team-Wellbeing-Score, Sprint-Velocity.
+                      4-Tage-Woche Pilot: Mo–Do Kernzeit. Freitag frei — außer Freitag-Morgen 8–12h
+                      als optionaler Kundenpuffer für Teammitglieder mit Kundenkontakt. Evaluation
+                      nach 6 Wochen anhand von: Kundenzufriedenheit, Team-Wellbeing-Score,
+                      Sprint-Velocity.
                     </p>
                   </div>
                 </div>
@@ -864,17 +1075,24 @@ export default function HomePage() {
               {/* Neue Runde — Konsent */}
               <details className="group rounded-2xl border border-emerald-300 overflow-hidden" open>
                 <summary className="flex items-center gap-3 px-6 py-4 cursor-pointer bg-emerald-50 hover:bg-emerald-100 list-none">
-                  <span className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-sm font-bold shrink-0">5</span>
+                  <span className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-sm font-bold shrink-0">
+                    5
+                  </span>
                   <div className="flex-1">
                     <span className="font-semibold text-gray-900">Neue Runde — Konsent ✅</span>
                     <span className="ml-2 text-xs text-emerald-600 font-medium">Beschlossen!</span>
                   </div>
-                  <span className="text-gray-400 group-open:rotate-180 transition-transform text-xs">▾</span>
+                  <span className="text-gray-400 group-open:rotate-180 transition-transform text-xs">
+                    ▾
+                  </span>
                 </summary>
                 <div className="px-6 py-5 border-t border-emerald-200">
                   <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-4">
                     {['Lea', 'Anna', 'Sarah', 'Marco', 'Jan', 'Tom'].map((name) => (
-                      <div key={name} className="rounded-xl p-2.5 bg-emerald-50 border border-emerald-200 text-center">
+                      <div
+                        key={name}
+                        className="rounded-xl p-2.5 bg-emerald-50 border border-emerald-200 text-center"
+                      >
                         <p className="text-xs font-semibold text-gray-800">{name}</p>
                         <p className="text-xs text-emerald-700 font-medium mt-0.5">✅ Konsent</p>
                       </div>
@@ -882,7 +1100,10 @@ export default function HomePage() {
                   </div>
                   <div className="p-4 bg-emerald-100 rounded-xl border border-emerald-300">
                     <p className="text-sm font-semibold text-emerald-900">🎉 Beschluss gefasst!</p>
-                    <p className="text-xs text-emerald-800 mt-1">Der überarbeitete Vorschlag hat Konsent. Tom hat seinen Einwand zurückgezogen — das Anliegen wurde integriert. Evaluationsdatum: in 6 Wochen.</p>
+                    <p className="text-xs text-emerald-800 mt-1">
+                      Der überarbeitete Vorschlag hat Konsent. Tom hat seinen Einwand zurückgezogen
+                      — das Anliegen wurde integriert. Evaluationsdatum: in 6 Wochen.
+                    </p>
                   </div>
                 </div>
               </details>
