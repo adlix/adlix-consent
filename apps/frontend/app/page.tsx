@@ -1324,6 +1324,18 @@ export default function HomePage() {
                     q: 'Brauche ich Vorkenntnisse in Soziokratie?',
                     a: 'Nein. adlix consent führt durch jeden Schritt — mit Erklärungen, Hinweisen und Leitfragen. Du lernst den Prozess, indem du ihn nutzt. Optional gibt es KI-Unterstützung (Pro), die Einwände analysiert und Formulierungshilfen gibt.',
                   },
+                  {
+                    q: 'Wie viele Personen brauche ich minimum für einen Consent-Loop?',
+                    a: 'Idealerweise 4–20 Personen. Consent funktioniert am besten in Kreisen dieser Größe, weil alle Perspektiven gehört werden können. Für größere Gruppen empfiehlt sich eine Delegierten-Struktur: Kreise wählen Vertreter für übergeordnete Entscheidungen.',
+                  },
+                  {
+                    q: 'Funktioniert Consent auch komplett async — ohne Videocall?',
+                    a: 'Ja — das ist einer der größten Vorteile von adlix consent. Der Prozess ist strukturell async: Informationsrunde, Reaktionsrunde und Abstimmung laufen alle über Nachrichten, nicht in Echtzeit. Du kannst auch um 22 Uhr antworten, wenn es dir passt. Der Kreis muss nie gleichzeitig online sein.',
+                  },
+                  {
+                    q: 'Was passiert, wenn ein Team-Mitglied gar nicht abstimmt?',
+                    a: 'Die Plattform erinnert automatisch. Wenn jemand dauerhaft nicht teilnimmt, zeigt das einen eigenen Wert: Entweder die Person fühlt sich nicht eingebunden, oder das Vorhaben betrifft sie nicht. Als Owner kannst du die Abstimmung auch vorzeitig schließen und den Grund dokumentieren.',
+                  },
                 ] as { q: string; a: string }[]
               ).map(({ q, a }, i) => (
                 <details

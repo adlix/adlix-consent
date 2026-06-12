@@ -2,6 +2,10 @@
 
 import { useState } from 'react'
 
+// Minimum date: 7 days from now (static, set at module load time)
+const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000
+const MIN_EVAL_DATE = new Date(Date.now() + SEVEN_DAYS_MS).toISOString().split('T')[0]
+
 interface MinorObjection {
   user: string
   reason: string
@@ -103,15 +107,41 @@ export default function OutcomeForm({ onSubmit, minorObjections = [] }: OutcomeF
         />
       </div>
 
-      <div className="mb-6">
+      <div className="mb-4">
         <label className="block text-sm font-medium text-blue-800 mb-1">Evaluationsdatum</label>
         <input
           type="date"
           value={evaluationDate}
           onChange={(e) => setEvaluationDate(e.target.value)}
           className="w-full p-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none"
+          min={MIN_EVAL_DATE}
         />
-        <p className="text-xs text-blue-600 mt-1">Wann wird diese Entscheidung überprüft?</p>
+        <p className="text-xs text-blue-600 mt-1">
+          Wann wird diese Entscheidung überprüft? — Vorschlag:{' '}
+          <button
+            type="button"
+            className="underline hover:text-blue-800 font-medium"
+            onClick={() => {
+              const d = new Date()
+              d.setMonth(d.getMonth() + 3)
+              setEvaluationDate(d.toISOString().split('T')[0])
+            }}
+          >
+            in 3 Monaten
+          </button>
+          {', '}
+          <button
+            type="button"
+            className="underline hover:text-blue-800 font-medium"
+            onClick={() => {
+              const d = new Date()
+              d.setMonth(d.getMonth() + 6)
+              setEvaluationDate(d.toISOString().split('T')[0])
+            }}
+          >
+            in 6 Monaten
+          </button>
+        </p>
       </div>
 
       <div className="flex gap-3">
