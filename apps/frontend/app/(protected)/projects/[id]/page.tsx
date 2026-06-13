@@ -167,8 +167,21 @@ export default function ProjectDetailPage() {
   const [forceCloseConfirm, setForceCloseConfirm] = useState(false)
   const [showNewRoundForm, setShowNewRoundForm] = useState(false)
   const [newRoundProposal, setNewRoundProposal] = useState('')
+  const [adjustmentProposal, setAdjustmentProposal] = useState('')
+  const [adjustmentSaving, setAdjustmentSaving] = useState(false)
+  const [adjustmentError, setAdjustmentError] = useState('')
+  const [adjustmentSuccess, setAdjustmentSuccess] = useState(false)
 
   const jwt = (session as unknown as { jwt?: string })?.jwt
+
+  // Sync adjustment proposal when round changes or enters adjustment phase
+  useEffect(() => {
+    if (selectedRound?.status === 'adjustment') {
+      setAdjustmentProposal(selectedRound.proposal)
+      setAdjustmentError('')
+      setAdjustmentSuccess(false)
+    }
+  }, [selectedRound?.id, selectedRound?.status])
 
   // Load project data from Strapi
   useEffect(() => {
@@ -936,14 +949,24 @@ export default function ProjectDetailPage() {
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1.5">
                           Angepasster Vorschlag
+                          {adjustmentSuccess && (
+                            <span className="ml-2 text-xs text-emerald-600 font-normal">✓ Gespeichert</span>
+                          )}
                         </label>
                         <textarea
-                          defaultValue={selectedRound.proposal}
-                          id="adjusted-proposal"
+                          value={adjustmentProposal}
+                          onChange={(e) => {
+                            setAdjustmentProposal(e.target.value)
+                            setAdjustmentError('')
+                            setAdjustmentSuccess(false)
+                          }}
                           rows={4}
                           className="w-full px-4 py-3 border border-blue-300 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none text-sm"
                           placeholder="Überarbeite den Vorschlag basierend auf den Reaktionen…"
                         />
+                        {adjustmentError && (
+                          <p className="mt-1.5 text-xs text-red-600">{adjustmentError}</p>
+                        )}
                       </div>
                     </div>
                   ) : (
@@ -957,14 +980,14 @@ export default function ProjectDetailPage() {
                     <div className="mt-4 flex gap-3">
                       <button
                         onClick={async () => {
-                          const input = document.getElementById(
-                            'adjusted-proposal'
-                          ) as HTMLTextAreaElement
-                          if (!input?.value.trim()) return
-                          setAdvancing(true)
+                          if (!adjustmentProposal.trim()) {
+                            setAdjustmentError('Bitte gib einen Vorschlag ein.')
+                            return
+                          }
+                          setAdjustmentSaving(true)
+                          setAdjustmentError('')
                           strapi.setJwt(jwt || null)
                           try {
-                            // Save adapted proposal to round via API
                             const apiUrl =
                               process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
                             const putRes = await fetch(
@@ -975,10 +998,11 @@ export default function ProjectDetailPage() {
                                   'Content-Type': 'application/json',
                                   ...(jwt ? { Authorization: `Bearer ${jwt}` } : {}),
                                 },
-                                body: JSON.stringify({ data: { proposal: input.value.trim() } }),
+                                body: JSON.stringify({ data: { proposal: adjustmentProposal.trim() } }),
                               }
                             )
                             if (!putRes.ok) throw new Error('Save failed')
+                            setAdjustmentSuccess(true)
                             // Then advance phase to voting
                             await strapi.transitionRoundPhase(selectedRound!.id)
                             // Reload rounds
@@ -987,15 +1011,15 @@ export default function ProjectDetailPage() {
                             setRounds(updatedRounds)
                             setSelectedRound(updatedRound)
                           } catch (_) {
-                            setError('Vorschlag konnte nicht gespeichert werden.')
+                            setAdjustmentError('Vorschlag konnte nicht gespeichert werden.')
                           } finally {
-                            setAdvancing(false)
+                            setAdjustmentSaving(false)
                           }
                         }}
-                        disabled={advancing}
+                        disabled={adjustmentSaving || !adjustmentProposal.trim()}
                         className="px-6 py-2.5 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50 text-sm"
                       >
-                        {advancing ? 'Speichere…' : '💾 Vorschlag speichern & zur Abstimmung'}
+                        {adjustmentSaving ? 'Speichere…' : '💾 Vorschlag speichern & zur Abstimmung'}
                       </button>
                     </div>
                   )}

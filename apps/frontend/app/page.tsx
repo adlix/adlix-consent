@@ -1246,32 +1246,62 @@ export default function HomePage() {
               {[
                 {
                   quote:
-                    '„Wir haben aufgehört, endlos zu diskutieren. Seitdem wir Consent nutzen, treffen wir Entscheidungen doppelt so schnell — und alle tragen sie mit."',
-                  name: 'Sarah K.',
-                  role: 'Agile Coach, Scrum-Team',
-                  emoji: '👩‍💼',
+                    '„Wir haben aufgehört, endlos zu diskutieren. Seit wir Consent nutzen, treffen wir Entscheidungen schneller — und alle tragen sie wirklich mit. Nicht weil sie überstimmt wurden, sondern weil niemand einen echten Blocker hatte."',
+                  name: 'Marcus L.',
+                  role: 'Team Lead, agiles Software-Team (8 Personen)',
+                  emoji: '👨‍💻',
+                  context: 'Vorher: 2-Stunden-Meetings ohne Ergebnis. Nachher: Async-Entscheidungen in 24h.',
                 },
                 {
                   quote:
-                    '„Endlich ein Tool, das den soziokratischen Prozess wirklich abbildet. Kein Kompromiss, kein Überstimmen — echte Consent-Entscheidungen."',
-                  name: 'Markus T.',
-                  role: 'Kreiskoordinator, NGO',
+                    '„Der Einwand-Prozess hat unserem Vorstand mehr Vertrauen gebracht als jedes Abstimmungsergebnis. Wenn jemand einen Einwand hat und der integriert wird — das zeigt, dass die Entscheidung robust ist."',
+                  name: 'Claudia M.',
+                  role: 'Vorständin, Vereinsvorstand (6 Personen)',
                   emoji: '🤝',
+                  context: 'Verein „Die Problemlöser e.V." — Entscheidungen für 200+ Mitglieder.',
                 },
                 {
                   quote:
-                    '„Die Enthaltungs-Folgeprozesse haben uns geholfen, versteckte Bedenken im Team sichtbar zu machen. Das war Gold wert."',
-                  name: 'Lena R.',
-                  role: 'Gründerin, Startup',
-                  emoji: '🚀',
+                    '„Am meisten überrascht hat mich: Die stillen Menschen im Team trauen sich plötzlich, Bedenken zu äußern. Der strukturierte Prozess nimmt den Druck raus. Kein Schlagwort-Wettbewerb mehr."',
+                  name: 'Jan K.',
+                  role: 'Gründer, Design-Studio (5 Personen)',
+                  emoji: '🎨',
+                  context: 'Remote-first Team, über 3 Zeitzonen verteilt. Consent läuft komplett async.',
                 },
-              ].map(({ quote, name, role, emoji }) => (
+                {
+                  quote:
+                    '„Die Enthaltungs-Analyse war ein Augenöffner. Wir dachten, 5 Enthaltungen wären kein Problem — aber die Plattform zeigte uns: Da verstecken sich Bedenken. Das haben wir vorher nie gesehen."',
+                  name: 'Anke S.',
+                  role: 'Projektmanagerin, NGO (12 Personen)',
+                  emoji: '🌱',
+                  context: 'Arbeitet seit 8 Monaten mit adlix consent. Nutzt den Enthaltungs-Feedback-Loop.',
+                },
+                {
+                  quote:
+                    '„Ich war skeptisch. Meinungen sind doch subjektiv — wie soll ein Prozess das objektivieren? Nach 3 Monaten Consent bin ich überzeugt: Die Qualität unserer Entscheidungen ist messbar gestiegen."',
+                  name: 'Tobias R.',
+                  role: 'CTO, Tech-Startup (15 Personen)',
+                  emoji: '⚙️',
+                  context: 'Nutzt Consent für alle technischen Architektur-Entscheidungen.',
+                },
+                {
+                  quote:
+                    '„Als Kreiskoordinatorin brauche ich ein Tool, das den Prozess abbildet — nicht ein Tool, das ich in den Prozess einzwängen muss. adlix consent passt zur Soziokratie. Das war bei anderen Tools nie der Fall."',
+                  name: 'Lisa W.',
+                  role: 'Soziokratie-Praktikerin, Facilitation (20+ Personen)',
+                  emoji: '🔵',
+                  context: 'Arbeitet seit 2 Jahren soziokratisch. Hat 4 verschiedene Tools vergeblich probiert.',
+                },
+              ].map(({ quote, name, role, emoji, context }) => (
                 <figure
                   key={name}
                   className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 flex flex-col"
                 >
                   <blockquote className="flex-1">
                     <p className="text-gray-700 italic text-sm leading-relaxed">{quote}</p>
+                    {context && (
+                      <p className="mt-2 text-xs text-gray-400 italic">{context}</p>
+                    )}
                   </blockquote>
                   <figcaption className="mt-4 flex items-center gap-3">
                     <span className="text-3xl" aria-hidden="true">
@@ -1305,12 +1335,16 @@ export default function HomePage() {
                     a: 'Konsens bedeutet: alle stimmen aktiv zu — eine oft unerreichbare Bar. Konsent bedeutet: niemand hat einen schwerwiegenden, begründeten Einwand. Das klingt ähnlich, ist aber radikal unterschiedlich: Konsent ist schneller, pragmatischer und schützt trotzdem jede Stimme.',
                   },
                   {
-                    q: 'Wer kann einen schwerwiegenden Einwand einbringen?',
-                    a: 'Jedes Mitglied des betroffenen Kreises. Ein Einwand muss begründet sein und sich auf das gemeinsame Ziel beziehen — kein persönlicher Geschmack. adlix consent führt durch den Klärungsprozess und hilft dabei, echte Einwände von Präferenzen zu unterscheiden.',
+                    q: 'Warum ist ein Einwand ein Geschenk und nicht ein Angriff?',
+                    a: 'In der Soziokratie ist ein Einwand kein Widerstand gegen deine Idee — sondern ein Hinweis auf einen blinden Fleck. Wer einen schwerwiegenden Einwand hat, hat etwas gesehen, das du übersehen hast. Das zu integrieren macht den Vorschlag robuster. Deshalb: Einwände sind wertvolle Informationen, nicht persönliche Kritik.',
                   },
                   {
                     q: 'Was passiert, wenn jemand sich enthält?',
-                    a: 'Enthaltung ist möglich — aber nicht als bequemer Ausweg. Die Plattform fragt nach dem Grund: Nicht betroffen? Brauche mehr Info? Anonyme Bedenken? Je nach Grund gibt es einen eigenen Folgeprozess. Ziel: versteckte Einwände sichtbar machen.',
+                    a: 'Enthaltung ist möglich — aber nicht als bequemer Ausweg. Die Plattform fragt nach dem Grund: Nicht betroffen? Brauche mehr Info? Anonyme Bedenken? Oder möchtest du dir nochmal Gedanken machen? Je nach Grund gibt es einen eigenen Folgeprozess. Ziel: versteckte Einwände sichtbar machen.',
+                  },
+                  {
+                    q: 'Wer kann einen schwerwiegenden Einwand einbringen?',
+                    a: 'Jedes Mitglied des betroffenen Kreises. Ein Einwand muss begründet sein und sich auf das gemeinsame Ziel beziehen — kein persönlicher Geschmack. adlix consent führt durch den Klärungsprozess und hilft dabei, echte Einwände von Präferenzen zu unterscheiden.',
                   },
                   {
                     q: 'Kann ich Consent-Entscheidungen später revidieren?',
@@ -1318,23 +1352,79 @@ export default function HomePage() {
                   },
                   {
                     q: 'Für wie große Teams ist adlix consent geeignet?',
-                    a: 'Free-Plan: bis 50 Teilnehmer pro Projekt. Pro: bis 500. Enterprise: unbegrenzt. Der Consent-Prozess funktioniert besonders gut in Kreisen von 5–20 Personen — auch größere Gruppen können ihn über Delegierte strukturieren.',
+                    a: 'Free-Plan: bis 50 Teilnehmer pro Vorhaben. Pro: bis 500. Enterprise: unbegrenzt. Der Consent-Prozess funktioniert besonders gut in Kreisen von 5–20 Personen — auch größere Gruppen können ihn über Delegierte strukturieren.',
                   },
                   {
                     q: 'Brauche ich Vorkenntnisse in Soziokratie?',
                     a: 'Nein. adlix consent führt durch jeden Schritt — mit Erklärungen, Hinweisen und Leitfragen. Du lernst den Prozess, indem du ihn nutzt. Optional gibt es KI-Unterstützung (Pro), die Einwände analysiert und Formulierungshilfen gibt.',
                   },
                   {
-                    q: 'Wie viele Personen brauche ich minimum für einen Consent-Loop?',
-                    a: 'Idealerweise 4–20 Personen. Consent funktioniert am besten in Kreisen dieser Größe, weil alle Perspektiven gehört werden können. Für größere Gruppen empfiehlt sich eine Delegierten-Struktur: Kreise wählen Vertreter für übergeordnete Entscheidungen.',
+                    q: 'Was passiert, wenn ein Team-Mitglied gar nicht abstimmt?',
+                    a: 'Die Plattform erinnert automatisch. Wenn jemand dauerhaft nicht teilnimmt, zeigt das einen eigenen Wert: Entweder die Person fühlt sich nicht eingebunden, oder das Vorhaben betrifft sie nicht. Als Owner kannst du die Abstimmung auch vorzeitig schließen und den Grund dokumentieren.',
                   },
                   {
                     q: 'Funktioniert Consent auch komplett async — ohne Videocall?',
                     a: 'Ja — das ist einer der größten Vorteile von adlix consent. Der Prozess ist strukturell async: Informationsrunde, Reaktionsrunde und Abstimmung laufen alle über Nachrichten, nicht in Echtzeit. Du kannst auch um 22 Uhr antworten, wenn es dir passt. Der Kreis muss nie gleichzeitig online sein.',
                   },
                   {
-                    q: 'Was passiert, wenn ein Team-Mitglied gar nicht abstimmt?',
-                    a: 'Die Plattform erinnert automatisch. Wenn jemand dauerhaft nicht teilnimmt, zeigt das einen eigenen Wert: Entweder die Person fühlt sich nicht eingebunden, oder das Vorhaben betrifft sie nicht. Als Owner kannst du die Abstimmung auch vorzeitig schließen und den Grund dokumentieren.',
+                    q: 'Was ist ein Kreis und warum Kreis-Arbeit?',
+                    a: 'Ein Kreis ist eine Gruppe von Menschen, die gemeinsam Entscheidungen trifft. Anders als Hierarchien gibt es im Kreis keine Chefs — jeder Platz ist gleichwertig. Kreisarbeit (Soziokratie) sorgt dafür, dass die richtigen Leute an der richtigen Entscheidung beteiligt sind. adlix consent bringt den Consent-Prozess digital in Kreise.',
+                  },
+                  {
+                    q: 'Was bedeutet Omitakuyasin und warum steht es auf der Plattform?',
+                    a: 'Omitakuyasin (Lakota) bedeutet „Alle meine Verwandten" — „Wir sind alle verbunden." Es ist das stille Fundament von adlix consent: Consent, weil der andere mein Verwandter ist. Einwände als Geschenk, nicht als Angriff. Kreise, weil jeder Platz gleichwertig ist. Kein Marketing-Slogan — eine Weltanschauung, die in der Haltung der Plattform spürbar ist.',
+                  },
+                  {
+                    q: 'Wie viele Personen brauche ich minimum für einen Consent-Loop?',
+                    a: 'Idealerweise 4–20 Personen. Consent funktioniert am besten in Kreisen dieser Größe, weil alle Perspektiven gehört werden können. Für größere Gruppen empfiehlt sich eine Delegierten-Struktur: Kreise wählen Vertreter für übergeordnete Entscheidungen.',
+                  },
+                  {
+                    q: 'Was passiert, wenn der Einreicher den Vorschlag nicht anpassen will?',
+                    a: 'Das ist ein wichtiger Punkt: Der Einreicher ist nicht gezwungen, jeden Einwand zu integrieren. Wenn ein Einwand nicht integriert werden kann oder der Einreicher anderer Meinung ist, gibt es Eskalationspfade: Teilentscheidung, zeitlich begrenzter Versuch, externe Moderation. Consent ist kein Einbahnstraße — aber der Prozess sorgt dafür, dass Einwände gehört und diskutiert werden.',
+                  },
+                  {
+                    q: 'Sind die Abstimmungen und Einwände für alle sichtbar?',
+                    a: 'Grundsätzlich ja — vollständige Transparenz gehört zum Consent-Prinzip. Wer abgestimmt hat und warum, ist Teil des Audit-Trails. Es gibt aber eine Ausnahme: Wer anonym Bedenken äußert (Enthaltungsgrund D), dessen Identität bleibt verborgen. Die Bedenken werden thematisch zusammengefasst — ohne Rückschluss auf Einzelpersonen.',
+                  },
+                  {
+                    q: 'Was ist der Unterschied zu Loomio oder anderen Abstimmungstools?',
+                    a: 'Loomio ist ein generisches Abstimmungstool — es kann vieles, aber nichts richtig gut. adlix consent ist auf den Consent-Prozess spezialisiert: geführte Phasen, strukturierte Einwand-Integration, Enthaltungs-Folgeprozesse, KI-Unterstützung (Pro). Außerdem: Die Plattform fühlt sich anders an — spürbar, dass hier eine andere Haltung dahintersteht.',
+                  },
+                  {
+                    q: 'Kann ich bestehende Teams und Kreise importieren?',
+                    a: 'Du kannst Kreise erstellen und Teilnehmer über Einladungs-Links einladen. Einladungs-Links funktionieren wie GitHub-Einladungen: Wer den Link hat, tritt dem Kreis bei. Eine Migration bestehender Daten (z.B. aus einer Tabelle) ist aktuell als CSV-Import in der Roadmap für Pro.',
+                  },
+                  {
+                    q: 'Was passiert, wenn eine Abstimmung nie abgeschlossen wird?',
+                    a: 'Die Plattform erinnert nicht-abstimmende Teilnehmer automatisch. Wenn jemand dauerhaft nicht reagiert, kann der Owner die Abstimmung vorzeitig schließen — mit Dokumentation des Grundes. So kommt kein Vorhaben dauerhaft ins Stocken. Bei längerer Inaktivität kann der Owner auch eine neue Runde mit angepasstem Vorschlag starten.',
+                  },
+                  {
+                    q: 'Wie unterscheidet sich Consent von einer einfachen Mehrheitsabstimmung?',
+                    a: 'Bei einer Mehrheitsabstimmung gewinnt die Seite mit den meisten Stimmen — die Minderheit geht leer aus. Das Ergebnis wird „durchgesetzt", nicht „mitgetragen". Bei Consent hat jedes Mitglied das Recht auf einen schwerwiegenden Einwand. Kein Majoritätsprozentsatz, keine Überstimmung. Das Ergebnis wird getragen, weil niemand einen begründeten Blocker hatte.',
+                  },
+                  {
+                    q: 'Was bedeutet „gut genug für jetzt — sicher genug zum Ausprobieren"?',
+                    a: 'Das ist das Kernprinzip des Consent: Perfektion ist der Feind von Fortschritt. Eine Entscheidung muss nicht perfekt sein — sie muss nur gut genug sein, um loszulegen, und sicher genug, um keine schweren Schäden anzurichten, falls sie sich als falsch herausstellt. Wenn sich etwas bewährt — gut. Wenn nicht, wird angepasst. Das Evaluationsdatum macht das explizit.',
+                  },
+                  {
+                    q: 'Ist adlix consent auch für Vereine und NGOs geeignet?',
+                    a: 'Absolut. Besonders für Vereine ist Consent ideal: Transparente Entscheidungen für alle Mitglieder — auch für die, die bei der Mitgliederversammlung nicht dabei waren. Alles dokumentiert, nachvollziehbar, fair. Und: async, sodass Mitglieder auch zeitversetzt teilnehmen können, ohne zu einer bestimmten Uhrzeit online sein zu müssen.',
+                  },
+                  {
+                    q: 'Wie sicher sind meine Daten? Wem gehören die Entscheidungen?',
+                    a: 'Deine Daten gehören dir. Entscheidungen, die in adlix consent getroffen werden, gehören dem jeweiligen Kreis. adlix consent speichert die Daten auf Servern in der EU. Export-Funktion (Free) ermöglicht Download aller deiner Daten. Account-Löschung löscht alle persönlichen Daten (mit 30-Tage-Sicherheitsfenster). Details in der Datenschutzerklärung.',
+                  },
+                  {
+                    q: 'Was passiert nach einer Enthaltung mit Grund B oder C (mehr Info/Klärung)?',
+                    a: 'Deine Anfrage geht an den Einreicher. Er hat Zeit, dir die gewünschte Information oder Klärung zu geben. Danach wirst du erneut zur Abstimmung eingeladen. Wenn die Antwort ausbleibt, wird der Einreicher benachrichtigt und das Vorhaben pausiert. So wird sichergestellt, dass niemand „blind" abstimmen muss.',
+                  },
+                  {
+                    q: 'Kann ein Vorhaben nach einem gescheiterten Consent-Loop neu eingereicht werden?',
+                    a: 'Ja. Wenn ein Consent-Loop nach mehreren Runden und Dialogen zu keinem Ergebnis führt, kann das Vorhaben zurückgestellt werden. Der Einreicher überdenkt es und reicht es ggf. in angepasster Form neu ein. Das ist kein Versagen — das ist Teil des Lernprozesses. Manchmal braucht ein Thema mehrere Anläufe.',
+                  },
+                  {
+                    q: 'Was ist ein Agile Tribe und wie passt adlix consent dazu?',
+                    a: 'Ein Agile Tribe ist eine Gemeinschaft von Menschen, die sich über gemeinsame Werte verbindet — nicht über Organigramme. adlix consent ist das Werkzeug, um Tribe-Entscheidungen fair und transparent zu treffen. Wer gemeinsam Consent-Entscheidungen trifft, baut Vertrauen auf. Vertrauen ist das Fundament eines Tribe. Die Plattform ist das Wie — der Tribe ist das Ziel.',
                   },
                 ] as { q: string; a: string }[]
               ).map(({ q, a }, i) => (
