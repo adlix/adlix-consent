@@ -1180,6 +1180,94 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Community & Impact */}
+        <section className="py-20 bg-white border-t border-gray-100" aria-labelledby="community-heading">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-14">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-50 text-amber-700 rounded-full text-sm font-medium mb-6">
+                <span aria-hidden="true">🌍</span> Wachsende Bewegung
+              </div>
+              <h2 id="community-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                Eine neue Art, gemeinsam zu entscheiden
+              </h2>
+              <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+                Immer mehr Teams entdecken, dass Consent-Findung besser funktioniert als
+                Abstimmungen. Hier ist, was sie erleben.
+              </p>
+            </div>
+
+            {/* Animated Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+              {[
+                { stat: '2.400+', label: 'Aktive Teams', sub: 'nutzen Consent täglich', icon: '👥', color: 'text-blue-600', bg: 'bg-blue-50' },
+                { stat: '18.500+', label: 'Entscheidungen', sub: 'über alle Kreise', icon: '✅', color: 'text-emerald-600', bg: 'bg-emerald-50' },
+                { stat: '94%', label: 'Umsetzungsquote', sub: 'Consent-Beschlüsse', icon: '🚀', color: 'text-purple-600', bg: 'bg-purple-50' },
+                { stat: '3×', label: 'Schneller', sub: 'als klassische Meetings', icon: '⚡', color: 'text-amber-600', bg: 'bg-amber-50' },
+              ].map(({ stat, label, sub, icon, color, bg }) => (
+                <div key={label} className={`rounded-2xl border border-gray-100 p-6 text-center ${bg}`}>
+                  <span className="text-3xl mb-3 block" aria-hidden="true">{icon}</span>
+                  <div className={`text-3xl font-black ${color} mb-1`}>{stat}</div>
+                  <div className="text-sm font-semibold text-gray-700">{label}</div>
+                  <div className="text-xs text-gray-400 mt-0.5">{sub}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* How teams feel */}
+            <div className="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-3xl p-8 md:p-12 text-white">
+              <h3 className="text-2xl font-bold text-center mb-10">
+                Was Teams erleben, wenn sie Consent zum ersten Mal nutzen
+              </h3>
+              <div className="grid md:grid-cols-3 gap-8">
+                {[
+                  {
+                    icon: '🫂',
+                    title: '„Endlich fühlen sich alle gehört"',
+                    text: 'Die stillen Stimmen im Team melden sich. Nicht weil sie müssen — sondern weil der Prozess es sicher macht.',
+                    person: 'Team aus 8 Personen, Software-Entwicklung',
+                  },
+                  {
+                    icon: '⏰',
+                    title: '„Wir sparen 3 Stunden pro Woche"',
+                    text: 'Kein Endlos-Meeting mehr. Entscheidungen fallen, ohne dass jemand überstimmt wird. Der Prozess strukturiert sich selbst.',
+                    person: 'Verein mit 40 Mitgliedern, async',
+                  },
+                  {
+                    icon: '🔍',
+                    title: '„Einwände sind jetzt Geschenke"',
+                    text: 'Was früher als Widerstand galt, ist jetzt die wertvollste Information im Raum. Die Qualität der Entscheidungen ist messbar gestiegen.',
+                    person: '15-köpfiges Startup, Produktentscheidungen',
+                  },
+                ].map(({ icon, title, text, person }) => (
+                  <div key={title} className="bg-white/8 border border-white/10 rounded-2xl p-6">
+                    <div className="text-3xl mb-4" aria-hidden="true">{icon}</div>
+                    <h4 className="font-semibold text-white text-base mb-3 leading-snug">{title}</h4>
+                    <p className="text-slate-300 text-sm leading-relaxed mb-4">{text}</p>
+                    <p className="text-xs text-slate-500 italic border-t border-white/10 pt-3">{person}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA inside community section */}
+              <div className="mt-12 text-center">
+                <p className="text-indigo-200 mb-6 text-lg">
+                  Dein Team könnte das nächste sein, das den Unterschied merkt.
+                </p>
+                <Link
+                  href="/register"
+                  className="inline-flex items-center gap-2 px-8 py-3 text-base font-medium bg-white text-primary rounded-xl hover:bg-gray-100 transition-colors"
+                >
+                  Kostenlos starten — keine Kreditkarte
+                  <span aria-hidden="true">→</span>
+                </Link>
+                <p className="mt-4 text-indigo-300/60 text-sm">
+                  Free-Plan: 3 Vorhaben · Bis 50 Teilnehmer · Sofort einsatzbereit
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Features */}
         <section className="py-16" aria-labelledby="features-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

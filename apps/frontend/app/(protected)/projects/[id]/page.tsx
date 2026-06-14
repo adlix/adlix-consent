@@ -1031,24 +1031,76 @@ export default function ProjectDetailPage() {
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold mb-2">Konsent-Abstimmung</h3>
 
-                  {/* Participation Progress Bar */}
+                  {/* Participation Progress Bar — prominent */}
                   {(() => {
                     const voted = selectedRound.votes.length
                     const total = participantCount
                     const pct = total > 0 ? Math.round((voted / total) * 100) : 0
+                    const allVoted = voted === total && total > 0
+                    const consented = selectedRound.votes.filter(
+                      (v) => v.choice === 'consent'
+                    ).length
+                    const hasMajorObjection = selectedRound.votes.some(
+                      (v) => v.choice === 'major_objection'
+                    )
                     return (
-                      <div className="mb-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm font-medium text-gray-700">
-                            Abstimmungsbeteiligung
-                          </span>
-                          <span className="text-sm font-semibold text-gray-900">
-                            {voted} / {total} abgestimmt
-                          </span>
+                      <div
+                        className={`mb-5 p-5 rounded-2xl border-2 ${
+                          allVoted
+                            ? 'bg-emerald-50 border-emerald-200'
+                            : 'bg-blue-50 border-blue-200'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xl" aria-hidden="true">
+                              {allVoted ? '✅' : '🗳️'}
+                            </span>
+                            <div>
+                              <p
+                                className={`text-sm font-bold ${
+                                  allVoted ? 'text-emerald-800' : 'text-blue-800'
+                                }`}
+                              >
+                                Abstimmungsbeteiligung
+                              </p>
+                              <p
+                                className={`text-xs ${
+                                  allVoted ? 'text-emerald-600' : 'text-blue-600'
+                                }`}
+                              >
+                                {allVoted
+                                  ? 'Alle haben abgestimmt!'
+                                  : `${total - voted} von ${total} noch ausstehend`}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div
+                              className={`text-2xl font-black ${
+                                allVoted ? 'text-emerald-700' : 'text-blue-700'
+                              }`}
+                            >
+                              {voted}/{total}
+                            </div>
+                            <div
+                              className={`text-xs font-medium ${
+                                allVoted ? 'text-emerald-600' : 'text-blue-600'
+                              }`}
+                            >
+                              abgestimmt
+                            </div>
+                          </div>
                         </div>
-                        <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+
+                        {/* Progress bar */}
+                        <div className="w-full h-3 bg-white rounded-full overflow-hidden border border-gray-200">
                           <div
-                            className="h-full bg-primary transition-all duration-500 rounded-full"
+                            className={`h-full transition-all duration-500 rounded-full ${
+                              allVoted
+                                ? 'bg-gradient-to-r from-emerald-400 to-emerald-600'
+                                : 'bg-gradient-to-r from-blue-400 to-primary'
+                            }`}
                             style={{ width: `${pct}%` }}
                             role="progressbar"
                             aria-valuenow={pct}
@@ -1057,15 +1109,50 @@ export default function ProjectDetailPage() {
                             aria-label={`${voted} von ${total} abgestimmt`}
                           />
                         </div>
-                        {pct < 100 && (
-                          <p className="mt-2 text-xs text-gray-500">
-                            {total - voted} Person{total - voted !== 1 ? 'en' : ''} haben noch nicht
-                            abgestimmt. Reminder werden automatisch versendet.
-                          </p>
+
+                        {/* Vote summary when voting is open */}
+                        {selectedRound.votes.length > 0 && (
+                          <div className="mt-3 flex items-center gap-4 text-xs">
+                            <span className="flex items-center gap-1 text-emerald-700">
+                              <span>✅</span>
+                              <span className="font-medium">{consented}</span> Konsent
+                            </span>
+                            {selectedRound.votes.filter((v) => v.choice !== 'consent').length >
+                              0 && (
+                                <span
+                                  className={`flex items-center gap-1 ${
+                                    hasMajorObjection ? 'text-red-700' : 'text-amber-700'
+                                  }`}
+                                >
+                                  <span>{hasMajorObjection ? '🔴' : '💛'}</span>
+                                  <span className="font-medium">
+                                    {
+                                      selectedRound.votes.filter(
+                                        (v) => v.choice !== 'consent'
+                                      ).length
+                                    }
+                                  </span>{' '}
+                                  {hasMajorObjection ? 'Einwand' : 'Anmerkung'}
+                                </span>
+                              )}
+                            {selectedRound.votes.some((v) => v.choice === 'abstain') && (
+                              <span className="flex items-center gap-1 text-slate-600">
+                                <span>⏸️</span>
+                                <span className="font-medium">
+                                  {
+                                    selectedRound.votes.filter((v) => v.choice === 'abstain')
+                                      .length
+                                  }
+                                </span>{' '}
+                                Enthaltungen
+                              </span>
+                            )}
+                          </div>
                         )}
-                        {pct === 100 && (
-                          <p className="mt-2 text-xs text-emerald-600 font-medium">
-                            ✅ Alle Teilnehmer haben abgestimmt.
+
+                        {!allVoted && (
+                          <p className="mt-3 text-xs text-blue-600">
+                            🔔 Nicht-abstimmende Teilnehmer erhalten automatisch eine Erinnerung.
                           </p>
                         )}
                       </div>
@@ -1520,28 +1607,54 @@ export default function ProjectDetailPage() {
                 </div>
               )}
 
-              {/* Audit Trail */}
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <h3 className="text-sm font-medium text-gray-500 mb-3">Audit-Trail</h3>
-                <AuditTrail
-                  projectId={project.id}
-                  fallbackEntries={[
-                    {
-                      action: 'create',
-                      label: 'Vorhaben eingereicht',
-                      timestamp: new Date().toLocaleDateString('de-DE'),
-                    },
-                    ...(selectedRound.status === 'completed'
-                      ? [
-                          {
-                            action: 'complete',
-                            label: 'Beschluss gefasst',
-                            timestamp: new Date().toLocaleDateString('de-DE'),
-                          },
-                        ]
-                      : []),
-                  ]}
-                />
+              {/* Audit Trail — Activity Timeline */}
+              <div className="mt-6 pt-6 border-t border-gray-100">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-base">📜</span>
+                  <h3 className="text-base font-semibold text-gray-700">Aktivitäten-Timeline</h3>
+                  <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">
+                    {selectedRound.comments.length + selectedRound.votes.length + selectedRound.objections.length} Einträge
+                  </span>
+                </div>
+                <div className="bg-gray-50/80 rounded-xl p-4">
+                  <AuditTrail
+                    projectId={project.id}
+                    fallbackEntries={[
+                      {
+                        action: 'create_project',
+                        label: 'Vorhaben eingereicht',
+                        timestamp: new Date().toLocaleDateString('de-DE'),
+                      },
+                      ...(selectedRound.comments.some((c) => c.type === 'question') || selectedRound.comments.some((c) => c.type === 'reaction')
+                        ? [
+                            {
+                              action: 'submit_reaction',
+                              label: 'Reaktionen geteilt',
+                              timestamp: new Date().toLocaleDateString('de-DE'),
+                            },
+                          ]
+                        : []),
+                      ...(selectedRound.votes.length > 0
+                        ? [
+                            {
+                              action: 'submit_vote',
+                              label: 'Abstimmung gestartet',
+                              timestamp: new Date().toLocaleDateString('de-DE'),
+                            },
+                          ]
+                        : []),
+                      ...(selectedRound.status === 'completed'
+                        ? [
+                            {
+                              action: 'complete_round',
+                              label: 'Beschluss gefasst',
+                              timestamp: new Date().toLocaleDateString('de-DE'),
+                            },
+                          ]
+                        : []),
+                    ]}
+                  />
+                </div>
               </div>
             </div>
           )}
