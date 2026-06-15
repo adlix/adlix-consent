@@ -224,6 +224,11 @@ module.exports = createCoreController(
           reasonCounts,
           thematicGroups,
           recommendations,
+          _meta: {
+            typ: "Enthaltungs-Analyse (Pro)",
+            hinweis:
+              "Diese Analyse zeigt Muster in den Enthaltungen. Bei Unsicherheit: direktes Gespräch mit Betroffenen.",
+          },
         },
       };
     },

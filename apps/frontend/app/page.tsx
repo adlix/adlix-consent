@@ -248,6 +248,14 @@ export default function HomePage() {
               </li>
               <li className="hidden sm:block">
                 <Link
+                  href="#circle-heading"
+                  className="text-gray-600 hover:text-gray-900 text-sm"
+                >
+                  Kreis
+                </Link>
+              </li>
+              <li className="hidden sm:block">
+                <Link
                   href="#team-benefits-heading"
                   className="text-gray-600 hover:text-gray-900 text-sm"
                 >
@@ -525,6 +533,119 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Was ist ein Kreis? */}
+        <section className="py-16 bg-white" aria-labelledby="circle-heading">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium mb-6">
+                <span aria-hidden="true">🔵</span> Das Herzstück
+              </div>
+              <h2 id="circle-heading" className="text-3xl font-bold mb-4">
+                Was ist ein Kreis — und warum Kreis-Arbeit?
+              </h2>
+              <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+                Ein Kreis ist die Grundeinheit in adlix consent. Anders als Teams oder Abteilungen
+                gibt es im Kreis keine Hierarchie — jeder Platz ist gleichwertig. Der Kreis ist
+                das Fundament für Consent-Entscheidungen.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 mb-12">
+              {/* Visual: Circle diagram */}
+              <div className="md:col-span-1 flex items-center justify-center">
+                <div className="relative w-56 h-56">
+                  <div className="absolute inset-0 rounded-full border-2 border-blue-300 bg-blue-50/50 flex items-center justify-center">
+                    <div className="text-center">
+                      <p className="text-2xl mb-1">🔵</p>
+                      <p className="text-xs font-bold text-blue-700">Kreis</p>
+                    </div>
+                  </div>
+                  {[
+                    { top: "8%", left: "50%", label: "Lea" },
+                    { top: "28%", left: "90%", label: "Marco" },
+                    { top: "72%", left: "90%", label: "Anna" },
+                    { top: "92%", left: "50%", label: "Tom" },
+                    { top: "72%", left: "10%", label: "Sarah" },
+                    { top: "28%", left: "10%", label: "Jan" },
+                  ].map(({ top, left, label }) => (
+                    <div key={label} className="absolute" style={{ top, left, transform: "translate(-50%, -50%)" }}>
+                      <div className="w-10 h-10 rounded-full bg-blue-500 border-2 border-white flex items-center justify-center shadow-md">
+                        <span className="text-white text-xs font-bold">{label[0]}</span>
+                      </div>
+                      <p className="text-xs text-center mt-1 text-gray-600 font-medium">{label}</p>
+                    </div>
+                  ))}
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                    <div className="w-12 h-12 rounded-full bg-white border-2 border-blue-400 flex items-center justify-center shadow-lg">
+                      <span className="text-blue-500 text-lg">◯</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="md:col-span-2 space-y-6">
+                {[
+                  {
+                    icon: "🔄",
+                    title: "Gleichwertige Plätze",
+                    text: "Im Kreis hat jede Person den gleichen Stellenwert. Es gibt keine Chefs — alle tragen gemeinsam Verantwortung. Wer einen Einwand hat, wird gehört — nicht überstimmt.",
+                  },
+                  {
+                    icon: "🎯",
+                    title: "Klare Zugehörigkeit",
+                    text: "Ein Kreis hat einen klaren Auftrag: Was ist die gemeinsame Aufgabe? Wer ist betroffen? So wird sichergestellt, dass genau die richtigen Menschen an der richtigen Entscheidung beteiligt sind.",
+                  },
+                  {
+                    icon: "🔗",
+                    title: "Verbindung zu anderen Kreisen",
+                    text: "Kreise sind nicht isoliert — sie verbinden sich über gemeinsame Vorhaben. Ein Vorhaben kann mehrere Kreise betreffen. Consent stellt sicher, dass alle Betroffenen gehört werden.",
+                  },
+                ].map(({ icon, title, text }) => (
+                  <div key={title} className="flex items-start gap-4 bg-gray-50 rounded-xl p-5 border border-gray-100">
+                    <div className="text-2xl shrink-0 mt-0.5" aria-hidden="true">{icon}</div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-1">{title}</h3>
+                      <p className="text-gray-600 text-sm leading-relaxed">{text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 p-8">
+              <h3 className="text-lg font-bold text-gray-900 mb-6 text-center">
+                Was unterscheidet einen Kreis von einem normalen Team?
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 text-gray-400">
+                    <span className="text-red-400">✗</span>
+                    <span className="font-medium">Team</span>
+                  </div>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li className="flex items-start gap-2"><span className="text-gray-400 mt-0.5">•</span> Hierarchie: Wer entscheidet, wenn Uneinigkeit besteht?</li>
+                    <li className="flex items-start gap-2"><span className="text-gray-400 mt-0.5">•</span> Stille Stimmen gehen oft verloren</li>
+                    <li className="flex items-start gap-2"><span className="text-gray-400 mt-0.5">•</span> Entscheidungen werden getroffen — aber nicht getragen</li>
+                    <li className="flex items-start gap-2"><span className="text-gray-400 mt-0.5">•</span> Bedenken werden in Retrospektiven nachbehandelt</li>
+                  </ul>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 text-emerald-700">
+                    <span className="text-emerald-500">✓</span>
+                    <span className="font-medium">Kreis</span>
+                  </div>
+                  <ul className="space-y-2 text-sm text-gray-700">
+                    <li className="flex items-start gap-2"><span className="text-emerald-400 mt-0.5">•</span> Gleichwertige Plätze — niemand steht über anderen</li>
+                    <li className="flex items-start gap-2"><span className="text-emerald-400 mt-0.5">•</span> Jeder hat das explizite Recht auf einen Einwand</li>
+                    <li className="flex items-start gap-2"><span className="text-emerald-400 mt-0.5">•</span> Entscheidungen werden getragen — nicht nur getroffen</li>
+                    <li className="flex items-start gap-2"><span className="text-emerald-400 mt-0.5">•</span> Bedenken werden im Prozess integriert — nicht ignoriert</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Trust Signals / Stats */}
         <section
           className="py-14 bg-gray-50 border-t border-gray-100"
@@ -638,6 +759,41 @@ export default function HomePage() {
                     <p className="text-slate-400 text-xs leading-relaxed">{text}</p>
                   </div>
                 ))}
+              </div>
+            </div>
+
+            {/* Before/After Scenarios */}
+            <div className="mt-8 bg-white/5 rounded-2xl border border-white/10 p-8">
+              <h3 className="text-white font-bold text-xl mb-6 text-center">
+                🏃 Zwei Teams — gleiche Ausgangslage, unterschiedliche Werkzeuge
+              </h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-red-500/10 rounded-xl p-5 border border-red-500/20">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-red-400 text-lg">❌</span>
+                    <span className="text-red-300 font-bold">Team A — Klassisch</span>
+                  </div>
+                  <ul className="space-y-2 text-sm text-slate-400">
+                    <li>• Sprint-Ziel per Mehrheitsabstimmung festgelegt</li>
+                    <li>• 2 Teammitglieder enthalten sich — „war nicht wichtig genug"</li>
+                    <li>• 4 Wochen später: Vorhaben stockt, Stakeholder frustriert</li>
+                    <li>• Retro: „Hätten wir doch die Bedenken gehört..."</li>
+                    <li className="text-red-400 mt-2">→ Commitment: ~45%. Umsetzung: schleppend.</li>
+                  </ul>
+                </div>
+                <div className="bg-emerald-500/10 rounded-xl p-5 border border-emerald-500/20">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-emerald-400 text-lg">✅</span>
+                    <span className="text-emerald-300 font-bold">Team B — Consent</span>
+                  </div>
+                  <ul className="space-y-2 text-sm text-slate-300">
+                    <li>• Sprint-Ziel per Consent-Prozess eingereicht</li>
+                    <li>• 1 schwerwiegender Einwand — direkt integriert</li>
+                    <li>• 4 Wochen später: Vorhaben umgesetzt, Team trägt es mit</li>
+                    <li>• Evaluationsdatum gesetzt — bei Bedarf Anpassung</li>
+                    <li className="text-emerald-400 mt-2">→ Commitment: 100%. Kein Einwand offen.</li>
+                  </ul>
+                </div>
               </div>
             </div>
 
@@ -1513,6 +1669,10 @@ export default function HomePage() {
                   {
                     q: 'Was ist ein Agile Tribe und wie passt adlix consent dazu?',
                     a: 'Ein Agile Tribe ist eine Gemeinschaft von Menschen, die sich über gemeinsame Werte verbindet — nicht über Organigramme. adlix consent ist das Werkzeug, um Tribe-Entscheidungen fair und transparent zu treffen. Wer gemeinsam Consent-Entscheidungen trifft, baut Vertrauen auf. Vertrauen ist das Fundament eines Tribe. Die Plattform ist das Wie — der Tribe ist das Ziel.',
+                  },
+                  {
+                    q: 'Wann nutze ich Consent und wann eine einfache Abstimmung?',
+                    a: 'Einfache Abstimmungen eignen sich für: klare Ja/Nein-Fragen (Termin finden, Location wählen), unwichtige Randthemen oder wenn alle bereits einer Meinung sind. Consent eignet sich für: alles, was das Team oder den Kreis wirklich betrifft — Vorhaben, Strategie, Rollenverteilung, Regeln. Faustregel: Wenn die Entscheidung Konsequenzen hat und/oder一些人 widersprechen könnten — Consent nutzen. Wenn es nur um eine Koordination geht und niemand einen echten Blocker hat — eine schnelle Abstimmung reicht.',
                   },
                 ] as { q: string; a: string }[]
               ).map(({ q, a }, i) => (
