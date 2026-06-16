@@ -315,7 +315,7 @@ class StrapiClient {
     return this.request<{
       groups: { theme: string; concerns: string[]; count: number }[]
       total: number
-    }>(`/abstentions/${roundId}/anonymous-concerns`)
+    }>(`/abstentions/${roundId}/anonymous-concerns`, { method: 'GET' })
   }
 
   async analyseAbstentions(roundId: number | string) {

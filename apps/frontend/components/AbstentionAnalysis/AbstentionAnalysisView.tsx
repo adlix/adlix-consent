@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
+import { strapi } from '@/lib/strapi'
 
 interface ReasonCounts {
   A: number
@@ -21,12 +22,24 @@ interface AnalysisData {
   reasonCounts: ReasonCounts
   thematicGroups: ThematicGroup
   recommendations: string[]
+  analysedAt?: string
 }
 
 interface AbstentionAnalysisViewProps {
   roundId: number
   abstentionCount: number
   isOwner: boolean
+}
+
+const REASON_CONFIG: Record<
+  string,
+  { label: string; icon: string; color: string; bg: string }
+> = {
+  A: { label: 'Not affected', icon: '🤷', color: 'text-gray-600', bg: 'bg-gray-100' },
+  B: { label: 'Needs info', icon: '📚', color: 'text-blue-700', bg: 'bg-blue-100' },
+  C: { label: 'Unclear', icon: '🤔', color: 'text-amber-700', bg: 'bg-amber-100' },
+  D: { label: 'Anonymous', icon: '🔒', color: 'text-amber-800', bg: 'bg-amber-100' },
+  E: { label: 'Undecided', icon: '⏸️', color: 'text-purple-700', bg: 'bg-purple-100' },
 }
 
 export default function AbstentionAnalysisView({
@@ -37,23 +50,50 @@ export default function AbstentionAnalysisView({
   const { data: session } = useSession()
   const [data, setData] = useState<AnalysisData | null>(null)
   const [loading, setLoading] = useState(false)
+  const [expanded, setExpanded] = useState(false)
 
   const jwt = (session as unknown as { jwt?: string })?.jwt
 
   const fetchAnalysis = async () => {
     setLoading(true)
     try {
-      const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
-      const res = await fetch(`${STRAPI_URL}/api/abstentions/${roundId}/analyse`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(jwt ? { Authorization: `Bearer ${jwt}` } : {}),
-        },
+      strapi.setJwt(jwt || null)
+      const result = await strapi.analyseAbstentions(roundId)
+
+      const apiData = result as unknown as {
+        data?: {
+          total?: number
+          clusters?: Array<{
+            reasonCodes: string[]
+            label: string
+            description: string
+          }>
+          recommendations?: string[]
+        }
+      }
+
+      const reasonCounts: ReasonCounts = { A: 0, B: 0, C: 0, D: 0, E: 0 }
+      const thematicGroups: ThematicGroup = {}
+
+      if (apiData.data?.clusters) {
+        apiData.data.clusters.forEach((cluster) => {
+          cluster.reasonCodes.forEach((code) => {
+            if (code in reasonCounts) {
+              reasonCounts[code as keyof ReasonCounts]++
+            }
+          })
+          thematicGroups[cluster.label] = [cluster.description]
+        })
+      }
+
+      setData({
+        roundId,
+        totalAbstentions: apiData.data?.total ?? abstentionCount,
+        reasonCounts,
+        thematicGroups,
+        recommendations: apiData.data?.recommendations ?? [],
+        analysedAt: new Date().toLocaleString('de-DE'),
       })
-      if (!res.ok) throw new Error('Failed to analyse')
-      const result = await res.json()
-      setData(result.data)
     } catch (err) {
       console.error('Failed to run analysis:', err)
     } finally {
@@ -63,67 +103,162 @@ export default function AbstentionAnalysisView({
 
   if (!isOwner || abstentionCount < 3) return null
 
-  const reasonLabels: Record<string, string> = {
-    A: 'Nicht betroffen',
-    B: 'Mehr Infos nötig',
-    C: 'Unklar',
-    D: 'Anonyme Bedenken',
-    E: 'Will mich nicht festlegen',
-  }
+  const totalReasons = Object.values(
+    data?.reasonCounts ?? ({ A: 0, B: 0, C: 0, D: 0, E: 0 } as ReasonCounts)
+  ).reduce((a, b) => a + b, 0)
 
   return (
     <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4">
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center justify-between mb-3">
         <h4 className="font-semibold text-indigo-800 flex items-center gap-2">
           📊 Enthaltungs-Analyse
           <span className="text-xs bg-indigo-200 text-indigo-700 px-2 py-0.5 rounded-full">
             Pro
           </span>
+          {abstentionCount >= 3 && (
+            <span className="text-xs bg-amber-300 text-amber-800 px-2 py-0.5 rounded-full">
+              {abstentionCount} Enthaltungen
+            </span>
+          )}
         </h4>
-        {!data && (
-          <button
-            onClick={fetchAnalysis}
-            disabled={loading}
-            className="text-sm px-3 py-1 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50"
-          >
-            {loading ? 'Analysiere…' : 'Analyse anfordern'}
-          </button>
-        )}
+        <div className="flex gap-2">
+          {!data ? (
+            <button
+              onClick={() => {
+                fetchAnalysis()
+                setExpanded(true)
+              }}
+              disabled={loading}
+              className="text-sm px-3 py-1 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 flex items-center gap-1.5"
+            >
+              {loading ? (
+                <>
+                  <span className="animate-spin">↻</span> Analysiere…
+                </>
+              ) : (
+                <>
+                  <span>🔍</span> Analyse anfordern
+                </>
+              )}
+            </button>
+          ) : (
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="text-sm px-3 py-1 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+            >
+              {expanded ? 'Einklappen' : 'Ausklappen'}
+            </button>
+          )}
+        </div>
       </div>
 
-      {abstentionCount >= 3 && !data && (
-        <p className="text-sm text-indigo-600">
-          {abstentionCount} Enthaltungen erkannt — Musteranalyse verfügbar.
+      {!data && abstentionCount >= 3 && (
+        <p className="text-sm text-indigo-600 mb-2">
+          {abstentionCount} Enthaltungen erkannt — KI-gestützte Musteranalyse verfügbar.
         </p>
       )}
 
-      {data && (
-        <div className="space-y-4">
-          {/* Reason distribution */}
-          <div>
-            <h5 className="text-sm font-medium text-indigo-900 mb-2">Verteilung nach Grund</h5>
-            <div className="grid grid-cols-5 gap-2">
-              {Object.entries(data.reasonCounts).map(([key, count]) => (
-                <div
-                  key={key}
-                  className="bg-white rounded-lg p-2 text-center border border-indigo-100"
-                >
-                  <div className="text-lg font-bold text-indigo-700">{count}</div>
-                  <div className="text-xs text-indigo-500">{reasonLabels[key]}</div>
-                </div>
-              ))}
+      {!data && abstentionCount < 3 && (
+        <p className="text-sm text-indigo-600">
+          Mindestens 3 Enthaltungen für eine Analyse benötigt ({abstentionCount}/3).
+        </p>
+      )}
+
+      {data && expanded && (
+        <div className="space-y-5">
+          {/* Header stats */}
+          <div className="grid grid-cols-3 gap-3">
+            <div className="bg-white rounded-lg p-3 border border-indigo-100 text-center">
+              <div className="text-2xl font-black text-indigo-700">
+                {data.totalAbstentions}
+              </div>
+              <div className="text-xs text-indigo-500 mt-0.5">Enthaltungen</div>
+            </div>
+            <div className="bg-white rounded-lg p-3 border border-indigo-100 text-center">
+              <div className="text-2xl font-black text-indigo-700">
+                {Object.keys(data.thematicGroups).length}
+              </div>
+              <div className="text-xs text-indigo-500 mt-0.5">Themen-Cluster</div>
+            </div>
+            <div className="bg-white rounded-lg p-3 border border-indigo-100 text-center">
+              <div className="text-2xl font-black text-indigo-700">
+                {data.recommendations.length}
+              </div>
+              <div className="text-xs text-indigo-500 mt-0.5">Empfehlungen</div>
             </div>
           </div>
 
-          {/* Thematic groups */}
+          {/* Reason distribution */}
+          {totalReasons > 0 && (
+            <div>
+              <h5 className="text-sm font-semibold text-indigo-900 mb-3">
+                Verteilung nach Enthaltungsgrund
+              </h5>
+              <div className="space-y-2">
+                {Object.entries(data.reasonCounts).map(([key, count]) => {
+                  const config = REASON_CONFIG[key]
+                  const pct = totalReasons > 0 ? Math.round((count / totalReasons) * 100) : 0
+                  return (
+                    <div key={key} className="flex items-center gap-3">
+                      <div className="w-8 text-center shrink-0">
+                        <span className="text-lg">{config?.icon ?? '?'}</span>
+                      </div>
+                      <div className="w-28 shrink-0">
+                        <span className="text-sm font-medium text-indigo-800">
+                          {key} — {config?.label ?? key}
+                        </span>
+                      </div>
+                      <div className="flex-1">
+                        <div
+                          className={`h-6 rounded-full ${config?.bg ?? 'bg-gray-100'} relative overflow-hidden`}
+                        >
+                          {pct > 0 && (
+                            <div
+                              className="h-full bg-indigo-200 rounded-full transition-all duration-500"
+                              style={{ width: `${pct}%` }}
+                            />
+                          )}
+                          {pct > 15 && (
+                            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-indigo-700">
+                              {pct}%
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="w-10 text-right shrink-0">
+                        <span className="text-sm font-bold text-indigo-700">{count}</span>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+              <p className="text-xs text-indigo-400 mt-2">
+                Grund D (Anonyme Bedenken) und E (Unentschlossen) sind Signale — kein Blocker,
+                aber beachtenswert.
+              </p>
+            </div>
+          )}
+
+          {/* Thematic clusters */}
           {Object.keys(data.thematicGroups).length > 0 && (
             <div>
-              <h5 className="text-sm font-medium text-indigo-900 mb-2">Thematische Cluster</h5>
+              <h5 className="text-sm font-semibold text-indigo-900 mb-3">
+                🔍 Thematische Cluster
+              </h5>
               <div className="space-y-2">
-                {Object.entries(data.thematicGroups).map(([theme, items]) => (
-                  <div key={theme} className="bg-white rounded-lg p-2 border border-indigo-100">
-                    <span className="text-sm font-medium text-indigo-800">{theme}</span>
-                    <span className="text-xs text-indigo-500 ml-2">({items.length})</span>
+                {Object.entries(data.thematicGroups).map(([theme, descriptions], idx) => (
+                  <div key={idx} className="bg-white rounded-lg p-3 border border-indigo-100">
+                    <div className="flex items-start gap-2">
+                      <span className="text-indigo-400 text-lg mt-0.5">🔎</span>
+                      <div>
+                        <span className="text-sm font-semibold text-indigo-800">{theme}</span>
+                        {descriptions.map((desc, i) => (
+                          <p key={i} className="text-xs text-indigo-600 mt-0.5">
+                            {desc}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -131,24 +266,40 @@ export default function AbstentionAnalysisView({
           )}
 
           {/* Recommendations */}
-          <div>
-            <h5 className="text-sm font-medium text-indigo-900 mb-2">Empfehlungen</h5>
-            <ul className="space-y-1">
-              {data.recommendations.map((rec, i) => (
-                <li key={i} className="text-sm text-indigo-700 flex items-start gap-2">
-                  <span className="text-indigo-400 mt-0.5">→</span>
-                  <span>{rec}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {data.recommendations.length > 0 && (
+            <div>
+              <h5 className="text-sm font-semibold text-indigo-900 mb-3">
+                💡 Handlungsempfehlungen
+              </h5>
+              <div className="space-y-2">
+                {data.recommendations.map((rec, i) => (
+                  <div
+                    key={i}
+                    className="bg-white rounded-lg p-3 border border-indigo-100 flex items-start gap-2"
+                  >
+                    <span className="text-indigo-400 text-lg shrink-0 mt-0.5">→</span>
+                    <p className="text-sm text-indigo-700 leading-relaxed">{rec}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
-          <button
-            onClick={() => setData(null)}
-            className="text-xs text-indigo-600 hover:text-indigo-800"
-          >
-            Ausblenden
-          </button>
+          {/* Footer */}
+          {data.analysedAt && (
+            <div className="flex items-center justify-between border-t border-indigo-200 pt-3">
+              <p className="text-xs text-indigo-400">Analyse: {data.analysedAt}</p>
+              <button
+                onClick={() => {
+                  setData(null)
+                  setExpanded(false)
+                }}
+                className="text-xs text-indigo-600 hover:text-indigo-800"
+              >
+                Neu analysieren
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

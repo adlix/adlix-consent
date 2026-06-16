@@ -428,6 +428,107 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Wann Consent? Decision Guide */}
+        <section className="py-16 bg-white border-t border-gray-100" aria-labelledby="wann-consent-heading">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-sm font-medium mb-4">
+                <span aria-hidden="true">🎯</span> Praktische Entscheidungshilfe
+              </div>
+              <h2 id="wann-consent-heading" className="text-3xl font-bold mb-4">
+                Wann nutze ich Consent?
+              </h2>
+              <p className="text-gray-500 max-w-xl mx-auto">
+                Consent ist mächtig, aber nicht für jede Entscheidung nötig. Hier die klare Faustregel:
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6 mb-10">
+              <div className="rounded-2xl border-2 border-emerald-300 bg-emerald-50/50 p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-2xl">✅</span>
+                  <h3 className="font-bold text-emerald-800 text-lg">Consent nutzen</h3>
+                </div>
+                <p className="text-sm text-emerald-700 mb-4">
+                  Wenn die Entscheidung das Team oder den Kreis wirklich betrifft und Konsequenzen hat.
+                </p>
+                <ul className="space-y-2">
+                  {[
+                    'Sprint-Ziel, Team-Normen, Rollenverteilung',
+                    'Strategische Ausrichtung, Prioritäten',
+                    'Verteilungsfragen — wer macht was',
+                    'Regeln, die alle betreffen',
+                    'Jede Entscheidung mit langfristiger Wirkung',
+                    'Wenn jemand widersprechen könnte',
+                    'Wenn Bedenken wichtig sind — aber nicht überstimmt werden sollen',
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-emerald-700">
+                      <span className="text-emerald-500 mt-0.5">✓</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="rounded-2xl border-2 border-gray-200 bg-gray-50/50 p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-2xl">⚡</span>
+                  <h3 className="font-bold text-gray-700 text-lg">Schnelle Abstimmung reicht</h3>
+                </div>
+                <p className="text-sm text-gray-600 mb-4">
+                  Wenn niemand einen echten Blocker hat — oder wenn es nur um Koordination geht.
+                </p>
+                <ul className="space-y-2">
+                  {[
+                    'Termin finden — „Welcher Slot passt?"',
+                    'Location wählen — „Pizza oder Sushi?"',
+                    'Tools, die niemanden ausschließen',
+                    'Kleine Randthemen ohne echte Konsequenz',
+                    'Wenn alle bereits einer Meinung sind',
+                    'Wenn nur eine Person betroffen ist',
+                    'Alles, was reversibel und schnell änderbar ist',
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                      <span className="text-gray-400 mt-0.5">→</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 p-6 text-center">
+              <p className="text-lg font-medium text-gray-800 mb-2">
+                „Wenn die Entscheidung Konsequenzen hat und/oder jemand widersprechen könnte — Consent nutzen."
+              </p>
+              <p className="text-sm text-gray-500">
+                Faustregel: Lieber einmal zu viel Consent als einmal zu wenig. Der Prozess ist schnell — und schafft Klarheit.
+              </p>
+            </div>
+
+            <div className="mt-8 bg-white rounded-2xl border border-gray-200 p-6">
+              <h3 className="font-bold text-gray-900 mb-4 text-center">
+                Consent je Teamgröße
+              </h3>
+              <div className="grid sm:grid-cols-4 gap-4">
+                {[
+                  { size: '2–5', label: 'Intim', desc: 'Kurze Runden, alle beteiligt — Consent als Workshop-Format.' },
+                  { size: '6–12', label: 'Ideal', desc: 'Volle Kraft — der Consent-Prozess entfaltet sein Potenzial.' },
+                  { size: '13–30', label: 'Delegiert', desc: 'Kreise mit Vertretern. Entscheidungen auf übergeordneter Ebene.' },
+                  { size: '30+', label: 'Multi-Stack', desc: 'Mehrere Ebenen: Kreis → Tribe → Allianz. Jede Ebene mit eigenem Tempo.' },
+                ].map(({ size, label, desc }) => (
+                  <div key={size} className="rounded-xl border border-gray-100 p-4 text-center">
+                    <div className="text-2xl mb-2">🫂</div>
+                    <div className="text-sm font-bold text-gray-800">{label}</div>
+                    <div className="text-xs text-gray-400 mb-2">{size} Personen</div>
+                    <p className="text-xs text-gray-600 leading-relaxed">{desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Consent vs. Traditionell — Entscheidungs-Vergleich */}
         <section
           className="py-16 bg-white border-t border-gray-100"

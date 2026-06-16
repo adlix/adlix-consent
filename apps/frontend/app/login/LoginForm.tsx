@@ -1,21 +1,22 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback, Suspense } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
-function LoginFormInner() {
+interface LoginFormProps {
+  error?: string
+  callbackUrl?: string
+}
+
+export default function LoginForm({ error: initialError, callbackUrl }: LoginFormProps) {
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const [error, setError] = useState('')
-
-  useEffect(() => {
-    const err = searchParams.get('error')
-    if (err === 'abgelehnt') setError('Anmeldung abgelehnt.')
-    else if (err === 'social_login_failed')
-      setError('Social-Login fehlgeschlagen. Bitte erneut versuchen.')
-    else if (err === 'no_token') setError('Keine Anmeldedaten erhalten. Bitte erneut versuchen.')
-  }, [searchParams])
+  const [error, setError] = useState(() => {
+    if (initialError === 'abgelehnt') return 'Anmeldung abgelehnt.'
+    if (initialError === 'social_login_failed') return 'Social-Login fehlgeschlagen. Bitte erneut versuchen.'
+    if (initialError === 'no_token') return 'Keine Anmeldedaten erhalten. Bitte erneut versuchen.'
+    return ''
+  })
 
   const [loading, setLoading] = useState(false)
   const [passkeyLoading, setPasskeyLoading] = useState(false)
@@ -58,8 +59,8 @@ function LoginFormInner() {
           setError(data.error || 'Telegram-Anmeldung fehlgeschlagen.')
           return
         }
-        const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
-        router.push(callbackUrl)
+        const url = callbackUrl || '/dashboard'
+        router.push(url)
         router.refresh()
       } catch {
         setError('Verbindungsfehler.')
@@ -67,7 +68,7 @@ function LoginFormInner() {
         setLoading(false)
       }
     }
-  }, [router, searchParams])
+  }, [router, callbackUrl])
 
   useEffect(() => {
     if (telegramLoadedRef.current || !telegramContainerRef.current) return
@@ -111,8 +112,8 @@ function LoginFormInner() {
         return
       }
 
-      const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
-      router.push(callbackUrl)
+      const url = callbackUrl || '/dashboard'
+      router.push(url)
       router.refresh()
     } catch (err: unknown) {
       if (err instanceof Error && err.name === 'NotAllowedError') {
@@ -153,8 +154,8 @@ function LoginFormInner() {
         return
       }
 
-      const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
-      router.push(callbackUrl)
+      const url = callbackUrl || '/dashboard'
+      router.push(url)
       router.refresh()
     } catch {
       setError('Verbindungsfehler. Bitte versuche es erneut.')
@@ -200,8 +201,8 @@ function LoginFormInner() {
         return
       }
 
-      const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
-      router.push(callbackUrl)
+      const url = callbackUrl || '/dashboard'
+      router.push(url)
       router.refresh()
     } catch {
       setError('Verbindungsfehler.')
@@ -538,10 +539,4 @@ function LoginFormInner() {
   )
 }
 
-export default function LoginForm() {
-  return (
-    <Suspense fallback={null}>
-      <LoginFormInner />
-    </Suspense>
-  )
-}
+

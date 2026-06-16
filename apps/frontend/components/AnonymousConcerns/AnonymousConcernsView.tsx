@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { strapi } from '../../lib/strapi'
+import { strapi } from '@/lib/strapi'
 
 interface ThematicGroup {
   [theme: string]: string[]
@@ -30,18 +30,20 @@ export default function AnonymousConcernsView({ roundId, isOwner }: AnonymousCon
 
   const fetchConcerns = async () => {
     setLoading(true)
-    strapi.setJwt(jwt || null)
     try {
-      const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
-      const res = await fetch(`${STRAPI_URL}/api/abstentions/${roundId}/anonymous-concerns`, {
-        headers: {
-          'Content-Type': 'application/json',
-          ...(jwt ? { Authorization: `Bearer ${jwt}` } : {}),
-        },
+      strapi.setJwt(jwt || null)
+      const result = await strapi.getAnonymousConcerns(roundId)
+      const apiData = result as unknown as { groups: Array<{ theme: string; concerns: string[]; count: number }>; total: number }
+      const thematicGroups: ThematicGroup = {}
+      apiData.groups.forEach((g) => {
+        thematicGroups[g.theme] = g.concerns
       })
-      if (!res.ok) throw new Error('Failed to fetch')
-      const result = await res.json()
-      setData(result.data)
+      setData({
+        roundId,
+        totalConcerns: apiData.total,
+        thematicGroups,
+        summary: `Es wurden ${apiData.total} anonyme Bedenken eingereicht, die thematisch gruppiert wurden.`,
+      })
       setExpanded(true)
     } catch (err) {
       console.error('Failed to load anonymous concerns:', err)
