@@ -35,11 +35,11 @@ const REASON_CONFIG: Record<
   string,
   { label: string; icon: string; color: string; bg: string }
 > = {
-  A: { label: 'Not affected', icon: '🤷', color: 'text-gray-600', bg: 'bg-gray-100' },
-  B: { label: 'Needs info', icon: '📚', color: 'text-blue-700', bg: 'bg-blue-100' },
-  C: { label: 'Unclear', icon: '🤔', color: 'text-amber-700', bg: 'bg-amber-100' },
-  D: { label: 'Anonymous', icon: '🔒', color: 'text-amber-800', bg: 'bg-amber-100' },
-  E: { label: 'Undecided', icon: '⏸️', color: 'text-purple-700', bg: 'bg-purple-100' },
+  A: { label: 'Nicht betroffen', icon: '🤷', color: 'text-gray-600', bg: 'bg-gray-100' },
+  B: { label: 'Mehr Infos nötig', icon: '📚', color: 'text-blue-700', bg: 'bg-blue-100' },
+  C: { label: 'Unklar', icon: '🤔', color: 'text-amber-700', bg: 'bg-amber-100' },
+  D: { label: 'Anonyme Bedenken', icon: '🔒', color: 'text-amber-800', bg: 'bg-amber-100' },
+  E: { label: 'Unentschlossen', icon: '⏸️', color: 'text-purple-700', bg: 'bg-purple-100' },
 }
 
 export default function AbstentionAnalysisView({
@@ -233,7 +233,7 @@ export default function AbstentionAnalysisView({
                 })}
               </div>
               <p className="text-xs text-indigo-400 mt-2">
-                Grund D (Anonyme Bedenken) und E (Unentschlossen) sind Signale — kein Blocker,
+                Grund D und E sind Signale — kein Blocker,
                 aber beachtenswert.
               </p>
             </div>

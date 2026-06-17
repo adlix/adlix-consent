@@ -910,6 +910,247 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* 5 Consent-Momente im Teamalltag */}
+        <section className="py-20 bg-white border-t border-gray-100" aria-labelledby="moments-heading">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-14">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-sm font-medium mb-6">
+                <span aria-hidden="true">💡</span> Konkret erleben
+              </div>
+              <h2 id="moments-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                5 Consent-Momente, die Teams verändern
+              </h2>
+              <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+                Consent ist kein Ersatz für gute Kommunikation — aber es strukturiert sie. Diese fünf
+                Situationen kennt jedes Team. So geht Consent damit um.
+              </p>
+            </div>
+
+            <div className="space-y-5">
+              {/* Moment 1 */}
+              <article className="rounded-2xl border border-gray-200 bg-white overflow-hidden hover:shadow-md transition-shadow">
+                <div className="flex flex-col sm:flex-row">
+                  <div className="sm:w-80 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 flex flex-col justify-center shrink-0">
+                    <div className="text-4xl mb-3" aria-hidden="true">📋</div>
+                    <h3 className="font-bold text-gray-900 text-lg mb-1">
+                      Der Sprint wird nicht fertig
+                    </h3>
+                    <p className="text-gray-500 text-sm italic">
+                      Situation: Zu viel versprochen, Stakeholder warten, Team steht unter Druck.
+                    </p>
+                  </div>
+                  <div className="flex-1 p-6">
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <span className="text-red-400 text-lg shrink-0 mt-0.5">❌</span>
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-1">Ohne Consent</p>
+                          <p className="text-sm text-gray-600">
+                            PO legt Sprint-Ziel unilateral fest. Team nickt ab. 2 Wochen später:
+                            Scope nicht geschafft. Retrospektive voller Frust.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="h-px bg-gray-100" />
+                      <div className="flex items-start gap-3">
+                        <span className="text-emerald-500 text-lg shrink-0 mt-0.5">✅</span>
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-1">Mit Consent</p>
+                          <p className="text-sm text-gray-700">
+                            Team reicht Sprint-Ziel als Vorhaben ein. Ein Mitglied hat
+                            Bedenken: Scope zu groß. Bedenken wird integriert, Scope angepasst.
+                            Sprint-Ziel wird mit 100% Commitment getragen.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              {/* Moment 2 */}
+              <article className="rounded-2xl border border-gray-200 bg-white overflow-hidden hover:shadow-md transition-shadow">
+                <div className="flex flex-col sm:flex-row">
+                  <div className="sm:w-80 bg-gradient-to-br from-amber-50 to-orange-50 p-6 flex flex-col justify-center shrink-0">
+                    <div className="text-4xl mb-3" aria-hidden="true">🔄</div>
+                    <h3 className="font-bold text-gray-900 text-lg mb-1">
+                      Niemand traut sich zu widersprechen
+                    </h3>
+                    <p className="text-gray-500 text-sm italic">
+                      Situation: Die dominanteste Stimme dominiert. Die stillen Bedenken bleiben unausgesprochen.
+                    </p>
+                  </div>
+                  <div className="flex-1 p-6">
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <span className="text-red-400 text-lg shrink-0 mt-0.5">❌</span>
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-1">Ohne Consent</p>
+                          <p className="text-sm text-gray-600">
+                            Meeting endet mit scheinbarem Konsens. Die Entscheidung wird
+                            umgesetzt. Drei Wochen später: Das Projekt scheitert — weil die
+                            warnenden Stimmen im Raum nicht gehört wurden.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="h-px bg-gray-100" />
+                      <div className="flex items-start gap-3">
+                        <span className="text-emerald-500 text-lg shrink-0 mt-0.5">✅</span>
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-1">Mit Consent</p>
+                          <p className="text-sm text-gray-700">
+                            Consent gibt jeder Person das explizite Recht auf Einwand.
+                            Nicht flüstern in der Kaffeeküche — sondern strukturiert, sichtbar,
+                            respektiert. Die stille Stimme bekommt einen Prozess.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              {/* Moment 3 */}
+              <article className="rounded-2xl border border-gray-200 bg-white overflow-hidden hover:shadow-md transition-shadow">
+                <div className="flex flex-col sm:flex-row">
+                  <div className="sm:w-80 bg-gradient-to-br from-purple-50 to-pink-50 p-6 flex flex-col justify-center shrink-0">
+                    <div className="text-4xl mb-3" aria-hidden="true">🗓️</div>
+                    <h3 className="font-bold text-gray-900 text-lg mb-1">
+                      Enthaltungen ohne Kontext
+                    </h3>
+                    <p className="text-gray-500 text-sm italic">
+                      Situation: Team stimmt ab — 2 Enthaltungen. Niemand fragt nach dem Warum.
+                    </p>
+                  </div>
+                  <div className="flex-1 p-6">
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <span className="text-red-400 text-lg shrink-0 mt-0.5">❌</span>
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-1">Ohne Consent</p>
+                          <p className="text-sm text-gray-600">
+                            Enthaltung gilt als „kein Problem". Wird akzeptiert, ohne Grund.
+                            Niemand weiß, ob dahinter ein ungelöstes Bedenken steckt.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="h-px bg-gray-100" />
+                      <div className="flex items-start gap-3">
+                        <span className="text-emerald-500 text-lg shrink-0 mt-0.5">✅</span>
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-1">Mit Consent</p>
+                          <p className="text-sm text-gray-700">
+                            Enthaltung erfordert einen Grund. „Mehr Informationen nötig?" —
+                            Einreicher wird benachrichtigt und muss antworten. Anonyme Bedenken?
+                            Werden thematisch aggregiert. Kein Grund bleibt unsichtbar.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              {/* Moment 4 */}
+              <article className="rounded-2xl border border-gray-200 bg-white overflow-hidden hover:shadow-md transition-shadow">
+                <div className="flex flex-col sm:flex-row">
+                  <div className="sm:w-80 bg-gradient-to-br from-emerald-50 to-teal-50 p-6 flex flex-col justify-center shrink-0">
+                    <div className="text-4xl mb-3" aria-hidden="true">📞</div>
+                    <h3 className="font-bold text-gray-900 text-lg mb-1">
+                      Entscheidungen ohne die Betroffenen
+                    </h3>
+                    <p className="text-gray-500 text-sm italic">
+                      Situation: Lead entscheidet für das Team. Team fühlt sich übergangen.
+                    </p>
+                  </div>
+                  <div className="flex-1 p-6">
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <span className="text-red-400 text-lg shrink-0 mt-0.5">❌</span>
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-1">Ohne Consent</p>
+                          <p className="text-sm text-gray-600">
+                            Entscheidung wird von oben nach unten kommuniziert. Team hat
+                            Informationsrunde bekommen — aber keine Chance, Bedenken einzubringen.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="h-px bg-gray-100" />
+                      <div className="flex items-start gap-3">
+                        <span className="text-emerald-500 text-lg shrink-0 mt-0.5">✅</span>
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-1">Mit Consent</p>
+                          <p className="text-sm text-gray-700">
+                            Wer betroffen ist, muss zustimmen. Vorhaben wird im Kreis
+                            eingereicht. Einwand? Integration. Kein Einwand? Beschluss.
+                            Jede betroffene Person hat den gleichen Einfluss.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              {/* Moment 5 */}
+              <article className="rounded-2xl border border-gray-200 bg-white overflow-hidden hover:shadow-md transition-shadow">
+                <div className="flex flex-col sm:flex-row">
+                  <div className="sm:w-80 bg-gradient-to-br from-slate-50 to-gray-50 p-6 flex flex-col justify-center shrink-0">
+                    <div className="text-4xl mb-3" aria-hidden="true">🔮</div>
+                    <h3 className="font-bold text-gray-900 text-lg mb-1">
+                      Entscheidungen, die für immer gelten
+                    </h3>
+                    <p className="text-gray-500 text-sm italic">
+                      Situation: Vor 2 Jahren wurde entschieden. Die Welt hat sich verändert.
+                      Niemand traut sich, das Thema wieder aufzumachen.
+                    </p>
+                  </div>
+                  <div className="flex-1 p-6">
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <span className="text-red-400 text-lg shrink-0 mt-0.5">❌</span>
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-1">Ohne Consent</p>
+                          <p className="text-sm text-gray-600">
+                            Entscheidung gilt als „beschlossen". Wiederaufrollen gilt als
+                            Infragestellung. Die Kultur friert ein. Veränderung wird blockiert.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="h-px bg-gray-100" />
+                      <div className="flex items-start gap-3">
+                        <span className="text-emerald-500 text-lg shrink-0 mt-0.5">✅</span>
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-1">Mit Consent</p>
+                          <p className="text-sm text-gray-700">
+                            Jedes Vorhaben hat ein Evaluationsdatum. „Gut genug für jetzt —
+                            sicher genug zum Ausprobieren." Entscheidungen sind bewusst
+                            vorläufig. Bei Bedarf wird ein neuer Consent-Prozess gestartet.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            {/* CTA below moments */}
+            <div className="mt-14 text-center">
+              <p className="text-gray-500 mb-6">
+                Consent ist kein Allheilmittel — aber ein Werkzeug, das diese fünf Momente
+                menschlicher und strukturierter macht.
+              </p>
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white font-medium rounded-xl hover:bg-emerald-700 transition-colors"
+              >
+                Consent für dein Team starten →
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* Agile Tribes */}
         <section
           className="bg-gradient-to-b from-indigo-50 to-white py-16"
