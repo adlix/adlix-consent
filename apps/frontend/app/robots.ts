@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://consent.adlix.de'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://consent.adlix-club.de'
 
 export default function robots(): MetadataRoute.Robots {
   return {

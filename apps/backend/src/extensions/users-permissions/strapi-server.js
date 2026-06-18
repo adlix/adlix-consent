@@ -1,5 +1,7 @@
 "use strict";
 
+const _ = require("lodash");
+
 module.exports = (plugin) => {
   const originalBootstrap = plugin.bootstrap;
 
@@ -8,6 +10,47 @@ module.exports = (plugin) => {
     await configurePublicPermissions(strapi);
     await configureAuthenticatedPermissions(strapi);
     await addCustomUserFields(strapi);
+    await configureGitHubProvider(strapi);
+  };
+
+  // Override the auth callback to redirect social logins to the frontend
+  // instead of returning JSON (which the browser can't use).
+  const originalControllers = plugin.controllers;
+  const originalCallback = originalControllers.auth.callback;
+
+  plugin.controllers.auth.callback = async (ctx) => {
+    const provider = ctx.params.provider || "local";
+
+    // For local auth, use the original callback (returns JSON)
+    if (provider === "local") {
+      return originalCallback(ctx);
+    }
+
+    // For social providers: intercept ctx.send to capture the JWT
+    // and redirect to the frontend instead.
+    const originalSend = ctx.send.bind(ctx);
+    ctx.send = function (body) {
+      // Restore original send
+      ctx.send = originalSend;
+
+      const frontendUrl =
+        process.env.FRONTEND_URL || process.env.STRAPI_URL || "https://consent.adlix-club.de";
+      const callbackUrl = new URL("/api/auth/social/" + provider + "/callback", frontendUrl);
+      callbackUrl.searchParams.set("access_token", body.jwt);
+      ctx.redirect(callbackUrl.toString());
+    };
+
+    try {
+      await originalCallback(ctx);
+    } catch (err) {
+      // On error, redirect to login
+      ctx.send = originalSend; // restore
+      const frontendUrl =
+        process.env.FRONTEND_URL || process.env.STRAPI_URL || "https://consent.adlix-club.de";
+      const loginUrl = new URL("/login", frontendUrl);
+      loginUrl.searchParams.set("error", "social_login_failed");
+      ctx.redirect(loginUrl.toString());
+    }
   };
 
   return plugin;
@@ -118,4 +161,56 @@ async function configureAuthenticatedPermissions(strapi) {
         .create({ data: { action, role: authenticatedRole.id } });
     }
   }
+}
+
+/**
+ * Auto-configure GitHub OAuth provider from environment variables.
+ * Reads GITHUB_OAUTH_CLIENT_ID and GITHUB_OAUTH_CLIENT_SECRET and
+ * injects them into the users-permissions grant store.
+ */
+async function configureGitHubProvider(strapi) {
+  const clientId = process.env.GITHUB_OAUTH_CLIENT_ID;
+  const clientSecret = process.env.GITHUB_OAUTH_CLIENT_SECRET;
+
+  if (!clientId || !clientSecret) {
+    strapi.log.info(
+      "[users-permissions] GitHub OAuth env vars not set — skipping provider auto-config."
+    );
+    return;
+  }
+
+  const store = strapi.store({ type: "plugin", name: "users-permissions", key: "grant" });
+  const providers = await store.get();
+
+  if (!providers || !providers.github) {
+    strapi.log.warn(
+      "[users-permissions] Grant store has no 'github' key — skipping provider auto-config."
+    );
+    return;
+  }
+
+  const existing = providers.github;
+  const alreadyConfigured =
+    existing.enabled === true &&
+    existing.key === clientId &&
+    existing.secret === clientSecret;
+
+  if (alreadyConfigured) {
+    strapi.log.info("[users-permissions] GitHub provider already configured — skipping.");
+    return;
+  }
+
+  // Update the GitHub provider entry
+  providers.github = {
+    ...existing,
+    enabled: true,
+    key: clientId,
+    secret: clientSecret,
+  };
+
+  await store.set({ value: providers });
+
+  strapi.log.info(
+    `[users-permissions] GitHub OAuth provider configured (clientId=${clientId.slice(0, 6)}…)`
+  );
 }

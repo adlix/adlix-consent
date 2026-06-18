@@ -4,7 +4,7 @@ FROM node:20-alpine AS dev
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci --legacy-peer-deps
 
 # Source wird per Volume gemountet (docker-compose.dev.yml)
 EXPOSE 3000
@@ -22,9 +22,10 @@ COPY . .
 
 # Dummy-Env damit next build nicht auf fehlende Vars bricht
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV NEXT_PUBLIC_APP_URL=http://localhost:3000
-ENV NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
-ENV NEXT_PUBLIC_STRAPI_API_URL=http://localhost:1337/api
+ENV NEXT_PUBLIC_APP_URL=https://consent.adlix-club.de
+ENV NEXT_PUBLIC_SITE_URL=https://consent.adlix-club.de
+ENV NEXT_PUBLIC_STRAPI_URL=https://admin.adlix-club.de
+ENV NEXT_PUBLIC_STRAPI_API_URL=https://admin.adlix-club.de/api
 
 RUN npm run build
 

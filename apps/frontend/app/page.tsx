@@ -1904,6 +1904,206 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Was passiert bei einem Einwand — Der Integrations-Flow */}
+        <section className="py-20 bg-gradient-to-b from-red-50/30 to-white border-t border-gray-100" aria-labelledby="objection-flow-heading">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-14">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-red-50 text-red-700 rounded-full text-sm font-medium mb-6">
+                <span aria-hidden="true">🔴</span> Das Herzstück: Einwand → Integration
+              </div>
+              <h2 id="objection-flow-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                Was passiert, wenn jemand widerspricht?
+              </h2>
+              <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+                Ein schwerwiegender Einwand ist kein Blockade — es ist ein Geschenk. adlix consent gibt
+                ihm einen Prozess. Hier siehst du, wie aus einem Einwand eine bessere Entscheidung wird.
+              </p>
+            </div>
+
+            {/* 6-Step Integration Flow */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
+              {[
+                {
+                  step: 1,
+                  icon: '🧠',
+                  title: 'Einwand verstehen',
+                  color: 'bg-red-50 border-red-200',
+                  accent: 'text-red-600',
+                  badge: 'bg-red-100 text-red-700',
+                  description:
+                    'Wer einen Einwand hat, formuliert ihn frei — ohne Formular. Die Plattform prüft: Ist es ein sachliches Argument gegen das gemeinsame Ziel, oder eher eine persönliche Präferenz?',
+                  detail: '✅ Sachlich → Blocker  •  ❌ Präferenz → Dokumentiert als Bedenken',
+                },
+                {
+                  step: 2,
+                  icon: '👥',
+                  title: 'Kreis prüft Validität',
+                  color: 'bg-orange-50 border-orange-200',
+                  accent: 'text-orange-600',
+                  badge: 'bg-orange-100 text-orange-700',
+                  description:
+                    'Alle Kreismitglieder sehen den formulierten Einwand und schätzen ein: Ist das sachlich begründet — oder persönliche Präferenz? Das ist keine Abstimmung, sondern Orientierung.',
+                  detail: 'Mehrheitlich sachlich → Dialog geht weiter. Mehrheitlich Präferenz → Einwand wird zu Bedenken.',
+                },
+                {
+                  step: 3,
+                  icon: '💡',
+                  title: 'Lösungsraum öffnen',
+                  color: 'bg-amber-50 border-amber-200',
+                  accent: 'text-amber-600',
+                  badge: 'bg-amber-100 text-amber-700',
+                  description:
+                    'Alle Beteiligten bringen reihum Ideen ein: Wie könnte das Vorhaben angepasst werden? Keine Kritik an anderen Ideen in dieser Phase — nur sammeln, nicht diskutieren.',
+                  detail: '💡 Lösungsidee  •  ❓ Frage  •  ➕ Zustimmung  •  ⏭️ Passe',
+                },
+                {
+                  step: 4,
+                  icon: '🔮',
+                  title: 'Synthese',
+                  color: 'bg-indigo-50 border-indigo-200',
+                  accent: 'text-indigo-600',
+                  badge: 'bg-indigo-100 text-indigo-700',
+                  description:
+                    'Der Einreicher sieht alle Lösungsideen und formuliert einen angepassten Vorschlag. Änderungen werden als Diff sichtbar gemacht — was hat sich warum geändert.',
+                  detail: 'Diff-View: Vorhaben vor ↔ nach der Integration',
+                },
+                {
+                  step: 5,
+                  icon: '🤝',
+                  title: 'Angepasstes Vorhaben vorstellen',
+                  color: 'bg-blue-50 border-blue-200',
+                  accent: 'text-blue-600',
+                  badge: 'bg-blue-100 text-blue-700',
+                  description:
+                    'Der Einreicher präsentiert den angepassten Vorschlag. Die einwendende Person bestätigt: Adressiert das deinen Einwand? Ja → Einwand zurückgezogen, neuer Consent-Loop.',
+                  detail: 'Ja → Loop beendet  •  Teilweise → Dialog geht weiter (max. N Runden)  •  Nein → Eskalationspfad',
+                },
+                {
+                  step: 6,
+                  icon: '📅',
+                  title: 'Eskalationspfad (falls nötig)',
+                  color: 'bg-purple-50 border-purple-200',
+                  accent: 'text-purple-600',
+                  badge: 'bg-purple-100 text-purple-700',
+                  description:
+                    'Wenn nach mehreren Dialogrunden kein Konsens möglich ist: Vorhaben zurückstellen, Teilentscheidung, externe Moderation — oder zeitlich begrenzter Versuch mit Evaluationsdatum.',
+                  detail: '🔮 Zeitlich begrenzter Versuch  •  🔄 Zurückstellen  •  ➡️ Teilentscheidung',
+                },
+              ].map(({ step, icon, title, color, accent, badge, description, detail }) => (
+                <article
+                  key={step}
+                  className={`rounded-2xl border p-6 ${color} flex flex-col`}
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">{icon}</span>
+                      <div>
+                        <span className={`text-xs font-bold uppercase tracking-wider ${accent} opacity-60`}>
+                          Schritt {step}
+                        </span>
+                      </div>
+                    </div>
+                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${badge}`}>
+                      {title}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-700 leading-relaxed flex-1 mb-3">{description}</p>
+                  <p className={`text-xs ${accent} font-medium leading-relaxed`}>{detail}</p>
+                </article>
+              ))}
+            </div>
+
+            {/* Vergleich: Ohne vs. Mit Integration-Prozess */}
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+              <div className="bg-gradient-to-r from-red-50 to-orange-50 px-8 py-6 border-b border-gray-100">
+                <h3 className="text-xl font-bold text-gray-900 mb-1">
+                  Live-Beispiel: Der Einwand im Team
+                </h3>
+                <p className="text-gray-600 text-sm">
+                  Dieselbe Situation — mit und ohne strukturierten Integrationsprozess.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2">
+                {/* Ohne */}
+                <div className="p-8 border-b md:border-b-0 md:border-r border-gray-100">
+                  <div className="flex items-center gap-2 mb-5">
+                    <span className="text-red-500 text-xl">❌</span>
+                    <h4 className="font-bold text-gray-800">Ohne Consent-Prozess</h4>
+                  </div>
+                  <div className="space-y-3 text-sm">
+                    {[
+                      { emoji: '💬', text: 'Team diskutiert hitzig im Meeting — keiner hört zu' },
+                      { emoji: '😤', text: 'Einwender fühlt sich überstimmt — schweigt fortan' },
+                      { emoji: '📉', text: 'Entscheidung wird umgesetzt — Bedenken bleiben' },
+                      { emoji: '🔁', text: 'Problem taucht 3 Monate später wieder auf — größer' },
+                      { emoji: '😞', text: 'Team-Frust in der Retro — aber晚了' },
+                    ].map(({ emoji, text }, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <span className="text-lg shrink-0 mt-0.5">{emoji}</span>
+                        <p className="text-gray-600 leading-relaxed">{text}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-5 pt-4 border-t border-gray-100">
+                    <p className="text-xs text-red-500 font-semibold">
+                      → Ergebnis: Getroffene, nicht getragene Entscheidung
+                    </p>
+                  </div>
+                </div>
+
+                {/* Mit */}
+                <div className="p-8 bg-emerald-50/40">
+                  <div className="flex items-center gap-2 mb-5">
+                    <span className="text-emerald-500 text-xl">✅</span>
+                    <h4 className="font-bold text-gray-800">Mit adlix consent — Integration</h4>
+                  </div>
+                  <div className="space-y-3 text-sm">
+                    {[
+                      { emoji: '🔴', text: 'Schwerwiegender Einwand: „Kundenfreitag ungeklärt"' },
+                      { emoji: '💡', text: 'Dialog-Raum: 3 Lösungsideen werden gesammelt' },
+                      { emoji: '🔄', text: 'Vorhaben angepasst: „Freitag: intern, kein Kundenkontakt"' },
+                      { emoji: '✅', text: 'Einwender bestätigt: „Das adressiert mein Bedenken"' },
+                      { emoji: '📋', text: 'Neuer Consent — diesmal mit 100% Zustimmung' },
+                    ].map(({ emoji, text }, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <span className="text-lg shrink-0 mt-0.5">{emoji}</span>
+                        <p className="text-gray-700 leading-relaxed">{text}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-5 pt-4 border-t border-emerald-100">
+                    <p className="text-xs text-emerald-600 font-semibold">
+                      → Ergebnis: Robustere Entscheidung, getragen von allen
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="mt-12 text-center">
+              <p className="text-gray-500 mb-6">
+                Einwand ≠ Blockade. Einwand = Chance auf eine bessere Entscheidung.
+              </p>
+              <div className="flex justify-center gap-4 flex-wrap">
+                <Link
+                  href="/register"
+                  className="px-6 py-3 bg-primary text-white font-medium rounded-xl hover:bg-primary-dark transition-colors"
+                >
+                  Consent mit deinem Team starten →
+                </Link>
+                <Link
+                  href="/login"
+                  className="px-6 py-3 bg-white border border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors"
+                >
+                  Demo ansehen
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* FAQ */}
         <section className="py-16" aria-labelledby="faq-heading">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
