@@ -313,24 +313,24 @@ class StrapiClient {
 
   async getAnonymousConcerns(roundId: number | string) {
     return this.request<{
-      groups: { theme: string; concerns: string[]; count: number }[]
-      total: number
+      roundId: number
+      totalConcerns: number
+      thematicGroups: Record<string, string[]>
+      summary: string
     }>(`/abstentions/${roundId}/anonymous-concerns`, { method: 'GET' })
   }
 
   async analyseAbstentions(roundId: number | string) {
     return this.request<{
-      total: number
-      clusters: Array<{
-        id: string
-        label: string
-        reasonCodes: string[]
-        description: string
-        count: number
-        keywords: string[]
-      }>
+      roundId: number
+      totalAbstentions: number
+      reasonCounts: Record<'A' | 'B' | 'C' | 'D' | 'E', number>
+      thematicGroups: Record<string, string[]>
       recommendations: string[]
-      analysedAt: string
+      _meta?: {
+        typ?: string
+        hinweis?: string
+      }
     }>(`/abstentions/${roundId}/analyse`, {
       method: 'POST',
     })

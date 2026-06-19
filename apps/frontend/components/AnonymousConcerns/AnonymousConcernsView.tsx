@@ -33,16 +33,25 @@ export default function AnonymousConcernsView({ roundId, isOwner }: AnonymousCon
     try {
       strapi.setJwt(jwt || null)
       const result = await strapi.getAnonymousConcerns(roundId)
-      const apiData = result as unknown as { groups: Array<{ theme: string; concerns: string[]; count: number }>; total: number }
-      const thematicGroups: ThematicGroup = {}
-      apiData.groups.forEach((g) => {
-        thematicGroups[g.theme] = g.concerns
-      })
+      const apiData = result as unknown as {
+        data?: {
+          roundId: number
+          totalConcerns: number
+          thematicGroups: ThematicGroup
+          summary: string
+        }
+      }
+      const payload = apiData.data
+
+      if (!payload) {
+        throw new Error('Keine Daten fuer anonyme Bedenken erhalten.')
+      }
+
       setData({
-        roundId,
-        totalConcerns: apiData.total,
-        thematicGroups,
-        summary: `Es wurden ${apiData.total} anonyme Bedenken eingereicht, die thematisch gruppiert wurden.`,
+        roundId: payload.roundId,
+        totalConcerns: payload.totalConcerns,
+        thematicGroups: payload.thematicGroups,
+        summary: payload.summary,
       })
       setExpanded(true)
     } catch (err) {

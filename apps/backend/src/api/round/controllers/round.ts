@@ -22,11 +22,26 @@ module.exports = createCoreController("api::round.round", ({ strapi }) => ({
 
     if (response.data) {
       const round = response.data;
-      const project = await strapi.entityService.findOne(
-        "api::project.project",
-        round.project?.id || round.attributes?.project?.id,
-        { populate: ["owner"] },
-      );
+      const projectId = round.project?.id || round.attributes?.project?.id;
+
+      if (projectId) {
+        await strapi.entityService.update("api::project.project", projectId, {
+          data: {
+            currentRound: round.id || round.attributes?.id,
+            status: "active",
+          },
+        });
+      }
+
+      const project = projectId
+        ? await strapi.entityService.findOne(
+            "api::project.project",
+            projectId,
+            {
+              populate: ["owner"],
+            },
+          )
+        : null;
 
       if (project) {
         teamsWebhook.notifyNewRound(
@@ -91,9 +106,32 @@ module.exports = createCoreController("api::round.round", ({ strapi }) => ({
 
     const nextPhase = PHASE_ORDER[targetIndex];
 
+    const updateData = {
+      status: nextPhase,
+      phaseStartedAt: new Date().toISOString(),
+      ...(nextPhase === "completed"
+        ? { endDate: new Date().toISOString() }
+        : {}),
+    };
+
     const updated = await strapi.entityService.update("api::round.round", id, {
-      data: { status: nextPhase, phaseStartedAt: new Date().toISOString() },
+      data: updateData,
     });
+
+    if (round.project?.id) {
+      const projectUpdate =
+        nextPhase === "completed"
+          ? { status: "beschlossen" }
+          : nextPhase === "voting"
+            ? { status: "active", currentRound: Number(id) }
+            : { status: "active" };
+
+      await strapi.entityService.update(
+        "api::project.project",
+        round.project.id,
+        { data: projectUpdate },
+      );
+    }
 
     try {
       await strapi.entityService.create("api::audit-log.audit-log", {

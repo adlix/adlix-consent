@@ -10,6 +10,17 @@ interface FieldErrors {
   description?: string
 }
 
+interface CircleRecord {
+  id: number
+  name: string
+}
+
+interface CreateProjectResponse {
+  project?: {
+    id?: number | string
+  }
+}
+
 export default function NewProjectPage() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -31,7 +42,7 @@ export default function NewProjectPage() {
     strapi
       .getCircles()
       .then((res) => {
-        setCircles((res.data as any[]).map((c: any) => ({ id: c.id, name: c.name })))
+        setCircles(((res.data as CircleRecord[]) || []).map((c) => ({ id: c.id, name: c.name })))
       })
       .catch(() => {})
   }, [jwt])
@@ -81,12 +92,12 @@ export default function NewProjectPage() {
         tension: tension.trim() || undefined,
         circle: selectedCircle || undefined,
       })
-      const projectData = (result.data as any).project
-      const id = projectData?.id
+      const projectData = (result.data as CreateProjectResponse).project
+      const id = projectData?.id ?? null
       if (id) {
         setCreatedId(id)
       } else {
-        setCreatedId('mock-1')
+        throw new Error('Projekt wurde erstellt, aber ohne gueltige ID zurueckgegeben.')
       }
     } catch {
       setNetworkError(

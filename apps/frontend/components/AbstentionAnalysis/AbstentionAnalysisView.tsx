@@ -31,10 +31,7 @@ interface AbstentionAnalysisViewProps {
   isOwner: boolean
 }
 
-const REASON_CONFIG: Record<
-  string,
-  { label: string; icon: string; color: string; bg: string }
-> = {
+const REASON_CONFIG: Record<string, { label: string; icon: string; color: string; bg: string }> = {
   A: { label: 'Nicht betroffen', icon: '🤷', color: 'text-gray-600', bg: 'bg-gray-100' },
   B: { label: 'Mehr Infos nötig', icon: '📚', color: 'text-blue-700', bg: 'bg-blue-100' },
   C: { label: 'Unklar', icon: '🤔', color: 'text-amber-700', bg: 'bg-amber-100' },
@@ -62,36 +59,25 @@ export default function AbstentionAnalysisView({
 
       const apiData = result as unknown as {
         data?: {
-          total?: number
-          clusters?: Array<{
-            reasonCodes: string[]
-            label: string
-            description: string
-          }>
+          roundId: number
+          totalAbstentions: number
+          reasonCounts: ReasonCounts
+          thematicGroups: ThematicGroup
           recommendations?: string[]
         }
       }
+      const payload = apiData.data
 
-      const reasonCounts: ReasonCounts = { A: 0, B: 0, C: 0, D: 0, E: 0 }
-      const thematicGroups: ThematicGroup = {}
-
-      if (apiData.data?.clusters) {
-        apiData.data.clusters.forEach((cluster) => {
-          cluster.reasonCodes.forEach((code) => {
-            if (code in reasonCounts) {
-              reasonCounts[code as keyof ReasonCounts]++
-            }
-          })
-          thematicGroups[cluster.label] = [cluster.description]
-        })
+      if (!payload) {
+        throw new Error('Keine Analyse-Daten erhalten.')
       }
 
       setData({
-        roundId,
-        totalAbstentions: apiData.data?.total ?? abstentionCount,
-        reasonCounts,
-        thematicGroups,
-        recommendations: apiData.data?.recommendations ?? [],
+        roundId: payload.roundId,
+        totalAbstentions: payload.totalAbstentions,
+        reasonCounts: payload.reasonCounts,
+        thematicGroups: payload.thematicGroups,
+        recommendations: payload.recommendations ?? [],
         analysedAt: new Date().toLocaleString('de-DE'),
       })
     } catch (err) {
@@ -169,9 +155,7 @@ export default function AbstentionAnalysisView({
           {/* Header stats */}
           <div className="grid grid-cols-3 gap-3">
             <div className="bg-white rounded-lg p-3 border border-indigo-100 text-center">
-              <div className="text-2xl font-black text-indigo-700">
-                {data.totalAbstentions}
-              </div>
+              <div className="text-2xl font-black text-indigo-700">{data.totalAbstentions}</div>
               <div className="text-xs text-indigo-500 mt-0.5">Enthaltungen</div>
             </div>
             <div className="bg-white rounded-lg p-3 border border-indigo-100 text-center">
@@ -233,8 +217,7 @@ export default function AbstentionAnalysisView({
                 })}
               </div>
               <p className="text-xs text-indigo-400 mt-2">
-                Grund D und E sind Signale — kein Blocker,
-                aber beachtenswert.
+                Grund D und E sind Signale — kein Blocker, aber beachtenswert.
               </p>
             </div>
           )}
@@ -242,9 +225,7 @@ export default function AbstentionAnalysisView({
           {/* Thematic clusters */}
           {Object.keys(data.thematicGroups).length > 0 && (
             <div>
-              <h5 className="text-sm font-semibold text-indigo-900 mb-3">
-                🔍 Thematische Cluster
-              </h5>
+              <h5 className="text-sm font-semibold text-indigo-900 mb-3">🔍 Thematische Cluster</h5>
               <div className="space-y-2">
                 {Object.entries(data.thematicGroups).map(([theme, descriptions], idx) => (
                   <div key={idx} className="bg-white rounded-lg p-3 border border-indigo-100">

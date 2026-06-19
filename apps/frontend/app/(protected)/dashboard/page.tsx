@@ -39,6 +39,29 @@ interface Activity {
   timestamp: string
 }
 
+interface SessionUser {
+  id?: number
+}
+
+interface CircleRecord {
+  id: number
+  name: string
+  updatedAt?: string
+  owner?: { id?: number }
+  circleMembers?: unknown[]
+}
+
+interface ProjectRecord {
+  id: number
+  name: string
+  status: string
+  createdAt?: string
+  updatedAt?: string
+  evaluationDate?: string
+  circle?: { name?: string }
+  currentRound?: { status?: string }
+}
+
 function formatRelativeTime(isoString: string): string {
   const ms = Date.now() - new Date(isoString).getTime()
   const minutes = Math.floor(ms / 60000)
@@ -66,6 +89,7 @@ const phaseLabels: Record<string, string> = {
 export default function DashboardPage() {
   const { data: session } = useSession()
   const jwt = (session as unknown as { jwt?: string })?.jwt
+  const currentUserId = (session?.user as SessionUser | undefined)?.id
   const [circles, setCircles] = useState<Circle[]>([])
   const [proposals, setProposals] = useState<Proposal[]>([])
   const [activities, setActivities] = useState<Activity[]>([])
@@ -86,25 +110,25 @@ export default function DashboardPage() {
       }),
     ])
       .then(([circlesRes, projectsRes]) => {
-        const circlesData = (circlesRes.data as any[]) || []
+        const circlesData = (circlesRes.data as CircleRecord[]) || []
         // Auto-show onboarding for fresh accounts with no circles
         if (circlesData.length === 0) {
           setShowOnboarding(true)
         }
         setCircles(
-          circlesData.map((c: any) => ({
+          circlesData.map((c) => ({
             id: c.id,
             name: c.name,
             memberCount: (c.circleMembers || []).length,
-            role: c.owner?.id === (session?.user as any)?.id ? 'admin' : 'member',
+            role: c.owner?.id === currentUserId ? 'admin' : 'member',
             lastActivity: c.updatedAt ? formatRelativeTime(c.updatedAt) : '—',
           }))
         )
 
-        const projectsData = (projectsRes.data as any[]) || []
+        const projectsData = (projectsRes.data as ProjectRecord[]) || []
         const mapped: Proposal[] = projectsData
-          .filter((p: any) => p.status === 'active' || p.currentRound || p.evaluationDate)
-          .map((p: any) => ({
+          .filter((p) => p.status === 'active' || p.currentRound || p.evaluationDate)
+          .map((p) => ({
             id: p.id,
             title: p.name,
             circleName: p.circle?.name || 'Kein Kreis',
@@ -116,17 +140,17 @@ export default function DashboardPage() {
         setProposals(mapped)
 
         // Activities: recent projects as activities
-        const acts: Activity[] = projectsData.slice(0, 5).map((p: any) => ({
+        const acts: Activity[] = projectsData.slice(0, 5).map((p) => ({
           id: p.id,
           type: 'proposal' as const,
           message: `Vorhaben „${p.name}“ ${p.status === 'beschlossen' ? '→ Beschlossen ✅' : 'aktiv'}`,
-          timestamp: formatRelativeTime(p.createdAt || p.updatedAt),
+          timestamp: formatRelativeTime(p.createdAt || p.updatedAt || new Date().toISOString()),
         }))
         setActivities(acts)
       })
       .catch(() => {})
       .finally(() => setLoading(false))
-  }, [jwt])
+  }, [currentUserId, jwt])
 
   if (loading) {
     return (
@@ -188,7 +212,7 @@ export default function DashboardPage() {
                 <h2 id="circles-heading" className="text-lg font-semibold">
                   Meine Kreise
                 </h2>
-                <Link href="/circles/new" className="text-sm text-primary hover:underline">
+                <Link href="/circles" className="text-sm text-primary hover:underline">
                   + Kreis erstellen
                 </Link>
               </div>
@@ -365,7 +389,7 @@ export default function DashboardPage() {
                 <ul className="space-y-3 list-none">
                   <li>
                     <Link
-                      href="/circles/new"
+                      href="/circles"
                       className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-primary transition-colors"
                     >
                       <span className="text-xl" aria-hidden="true">
