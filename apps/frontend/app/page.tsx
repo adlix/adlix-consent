@@ -907,6 +907,58 @@ export default function HomePage() {
                 Das stille Fundament — sichtbar in jedem Einwand, der gehört wird.
               </p>
             </div>
+
+            {/* What surprises teams — Real-world consent insights */}
+            <div className="mt-10 bg-white/5 rounded-2xl border border-white/10 p-8">
+              <h3 className="text-white font-bold text-xl mb-2 text-center">
+                💬 Was Teams überrascht, wenn sie Consent zum ersten Mal nutzen
+              </h3>
+              <p className="text-slate-400 text-sm text-center mb-8 max-w-xl mx-auto">
+                Die ersten Erfahrungen weichen oft von den Erwartungen ab — im besten Sinne.
+              </p>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {[
+                  {
+                    icon: '🧩',
+                    surprise: '„Ich dachte, Consent ist langsamer — aber es ist schneller."',
+                    reason: 'Weil Einwände früh integriert werden, nicht in endlosen Retrospektiven nachbehandelt.',
+                  },
+                  {
+                    icon: '🤫',
+                    surprise: '„Die stillen Stimmen im Team trauen sich plötzlich was zu sagen."',
+                    reason: 'Der strukturierte Prozess nimmt den Druck raus. Kein Schlagwort-Wettbewerb.',
+                  },
+                  {
+                    icon: '🔍',
+                    surprise: '„Wir haben Bedenken entdeckt, von denen wir nichts wussten."',
+                    reason: 'Consent schafft den sicheren Raum, Bedenken zu äußern — auch die unangenehmen.',
+                  },
+                  {
+                    icon: '📝',
+                    surprise: '„Die Dokumentation ist besser als jedes Protokoll."',
+                    reason: 'Audit-Trail, Begründungen, Einwände — alles automatisch festgehalten.',
+                  },
+                  {
+                    icon: '⚡',
+                    surprise: '„Wir haben mehr entschieden, nicht weniger diskutiert."',
+                    reason: 'Consent strukturiert die Diskussion, kanalisiert sie. Kein Chaos, aber mehr Substanz.',
+                  },
+                  {
+                    icon: '🫂',
+                    surprise: '„Das Team fühlt sich wertgeschätzt — nicht nur beteiligt."',
+                    reason: 'Jede Stimme zählt. Jeder Einwand wird gehört. Das verändert die Teamkultur.',
+                  },
+                ].map(({ icon, surprise, reason }) => (
+                  <div key={surprise} className="bg-white/8 rounded-xl p-4 border border-white/10 flex gap-3">
+                    <span className="text-2xl shrink-0">{icon}</span>
+                    <div>
+                      <p className="text-slate-200 text-sm font-medium italic">"{surprise}"</p>
+                      <p className="text-slate-400 text-xs mt-1 leading-relaxed">{reason}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 

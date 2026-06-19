@@ -310,23 +310,35 @@ function VoteResults({ votes, participantCount }: { votes: Vote[]; participantCo
 
       {/* Bar per choice */}
       <div className="space-y-2 mb-4">
-        {CHOICES.map(({ key, emoji, label, colorButton }) => {
-          const count = countFor(key)
-          const pct = participantCount > 0 ? (count / participantCount) * 100 : 0
+        {(() => {
+          const remaining = Math.max(0, participantCount - total)
           return (
-            <div key={key} className="flex items-center gap-3 text-sm">
-              <span className="text-base w-6 shrink-0 text-center">{emoji}</span>
-              <div className="flex-1 bg-gray-100 rounded-full h-2 overflow-hidden">
-                <div
-                  className={`h-full rounded-full transition-all duration-500 ${colorButton.split(' ')[0]}`}
-                  style={{ width: `${pct}%` }}
-                />
-              </div>
-              <span className="w-4 text-right text-gray-600 font-medium shrink-0">{count}</span>
-              <span className="text-gray-400 text-xs w-16 shrink-0">{label}</span>
-            </div>
+            <>
+              {CHOICES.map(({ key, emoji, label, colorButton }) => {
+                const count = countFor(key)
+                const pct = total > 0 ? (count / total) * 100 : 0
+                return (
+                  <div key={key} className="flex items-center gap-3 text-sm">
+                    <span className="text-base w-6 shrink-0 text-center">{emoji}</span>
+                    <div className="flex-1 bg-gray-100 rounded-full h-2 overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all duration-500 ${colorButton.split(' ')[0]}`}
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                    <span className="w-4 text-right text-gray-600 font-medium shrink-0">{count}</span>
+                    <span className="text-gray-400 text-xs w-16 shrink-0">{label}</span>
+                  </div>
+                )
+              })}
+              {remaining > 0 && (
+                <p className="text-xs text-gray-400 mt-1 text-center">
+                  ⏳ {remaining} {remaining === 1 ? 'Stimme' : 'Stimmen'} ausstehend
+                </p>
+              )}
+            </>
           )
-        })}
+        })()}
       </div>
 
       {/* Individual votes with reasons */}
