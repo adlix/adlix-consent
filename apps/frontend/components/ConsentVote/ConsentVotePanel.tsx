@@ -137,20 +137,23 @@ export default function ConsentVotePanel({
   // --- Already voted state ---
   if (userHasVoted) {
     const myVote = currentUserId ? votes.find((v) => v.user?.id === currentUserId) : undefined
+    const myChoice = CHOICES.find((c) => c.key === myVote?.choice)
     return (
-      <div className="space-y-4">
-        <div className="flex items-center gap-3 p-4 rounded-xl bg-emerald-50 border border-emerald-200">
-          <span className="text-2xl">✅</span>
-          <div>
-            <p className="font-medium text-emerald-800 text-sm">Du hast abgestimmt.</p>
+      <div className="space-y-3">
+        <div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-50 border border-emerald-200">
+          <span className="text-2xl">{myChoice?.emoji ?? '✅'}</span>
+          <div className="flex-1 min-w-0">
+            <p className="font-medium text-emerald-800 text-sm">
+              {myChoice?.label ?? 'Abgestimmt'}
+            </p>
             {myVote?.reason && (
-              <p className="text-xs text-emerald-600 mt-0.5">Begründung: {myVote.reason}</p>
+              <p className="text-xs text-emerald-600 mt-0.5 truncate">{myVote.reason}</p>
             )}
           </div>
           {onChangeVote && (
             <button
               onClick={onChangeVote}
-              className="ml-auto text-xs text-emerald-700 underline hover:text-emerald-900 shrink-0"
+              className="text-xs text-emerald-700 underline hover:text-emerald-900 shrink-0"
             >
               Ändern
             </button>
@@ -298,66 +301,87 @@ export default function ConsentVotePanel({
 function VoteResults({ votes, participantCount }: { votes: Vote[]; participantCount: number }) {
   const countFor = (c: ConsentChoice) => votes.filter((v) => v.choice === c).length
   const total = votes.length
+  const remaining = Math.max(0, participantCount - total)
+
+  // Summary pills — compact for mobile
+  const hasVotes = total > 0
 
   return (
-    <div className="pt-4 border-t border-gray-100">
-      <div className="flex items-center justify-between mb-3">
-        <h4 className="text-sm font-semibold text-gray-700">Bisherige Stimmen</h4>
-        <span className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded-full">
-          {total} / {participantCount}
+    <div className="pt-3 border-t border-gray-100">
+      <div className="flex items-center justify-between mb-2">
+        <h4 className="text-xs font-semibold text-gray-500">Bisherige Stimmen</h4>
+        <span className="text-xs font-medium text-gray-600 bg-gray-100 px-2 py-0.5 rounded-full">
+          {total}/{participantCount}
         </span>
       </div>
 
-      {/* Bar per choice */}
-      <div className="space-y-2 mb-4">
-        {(() => {
-          const remaining = Math.max(0, participantCount - total)
+      {/* Summary pills — compact mobile-first */}
+      {hasVotes && (
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {CHOICES.filter(({ key }) => countFor(key) > 0).map(({ key, emoji, colorBadge }) => (
+            <span
+              key={key}
+              className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${colorBadge}`}
+            >
+              <span>{emoji}</span>
+              <span>{countFor(key)}</span>
+            </span>
+          ))}
+          {remaining > 0 && (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500">
+              ⏳ {remaining}
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* Full bar chart — desktop */}
+      <div className="hidden sm:block space-y-1.5">
+        {CHOICES.map(({ key, emoji, label, colorBg }) => {
+          const count = countFor(key)
+          const pct = total > 0 ? (count / total) * 100 : 0
+          if (count === 0 && pct === 0) return null
           return (
-            <>
-              {CHOICES.map(({ key, emoji, label, colorButton }) => {
-                const count = countFor(key)
-                const pct = total > 0 ? (count / total) * 100 : 0
+            <div key={key} className="flex items-center gap-2 text-xs">
+              <span className="text-base w-5 shrink-0 text-center">{emoji}</span>
+              <div className="flex-1 bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                {pct > 0 && (
+                  <div
+                    className={`h-full rounded-full transition-all duration-500 ${colorBg}`}
+                    style={{ width: `${pct}%` }}
+                  />
+                )}
+              </div>
+              <span className="w-4 text-right text-gray-600 font-medium shrink-0">{count}</span>
+              <span className="text-gray-400 text-xs shrink-0 hidden md:block">{label}</span>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Individual vote reasons — collapsed by default on mobile */}
+      {votes.filter((v) => v.reason).length > 0 && (
+        <details className="mt-2">
+          <summary className="text-xs text-gray-400 cursor-pointer hover:text-gray-600">
+            {votes.filter((v) => v.reason).length} Begründungen anzeigen
+          </summary>
+          <div className="mt-2 space-y-1.5">
+            {votes
+              .filter((v) => v.reason)
+              .map((v) => {
+                const c = CHOICES.find((ch) => ch.key === v.choice)
                 return (
-                  <div key={key} className="flex items-center gap-3 text-sm">
-                    <span className="text-base w-6 shrink-0 text-center">{emoji}</span>
-                    <div className="flex-1 bg-gray-100 rounded-full h-2 overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all duration-500 ${colorButton.split(' ')[0]}`}
-                        style={{ width: `${pct}%` }}
-                      />
-                    </div>
-                    <span className="w-4 text-right text-gray-600 font-medium shrink-0">{count}</span>
-                    <span className="text-gray-400 text-xs w-16 shrink-0">{label}</span>
+                  <div key={v.id} className="flex items-start gap-2 text-xs">
+                    <span>{c?.emoji}</span>
+                    <span className="font-medium text-gray-600 shrink-0">
+                      {v.user?.username || 'Anonym'}
+                    </span>
+                    <span className="text-gray-500 truncate">{v.reason}</span>
                   </div>
                 )
               })}
-              {remaining > 0 && (
-                <p className="text-xs text-gray-400 mt-1 text-center">
-                  ⏳ {remaining} {remaining === 1 ? 'Stimme' : 'Stimmen'} ausstehend
-                </p>
-              )}
-            </>
-          )
-        })()}
-      </div>
-
-      {/* Individual votes with reasons */}
-      {votes.filter((v) => v.reason).length > 0 && (
-        <div className="space-y-1.5">
-          <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">Begründungen</p>
-          {votes
-            .filter((v) => v.reason)
-            .map((v) => {
-              const c = CHOICES.find((ch) => ch.key === v.choice)
-              return (
-                <div key={v.id} className="flex items-start gap-2 text-xs">
-                  <span>{c?.emoji}</span>
-                  <span className="font-medium text-gray-600">{v.user?.username || 'Anonym'}:</span>
-                  <span className="text-gray-500">{v.reason}</span>
-                </div>
-              )
-            })}
-        </div>
+          </div>
+        </details>
       )}
     </div>
   )

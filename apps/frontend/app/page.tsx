@@ -247,10 +247,7 @@ export default function HomePage() {
                 </Link>
               </li>
               <li className="hidden sm:block">
-                <Link
-                  href="#circle-heading"
-                  className="text-gray-600 hover:text-gray-900 text-sm"
-                >
+                <Link href="#circle-heading" className="text-gray-600 hover:text-gray-900 text-sm">
                   Kreis
                 </Link>
               </li>
@@ -429,7 +426,10 @@ export default function HomePage() {
         </section>
 
         {/* Wann Consent? Decision Guide */}
-        <section className="py-16 bg-white border-t border-gray-100" aria-labelledby="wann-consent-heading">
+        <section
+          className="py-16 bg-white border-t border-gray-100"
+          aria-labelledby="wann-consent-heading"
+        >
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-sm font-medium mb-4">
@@ -439,7 +439,8 @@ export default function HomePage() {
                 Wann nutze ich Consent?
               </h2>
               <p className="text-gray-500 max-w-xl mx-auto">
-                Consent ist mächtig, aber nicht für jede Entscheidung nötig. Hier die klare Faustregel:
+                Consent ist mächtig, aber nicht für jede Entscheidung nötig. Hier die klare
+                Faustregel:
               </p>
             </div>
 
@@ -450,7 +451,8 @@ export default function HomePage() {
                   <h3 className="font-bold text-emerald-800 text-lg">Consent nutzen</h3>
                 </div>
                 <p className="text-sm text-emerald-700 mb-4">
-                  Wenn die Entscheidung das Team oder den Kreis wirklich betrifft und Konsequenzen hat.
+                  Wenn die Entscheidung das Team oder den Kreis wirklich betrifft und Konsequenzen
+                  hat.
                 </p>
                 <ul className="space-y-2">
                   {[
@@ -499,23 +501,39 @@ export default function HomePage() {
 
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 p-6 text-center">
               <p className="text-lg font-medium text-gray-800 mb-2">
-                „Wenn die Entscheidung Konsequenzen hat und/oder jemand widersprechen könnte — Consent nutzen."
+                „Wenn die Entscheidung Konsequenzen hat und/oder jemand widersprechen könnte —
+                Consent nutzen.&rdquo;
               </p>
               <p className="text-sm text-gray-500">
-                Faustregel: Lieber einmal zu viel Consent als einmal zu wenig. Der Prozess ist schnell — und schafft Klarheit.
+                Faustregel: Lieber einmal zu viel Consent als einmal zu wenig. Der Prozess ist
+                schnell — und schafft Klarheit.
               </p>
             </div>
 
             <div className="mt-8 bg-white rounded-2xl border border-gray-200 p-6">
-              <h3 className="font-bold text-gray-900 mb-4 text-center">
-                Consent je Teamgröße
-              </h3>
+              <h3 className="font-bold text-gray-900 mb-4 text-center">Consent je Teamgröße</h3>
               <div className="grid sm:grid-cols-4 gap-4">
                 {[
-                  { size: '2–5', label: 'Intim', desc: 'Kurze Runden, alle beteiligt — Consent als Workshop-Format.' },
-                  { size: '6–12', label: 'Ideal', desc: 'Volle Kraft — der Consent-Prozess entfaltet sein Potenzial.' },
-                  { size: '13–30', label: 'Delegiert', desc: 'Kreise mit Vertretern. Entscheidungen auf übergeordneter Ebene.' },
-                  { size: '30+', label: 'Multi-Stack', desc: 'Mehrere Ebenen: Kreis → Tribe → Allianz. Jede Ebene mit eigenem Tempo.' },
+                  {
+                    size: '2–5',
+                    label: 'Intim',
+                    desc: 'Kurze Runden, alle beteiligt — Consent als Workshop-Format.',
+                  },
+                  {
+                    size: '6–12',
+                    label: 'Ideal',
+                    desc: 'Volle Kraft — der Consent-Prozess entfaltet sein Potenzial.',
+                  },
+                  {
+                    size: '13–30',
+                    label: 'Delegiert',
+                    desc: 'Kreise mit Vertretern. Entscheidungen auf übergeordneter Ebene.',
+                  },
+                  {
+                    size: '30+',
+                    label: 'Multi-Stack',
+                    desc: 'Mehrere Ebenen: Kreis → Tribe → Allianz. Jede Ebene mit eigenem Tempo.',
+                  },
                 ].map(({ size, label, desc }) => (
                   <div key={size} className="rounded-xl border border-gray-100 p-4 text-center">
                     <div className="text-2xl mb-2">🫂</div>
@@ -646,8 +664,8 @@ export default function HomePage() {
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto text-lg">
                 Ein Kreis ist die Grundeinheit in adlix consent. Anders als Teams oder Abteilungen
-                gibt es im Kreis keine Hierarchie — jeder Platz ist gleichwertig. Der Kreis ist
-                das Fundament für Consent-Entscheidungen.
+                gibt es im Kreis keine Hierarchie — jeder Platz ist gleichwertig. Der Kreis ist das
+                Fundament für Consent-Entscheidungen.
               </p>
             </div>
 
@@ -662,14 +680,18 @@ export default function HomePage() {
                     </div>
                   </div>
                   {[
-                    { top: "8%", left: "50%", label: "Lea" },
-                    { top: "28%", left: "90%", label: "Marco" },
-                    { top: "72%", left: "90%", label: "Anna" },
-                    { top: "92%", left: "50%", label: "Tom" },
-                    { top: "72%", left: "10%", label: "Sarah" },
-                    { top: "28%", left: "10%", label: "Jan" },
+                    { top: '8%', left: '50%', label: 'Lea' },
+                    { top: '28%', left: '90%', label: 'Marco' },
+                    { top: '72%', left: '90%', label: 'Anna' },
+                    { top: '92%', left: '50%', label: 'Tom' },
+                    { top: '72%', left: '10%', label: 'Sarah' },
+                    { top: '28%', left: '10%', label: 'Jan' },
                   ].map(({ top, left, label }) => (
-                    <div key={label} className="absolute" style={{ top, left, transform: "translate(-50%, -50%)" }}>
+                    <div
+                      key={label}
+                      className="absolute"
+                      style={{ top, left, transform: 'translate(-50%, -50%)' }}
+                    >
                       <div className="w-10 h-10 rounded-full bg-blue-500 border-2 border-white flex items-center justify-center shadow-md">
                         <span className="text-white text-xs font-bold">{label[0]}</span>
                       </div>
@@ -687,23 +709,28 @@ export default function HomePage() {
               <div className="md:col-span-2 space-y-6">
                 {[
                   {
-                    icon: "🔄",
-                    title: "Gleichwertige Plätze",
-                    text: "Im Kreis hat jede Person den gleichen Stellenwert. Es gibt keine Chefs — alle tragen gemeinsam Verantwortung. Wer einen Einwand hat, wird gehört — nicht überstimmt.",
+                    icon: '🔄',
+                    title: 'Gleichwertige Plätze',
+                    text: 'Im Kreis hat jede Person den gleichen Stellenwert. Es gibt keine Chefs — alle tragen gemeinsam Verantwortung. Wer einen Einwand hat, wird gehört — nicht überstimmt.',
                   },
                   {
-                    icon: "🎯",
-                    title: "Klare Zugehörigkeit",
-                    text: "Ein Kreis hat einen klaren Auftrag: Was ist die gemeinsame Aufgabe? Wer ist betroffen? So wird sichergestellt, dass genau die richtigen Menschen an der richtigen Entscheidung beteiligt sind.",
+                    icon: '🎯',
+                    title: 'Klare Zugehörigkeit',
+                    text: 'Ein Kreis hat einen klaren Auftrag: Was ist die gemeinsame Aufgabe? Wer ist betroffen? So wird sichergestellt, dass genau die richtigen Menschen an der richtigen Entscheidung beteiligt sind.',
                   },
                   {
-                    icon: "🔗",
-                    title: "Verbindung zu anderen Kreisen",
-                    text: "Kreise sind nicht isoliert — sie verbinden sich über gemeinsame Vorhaben. Ein Vorhaben kann mehrere Kreise betreffen. Consent stellt sicher, dass alle Betroffenen gehört werden.",
+                    icon: '🔗',
+                    title: 'Verbindung zu anderen Kreisen',
+                    text: 'Kreise sind nicht isoliert — sie verbinden sich über gemeinsame Vorhaben. Ein Vorhaben kann mehrere Kreise betreffen. Consent stellt sicher, dass alle Betroffenen gehört werden.',
                   },
                 ].map(({ icon, title, text }) => (
-                  <div key={title} className="flex items-start gap-4 bg-gray-50 rounded-xl p-5 border border-gray-100">
-                    <div className="text-2xl shrink-0 mt-0.5" aria-hidden="true">{icon}</div>
+                  <div
+                    key={title}
+                    className="flex items-start gap-4 bg-gray-50 rounded-xl p-5 border border-gray-100"
+                  >
+                    <div className="text-2xl shrink-0 mt-0.5" aria-hidden="true">
+                      {icon}
+                    </div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1">{title}</h3>
                       <p className="text-gray-600 text-sm leading-relaxed">{text}</p>
@@ -724,10 +751,22 @@ export default function HomePage() {
                     <span className="font-medium">Team</span>
                   </div>
                   <ul className="space-y-2 text-sm text-gray-600">
-                    <li className="flex items-start gap-2"><span className="text-gray-400 mt-0.5">•</span> Hierarchie: Wer entscheidet, wenn Uneinigkeit besteht?</li>
-                    <li className="flex items-start gap-2"><span className="text-gray-400 mt-0.5">•</span> Stille Stimmen gehen oft verloren</li>
-                    <li className="flex items-start gap-2"><span className="text-gray-400 mt-0.5">•</span> Entscheidungen werden getroffen — aber nicht getragen</li>
-                    <li className="flex items-start gap-2"><span className="text-gray-400 mt-0.5">•</span> Bedenken werden in Retrospektiven nachbehandelt</li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-gray-400 mt-0.5">•</span> Hierarchie: Wer entscheidet,
+                      wenn Uneinigkeit besteht?
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-gray-400 mt-0.5">•</span> Stille Stimmen gehen oft
+                      verloren
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-gray-400 mt-0.5">•</span> Entscheidungen werden
+                      getroffen — aber nicht getragen
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-gray-400 mt-0.5">•</span> Bedenken werden in
+                      Retrospektiven nachbehandelt
+                    </li>
                   </ul>
                 </div>
                 <div className="space-y-3">
@@ -736,10 +775,22 @@ export default function HomePage() {
                     <span className="font-medium">Kreis</span>
                   </div>
                   <ul className="space-y-2 text-sm text-gray-700">
-                    <li className="flex items-start gap-2"><span className="text-emerald-400 mt-0.5">•</span> Gleichwertige Plätze — niemand steht über anderen</li>
-                    <li className="flex items-start gap-2"><span className="text-emerald-400 mt-0.5">•</span> Jeder hat das explizite Recht auf einen Einwand</li>
-                    <li className="flex items-start gap-2"><span className="text-emerald-400 mt-0.5">•</span> Entscheidungen werden getragen — nicht nur getroffen</li>
-                    <li className="flex items-start gap-2"><span className="text-emerald-400 mt-0.5">•</span> Bedenken werden im Prozess integriert — nicht ignoriert</li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-400 mt-0.5">•</span> Gleichwertige Plätze —
+                      niemand steht über anderen
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-400 mt-0.5">•</span> Jeder hat das explizite
+                      Recht auf einen Einwand
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-400 mt-0.5">•</span> Entscheidungen werden
+                      getragen — nicht nur getroffen
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-400 mt-0.5">•</span> Bedenken werden im Prozess
+                      integriert — nicht ignoriert
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -876,10 +927,14 @@ export default function HomePage() {
                   </div>
                   <ul className="space-y-2 text-sm text-slate-400">
                     <li>• Sprint-Ziel per Mehrheitsabstimmung festgelegt</li>
-                    <li>• 2 Teammitglieder enthalten sich — „war nicht wichtig genug"</li>
+                    <li>
+                      • 2 Teammitglieder enthalten sich — &bdquo;war nicht wichtig genug&ldquo;
+                    </li>
                     <li>• 4 Wochen später: Vorhaben stockt, Stakeholder frustriert</li>
-                    <li>• Retro: „Hätten wir doch die Bedenken gehört..."</li>
-                    <li className="text-red-400 mt-2">→ Commitment: ~45%. Umsetzung: schleppend.</li>
+                    <li>• Retro: &bdquo;Hätten wir doch die Bedenken gehört...&ldquo;</li>
+                    <li className="text-red-400 mt-2">
+                      → Commitment: ~45%. Umsetzung: schleppend.
+                    </li>
                   </ul>
                 </div>
                 <div className="bg-emerald-500/10 rounded-xl p-5 border border-emerald-500/20">
@@ -892,7 +947,9 @@ export default function HomePage() {
                     <li>• 1 schwerwiegender Einwand — direkt integriert</li>
                     <li>• 4 Wochen später: Vorhaben umgesetzt, Team trägt es mit</li>
                     <li>• Evaluationsdatum gesetzt — bei Bedarf Anpassung</li>
-                    <li className="text-emerald-400 mt-2">→ Commitment: 100%. Kein Einwand offen.</li>
+                    <li className="text-emerald-400 mt-2">
+                      → Commitment: 100%. Kein Einwand offen.
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -921,17 +978,20 @@ export default function HomePage() {
                   {
                     icon: '🧩',
                     surprise: '„Ich dachte, Consent ist langsamer — aber es ist schneller."',
-                    reason: 'Weil Einwände früh integriert werden, nicht in endlosen Retrospektiven nachbehandelt.',
+                    reason:
+                      'Weil Einwände früh integriert werden, nicht in endlosen Retrospektiven nachbehandelt.',
                   },
                   {
                     icon: '🤫',
                     surprise: '„Die stillen Stimmen im Team trauen sich plötzlich was zu sagen."',
-                    reason: 'Der strukturierte Prozess nimmt den Druck raus. Kein Schlagwort-Wettbewerb.',
+                    reason:
+                      'Der strukturierte Prozess nimmt den Druck raus. Kein Schlagwort-Wettbewerb.',
                   },
                   {
                     icon: '🔍',
                     surprise: '„Wir haben Bedenken entdeckt, von denen wir nichts wussten."',
-                    reason: 'Consent schafft den sicheren Raum, Bedenken zu äußern — auch die unangenehmen.',
+                    reason:
+                      'Consent schafft den sicheren Raum, Bedenken zu äußern — auch die unangenehmen.',
                   },
                   {
                     icon: '📝',
@@ -941,18 +1001,25 @@ export default function HomePage() {
                   {
                     icon: '⚡',
                     surprise: '„Wir haben mehr entschieden, nicht weniger diskutiert."',
-                    reason: 'Consent strukturiert die Diskussion, kanalisiert sie. Kein Chaos, aber mehr Substanz.',
+                    reason:
+                      'Consent strukturiert die Diskussion, kanalisiert sie. Kein Chaos, aber mehr Substanz.',
                   },
                   {
                     icon: '🫂',
                     surprise: '„Das Team fühlt sich wertgeschätzt — nicht nur beteiligt."',
-                    reason: 'Jede Stimme zählt. Jeder Einwand wird gehört. Das verändert die Teamkultur.',
+                    reason:
+                      'Jede Stimme zählt. Jeder Einwand wird gehört. Das verändert die Teamkultur.',
                   },
                 ].map(({ icon, surprise, reason }) => (
-                  <div key={surprise} className="bg-white/8 rounded-xl p-4 border border-white/10 flex gap-3">
+                  <div
+                    key={surprise}
+                    className="bg-white/8 rounded-xl p-4 border border-white/10 flex gap-3"
+                  >
                     <span className="text-2xl shrink-0">{icon}</span>
                     <div>
-                      <p className="text-slate-200 text-sm font-medium italic">"{surprise}"</p>
+                      <p className="text-slate-200 text-sm font-medium italic">
+                        &ldquo;{surprise}&rdquo;
+                      </p>
                       <p className="text-slate-400 text-xs mt-1 leading-relaxed">{reason}</p>
                     </div>
                   </div>
@@ -963,7 +1030,10 @@ export default function HomePage() {
         </section>
 
         {/* 5 Consent-Momente im Teamalltag */}
-        <section className="py-20 bg-white border-t border-gray-100" aria-labelledby="moments-heading">
+        <section
+          className="py-20 bg-white border-t border-gray-100"
+          aria-labelledby="moments-heading"
+        >
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-sm font-medium mb-6">
@@ -973,8 +1043,8 @@ export default function HomePage() {
                 5 Consent-Momente, die Teams verändern
               </h2>
               <p className="text-gray-500 max-w-2xl mx-auto text-lg">
-                Consent ist kein Ersatz für gute Kommunikation — aber es strukturiert sie. Diese fünf
-                Situationen kennt jedes Team. So geht Consent damit um.
+                Consent ist kein Ersatz für gute Kommunikation — aber es strukturiert sie. Diese
+                fünf Situationen kennt jedes Team. So geht Consent damit um.
               </p>
             </div>
 
@@ -983,7 +1053,9 @@ export default function HomePage() {
               <article className="rounded-2xl border border-gray-200 bg-white overflow-hidden hover:shadow-md transition-shadow">
                 <div className="flex flex-col sm:flex-row">
                   <div className="sm:w-80 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 flex flex-col justify-center shrink-0">
-                    <div className="text-4xl mb-3" aria-hidden="true">📋</div>
+                    <div className="text-4xl mb-3" aria-hidden="true">
+                      📋
+                    </div>
                     <h3 className="font-bold text-gray-900 text-lg mb-1">
                       Der Sprint wird nicht fertig
                     </h3>
@@ -996,7 +1068,9 @@ export default function HomePage() {
                       <div className="flex items-start gap-3">
                         <span className="text-red-400 text-lg shrink-0 mt-0.5">❌</span>
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-1">Ohne Consent</p>
+                          <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-1">
+                            Ohne Consent
+                          </p>
                           <p className="text-sm text-gray-600">
                             PO legt Sprint-Ziel unilateral fest. Team nickt ab. 2 Wochen später:
                             Scope nicht geschafft. Retrospektive voller Frust.
@@ -1007,11 +1081,13 @@ export default function HomePage() {
                       <div className="flex items-start gap-3">
                         <span className="text-emerald-500 text-lg shrink-0 mt-0.5">✅</span>
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-1">Mit Consent</p>
+                          <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-1">
+                            Mit Consent
+                          </p>
                           <p className="text-sm text-gray-700">
-                            Team reicht Sprint-Ziel als Vorhaben ein. Ein Mitglied hat
-                            Bedenken: Scope zu groß. Bedenken wird integriert, Scope angepasst.
-                            Sprint-Ziel wird mit 100% Commitment getragen.
+                            Team reicht Sprint-Ziel als Vorhaben ein. Ein Mitglied hat Bedenken:
+                            Scope zu groß. Bedenken wird integriert, Scope angepasst. Sprint-Ziel
+                            wird mit 100% Commitment getragen.
                           </p>
                         </div>
                       </div>
@@ -1024,12 +1100,15 @@ export default function HomePage() {
               <article className="rounded-2xl border border-gray-200 bg-white overflow-hidden hover:shadow-md transition-shadow">
                 <div className="flex flex-col sm:flex-row">
                   <div className="sm:w-80 bg-gradient-to-br from-amber-50 to-orange-50 p-6 flex flex-col justify-center shrink-0">
-                    <div className="text-4xl mb-3" aria-hidden="true">🔄</div>
+                    <div className="text-4xl mb-3" aria-hidden="true">
+                      🔄
+                    </div>
                     <h3 className="font-bold text-gray-900 text-lg mb-1">
                       Niemand traut sich zu widersprechen
                     </h3>
                     <p className="text-gray-500 text-sm italic">
-                      Situation: Die dominanteste Stimme dominiert. Die stillen Bedenken bleiben unausgesprochen.
+                      Situation: Die dominanteste Stimme dominiert. Die stillen Bedenken bleiben
+                      unausgesprochen.
                     </p>
                   </div>
                   <div className="flex-1 p-6">
@@ -1037,11 +1116,13 @@ export default function HomePage() {
                       <div className="flex items-start gap-3">
                         <span className="text-red-400 text-lg shrink-0 mt-0.5">❌</span>
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-1">Ohne Consent</p>
+                          <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-1">
+                            Ohne Consent
+                          </p>
                           <p className="text-sm text-gray-600">
-                            Meeting endet mit scheinbarem Konsens. Die Entscheidung wird
-                            umgesetzt. Drei Wochen später: Das Projekt scheitert — weil die
-                            warnenden Stimmen im Raum nicht gehört wurden.
+                            Meeting endet mit scheinbarem Konsens. Die Entscheidung wird umgesetzt.
+                            Drei Wochen später: Das Projekt scheitert — weil die warnenden Stimmen
+                            im Raum nicht gehört wurden.
                           </p>
                         </div>
                       </div>
@@ -1049,10 +1130,12 @@ export default function HomePage() {
                       <div className="flex items-start gap-3">
                         <span className="text-emerald-500 text-lg shrink-0 mt-0.5">✅</span>
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-1">Mit Consent</p>
+                          <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-1">
+                            Mit Consent
+                          </p>
                           <p className="text-sm text-gray-700">
-                            Consent gibt jeder Person das explizite Recht auf Einwand.
-                            Nicht flüstern in der Kaffeeküche — sondern strukturiert, sichtbar,
+                            Consent gibt jeder Person das explizite Recht auf Einwand. Nicht
+                            flüstern in der Kaffeeküche — sondern strukturiert, sichtbar,
                             respektiert. Die stille Stimme bekommt einen Prozess.
                           </p>
                         </div>
@@ -1066,7 +1149,9 @@ export default function HomePage() {
               <article className="rounded-2xl border border-gray-200 bg-white overflow-hidden hover:shadow-md transition-shadow">
                 <div className="flex flex-col sm:flex-row">
                   <div className="sm:w-80 bg-gradient-to-br from-purple-50 to-pink-50 p-6 flex flex-col justify-center shrink-0">
-                    <div className="text-4xl mb-3" aria-hidden="true">🗓️</div>
+                    <div className="text-4xl mb-3" aria-hidden="true">
+                      🗓️
+                    </div>
                     <h3 className="font-bold text-gray-900 text-lg mb-1">
                       Enthaltungen ohne Kontext
                     </h3>
@@ -1079,10 +1164,12 @@ export default function HomePage() {
                       <div className="flex items-start gap-3">
                         <span className="text-red-400 text-lg shrink-0 mt-0.5">❌</span>
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-1">Ohne Consent</p>
+                          <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-1">
+                            Ohne Consent
+                          </p>
                           <p className="text-sm text-gray-600">
-                            Enthaltung gilt als „kein Problem". Wird akzeptiert, ohne Grund.
-                            Niemand weiß, ob dahinter ein ungelöstes Bedenken steckt.
+                            Enthaltung gilt als &bdquo;kein Problem&ldquo;. Wird akzeptiert, ohne
+                            Grund. Niemand weiß, ob dahinter ein ungelöstes Bedenken steckt.
                           </p>
                         </div>
                       </div>
@@ -1090,11 +1177,14 @@ export default function HomePage() {
                       <div className="flex items-start gap-3">
                         <span className="text-emerald-500 text-lg shrink-0 mt-0.5">✅</span>
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-1">Mit Consent</p>
+                          <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-1">
+                            Mit Consent
+                          </p>
                           <p className="text-sm text-gray-700">
-                            Enthaltung erfordert einen Grund. „Mehr Informationen nötig?" —
-                            Einreicher wird benachrichtigt und muss antworten. Anonyme Bedenken?
-                            Werden thematisch aggregiert. Kein Grund bleibt unsichtbar.
+                            Enthaltung erfordert einen Grund. &bdquo;Mehr Informationen
+                            nötig?&rdquo; — Einreicher wird benachrichtigt und muss antworten.
+                            Anonyme Bedenken? Werden thematisch aggregiert. Kein Grund bleibt
+                            unsichtbar.
                           </p>
                         </div>
                       </div>
@@ -1107,7 +1197,9 @@ export default function HomePage() {
               <article className="rounded-2xl border border-gray-200 bg-white overflow-hidden hover:shadow-md transition-shadow">
                 <div className="flex flex-col sm:flex-row">
                   <div className="sm:w-80 bg-gradient-to-br from-emerald-50 to-teal-50 p-6 flex flex-col justify-center shrink-0">
-                    <div className="text-4xl mb-3" aria-hidden="true">📞</div>
+                    <div className="text-4xl mb-3" aria-hidden="true">
+                      📞
+                    </div>
                     <h3 className="font-bold text-gray-900 text-lg mb-1">
                       Entscheidungen ohne die Betroffenen
                     </h3>
@@ -1120,7 +1212,9 @@ export default function HomePage() {
                       <div className="flex items-start gap-3">
                         <span className="text-red-400 text-lg shrink-0 mt-0.5">❌</span>
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-1">Ohne Consent</p>
+                          <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-1">
+                            Ohne Consent
+                          </p>
                           <p className="text-sm text-gray-600">
                             Entscheidung wird von oben nach unten kommuniziert. Team hat
                             Informationsrunde bekommen — aber keine Chance, Bedenken einzubringen.
@@ -1131,11 +1225,13 @@ export default function HomePage() {
                       <div className="flex items-start gap-3">
                         <span className="text-emerald-500 text-lg shrink-0 mt-0.5">✅</span>
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-1">Mit Consent</p>
+                          <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-1">
+                            Mit Consent
+                          </p>
                           <p className="text-sm text-gray-700">
-                            Wer betroffen ist, muss zustimmen. Vorhaben wird im Kreis
-                            eingereicht. Einwand? Integration. Kein Einwand? Beschluss.
-                            Jede betroffene Person hat den gleichen Einfluss.
+                            Wer betroffen ist, muss zustimmen. Vorhaben wird im Kreis eingereicht.
+                            Einwand? Integration. Kein Einwand? Beschluss. Jede betroffene Person
+                            hat den gleichen Einfluss.
                           </p>
                         </div>
                       </div>
@@ -1148,7 +1244,9 @@ export default function HomePage() {
               <article className="rounded-2xl border border-gray-200 bg-white overflow-hidden hover:shadow-md transition-shadow">
                 <div className="flex flex-col sm:flex-row">
                   <div className="sm:w-80 bg-gradient-to-br from-slate-50 to-gray-50 p-6 flex flex-col justify-center shrink-0">
-                    <div className="text-4xl mb-3" aria-hidden="true">🔮</div>
+                    <div className="text-4xl mb-3" aria-hidden="true">
+                      🔮
+                    </div>
                     <h3 className="font-bold text-gray-900 text-lg mb-1">
                       Entscheidungen, die für immer gelten
                     </h3>
@@ -1162,10 +1260,12 @@ export default function HomePage() {
                       <div className="flex items-start gap-3">
                         <span className="text-red-400 text-lg shrink-0 mt-0.5">❌</span>
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-1">Ohne Consent</p>
+                          <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-1">
+                            Ohne Consent
+                          </p>
                           <p className="text-sm text-gray-600">
-                            Entscheidung gilt als „beschlossen". Wiederaufrollen gilt als
-                            Infragestellung. Die Kultur friert ein. Veränderung wird blockiert.
+                            Entscheidung gilt als &bdquo;beschlossen&ldquo;. Wiederaufrollen gilt
+                            als Infragestellung. Die Kultur friert ein. Veränderung wird blockiert.
                           </p>
                         </div>
                       </div>
@@ -1173,11 +1273,13 @@ export default function HomePage() {
                       <div className="flex items-start gap-3">
                         <span className="text-emerald-500 text-lg shrink-0 mt-0.5">✅</span>
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-1">Mit Consent</p>
+                          <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-1">
+                            Mit Consent
+                          </p>
                           <p className="text-sm text-gray-700">
-                            Jedes Vorhaben hat ein Evaluationsdatum. „Gut genug für jetzt —
-                            sicher genug zum Ausprobieren." Entscheidungen sind bewusst
-                            vorläufig. Bei Bedarf wird ein neuer Consent-Prozess gestartet.
+                            Jedes Vorhaben hat ein Evaluationsdatum. „Gut genug für jetzt — sicher
+                            genug zum Ausprobieren.&rdquo; Entscheidungen sind bewusst vorläufig.
+                            Bei Bedarf wird ein neuer Consent-Prozess gestartet.
                           </p>
                         </div>
                       </div>
@@ -1731,7 +1833,10 @@ export default function HomePage() {
         </section>
 
         {/* Community & Impact */}
-        <section className="py-20 bg-white border-t border-gray-100" aria-labelledby="community-heading">
+        <section
+          className="py-20 bg-white border-t border-gray-100"
+          aria-labelledby="community-heading"
+        >
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-50 text-amber-700 rounded-full text-sm font-medium mb-6">
@@ -1749,13 +1854,46 @@ export default function HomePage() {
             {/* Animated Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
               {[
-                { stat: '2.400+', label: 'Aktive Teams', sub: 'nutzen Consent täglich', icon: '👥', color: 'text-blue-600', bg: 'bg-blue-50' },
-                { stat: '18.500+', label: 'Entscheidungen', sub: 'über alle Kreise', icon: '✅', color: 'text-emerald-600', bg: 'bg-emerald-50' },
-                { stat: '94%', label: 'Umsetzungsquote', sub: 'Consent-Beschlüsse', icon: '🚀', color: 'text-purple-600', bg: 'bg-purple-50' },
-                { stat: '3×', label: 'Schneller', sub: 'als klassische Meetings', icon: '⚡', color: 'text-amber-600', bg: 'bg-amber-50' },
+                {
+                  stat: '2.400+',
+                  label: 'Aktive Teams',
+                  sub: 'nutzen Consent täglich',
+                  icon: '👥',
+                  color: 'text-blue-600',
+                  bg: 'bg-blue-50',
+                },
+                {
+                  stat: '18.500+',
+                  label: 'Entscheidungen',
+                  sub: 'über alle Kreise',
+                  icon: '✅',
+                  color: 'text-emerald-600',
+                  bg: 'bg-emerald-50',
+                },
+                {
+                  stat: '94%',
+                  label: 'Umsetzungsquote',
+                  sub: 'Consent-Beschlüsse',
+                  icon: '🚀',
+                  color: 'text-purple-600',
+                  bg: 'bg-purple-50',
+                },
+                {
+                  stat: '3×',
+                  label: 'Schneller',
+                  sub: 'als klassische Meetings',
+                  icon: '⚡',
+                  color: 'text-amber-600',
+                  bg: 'bg-amber-50',
+                },
               ].map(({ stat, label, sub, icon, color, bg }) => (
-                <div key={label} className={`rounded-2xl border border-gray-100 p-6 text-center ${bg}`}>
-                  <span className="text-3xl mb-3 block" aria-hidden="true">{icon}</span>
+                <div
+                  key={label}
+                  className={`rounded-2xl border border-gray-100 p-6 text-center ${bg}`}
+                >
+                  <span className="text-3xl mb-3 block" aria-hidden="true">
+                    {icon}
+                  </span>
                   <div className={`text-3xl font-black ${color} mb-1`}>{stat}</div>
                   <div className="text-sm font-semibold text-gray-700">{label}</div>
                   <div className="text-xs text-gray-400 mt-0.5">{sub}</div>
@@ -1790,10 +1928,16 @@ export default function HomePage() {
                   },
                 ].map(({ icon, title, text, person }) => (
                   <div key={title} className="bg-white/8 border border-white/10 rounded-2xl p-6">
-                    <div className="text-3xl mb-4" aria-hidden="true">{icon}</div>
-                    <h4 className="font-semibold text-white text-base mb-3 leading-snug">{title}</h4>
+                    <div className="text-3xl mb-4" aria-hidden="true">
+                      {icon}
+                    </div>
+                    <h4 className="font-semibold text-white text-base mb-3 leading-snug">
+                      {title}
+                    </h4>
                     <p className="text-slate-300 text-sm leading-relaxed mb-4">{text}</p>
-                    <p className="text-xs text-slate-500 italic border-t border-white/10 pt-3">{person}</p>
+                    <p className="text-xs text-slate-500 italic border-t border-white/10 pt-3">
+                      {person}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -1888,7 +2032,8 @@ export default function HomePage() {
                   name: 'Marcus L.',
                   role: 'Team Lead, agiles Software-Team (8 Personen)',
                   emoji: '👨‍💻',
-                  context: 'Vorher: 2-Stunden-Meetings ohne Ergebnis. Nachher: Async-Entscheidungen in 24h.',
+                  context:
+                    'Vorher: 2-Stunden-Meetings ohne Ergebnis. Nachher: Async-Entscheidungen in 24h.',
                 },
                 {
                   quote:
@@ -1904,7 +2049,8 @@ export default function HomePage() {
                   name: 'Jan K.',
                   role: 'Gründer, Design-Studio (5 Personen)',
                   emoji: '🎨',
-                  context: 'Remote-first Team, über 3 Zeitzonen verteilt. Consent läuft komplett async.',
+                  context:
+                    'Remote-first Team, über 3 Zeitzonen verteilt. Consent läuft komplett async.',
                 },
                 {
                   quote:
@@ -1912,7 +2058,8 @@ export default function HomePage() {
                   name: 'Anke S.',
                   role: 'Projektmanagerin, NGO (12 Personen)',
                   emoji: '🌱',
-                  context: 'Arbeitet seit 8 Monaten mit adlix consent. Nutzt den Enthaltungs-Feedback-Loop.',
+                  context:
+                    'Arbeitet seit 8 Monaten mit adlix consent. Nutzt den Enthaltungs-Feedback-Loop.',
                 },
                 {
                   quote:
@@ -1928,7 +2075,8 @@ export default function HomePage() {
                   name: 'Lisa W.',
                   role: 'Soziokratie-Praktikerin, Facilitation (20+ Personen)',
                   emoji: '🔵',
-                  context: 'Arbeitet seit 2 Jahren soziokratisch. Hat 4 verschiedene Tools vergeblich probiert.',
+                  context:
+                    'Arbeitet seit 2 Jahren soziokratisch. Hat 4 verschiedene Tools vergeblich probiert.',
                 },
               ].map(({ quote, name, role, emoji, context }) => (
                 <figure
@@ -1937,9 +2085,7 @@ export default function HomePage() {
                 >
                   <blockquote className="flex-1">
                     <p className="text-gray-700 italic text-sm leading-relaxed">{quote}</p>
-                    {context && (
-                      <p className="mt-2 text-xs text-gray-400 italic">{context}</p>
-                    )}
+                    {context && <p className="mt-2 text-xs text-gray-400 italic">{context}</p>}
                   </blockquote>
                   <figcaption className="mt-4 flex items-center gap-3">
                     <span className="text-3xl" aria-hidden="true">
@@ -1956,8 +2102,181 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Feature Showcase: Was der Consent-Loop kann */}
+        <section
+          className="py-20 bg-gradient-to-br from-slate-50 to-blue-50 border-t border-gray-100"
+          aria-labelledby="features-heading"
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-14">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-6">
+                <span aria-hidden="true">🛠️</span> Das MVP — alles was du brauchst
+              </div>
+              <h2 id="features-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                Was der Consent-Loop alles kann
+              </h2>
+              <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+                Kein Feature-Bloat. Jede Funktion ist da, weil der Consent-Prozess sie braucht.
+                Alles andere kommt — aber die Grundlage ist komplett.
+              </p>
+            </div>
+
+            {/* Feature grid — 4 phases */}
+            {[
+              {
+                num: 1,
+                title: 'Ein Vorhaben einreichen',
+                color: 'bg-blue-500',
+                items: [
+                  {
+                    icon: '📋',
+                    title: 'Titel & Beschreibung',
+                    desc: 'Klar formuliert: Was schlägst du vor — und warum?',
+                  },
+                  {
+                    icon: '🎯',
+                    title: 'Ziel verankern',
+                    desc: 'Das gemeinsame Ziel wird mit eingereicht — damit Einwände im Kontext bleiben.',
+                  },
+                  {
+                    icon: '📅',
+                    title: 'Evaluationsdatum',
+                    desc: 'Jede Entscheidung bekommt ein Ablaufdatum. Bei Bedarf wird angepasst.',
+                  },
+                ],
+              },
+              {
+                num: 2,
+                title: 'Geführte Runden — Schritt für Schritt',
+                color: 'bg-amber-500',
+                items: [
+                  {
+                    icon: '❓',
+                    title: 'Informationsrunde',
+                    desc: 'Nur Verständnisfragen — keine Meinungen, keine Diskussion.',
+                  },
+                  {
+                    icon: '💬',
+                    title: 'Reaktionsrunde',
+                    desc: 'Reihum äußern alle ihre Perspektiven — der Einreicher hört nur zu.',
+                  },
+                  {
+                    icon: '🔄',
+                    title: 'Anpassung (optional)',
+                    desc: 'Der Einreicher überarbeitet den Vorschlag — oder reicht ihn unverändert ein.',
+                  },
+                  {
+                    icon: '🗳️',
+                    title: 'Consent-Abstimmung',
+                    desc: '4 Optionen: Konsent ✓ / Leichter Einwand 💛 / Schwerwiegend 🔴 / Enthalten ⏸️.',
+                  },
+                  {
+                    icon: '🤝',
+                    title: 'Integration (optional)',
+                    desc: 'Schwerwiegende Einwände werden besprochen und integriert.',
+                  },
+                  {
+                    icon: '✅',
+                    title: 'Beschluss',
+                    desc: 'Dokumentiert, auswertbar, mit Audit-Trail.',
+                  },
+                ],
+              },
+              {
+                num: 3,
+                title: 'Die Abstimmung — mehr als ein Klick',
+                color: 'bg-emerald-500',
+                items: [
+                  {
+                    icon: '🔴',
+                    title: 'Schwerwiegender Einwand — geführt',
+                    desc: '6-Phasen-Dialog: Verstehen → Validieren → Dialogisieren → Integrieren → Prüfen → Neu.',
+                  },
+                  {
+                    icon: '💛',
+                    title: 'Leichter Einwand — dokumentiert',
+                    desc: 'Anmerkungen, die nicht blockieren, aber im Audit-Trail festgehalten werden.',
+                  },
+                  {
+                    icon: '⏸️',
+                    title: 'Enthaltung — mit Reflexion',
+                    desc: '5 Gründe inkl. geführter Selbstreflexion bei Grund E: versteckte Einwände sichtbar machen.',
+                  },
+                  {
+                    icon: '📊',
+                    title: 'Echtzeit-Fortschritt',
+                    desc: 'Jeder sieht live, wer abgestimmt hat. Transparenz von Anfang an.',
+                  },
+                ],
+              },
+              {
+                num: 4,
+                title: 'Audit-Trail & Insights',
+                color: 'bg-indigo-500',
+                items: [
+                  {
+                    icon: '📜',
+                    title: 'Vollständiges Protokoll',
+                    desc: 'Jede Phase, jede Stimme, jede Begründung — automatisch dokumentiert.',
+                  },
+                  {
+                    icon: '🔒',
+                    title: 'Anonyme Bedenken',
+                    desc: 'Bedenken einbringen, ohne dass Identität sichtbar wird. Thematiert, nicht personifiziert.',
+                  },
+                  {
+                    icon: '🔍',
+                    title: 'Enthaltungs-Analyse (Pro)',
+                    desc: 'Ab 3+ Enthaltungen: KI-gestützte Musteranalyse mit Empfehlungen.',
+                  },
+                ],
+              },
+            ].map(({ num, title, color, items }) => (
+              <div key={num} className="mb-10 last:mb-4">
+                <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                  <span
+                    className={`w-7 h-7 ${color} text-white rounded-full flex items-center justify-center text-xs font-bold shrink-0`}
+                  >
+                    {num}
+                  </span>
+                  {title}
+                </h3>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {items.map(({ icon, title: itemTitle, desc }) => (
+                    <div
+                      key={itemTitle}
+                      className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow"
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-2xl">{icon}</span>
+                        <p className="font-semibold text-sm">{itemTitle}</p>
+                      </div>
+                      <p className="text-xs text-gray-600 leading-relaxed">{desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+
+            <div className="mt-8 text-center">
+              <p className="text-sm text-gray-500 mb-3">
+                All das ist im Free-Plan enthalten — für Teams bis 50 Personen.
+              </p>
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2 px-6 py-3 font-medium text-white bg-primary rounded-xl hover:bg-primary-dark transition-colors"
+              >
+                Jetzt kostenlos starten →
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* Was passiert bei einem Einwand — Der Integrations-Flow */}
-        <section className="py-20 bg-gradient-to-b from-red-50/30 to-white border-t border-gray-100" aria-labelledby="objection-flow-heading">
+        <section
+          className="py-20 bg-gradient-to-b from-red-50/30 to-white border-t border-gray-100"
+          aria-labelledby="objection-flow-heading"
+        >
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-red-50 text-red-700 rounded-full text-sm font-medium mb-6">
@@ -1967,8 +2286,9 @@ export default function HomePage() {
                 Was passiert, wenn jemand widerspricht?
               </h2>
               <p className="text-gray-500 max-w-2xl mx-auto text-lg">
-                Ein schwerwiegender Einwand ist kein Blockade — es ist ein Geschenk. adlix consent gibt
-                ihm einen Prozess. Hier siehst du, wie aus einem Einwand eine bessere Entscheidung wird.
+                Ein schwerwiegender Einwand ist kein Blockade — es ist ein Geschenk. adlix consent
+                gibt ihm einen Prozess. Hier siehst du, wie aus einem Einwand eine bessere
+                Entscheidung wird.
               </p>
             </div>
 
@@ -1995,7 +2315,8 @@ export default function HomePage() {
                   badge: 'bg-orange-100 text-orange-700',
                   description:
                     'Alle Kreismitglieder sehen den formulierten Einwand und schätzen ein: Ist das sachlich begründet — oder persönliche Präferenz? Das ist keine Abstimmung, sondern Orientierung.',
-                  detail: 'Mehrheitlich sachlich → Dialog geht weiter. Mehrheitlich Präferenz → Einwand wird zu Bedenken.',
+                  detail:
+                    'Mehrheitlich sachlich → Dialog geht weiter. Mehrheitlich Präferenz → Einwand wird zu Bedenken.',
                 },
                 {
                   step: 3,
@@ -2028,7 +2349,8 @@ export default function HomePage() {
                   badge: 'bg-blue-100 text-blue-700',
                   description:
                     'Der Einreicher präsentiert den angepassten Vorschlag. Die einwendende Person bestätigt: Adressiert das deinen Einwand? Ja → Einwand zurückgezogen, neuer Consent-Loop.',
-                  detail: 'Ja → Loop beendet  •  Teilweise → Dialog geht weiter (max. N Runden)  •  Nein → Eskalationspfad',
+                  detail:
+                    'Ja → Loop beendet  •  Teilweise → Dialog geht weiter (max. N Runden)  •  Nein → Eskalationspfad',
                 },
                 {
                   step: 6,
@@ -2039,18 +2361,18 @@ export default function HomePage() {
                   badge: 'bg-purple-100 text-purple-700',
                   description:
                     'Wenn nach mehreren Dialogrunden kein Konsens möglich ist: Vorhaben zurückstellen, Teilentscheidung, externe Moderation — oder zeitlich begrenzter Versuch mit Evaluationsdatum.',
-                  detail: '🔮 Zeitlich begrenzter Versuch  •  🔄 Zurückstellen  •  ➡️ Teilentscheidung',
+                  detail:
+                    '🔮 Zeitlich begrenzter Versuch  •  🔄 Zurückstellen  •  ➡️ Teilentscheidung',
                 },
               ].map(({ step, icon, title, color, accent, badge, description, detail }) => (
-                <article
-                  key={step}
-                  className={`rounded-2xl border p-6 ${color} flex flex-col`}
-                >
+                <article key={step} className={`rounded-2xl border p-6 ${color} flex flex-col`}>
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{icon}</span>
                       <div>
-                        <span className={`text-xs font-bold uppercase tracking-wider ${accent} opacity-60`}>
+                        <span
+                          className={`text-xs font-bold uppercase tracking-wider ${accent} opacity-60`}
+                        >
                           Schritt {step}
                         </span>
                       </div>
@@ -2114,7 +2436,10 @@ export default function HomePage() {
                     {[
                       { emoji: '🔴', text: 'Schwerwiegender Einwand: „Kundenfreitag ungeklärt"' },
                       { emoji: '💡', text: 'Dialog-Raum: 3 Lösungsideen werden gesammelt' },
-                      { emoji: '🔄', text: 'Vorhaben angepasst: „Freitag: intern, kein Kundenkontakt"' },
+                      {
+                        emoji: '🔄',
+                        text: 'Vorhaben angepasst: „Freitag: intern, kein Kundenkontakt"',
+                      },
                       { emoji: '✅', text: 'Einwender bestätigt: „Das adressiert mein Bedenken"' },
                       { emoji: '📋', text: 'Neuer Consent — diesmal mit 100% Zustimmung' },
                     ].map(({ emoji, text }, i) => (
