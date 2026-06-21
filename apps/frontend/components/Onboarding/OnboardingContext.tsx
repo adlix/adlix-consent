@@ -41,9 +41,10 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     if (typeof window !== 'undefined') {
       const completed = localStorage.getItem('onboarding_completed')
       if (completed === 'true') {
-        setIsCompleted(true)
+        setIsCompleted(() => true)
       }
     }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
   }, [])
 
   const completeOnboarding = () => {

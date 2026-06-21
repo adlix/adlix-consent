@@ -425,6 +425,234 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Consent Loop Walkthrough — Live-Demo */}
+        <section
+          className="py-16 bg-gradient-to-b from-emerald-50/40 to-white border-t border-gray-100"
+          aria-labelledby="consent-demo-heading"
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium mb-4">
+                <span aria-hidden="true">🎬</span> Live-Demo — 5 Minuten
+              </div>
+              <h2 id="consent-demo-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                Consent Loop — live durchgespielt
+              </h2>
+              <p className="text-gray-500 max-w-xl mx-auto">
+                Ein konkretes Beispiel aus einem agilen Team: Wie eine Entscheidung aussieht, wenn
+                sie mit adlix consent getroffen wird.
+              </p>
+            </div>
+
+            {/* Kontext */}
+            <div className="bg-white rounded-2xl border border-emerald-100 shadow-sm p-6 mb-6">
+              <div className="flex items-start gap-4">
+                <div className="text-2xl shrink-0 mt-0.5">📌</div>
+                <div>
+                  <p className="font-semibold text-gray-900 mb-1">Kontext: Sprint-Ziel für Q2</p>
+                  <p className="text-sm text-gray-600">
+                    <strong>Kreis:</strong> Produktteam (6 Personen) ·<strong>Einreicher:</strong>{' '}
+                    Lea, Product Owner ·<strong>Zeit:</strong> async, 72 Stunden
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Timeline Step 1 */}
+            <div className="flex gap-4">
+              <div className="flex flex-col items-center">
+                <div className="w-10 h-10 rounded-full bg-white border-2 border-emerald-200 flex items-center justify-center text-xl shrink-0 z-10">
+                  📝
+                </div>
+                <div className="w-0.5 flex-1 bg-emerald-200 min-h-[2rem]" />
+              </div>
+              <div className="flex-1 rounded-xl border border-gray-200 bg-white p-5 mb-2">
+                <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-400 font-mono">Tag 1, 09:00</span>
+                    <span className="text-gray-300">·</span>
+                    <span className="font-semibold text-gray-700">Vorhaben eingereicht</span>
+                  </div>
+                  <span className="text-xs px-2 py-0.5 rounded-full border font-medium bg-blue-50 text-blue-700 border-blue-200">
+                    💬 Reaktionsrunde möglich
+                  </span>
+                </div>
+                <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                  "Unser Sprint-Ziel Q2: Wir liefern den neuen Bezahlprozess bis Ende Juni.
+                  Inkrementeller Go-Live: erst intern testen, dann Kunden. Ziel: 15%
+                  Conversion-Steigerung durch bessere UX."
+                </p>
+                <p className="text-xs text-gray-400 italic">Lea</p>
+              </div>
+            </div>
+
+            {/* Timeline Step 2 */}
+            <div className="flex gap-4">
+              <div className="flex flex-col items-center">
+                <div className="w-10 h-10 rounded-full bg-white border-2 border-emerald-200 flex items-center justify-center text-xl shrink-0 z-10">
+                  ❓
+                </div>
+                <div className="w-0.5 flex-1 bg-emerald-200 min-h-[2rem]" />
+              </div>
+              <div className="flex-1 rounded-xl border border-gray-200 bg-white p-5 mb-2">
+                <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-400 font-mono">Tag 1, 11:30</span>
+                    <span className="text-gray-300">·</span>
+                    <span className="font-semibold text-gray-700">Fragen — keine Meinungen</span>
+                  </div>
+                  <span className="text-xs px-2 py-0.5 rounded-full border font-medium bg-blue-50 text-blue-700 border-blue-200">
+                    💬 Reaktionsrunde möglich
+                  </span>
+                </div>
+                <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                  Marco: "Wie messen wir die Conversion-Steigerung — per Mixpanel oder
+                  A/B-Vergleich?"{'\n'}
+                  Anna: "Wer betreut den Rollout, falls es Probleme gibt?"{'\n'}
+                  Tom: "15% — realistisch bei dem Zeitrahmen?"
+                </p>
+                <p className="text-xs text-gray-400 italic">Team</p>
+              </div>
+            </div>
+
+            {/* Timeline Step 3 */}
+            <div className="flex gap-4">
+              <div className="flex flex-col items-center">
+                <div className="w-10 h-10 rounded-full bg-white border-2 border-emerald-200 flex items-center justify-center text-xl shrink-0 z-10">
+                  🔄
+                </div>
+                <div className="w-0.5 flex-1 bg-emerald-200 min-h-[2rem]" />
+              </div>
+              <div className="flex-1 rounded-xl border border-gray-200 bg-white p-5 mb-2">
+                <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-400 font-mono">Tag 1, 15:00</span>
+                    <span className="text-gray-300">·</span>
+                    <span className="font-semibold text-gray-700">Anpassung nach Rückmeldung</span>
+                  </div>
+                  <span className="text-xs px-2 py-0.5 rounded-full border font-medium bg-emerald-50 text-emerald-700 border-emerald-200">
+                    🗳️ Abstimmung gestartet
+                  </span>
+                </div>
+                <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                  "Danke für die Fragen. Angepasst: Conversion-Messung per Mixpanel (statt A/B-Test,
+                  da zu aufwändig). Rollout-Verantwortung: Marco. 15% als Ziel, messbar über 4
+                  Wochen nach Go-Live. Ziel bleibt inkrementeller Go-Live intern → extern."
+                </p>
+                <p className="text-xs text-gray-400 italic">Lea</p>
+              </div>
+            </div>
+
+            {/* Timeline Step 4 */}
+            <div className="flex gap-4">
+              <div className="flex flex-col items-center">
+                <div className="w-10 h-10 rounded-full bg-white border-2 border-emerald-200 flex items-center justify-center text-xl shrink-0 z-10">
+                  🗳️
+                </div>
+                <div className="w-0.5 flex-1 bg-emerald-200 min-h-[2rem]" />
+              </div>
+              <div className="flex-1 rounded-xl border border-gray-200 bg-white p-5 mb-2">
+                <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-400 font-mono">Tag 2, 10:00</span>
+                    <span className="text-gray-300">·</span>
+                    <span className="font-semibold text-gray-700">Abstimmungsrunde</span>
+                  </div>
+                  <span className="text-xs px-2 py-0.5 rounded-full border font-medium bg-orange-50 text-orange-700 border-orange-200">
+                    🔴 Schwerwiegender Einwand
+                  </span>
+                </div>
+                <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                  ✅ Lea: "Konsent — gutes Sprint-Ziel."{'\n'}✅ Marco: "Konsent."{'\n'}✅ Anna:
+                  "Konsent."{'\n'}✅ Tom: "Konsent."{'\n'}✅ Sarah: "Konsent."{'\n'}
+                  🔴 Jan: "Schwerwiegender Einwand: Inkrementeller Go-Live gefährdet die Q2-Deadline
+                  bei Komplikationen. Was ist der Fallback?"
+                </p>
+                <p className="text-xs text-gray-400 italic">Team</p>
+              </div>
+            </div>
+
+            {/* Timeline Step 5 */}
+            <div className="flex gap-4">
+              <div className="flex flex-col items-center">
+                <div className="w-10 h-10 rounded-full bg-white border-2 border-emerald-200 flex items-center justify-center text-xl shrink-0 z-10">
+                  💡
+                </div>
+                <div className="w-0.5 flex-1 bg-emerald-200 min-h-[2rem]" />
+              </div>
+              <div className="flex-1 rounded-xl border border-gray-200 bg-white p-5 mb-2">
+                <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-400 font-mono">Tag 2, 14:00</span>
+                    <span className="text-gray-300">·</span>
+                    <span className="font-semibold text-gray-700">Dialog — Lösungsraum</span>
+                  </div>
+                  <span className="text-xs px-2 py-0.5 rounded-full border font-medium bg-violet-50 text-violet-700 border-violet-200">
+                    🔄 Synthese — neuer Vorschlag
+                  </span>
+                </div>
+                <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                  Jan konkretisiert: "Fallback: Bei Problemen im internen Test stoppen wir den
+                  externen Rollout und adressieren das in Sprint 2."{'\n'}
+                  Lea: "Das deckt mein Bedenken ab."{'\n'}
+                  Alle: Lösung gefunden — Fallback-Regel als Nachtrag zum Vorhaben.
+                </p>
+                <p className="text-xs text-gray-400 italic">Kreis</p>
+              </div>
+            </div>
+
+            {/* Timeline Step 6 — Final */}
+            <div className="flex gap-4">
+              <div className="flex flex-col items-center">
+                <div className="w-10 h-10 rounded-full bg-white border-2 border-emerald-200 flex items-center justify-center text-xl shrink-0 z-10">
+                  ✅
+                </div>
+              </div>
+              <div className="flex-1 rounded-xl border border-emerald-200 bg-emerald-50 p-5 mb-2">
+                <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-400 font-mono">Tag 3, 09:00</span>
+                    <span className="text-gray-300">·</span>
+                    <span className="font-semibold text-gray-700">Beschluss — 100% Konsent</span>
+                  </div>
+                  <span className="text-xs px-2 py-0.5 rounded-full border font-medium bg-emerald-100 text-emerald-800 border-emerald-300">
+                    🎉 Beschluss mit 100% Konsent
+                  </span>
+                </div>
+                <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                  🔄 Neues Sprint-Ziel Q2: Mit Fallback-Regel (interner Test → kein externer Rollout
+                  bei Komplikationen).{'\n'}✅ Jan: "Konsent — Fallback adressiert meinen Einwand."
+                  {'\n'}✅ Alle anderen: "Konsent."{'\n'}
+                  📅 Evaluationsdatum: 15. Juli 2026
+                </p>
+                <p className="text-xs text-gray-400 italic">Alle</p>
+              </div>
+            </div>
+
+            {/* Takeaway */}
+            <div className="mt-8 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl border border-emerald-200 p-6 text-center">
+              <p className="text-lg font-medium text-gray-800 mb-2">
+                🗳️ Consent ={' '}
+                <span className="text-emerald-700">
+                  72 Stunden, 6 Personen, 0 hierarchische Entscheidung, 1 robuster Beschluss
+                </span>
+              </p>
+              <p className="text-sm text-gray-500">
+                Kein Meeting nötig. Keine Überstimmung. Ein Einwand → integriert → 100% Konsent.
+              </p>
+            </div>
+
+            <div className="mt-8 text-center">
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white font-medium rounded-xl hover:bg-emerald-700 transition-colors"
+              >
+                Das mit meinem Team ausprobieren →
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* Wann Consent? Decision Guide */}
         <section
           className="py-16 bg-white border-t border-gray-100"
@@ -2012,6 +2240,188 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* Tool Preview — Consent Loop Mini-Dashboard */}
+        <section
+          className="py-16 bg-white border-t border-gray-100"
+          aria-labelledby="tool-preview-heading"
+        >
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-violet-50 text-violet-700 rounded-full text-sm font-medium mb-4">
+                <span aria-hidden="true">🖥️</span> Das Tool
+              </div>
+              <h2 id="tool-preview-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                So sieht Consent in adlix consent aus
+              </h2>
+              <p className="text-gray-500 max-w-xl mx-auto">
+                Kein Backend-Panel, keine abstrakten Settings. Ein klarer Prozess, der sich selbst
+                erklärt.
+              </p>
+            </div>
+
+            {/* Tool Preview Mockup */}
+            <div className="rounded-2xl border border-gray-200 overflow-hidden shadow-xl bg-gray-50">
+              {/* Browser chrome */}
+              <div className="bg-gray-100 border-b border-gray-200 px-4 py-2 flex items-center gap-2">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-red-400" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-400" />
+                  <div className="w-3 h-3 rounded-full bg-green-400" />
+                </div>
+                <div className="flex-1 text-center">
+                  <div className="inline-block bg-white rounded-md px-3 py-1 text-xs text-gray-500 border border-gray-200">
+                    consent.adlix-club.de/projects/sprint-q2
+                  </div>
+                </div>
+              </div>
+
+              {/* App layout */}
+              <div className="flex">
+                {/* Sidebar */}
+                <div className="w-52 bg-slate-800 text-white p-4 shrink-0">
+                  <div className="mb-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className="text-lg">🗳️</span>
+                      <span className="font-bold text-sm">adlix consent</span>
+                    </div>
+                  </div>
+                  <nav className="space-y-1">
+                    {[
+                      { icon: '🏠', label: 'Dashboard', active: false },
+                      { icon: '🔵', label: 'Mein Kreis', active: true },
+                      { icon: '📋', label: 'Vorhaben', active: false },
+                      { icon: '⚙️', label: 'Einstellungen', active: false },
+                    ].map(({ icon, label, active }) => (
+                      <div
+                        key={label}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs ${active ? 'bg-white/20 font-semibold' : 'text-slate-400 hover:text-white'}`}
+                      >
+                        <span>{icon}</span> {label}
+                      </div>
+                    ))}
+                  </nav>
+                </div>
+
+                {/* Main content */}
+                <div className="flex-1 p-6 overflow-hidden">
+                  {/* Project header */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div>
+                      <h2 className="text-xl font-bold text-gray-900">Sprint-Ziel Q2</h2>
+                      <p className="text-sm text-gray-500 mt-1">
+                        Bezahlprozess bis Ende Juni — Produktteam
+                      </p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-violet-100 text-violet-700 font-medium">
+                          🔴 Abstimmungsrunde
+                        </span>
+                        <span className="text-xs text-gray-400">Runde 1 von 2</span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl font-black text-violet-700">5/6</div>
+                      <div className="text-xs text-gray-500">haben abgestimmt</div>
+                    </div>
+                  </div>
+
+                  {/* Progress bars */}
+                  <div className="space-y-3 mb-6">
+                    {[
+                      { label: '✅ Konsent', count: 4, color: 'bg-emerald-500', width: 'w-32' },
+                      {
+                        label: '💛 Leichter Einwand',
+                        count: 0,
+                        color: 'bg-amber-500',
+                        width: 'w-0',
+                      },
+                      {
+                        label: '🔴 Schwerw. Einwand',
+                        count: 1,
+                        color: 'bg-red-500',
+                        width: 'w-10',
+                      },
+                      { label: '⏸️ Enthalten', count: 0, color: 'bg-slate-400', width: 'w-0' },
+                    ].map(({ label, count, color, width }) => (
+                      <div key={label} className="flex items-center gap-3">
+                        <span className="text-xs text-gray-500 w-36 shrink-0">{label}</span>
+                        <div className="flex-1 bg-gray-200 rounded-full h-3 overflow-hidden">
+                          <div className={`${color} ${width} h-full rounded-full`} />
+                        </div>
+                        <span className="text-xs font-mono text-gray-600 w-6 text-right">
+                          {count}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Proposal card */}
+                  <div className="bg-white rounded-xl border border-gray-200 p-4 mb-4">
+                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
+                      📝 Aktueller Vorschlag — Runde 2
+                    </p>
+                    <p className="text-sm text-gray-700 leading-relaxed">
+                      "Unser Sprint-Ziel Q2: Wir liefern den neuen Bezahlprozess bis Ende Juni.
+                      Inkrementeller Go-Live: erst intern testen, dann Kunden.{' '}
+                      <span className="text-emerald-600 font-medium">
+                        Mit Fallback-Regel: Bei Problemen im internen Test stoppen wir den externen
+                        Rollout.
+                      </span>
+                      "
+                    </p>
+                    <p className="text-xs text-gray-400 mt-2 italic">
+                      ↑ Angepasst nach Dialog mit Jan — Fallback-Regel integriert
+                    </p>
+                  </div>
+
+                  {/* Major objection card */}
+                  <div className="bg-red-50 rounded-xl border border-red-200 p-4 mb-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-lg">🔴</span>
+                      <span className="text-sm font-semibold text-red-800">
+                        Schwerwiegender Einwand — integriert
+                      </span>
+                    </div>
+                    <p className="text-sm text-red-700">
+                      Jan: "Inkrementeller Go-Live gefährdet die Q2-Deadline bei Komplikationen."
+                    </p>
+                    <div className="mt-2 pt-2 border-t border-red-200">
+                      <p className="text-xs text-emerald-700 font-medium">
+                        ✅ Integration: Fallback-Regel hinzugefügt — Jan bestätigt
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Vote buttons */}
+                  <div className="grid grid-cols-4 gap-2">
+                    {[
+                      {
+                        emoji: '✅',
+                        label: 'Konsent',
+                        color: 'bg-emerald-600 hover:bg-emerald-700',
+                      },
+                      { emoji: '💛', label: 'Leicht', color: 'bg-amber-500 hover:bg-amber-600' },
+                      { emoji: '🔴', label: 'Einwand', color: 'bg-red-600 hover:bg-red-700' },
+                      { emoji: '⏸️', label: 'Enthalten', color: 'bg-slate-600 hover:bg-slate-700' },
+                    ].map(({ emoji, label, color }) => (
+                      <button
+                        key={label}
+                        className={`${color} text-white rounded-xl py-3 text-sm font-medium flex flex-col items-center gap-1`}
+                      >
+                        <span className="text-xl">{emoji}</span>
+                        <span>{label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-center text-sm text-gray-500 mt-6">
+              Kein Handbuch nötig. Der Prozess erklärt sich durch die Oberfläche.
+            </p>
           </div>
         </section>
 
