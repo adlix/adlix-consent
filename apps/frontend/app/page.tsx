@@ -1627,6 +1627,114 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Consent in der Team-Praxis — Vorher/Nachher */}
+        <section
+          className="py-16 bg-gradient-to-b from-slate-50 to-white"
+          aria-labelledby="practice-heading"
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-50 text-amber-700 rounded-full text-sm font-medium mb-6">
+                <span aria-hidden="true">🔀</span> Aus dem Alltag
+              </div>
+              <h2 id="practice-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                Consent in der Team-Praxis
+              </h2>
+              <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+                Nicht nur Theorie. So verändert Consent konkret, wie Teams arbeiten — von der ersten Woche bis zur neuen Normalität.
+              </p>
+            </div>
+
+            <div className="space-y-8 max-w-3xl mx-auto">
+              {[
+                {
+                  emoji: '📅',
+                  tag: 'Die erste Woche',
+                  before: {
+                    title: 'Endlos-Meetings über alles',
+                    desc: 'Team-Mitglieder verbringen 3+ Stunden pro Woche in Abstimmungsmeetings. Entscheidungen werden in MS Teams oder E-Mail-Chains getroffen — wer was错过了, ist unklar.',
+                  },
+                  after: {
+                    title: 'Jedes Vorhaben hat einen klaren Prozess',
+                    desc: 'Consent-Loop starten, Beteiligte werden benachrichtigt. Wer Zeit hat, nimmt teil. Kein Meeting nötig — Antworten asynchron, in Ruhe, durchdacht.',
+                  },
+                },
+                {
+                  emoji: '🤝',
+                  tag: 'Nach einem Monat',
+                  before: {
+                    title: 'Leise Bedenken, laute Mehrheiten',
+                    desc: 'In der Abstimmung gibt es eine klare Mehrheit. Zwei Personen enthalten sich — aus Schüchternheit oder weil sie sich nicht trauen, Widerspruch zu äußern.',
+                  },
+                  after: {
+                    title: 'Jedes Bedenken findet einen sicheren Weg',
+                    desc: 'Enthaltungsgrund B oder D öffnet einen geschützten Kanal. Niemand muss im Meeting widersprechen — Bedenken werden trotzdem adressiert.',
+                  },
+                },
+                {
+                  emoji: '🔴',
+                  tag: 'Wenn ein Einwand kommt',
+                  before: {
+                    title: 'Diskussion wird zum Kampf',
+                    desc: 'Jemand hat starke Bedenken. Die Diskussion eskaliert. Der Einreicher fühlt sich angegriffen. Am Ende wird doch abgestimmt — überstimmt.',
+                  },
+                  after: {
+                    title: 'Aus Einwand wird bessere Lösung',
+                    desc: 'Der 6-Phasen-Dialog gibt dem Einwand Struktur. Kein Kampf — eine gemeinsame Suche nach Anpassungen. Das Ergebnis ist besser, weil es durch den Einwand ging.',
+                  },
+                },
+                {
+                  emoji: '📊',
+                  tag: 'Nach einem Quartal',
+                  before: {
+                    title: 'Wer hat eigentlich entschieden?',
+                    desc: 'Entscheidungen verschwinden in E-Mail-Verläufen. Neue Team-Mitglieder finden nicht heraus, warum bestimmte Regeln gelten. Kontext geht verloren.',
+                  },
+                  after: {
+                    title: 'Vollständiger Audit-Trail — für alle',
+                    desc: 'Jedes Vorhaben, jede Phase, jede Stimme, jede Begründung — dokumentiert. Neue Mitglieder können die Entscheidungsgeschichte nachlesen und verstehen den Kontext.',
+                  },
+                },
+              ].map(({ emoji, tag, before, after }) => (
+                <div key={tag} className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+                  <div className="bg-slate-800 text-white px-6 py-3 flex items-center gap-2">
+                    <span className="text-xl">{emoji}</span>
+                    <span className="text-sm font-medium text-slate-300">{tag}</span>
+                  </div>
+                  <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+                    <div className="p-6">
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-red-500 text-lg">❌</span>
+                        <h3 className="font-semibold text-gray-800">{before.title}</h3>
+                      </div>
+                      <p className="text-gray-600 text-sm leading-relaxed">{before.desc}</p>
+                    </div>
+                    <div className="p-6 bg-emerald-50/40">
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-emerald-500 text-lg">✅</span>
+                        <h3 className="font-semibold text-emerald-900">{after.title}</h3>
+                      </div>
+                      <p className="text-gray-700 text-sm leading-relaxed">{after.desc}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 text-center">
+              <p className="text-gray-500 text-sm mb-4">
+                Klingt nach einem Kulturwandel? Ist es auch. Aber der Consent-Prozess macht ihn einfach — Schritt für Schritt.
+              </p>
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2 px-6 py-3 font-medium text-white bg-primary rounded-xl hover:bg-primary-dark transition-colors"
+              >
+                Ersten Consent-Loop starten →
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* Use Cases */}
         <section className="py-16" aria-labelledby="usecases-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

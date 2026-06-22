@@ -510,14 +510,17 @@ export default function ProjectDetailPage() {
             {project.circle && (
               <div className="flex items-center gap-3 pt-3 border-t border-gray-100">
                 <span className="text-xs text-gray-400">Einladungslink:</span>
-                <code className="flex-1 text-xs bg-gray-50 px-3 py-1.5 rounded-lg text-gray-600 font-mono truncate">
-                  {typeof window !== 'undefined' ? window.location.origin : ''}/circles/join/[token]
-                </code>
+                <Link
+                  href={`/circles/${project.circle.id}`}
+                  className="flex-1 text-xs text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg font-medium transition-colors truncate"
+                >
+                  🌀 {project.circle.name} — Einladungen hier verwalten →
+                </Link>
                 <button
                   onClick={async () => {
                     try {
                       await navigator.clipboard.writeText(
-                        `${window.location.origin}/circles/join/${project!.circle?.id}`
+                        `${window.location.origin}/circles/${project!.circle?.id}`
                       )
                     } catch {
                       // clipboard not available
@@ -525,7 +528,7 @@ export default function ProjectDetailPage() {
                   }}
                   className="shrink-0 px-3 py-1.5 text-xs font-medium bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
                 >
-                  🔗 Link kopieren
+                  🔗 Kopieren
                 </button>
               </div>
             )}
