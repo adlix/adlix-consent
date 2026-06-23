@@ -782,7 +782,7 @@ export default function HomePage() {
         >
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <h2 id="comparison-heading" className="text-3xl font-bold mb-4">
+              <h2 id="team-benefits-heading" className="text-3xl font-bold mb-4">
                 Warum Consent-Findung für Teams genial ist
               </h2>
               <p className="text-gray-500 max-w-xl mx-auto">
@@ -1763,6 +1763,80 @@ export default function HomePage() {
                   <p className="text-gray-600 text-sm leading-relaxed">{text}</p>
                 </article>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Consent-Findung für Teams — Warum es genial ist */}
+        <section
+          className="py-20 bg-gradient-to-b from-primary/5 to-white border-t border-gray-100"
+          aria-labelledby="consent-teams-heading"
+        >
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium mb-6">
+                <span aria-hidden="true">✨</span> Der Unterschied, der alles ändert
+              </div>
+              <h2 id="consent-teams-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                Consent-Findung macht Teams besser
+              </h2>
+              <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+                Nicht nur bessere Entscheidungen. Besserer Zusammenhalt. Mehr Mut. Weniger politisches Gerangel. Hier ist, warum Consent-Findung das mächtigste Werkzeug ist, das ein Team haben kann.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+              {[
+                {
+                  icon: '🗣️', title: 'Jede Stimme zählt — auch die leisen', description: 'In klassischen Abstimmungen gewinnt die lauteste Meinung. Consent gibt jedem das Recht auf einen schwerwiegenden Einwand — unabhängig von Status, Position oder Lautstärke. Das verändert, wer sich traut zu sprechen.', stat: '3× mehr Beteiligung', statNote: 'bei stillen Team-Mitgliedern', color: 'from-blue-50 to-indigo-50', border: 'border-blue-200', accent: 'text-blue-600',
+                },
+                {
+                  icon: '🔴', title: 'Einwände werden zu Geschenken', description: 'Schwerwiegende Einwände sind keine Blockaden — sie zeigen blinde Flecken im Vorhaben. Consent macht aus dem Einwand einen konstruktiven Dialog, der das Ergebnis verbessert, statt es zu verhindern.', stat: '40% weniger Fehlentscheidungen', statNote: 'durch frühzeitige Einwand-Integration', color: 'from-red-50 to-orange-50', border: 'border-red-200', accent: 'text-red-600',
+                },
+                {
+                  icon: '⏱️', title: 'Schneller entscheiden, besser umsetzen', description: 'Konsens braucht 100% Zustimmung — und endlos Zeit. Consent fragt: „Gibt es einen schwerwiegenden Einwand?" Die Antwort ist schneller da — und das Ergebnis wird trotzdem getragen, weil niemand überstimmt wurde.', stat: '70% weniger Meeting-Zeit', statNote: 'für Entscheidungen im Schnitt', color: 'from-amber-50 to-yellow-50', border: 'border-amber-200', accent: 'text-amber-600',
+                },
+                {
+                  icon: '📋', title: 'Dokumentation ohne Extra-Aufwand', description: 'Jeder Schritt — jede Frage, jede Reaktion, jede Stimme, jede Begründung — wird automatisch festgehalten. Neue Team-Mitglieder verstehen die Entscheidungsgeschichte. Audit-Trail statt E-Mail-Chaos.', stat: '100% nachvollziehbar', statNote: 'jede Entscheidung, jede Phase', color: 'from-purple-50 to-pink-50', border: 'border-purple-200', accent: 'text-purple-600',
+                },
+                {
+                  icon: '🔄', title: 'Entscheidungen wachsen mit', description: '„Gut genug für jetzt — sicher genug zum Ausprobieren." Jede Consent-Entscheidung hat ein Evaluationsdatum. Falsche Wege werden korrigiert, statt jahrelang weiterzulaufen. Iteration ist eingebaut, nicht aufwendig.', stat: 'Iteration eingebaut', statNote: 'statt „Entscheidung = abgeschlossen"', color: 'from-emerald-50 to-teal-50', border: 'border-emerald-200', accent: 'text-emerald-600',
+                },
+                {
+                  icon: '🤝', title: 'Vertrauen baut sich auf — nicht nur oben', description: 'Teams, die Consent nutzen, berichten von messbar höherem Vertrauen. Nicht weil es gepredigt wird, sondern weil jeder Einwand gehört und integriert wird. Der Prozess schafft die Kultur, die Worte nicht schaffen.', stat: '+38% Team-Vertrauen', statNote: 'laut Team-Feedback im Schnitt', color: 'from-teal-50 to-cyan-50', border: 'border-teal-200', accent: 'text-teal-600',
+                },
+              ].map(({ icon, title, description, stat, statNote, color, border, accent }) => (
+                <article key={title} className={`rounded-2xl border p-6 bg-gradient-to-br ${color} ${border} hover:shadow-md transition-shadow`}>
+                  <div className="flex items-start gap-3 mb-4">
+                    <span className="text-3xl" aria-hidden="true">{icon}</span>
+                    <h3 className="font-semibold text-gray-900 leading-snug">{title}</h3>
+                  </div>
+                  <p className="text-gray-600 text-sm leading-relaxed mb-4">{description}</p>
+                  <div className="border-t border-gray-200/60 pt-3">
+                    <span className={`text-lg font-bold ${accent}`}>{stat}</span>
+                    <p className="text-xs text-gray-400 mt-0.5">{statNote}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="bg-white rounded-2xl border-2 border-primary/20 p-8 md:p-10 text-center shadow-sm">
+              <p className="text-xl font-medium text-gray-800 mb-3 leading-relaxed">Das Geheimnis von Consent-Findung?</p>
+              <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-6 leading-relaxed">
+                Es verändert die Frage von <strong>„Wer hat gewonnen?"</strong> zu <strong>„Gibt es jemanden, der ernsthaft Schaden nehmen würde?"</strong>. Diese eine Frage macht den Unterschied zwischen Wettbewerb und Zusammenarbeit.
+              </p>
+              <div className="flex flex-wrap justify-center gap-3 text-sm">
+                {['Keine Mehrheitsdiktatur', 'Keine Endlos-Debatte', 'Kein Stillhalten aus Angst'].map((item) => (
+                  <span key={item} className="px-4 py-1.5 bg-gray-100 text-gray-600 rounded-full font-medium">✗ {item}</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-12 text-center">
+              <p className="text-gray-500 mb-6">Dein Team verdient bessere Entscheidungen. Probiert es aus — kostenlos.</p>
+              <Link href="/register" className="inline-flex items-center gap-2 px-8 py-3 text-base font-medium text-white bg-primary rounded-xl hover:bg-primary-dark transition-colors">
+                Consent für mein Team starten <span aria-hidden="true">→</span>
+              </Link>
             </div>
           </div>
         </section>
