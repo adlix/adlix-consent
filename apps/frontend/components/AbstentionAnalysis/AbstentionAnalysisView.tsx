@@ -87,7 +87,27 @@ export default function AbstentionAnalysisView({
     }
   }
 
-  if (!isOwner || abstentionCount < 3) return null
+  // Not owners never see the analysis component
+  if (!isOwner) return null
+
+  // ── Threshold notice: show when 1-2 abstentions exist ───────────────────────
+  if (abstentionCount > 0 && abstentionCount < 3) {
+    return (
+      <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4">
+        <div className="flex items-center gap-2">
+          <span className="text-base">📊</span>
+          <p className="text-sm text-indigo-700">
+            Enthaltungs-Analyse ab <strong>3 Enthaltungen</strong> verfügbar ({abstentionCount}/3
+            erreicht).
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  // Fewer than 3 abstentions and none to show: hide entirely
+  if (abstentionCount < 3) return null
+
 
   const totalReasons = Object.values(
     data?.reasonCounts ?? ({ A: 0, B: 0, C: 0, D: 0, E: 0 } as ReasonCounts)
@@ -99,10 +119,10 @@ export default function AbstentionAnalysisView({
         <h4 className="font-semibold text-indigo-800 flex items-center gap-2">
           📊 Enthaltungs-Analyse
           <span className="text-xs bg-indigo-200 text-indigo-700 px-2 py-0.5 rounded-full">
-            Pro
+            Musteranalyse
           </span>
           {abstentionCount >= 3 && (
-            <span className="text-xs bg-amber-300 text-amber-800 px-2 py-0.5 rounded-full">
+            <span className="text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full">
               {abstentionCount} Enthaltungen
             </span>
           )}
@@ -139,14 +159,8 @@ export default function AbstentionAnalysisView({
       </div>
 
       {!data && abstentionCount >= 3 && (
-        <p className="text-sm text-indigo-600 mb-2">
-          {abstentionCount} Enthaltungen erkannt — KI-gestützte Musteranalyse verfügbar.
-        </p>
-      )}
-
-      {!data && abstentionCount < 3 && (
-        <p className="text-sm text-indigo-600">
-          Mindestens 3 Enthaltungen für eine Analyse benötigt ({abstentionCount}/3).
+        <p className="text-sm text-indigo-600 mb-2" role="status" aria-live="polite">
+          {abstentionCount} Enthaltungen erkannt — Musteranalyse verfügbar.
         </p>
       )}
 
@@ -225,10 +239,16 @@ export default function AbstentionAnalysisView({
           {/* Thematic clusters */}
           {Object.keys(data.thematicGroups).length > 0 && (
             <div>
-              <h5 className="text-sm font-semibold text-indigo-900 mb-3">🔍 Thematische Cluster</h5>
-              <div className="space-y-2">
+              <h5 className="text-sm font-semibold text-indigo-900 mb-3" id={`clusters-${roundId}`}>
+                🔍 Thematische Cluster
+              </h5>
+              <div className="space-y-2" role="list" aria-labelledby={`clusters-${roundId}`}>
                 {Object.entries(data.thematicGroups).map(([theme, descriptions], idx) => (
-                  <div key={idx} className="bg-white rounded-lg p-3 border border-indigo-100">
+                  <div
+                    key={idx}
+                    role="listitem"
+                    className="bg-white rounded-lg p-3 border border-indigo-100"
+                  >
                     <div className="flex items-start gap-2">
                       <span className="text-indigo-400 text-lg mt-0.5">🔎</span>
                       <div>

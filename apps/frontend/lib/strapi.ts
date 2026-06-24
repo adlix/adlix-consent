@@ -146,6 +146,13 @@ class StrapiClient {
     })
   }
 
+  async updateRound(roundId: number | string, data: Record<string, unknown>) {
+    return this.request<unknown>(`/rounds/${roundId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ data }),
+    })
+  }
+
   // Votes
   async castVote(
     roundId: number | string,

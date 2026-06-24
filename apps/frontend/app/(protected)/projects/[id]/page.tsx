@@ -953,7 +953,9 @@ export default function ProjectDetailPage() {
                         <label className="block text-sm font-medium text-gray-700 mb-1.5">
                           Angepasster Vorschlag
                           {adjustmentSuccess && (
-                            <span className="ml-2 text-xs text-emerald-600 font-normal">✓ Gespeichert</span>
+                            <span className="ml-2 text-xs text-emerald-600 font-normal">
+                              ✓ Gespeichert
+                            </span>
                           )}
                         </label>
                         <textarea
@@ -991,20 +993,9 @@ export default function ProjectDetailPage() {
                           setAdjustmentError('')
                           strapi.setJwt(jwt || null)
                           try {
-                            const apiUrl =
-                              process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
-                            const putRes = await fetch(
-                              `${apiUrl}/api/rounds/${selectedRound!.id}`,
-                              {
-                                method: 'PUT',
-                                headers: {
-                                  'Content-Type': 'application/json',
-                                  ...(jwt ? { Authorization: `Bearer ${jwt}` } : {}),
-                                },
-                                body: JSON.stringify({ data: { proposal: adjustmentProposal.trim() } }),
-                              }
-                            )
-                            if (!putRes.ok) throw new Error('Save failed')
+                            await strapi.updateRound(selectedRound!.id, {
+                              proposal: adjustmentProposal.trim(),
+                            })
                             setAdjustmentSuccess(true)
                             // Then advance phase to voting
                             await strapi.transitionRoundPhase(selectedRound!.id)
@@ -1022,7 +1013,9 @@ export default function ProjectDetailPage() {
                         disabled={adjustmentSaving || !adjustmentProposal.trim()}
                         className="px-6 py-2.5 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50 text-sm"
                       >
-                        {adjustmentSaving ? 'Speichere…' : '💾 Vorschlag speichern & zur Abstimmung'}
+                        {adjustmentSaving
+                          ? 'Speichere…'
+                          : '💾 Vorschlag speichern & zur Abstimmung'}
                       </button>
                     </div>
                   )}
@@ -1122,30 +1115,23 @@ export default function ProjectDetailPage() {
                             </span>
                             {selectedRound.votes.filter((v) => v.choice !== 'consent').length >
                               0 && (
-                                <span
-                                  className={`flex items-center gap-1 ${
-                                    hasMajorObjection ? 'text-red-700' : 'text-amber-700'
-                                  }`}
-                                >
-                                  <span>{hasMajorObjection ? '🔴' : '💛'}</span>
-                                  <span className="font-medium">
-                                    {
-                                      selectedRound.votes.filter(
-                                        (v) => v.choice !== 'consent'
-                                      ).length
-                                    }
-                                  </span>{' '}
-                                  {hasMajorObjection ? 'Einwand' : 'Anmerkung'}
-                                </span>
-                              )}
+                              <span
+                                className={`flex items-center gap-1 ${
+                                  hasMajorObjection ? 'text-red-700' : 'text-amber-700'
+                                }`}
+                              >
+                                <span>{hasMajorObjection ? '🔴' : '💛'}</span>
+                                <span className="font-medium">
+                                  {selectedRound.votes.filter((v) => v.choice !== 'consent').length}
+                                </span>{' '}
+                                {hasMajorObjection ? 'Einwand' : 'Anmerkung'}
+                              </span>
+                            )}
                             {selectedRound.votes.some((v) => v.choice === 'abstain') && (
                               <span className="flex items-center gap-1 text-slate-600">
                                 <span>⏸️</span>
                                 <span className="font-medium">
-                                  {
-                                    selectedRound.votes.filter((v) => v.choice === 'abstain')
-                                      .length
-                                  }
+                                  {selectedRound.votes.filter((v) => v.choice === 'abstain').length}
                                 </span>{' '}
                                 Enthaltungen
                               </span>
@@ -1616,7 +1602,10 @@ export default function ProjectDetailPage() {
                   <span className="text-base">📜</span>
                   <h3 className="text-base font-semibold text-gray-700">Aktivitäten-Timeline</h3>
                   <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">
-                    {selectedRound.comments.length + selectedRound.votes.length + selectedRound.objections.length} Einträge
+                    {selectedRound.comments.length +
+                      selectedRound.votes.length +
+                      selectedRound.objections.length}{' '}
+                    Einträge
                   </span>
                 </div>
                 <div className="bg-gray-50/80 rounded-xl p-4">
@@ -1628,7 +1617,8 @@ export default function ProjectDetailPage() {
                         label: 'Vorhaben eingereicht',
                         timestamp: new Date().toLocaleDateString('de-DE'),
                       },
-                      ...(selectedRound.comments.some((c) => c.type === 'question') || selectedRound.comments.some((c) => c.type === 'reaction')
+                      ...(selectedRound.comments.some((c) => c.type === 'question') ||
+                      selectedRound.comments.some((c) => c.type === 'reaction')
                         ? [
                             {
                               action: 'submit_reaction',
