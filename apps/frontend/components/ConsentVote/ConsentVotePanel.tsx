@@ -159,7 +159,7 @@ export default function ConsentVotePanel({
             </button>
           )}
         </div>
-        <VoteResults votes={votes} participantCount={participantCount} />
+        <VoteResults votes={votes} participantCount={participantCount} showMobileBar />
       </div>
     )
   }
@@ -291,19 +291,20 @@ export default function ConsentVotePanel({
       </div>
 
       {/* Vote results preview (while voting is open) */}
-      {votes.length > 0 && <VoteResults votes={votes} participantCount={participantCount} />}
+      {votes.length > 0 && (
+        <VoteResults votes={votes} participantCount={participantCount} showMobileBar />
+      )}
     </div>
   )
 }
 
 // ─── Vote Results sub-component ─────────────────────────────────────────────
 
-function VoteResults({ votes, participantCount }: { votes: Vote[]; participantCount: number }) {
+function VoteResults({ votes, participantCount, showMobileBar = false }: { votes: Vote[]; participantCount: number; showMobileBar?: boolean }) {
   const countFor = (c: ConsentChoice) => votes.filter((v) => v.choice === c).length
   const total = votes.length
   const remaining = Math.max(0, participantCount - total)
 
-  // Summary pills — compact for mobile
   const hasVotes = total > 0
 
   return (
@@ -314,6 +315,26 @@ function VoteResults({ votes, participantCount }: { votes: Vote[]; participantCo
           {total}/{participantCount}
         </span>
       </div>
+
+      {/* Stacked bar — compact, visible on mobile when enabled */}
+      {hasVotes && showMobileBar && (
+        <div className="mb-3">
+          <div className="flex h-2.5 rounded-full overflow-hidden gap-px bg-gray-100">
+            {CHOICES.map(({ key, colorBg }) => {
+              const count = countFor(key)
+              if (count === 0) return null
+              return (
+                <div
+                  key={key}
+                  className={`${colorBg} transition-all duration-500 rounded-full`}
+                  style={{ width: `${total > 0 ? (count / total) * 100 : 0}%` }}
+                  title={`${CHOICES.find((c) => c.key === key)?.label}: ${count}`}
+                />
+              )
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Summary pills — compact mobile-first */}
       {hasVotes && (

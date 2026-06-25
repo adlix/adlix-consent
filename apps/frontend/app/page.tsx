@@ -3236,6 +3236,107 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* MVP-Features: Was heute live ist + Roadmap */}
+        <section
+          className="py-16 bg-white border-t border-gray-100"
+          aria-labelledby="mvp-features-heading"
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-sm font-medium mb-4">
+                <span aria-hidden="true">🚀</span> MVP — Was heute schon geht
+              </div>
+              <h2 id="mvp-features-heading" className="text-3xl font-bold mb-4">
+                Sofort einsatzbereit — der komplette Consent-Loop
+              </h2>
+              <p className="text-gray-500 max-w-2xl mx-auto">
+                Das MVP enthält alles, was ein Team für den Consent-Prozess braucht: den完整lichen 6-Phasen-Loop,
+                Kreise, Abstimmungen, Einwand-Integration und Dokumentation. Kein Setup, keine Konfiguration.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6 mb-10">
+              {/* Live now */}
+              <div className="rounded-2xl border-2 border-emerald-300 bg-emerald-50/40 p-6">
+                <div className="flex items-center gap-2 mb-5">
+                  <span className="text-xl">✅</span>
+                  <h3 className="font-bold text-emerald-900 text-lg">Live im MVP</h3>
+                </div>
+                <ul className="space-y-3">
+                  {[
+                    { icon: '🗳️', text: 'Vollständiger 6-Phasen-Consent-Loop — von Einreichung bis Beschluss' },
+                    { icon: '🔵', text: 'Kreise erstellen & Einladungs-Links teilen — in Minuten einsatzbereit' },
+                    { icon: '✅', text: '4-Stimmen-System: Konsent, leichter Einwand, schwerwiegender Einwand, Enthaltung' },
+                    { icon: '🔴', text: 'Strukturierter Einwand-Dialog mit Phasen 1–6 und Synthese' },
+                    { icon: '📊', text: 'Enthaltungs-Analyse ab 3 Enthaltungen — mit thematischer Clusterung' },
+                    { icon: '🔒', text: 'Anonyme Bedenken (Enthaltungsgrund D) — KI aggregiert thematisch' },
+                    { icon: '📜', text: 'Audit-Trail: Alle Phasen, Stimmen, Einwände — vollständig dokumentiert' },
+                    { icon: '🔔', text: 'Automatische Erinnerungen — niemand vergisst abzustimmen' },
+                    { icon: '📋', text: 'Vorhaben bearbeiten, Runden vergleichen, Evaluationsdatum setzen' },
+                    { icon: '🌍', text: 'Vollständig async — kein Meeting nötig, überall auf der Welt' },
+                  ].map(({ icon, text }) => (
+                    <li key={text} className="flex items-start gap-2.5 text-sm text-emerald-800">
+                      <span className="text-base shrink-0 mt-0.5">{icon}</span>
+                      <span>{text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Coming soon */}
+              <div className="rounded-2xl border-2 border-gray-200 bg-gray-50/60 p-6">
+                <div className="flex items-center gap-2 mb-5">
+                  <span className="text-xl">🗺️</span>
+                  <h3 className="font-bold text-gray-700 text-lg">Auf der Roadmap</h3>
+                </div>
+                <ul className="space-y-3">
+                  {[
+                    { icon: '🤖', text: 'KI-gestützte Einwands-Analyse & Formulierungshilfen (Pro)' },
+                    { icon: '🔗', text: 'Multi-Circle: Kreise über Ebenen verbinden (Tribe-Aufbau)' },
+                    { icon: '📊', text: 'Voting mit Delegierten — für größere Organisationen' },
+                    { icon: '📥', text: 'CSV-Import für bestehende Teams und Mitglieder' },
+                    { icon: '🔌', text: 'API für Integrationen (Webhook, Zapier/Make)' },
+                    { icon: '📈', text: 'Team-Analytics: Consent-Qualität, Beteiligung, Zeitverläufe' },
+                    { icon: '🎓', text: 'In-App Consent-Schulung & interaktive Tutorials' },
+                    { icon: '🌐', text: 'Mehrsprachigkeit — UI und E-Mails inklusive' },
+                    { icon: '📱', text: 'Native iOS & Android App mit Push-Notifications' },
+                    { icon: '🏛️', text: 'Holacracy-Support: Rollen, Linkes, Spannungen formal abbilden' },
+                  ].map(({ icon, text }) => (
+                    <li key={text} className="flex items-start gap-2.5 text-sm text-gray-600">
+                      <span className="text-base shrink-0 mt-0.5">{icon}</span>
+                      <span>{text}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-6 pt-4 border-t border-gray-200">
+                  <p className="text-xs text-gray-400 leading-relaxed">
+                    Features werden nach Nutzer-Feedback priorisiert. Hast du einen Feature-Wunsch?
+                    Schreibe uns — jede Stimme zählt.{' '}
+                    <a href="mailto:feedback@adlix.de" className="text-primary underline hover:text-primary-dark">
+                      feedback@adlix.de
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-r from-slate-800 to-indigo-900 rounded-2xl p-6 md:p-8 text-white text-center">
+              <p className="text-lg font-medium mb-2">
+                🚀 Das MVP ist sofort nutzbar. Keine Demo, kein Sales-Call.
+              </p>
+              <p className="text-slate-300 text-sm mb-6">
+                Free-Plan: 3 Vorhaben · Bis 50 Teilnehmer · Sofort einsatzbereit
+              </p>
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary font-semibold rounded-xl hover:bg-gray-100 transition-colors"
+              >
+                Ersten Consent-Loop starten →
+              </Link>
+            </div>
+          </div>
+        </section>
+
         <PricingSection />
       </main>
 

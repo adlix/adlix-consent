@@ -56,28 +56,18 @@ export default function AbstentionAnalysisView({
     try {
       strapi.setJwt(jwt || null)
       const result = await strapi.analyseAbstentions(roundId)
-
-      const apiData = result as unknown as {
-        data?: {
-          roundId: number
-          totalAbstentions: number
-          reasonCounts: ReasonCounts
-          thematicGroups: ThematicGroup
-          recommendations?: string[]
-        }
-      }
-      const payload = apiData.data
+      const payload = (result as { data?: Record<string, unknown> }).data
 
       if (!payload) {
         throw new Error('Keine Analyse-Daten erhalten.')
       }
 
       setData({
-        roundId: payload.roundId,
-        totalAbstentions: payload.totalAbstentions,
-        reasonCounts: payload.reasonCounts,
-        thematicGroups: payload.thematicGroups,
-        recommendations: payload.recommendations ?? [],
+        roundId: (payload.roundId as number) ?? roundId,
+        totalAbstentions: (payload.totalAbstentions as number) ?? 0,
+        reasonCounts: (payload.reasonCounts as ReasonCounts) ?? { A: 0, B: 0, C: 0, D: 0, E: 0 },
+        thematicGroups: (payload.thematicGroups as ThematicGroup) ?? {},
+        recommendations: (payload.recommendations as string[]) ?? [],
         analysedAt: new Date().toLocaleString('de-DE'),
       })
     } catch (err) {
@@ -87,26 +77,8 @@ export default function AbstentionAnalysisView({
     }
   }
 
-  // Not owners never see the analysis component
-  if (!isOwner) return null
-
-  // ── Threshold notice: show when 1-2 abstentions exist ───────────────────────
-  if (abstentionCount > 0 && abstentionCount < 3) {
-    return (
-      <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4">
-        <div className="flex items-center gap-2">
-          <span className="text-base">📊</span>
-          <p className="text-sm text-indigo-700">
-            Enthaltungs-Analyse ab <strong>3 Enthaltungen</strong> verfügbar ({abstentionCount}/3
-            erreicht).
-          </p>
-        </div>
-      </div>
-    )
-  }
-
-  // Fewer than 3 abstentions and none to show: hide entirely
-  if (abstentionCount < 3) return null
+  // Only owners see the analysis; component stays hidden until 3+ abstentions
+  if (!isOwner || abstentionCount < 3) return null
 
 
   const totalReasons = Object.values(
