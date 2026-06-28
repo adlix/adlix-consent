@@ -3250,7 +3250,7 @@ export default function HomePage() {
                 Sofort einsatzbereit — der komplette Consent-Loop
               </h2>
               <p className="text-gray-500 max-w-2xl mx-auto">
-                Das MVP enthält alles, was ein Team für den Consent-Prozess braucht: den完整lichen 6-Phasen-Loop,
+                Das MVP enthält alles, was ein Team für den Consent-Prozess braucht: den vollständigen 6-Phasen-Loop,
                 Kreise, Abstimmungen, Einwand-Integration und Dokumentation. Kein Setup, keine Konfiguration.
               </p>
             </div>
@@ -3332,6 +3332,132 @@ export default function HomePage() {
                 className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary font-semibold rounded-xl hover:bg-gray-100 transition-colors"
               >
                 Ersten Consent-Loop starten →
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* 6-Phasen-Visual: Consent-Loop auf einen Blick */}
+        <section
+          className="py-20 bg-gradient-to-b from-indigo-50/40 via-white to-white border-t border-gray-100"
+          aria-labelledby="phases-overview-heading"
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-14">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-50 text-indigo-700 rounded-full text-sm font-medium mb-4">
+                <span aria-hidden="true">🔄</span> Der vollständige Prozess
+              </div>
+              <h2 id="phases-overview-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                Die 6 Phasen — von der Idee zum Beschluss
+              </h2>
+              <p className="text-gray-500 max-w-xl mx-auto">
+                Ein Consent-Loop ist kein langes Meeting. Jede Phase hat eine klar definierte Rolle —
+                und wird strukturiert durchlaufen.
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                {
+                  phase: '1',
+                  icon: '📝',
+                  name: 'Vorhaben einreichen',
+                  desc: 'Der Einreicher beschreibt sein Vorhaben: Was schlägst du vor, warum, und was ist das Ziel?',
+                  color: 'indigo',
+                  badge: 'Start',
+                  badgeColor: 'bg-indigo-100 text-indigo-700',
+                },
+                {
+                  phase: '2',
+                  icon: '❓',
+                  name: 'Informationsrunde',
+                  desc: 'Der Kreis stellt Verständnisfragen. Nur Klärung — keine Meinungen, keine Diskussion.',
+                  color: 'blue',
+                  badge: 'Klärung',
+                  badgeColor: 'bg-blue-100 text-blue-700',
+                },
+                {
+                  phase: '3',
+                  icon: '💬',
+                  name: 'Reaktionsrunde',
+                  desc: 'Jede Stimme teilt ihre Perspektive. Kein Gegenargumentieren — aktives Zuhören.',
+                  color: 'purple',
+                  badge: 'Perspektiven',
+                  badgeColor: 'bg-purple-100 text-purple-700',
+                },
+                {
+                  phase: '4',
+                  icon: '🔄',
+                  name: 'Anpassung',
+                  desc: 'Der Einreicher überarbeitet den Vorschlag auf Basis der Rückmeldungen — oder lässt ihn so.',
+                  color: 'orange',
+                  badge: 'Iteration',
+                  badgeColor: 'bg-orange-100 text-orange-700',
+                },
+                {
+                  phase: '5',
+                  icon: '🗳️',
+                  name: 'Abstimmung',
+                  desc: 'Konsent, leichter Einwand, schwerwiegender Einwand oder Enthaltung. Ergebnis in 48h.',
+                  color: 'emerald',
+                  badge: 'Entscheidung',
+                  badgeColor: 'bg-emerald-100 text-emerald-700',
+                },
+                {
+                  phase: '6',
+                  icon: '🤝',
+                  name: 'Integration',
+                  desc: 'Schwerwiegende Einwände? Im strukturierten Dialog integrieren, dann neue Abstimmung.',
+                  color: 'rose',
+                  badge: 'Einwand-Integration',
+                  badgeColor: 'bg-rose-100 text-rose-700',
+                },
+              ].map(({ phase, icon, name, desc, badge, badgeColor }, idx) => (
+                <div
+                  key={phase}
+                  className="group relative rounded-2xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md hover:border-gray-300 transition-all duration-200"
+                >
+                  {/* Phase number */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-lg font-bold">
+                        {phase}
+                      </div>
+                      <span className="text-2xl" aria-hidden="true">{icon}</span>
+                    </div>
+                    <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${badgeColor}`}>
+                      {badge}
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-gray-900 mb-2 text-base">{name}</h3>
+                  <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
+                  {/* Arrow to next phase on mobile */}
+                  {idx < 5 && (
+                    <div className="absolute right-4 bottom-4 text-gray-300 text-xl opacity-0 group-hover:opacity-100 transition-opacity sm:hidden">
+                      →
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Timeline connector hint */}
+            <div className="mt-8 flex items-center justify-center gap-2 text-sm text-gray-400">
+              <span>Die Phasen laufen typischerweise über 2–5 Tage ab</span>
+              <span>·</span>
+              <span>Komplett async — kein Meeting nötig</span>
+            </div>
+
+            {/* CTA */}
+            <div className="mt-10 text-center">
+              <p className="text-gray-500 text-sm mb-4">
+                Sieh dir den vollständigen Ablauf in einer Live-Demo an ↓
+              </p>
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition-colors"
+              >
+                Consent-Loop mit meinem Team starten →
               </Link>
             </div>
           </div>
