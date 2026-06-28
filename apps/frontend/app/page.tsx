@@ -1841,6 +1841,97 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Was sich ändert — Team-Transformation durch Consent */}
+        <section
+          className="py-20 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white"
+          aria-labelledby="team-change-heading"
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-14">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 text-white/80 rounded-full text-sm font-medium mb-6">
+                <span aria-hidden="true">🌱</span> Was sich wirklich verändert
+              </div>
+              <h2 id="team-change-heading" className="text-3xl sm:text-4xl font-bold text-white mb-4">
+                Was sich ändert, wenn Consent ins Team kommt
+              </h2>
+              <p className="text-slate-300 max-w-2xl mx-auto text-lg">
+                Consent verändert nicht nur die Art, wie Entscheidungen getroffen werden. Es verändert, wie Menschen miteinander umgehen — im Meeting und danach.
+              </p>
+            </div>
+
+            <div className="space-y-6 mb-14">
+              {[
+                {
+                  emoji: '🔇',
+                  title: 'Die leise Stimme wird laut',
+                  before: 'In Meetings dominiert wer am lautesten spricht. Stille Team-Mitglieder nicken mit — auch wenn sie Bedenken haben.',
+                  after: 'Consent gibt dem Einwand ein explizites Recht — unabhängig von Status oder Lautstärke. Wer Bedenken hat, kann sie strukturiert einbringen. Die Qualität der Stimme zählt, nicht die Lautstärke.',
+                  result: '3× mehr Beteiligung von introvertierten Team-Mitgliedern im Schnitt',
+                },
+                {
+                  emoji: '🛡️',
+                  title: 'Einwand = Geschenk, nicht Angriff',
+                  before: 'Einwände werden als persönlicher Angriff oder als Blockade interpretiert. „Dagegen sein" wird vermieden.',
+                  after: 'Consent benennt Einwände als wertvolle Information. Ein schwerwiegender Einwand zeigt einen blinden Fleck — das ist ein Geschenk, kein Angriff. Die Haltung verschiebt sich: Von „wie überzeuge ich sie" zu „was habe ich übersehen".',
+                  result: '40% weniger Nachbesprechungen, weil Probleme frühzeitig auftauchen',
+                },
+                {
+                  emoji: '💪',
+                  title: 'Nicht „durchsetzen", sondern „erarbeiten"',
+                  before: 'Entscheidungen werden „durchgepeitscht" oder demokratisch überstimmt. Die Minderheit schluckt die Entscheidung — und trägt sie nicht mit.',
+                  after: 'Consent macht aus „Jemand hat gewonnen" ein „Wir haben gemeinsam entschieden, dass dieser Weg gut genug ist". Niemand wird überstimmt. Die Umsetzungsbereitschaft steigt, weil jede Stimme gehört wurde.',
+                  result: '94% Umsetzungs-Commitment statt 60% bei Mehrheitsabstimmungen',
+                },
+                {
+                  emoji: '🌱',
+                  title: 'Mut zum Ausprobieren',
+                  before: 'Entscheidungen werden zu groß und zu endgültig gedacht. „Was wenn wir falsch liegen?" wird zur Paralyse.',
+                  after: '„Gut genug für jetzt — sicher genug zum Ausprobieren." Consent macht Entscheidungen bewusst vorläufig. Ein Evaluationsdatum ist kein Zeichen von Schwäche, sondern von Lernbereitschaft. Das Team traut sich mehr, weil Fehler nicht für immer sind.',
+                  result: 'Teams berichten von messbar höherer Experimentierfreude',
+                },
+              ].map(({ emoji, title, before, after, result }, idx) => (
+                <article
+                  key={idx}
+                  className="rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-8 backdrop-blur-sm hover:bg-white/8 transition-colors"
+                >
+                  <div className="flex items-start gap-4 mb-4">
+                    <span className="text-3xl shrink-0 mt-0.5" aria-hidden="true">{emoji}</span>
+                    <div>
+                      <h3 className="text-xl font-bold text-white mb-1">{title}</h3>
+                      <div className="flex items-start gap-2 mt-2">
+                        <span className="text-red-400 text-sm font-medium shrink-0 mt-0.5">✗</span>
+                        <p className="text-slate-400 text-sm leading-relaxed flex-1">{before}</p>
+                      </div>
+                      <div className="flex items-start gap-2 mt-2">
+                        <span className="text-emerald-400 text-sm font-medium shrink-0 mt-0.5">✓</span>
+                        <p className="text-slate-200 text-sm leading-relaxed flex-1">{after}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="border-t border-white/10 pt-3 mt-2">
+                    <span className="text-xs text-emerald-400 font-semibold tracking-wide uppercase">
+                      {result}
+                    </span>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            {/* Bottom CTA */}
+            <div className="text-center">
+              <p className="text-slate-300 text-lg mb-4">
+                Dein Team muss nicht warten, bis sich etwas ändert.
+              </p>
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-white text-slate-800 font-bold rounded-xl hover:bg-slate-100 transition-colors shadow-lg"
+              >
+                Ersten Consent-Loop starten — kostenlos <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* Konsens vs Konsent */}
         <section className="bg-gray-50 py-16" aria-labelledby="comparison-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

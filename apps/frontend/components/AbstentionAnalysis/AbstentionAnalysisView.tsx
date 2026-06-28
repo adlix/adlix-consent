@@ -48,10 +48,12 @@ export default function AbstentionAnalysisView({
   const [data, setData] = useState<AnalysisData | null>(null)
   const [loading, setLoading] = useState(false)
   const [expanded, setExpanded] = useState(false)
+  const [analysisError, setAnalysisError] = useState<string | null>(null)
 
   const jwt = (session as unknown as { jwt?: string })?.jwt
 
   const fetchAnalysis = async () => {
+    setAnalysisError(null)
     setLoading(true)
     try {
       strapi.setJwt(jwt || null)
@@ -72,13 +74,25 @@ export default function AbstentionAnalysisView({
       })
     } catch (err) {
       console.error('Failed to run analysis:', err)
+      setAnalysisError(
+        'Analyse konnte nicht geladen werden. Bitte versuche es erneut.',
+      )
     } finally {
       setLoading(false)
     }
   }
 
   // Only owners see the analysis; component stays hidden until 3+ abstentions
-  if (!isOwner || abstentionCount < 3) return null
+  if (!isOwner || abstentionCount < 3) {
+    // Render a hidden status for screen readers so the component's purpose is clear
+    return (
+      <div aria-live="polite" className="sr-only">
+        {abstentionCount < 3
+          ? `Enthaltungs-Analyse: Noch nicht verfügbar — mindestens 3 Enthaltungen benötigt (aktuell: ${abstentionCount}).`
+          : 'Enthaltungs-Analyse: Nur für Vorhaben-Ersteller verfügbar.'}
+      </div>
+    )
+  }
 
 
   const totalReasons = Object.values(
@@ -87,6 +101,14 @@ export default function AbstentionAnalysisView({
 
   return (
     <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4">
+      {analysisError && (
+        <div
+          className="mb-3 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700"
+          role="alert"
+        >
+          <strong>Fehler:</strong> {analysisError}
+        </div>
+      )}
       <div className="flex items-center justify-between mb-3">
         <h4 className="font-semibold text-indigo-800 flex items-center gap-2">
           📊 Enthaltungs-Analyse
