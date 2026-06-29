@@ -3394,6 +3394,172 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Consent-Prozess im Detail */}
+        <section
+          className="py-20 bg-gradient-to-b from-white to-slate-50"
+          aria-labelledby="process-detail-heading"
+        >
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-14">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-violet-100 text-violet-700 rounded-full text-sm font-medium mb-6">
+                <span aria-hidden="true">🗺️</span> Der komplette Prozess
+              </div>
+              <h2 id="process-detail-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                Der Consent-Prozess im Detail
+              </h2>
+              <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+                6 Phasen, 0 Hierarchie, 100% Transparenz. So funktioniert Consent-Findung in der Praxis — von der ersten Idee bis zum Beschluss.
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              {[
+                {
+                  phase: 1,
+                  icon: '📝',
+                  title: '1. Vorhaben einreichen',
+                  who: 'Jedes Kreis-Mitglied',
+                  duration: '1 Minute',
+                  description: 'Du hast eine Idee oder einen Vorschlag? Trage ihn als Vorhaben ein. Beschreibe das Was, das Warum und — wenn bekannt — das Wer, Wie und Wann. Je klarer, desto besser die Abstimmung.',
+                  tips: [
+                    'Formuliere den Vorschlag positiv: „Wir machen X" statt „Wir machen nicht Y"',
+                    'Benenne die Spannung: Was hat dich dazu gebracht, diesen Vorschlag zu machen?',
+                    'Nenne ein Evaluationsdatum: Wann schauen wir, ob es funktioniert hat?',
+                  ],
+                  color: 'from-blue-50 to-indigo-50',
+                  border: 'border-blue-200',
+                  accent: 'bg-blue-500',
+                },
+                {
+                  phase: 2,
+                  icon: '❓',
+                  title: '2. Informationsrunde',
+                  who: 'Alle Kreis-Mitglieder',
+                  duration: 'Offen — bis alle Fragen beantwortet',
+                  description: 'Nur Verständnisfragen — keine Meinungen, kein Gegenargumentieren. Jeder, der etwas nicht versteht, kann fragen. Der Einreicher antwortet. Ziel: gemeinsames Verständnis des Vorhabens.',
+                  tips: [
+                    'Stelle Fragen, nicht Thesen — „Wie genau funktioniert X?" statt „Ich glaube, X ist problematisch"',
+                    'Antworte als Einreicher klar und kurz — kein Rechtfertigen, nur Erklären',
+                    'Alle Fragen sind willkommen: Wer, Was, Wie, Warum — nichts ist zu trivial',
+                  ],
+                  color: 'from-indigo-50 to-purple-50',
+                  border: 'border-indigo-200',
+                  accent: 'bg-indigo-500',
+                },
+                {
+                  phase: 3,
+                  icon: '💬',
+                  title: '3. Reaktionsrunde',
+                  who: 'Alle Kreis-Mitglieder',
+                  duration: 'Offen — bis alle reagiert haben',
+                  description: 'Jede Person teilt ihre Perspektive — reihum, ohne zu kommentieren. Keine Diskussion, kein Gegenargumentieren. Nur: Was löst das Vorhaben in dir aus?',
+                  tips: [
+                    'Reagiere als Zuhörer*in — nicht als Debattant*in',
+                    'Kein „Aber" — nur eigene Perspektiven teilen',
+                    'Die stillen Stimmen zählen am meisten: Wer zuletzt spricht, hat oft am klarsten nachgedacht',
+                  ],
+                  color: 'from-purple-50 to-pink-50',
+                  border: 'border-purple-200',
+                  accent: 'bg-purple-500',
+                },
+                {
+                  phase: 4,
+                  icon: '🔄',
+                  title: '4. Anpassung (Optional)',
+                  who: 'Einreicher — aber alle können Vorschläge machen',
+                  duration: 'Flexibel',
+                  description: 'Der Einreicher überarbeitet den Vorschlag auf Basis der Perspektiven. Das ist kein Schwäche-Zeichen — das ist der Prozess. Ein guter Vorschlag wird durch Perspektiven besser.',
+                  tips: [
+                    'Nimm Perspektiven als Geschenk — nicht als Kritik',
+                    'Du musst nicht alle Vorschläge integrieren — aber jeden beachten',
+                    'Eine klare, große Anpassung ist besser als viele kleine',
+                  ],
+                  color: 'from-pink-50 to-rose-50',
+                  border: 'border-pink-200',
+                  accent: 'bg-pink-500',
+                },
+                {
+                  phase: 5,
+                  icon: '🗳️',
+                  title: '5. Konsent-Abstimmung',
+                  who: 'Alle Kreis-Mitglieder',
+                  duration: 'Offen — bis alle abgestimmt haben',
+                  description: 'Jetzt wird abgestimmt: Konsent (kein schwerwiegender Einwand), leichter Einwand (Anmerkung), schwerwiegender Einwand (Blocker), oder Enthaltung (mit Begründung). Ergebnis: tragfähiger Beschluss.',
+                  tips: [
+                    'Prüfe ehrlich: Habe ich einen schwerwiegenden, begründeten Einwand — oder nur eine Präferenz?',
+                    'Enthaltungen sind okay — aber nur mit Begründung',
+                    'Anonyme Bedenken sind möglich — für die Momente, in denen du dich nicht sicher fühlst',
+                  ],
+                  color: 'from-amber-50 to-orange-50',
+                  border: 'border-amber-200',
+                  accent: 'bg-amber-500',
+                },
+                {
+                  phase: 6,
+                  icon: '🤝',
+                  title: '6. Integration (bei Einwänden)',
+                  who: 'Einreicher + Einwand-Geber',
+                  duration: 'Bis Lösung gefunden',
+                  description: 'Wenn jemand einen schwerwiegenden Einwand hat, startet der 6-Phasen-Dialog: Verstehen → Validieren → Lösungen suchen → Synthese → Neuen Vorschlag präsentieren → Erneut abstimmen. Bis Konsent erreicht ist.',
+                  tips: [
+                    'Der Einwand zeigt dir einen blinden Fleck — geh neugierig damit um',
+                    'Suche gemeinsam nach Anpassungen — nicht nach Kompromissen',
+                    'Wenn keine Lösung möglich ist: Vorhaben zurückstellen, nicht erzwingen',
+                  ],
+                  color: 'from-emerald-50 to-teal-50',
+                  border: 'border-emerald-200',
+                  accent: 'bg-emerald-500',
+                },
+              ].map(({ phase, icon, title, who, duration, description, tips, color, border, accent }) => (
+                <article
+                  key={phase}
+                  className={`rounded-2xl border ${border} bg-gradient-to-br ${color} overflow-hidden`}
+                >
+                  <div className="flex flex-col sm:flex-row">
+                    <div className={`${accent} text-white p-6 sm:w-36 flex flex-col items-center justify-center shrink-0`}>
+                      <div className="text-3xl mb-2">{icon}</div>
+                      <div className="text-xs font-bold uppercase tracking-wider opacity-80">Phase {phase}</div>
+                    </div>
+                    <div className="flex-1 p-6">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-3">
+                        <h3 className="font-bold text-lg">{title}</h3>
+                        <div className="flex gap-3 sm:ml-auto text-xs text-gray-500">
+                          <span className="px-2 py-0.5 bg-white/70 rounded-full">👤 {who}</span>
+                          <span className="px-2 py-0.5 bg-white/70 rounded-full">⏱️ {duration}</span>
+                        </div>
+                      </div>
+                      <p className="text-gray-700 text-sm leading-relaxed mb-4">{description}</p>
+                      <div className="bg-white/60 rounded-xl p-4 border border-gray-100">
+                        <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">💡 Praktische Tipps</p>
+                        <ul className="space-y-1.5">
+                          {tips.map((tip, i) => (
+                            <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+                              <span className="text-gray-400 shrink-0 mt-0.5">→</span>
+                              <span>{tip}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="mt-12 text-center">
+              <p className="text-gray-500 mb-5">
+                Klingt nach viel? Es ist schneller, als du denkst — und besser als jede Alternative.
+              </p>
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-violet-600 text-white font-medium rounded-xl hover:bg-violet-700 transition-colors"
+              >
+                Jetzt ersten Consent-Loop starten →
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* CTA before pricing */}
         <section className="py-16 bg-primary text-white" aria-labelledby="cta-heading">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
