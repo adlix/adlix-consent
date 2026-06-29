@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { strapi } from '../../lib/strapi'
+import { strapi } from '@/lib/strapi'
 import Phase1Understand from './Phase1Understand'
 import Phase2Validate from './Phase2Validate'
 import Phase3Solutions from './Phase3Solutions'

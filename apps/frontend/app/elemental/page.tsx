@@ -180,18 +180,34 @@ export default function ElementalPage() {
       {/* Header */}
       <header
         className="sticky top-0 z-50 border-b"
-        style={{ background: 'rgba(250,249,245,0.92)', borderColor: '#e5e3dc', backdropFilter: 'blur(12px)' }}
+        style={{
+          background: 'rgba(250,249,245,0.92)',
+          borderColor: '#e5e3dc',
+          backdropFilter: 'blur(12px)',
+        }}
       >
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-xl" aria-hidden="true">🌿</span>
-            <span className="font-semibold" style={{ color: '#2d3a2e' }}>Elemental</span>
+            <span className="text-xl" aria-hidden="true">
+              🌿
+            </span>
+            <span className="font-semibold" style={{ color: '#2d3a2e' }}>
+              Elemental
+            </span>
           </div>
           <nav className="flex items-center gap-6 text-sm">
-            <a href="#weg" className="hover:opacity-70" style={{ color: '#5a5a52' }}>Der Weg</a>
-            <a href="#angebote" className="hover:opacity-70" style={{ color: '#5a5a52' }}>Angebote</a>
-            <a href="#vision" className="hover:opacity-70" style={{ color: '#5a5a52' }}>Visionssuche</a>
-            <a href="#ueber" className="hover:opacity-70" style={{ color: '#5a5a52' }}>Über mich</a>
+            <a href="#weg" className="hover:opacity-70" style={{ color: '#5a5a52' }}>
+              Der Weg
+            </a>
+            <a href="#angebote" className="hover:opacity-70" style={{ color: '#5a5a52' }}>
+              Angebote
+            </a>
+            <a href="#vision" className="hover:opacity-70" style={{ color: '#5a5a52' }}>
+              Visionssuche
+            </a>
+            <a href="#ueber" className="hover:opacity-70" style={{ color: '#5a5a52' }}>
+              Über mich
+            </a>
             <a
               href="https://kit.com/matthias-zillig/erstgespraech"
               className="px-4 py-1.5 rounded-lg text-sm font-medium text-white transition-opacity hover:opacity-90"
@@ -213,15 +229,16 @@ export default function ElementalPage() {
             >
               <span>🌿</span> Ganzheitliche Begleitung bei Lebensübergängen
             </div>
-            <h1 className="text-4xl lg:text-5xl font-bold leading-tight mb-6" style={{ color: '#1a1a18' }}>
-              Weißt du,{' '}
-              <span style={{ color: '#3d6a40' }}>wo dein Zentrum ist</span>
-              ?
+            <h1
+              className="text-4xl lg:text-5xl font-bold leading-tight mb-6"
+              style={{ color: '#1a1a18' }}
+            >
+              Weißt du, <span style={{ color: '#3d6a40' }}>wo dein Zentrum ist</span>?
             </h1>
             <p className="text-lg leading-relaxed mb-8" style={{ color: '#5a5a52' }}>
-              Wenn alles in Bewegung ist — aber die Richtung fehlt. Wenn du spürst, dass da mehr
-              ist — aber nicht weißt, was. Die Elemente helfen dir, deine eigene Landkarte zu
-              lesen. Nicht als Theorie. Als Weg.
+              Wenn alles in Bewegung ist — aber die Richtung fehlt. Wenn du spürst, dass da mehr ist
+              — aber nicht weißt, was. Die Elemente helfen dir, deine eigene Landkarte zu lesen.
+              Nicht als Theorie. Als Weg.
             </p>
             <div className="flex flex-wrap gap-4">
               <a
@@ -251,56 +268,100 @@ export default function ElementalPage() {
               >
                 <div className="text-center">
                   <div className="text-2xl mb-1">⚡</div>
-                  <div className="text-xs font-semibold" style={{ color: '#3d6a40' }}>Zentrum</div>
-                  <div className="text-xs" style={{ color: '#8a8a7e' }}>Lebenskraft</div>
+                  <div className="text-xs font-semibold" style={{ color: '#3d6a40' }}>
+                    Zentrum
+                  </div>
+                  <div className="text-xs" style={{ color: '#8a8a7e' }}>
+                    Lebenskraft
+                  </div>
                 </div>
               </div>
 
               {/* North — Luft / Glaubenssysteme */}
               <div
                 className="absolute w-20 h-20 rounded-full flex items-center justify-center shadow-sm border-2 z-20"
-                style={{ top: '0', left: '50%', transform: 'translate(-50%, -50%)', background: '#f1f4ef', borderColor: '#c4cdc2' }}
+                style={{
+                  top: '0',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  background: '#f1f4ef',
+                  borderColor: '#c4cdc2',
+                }}
               >
                 <div className="text-center">
                   <div className="text-lg">💨</div>
-                  <div className="text-[10px] font-semibold" style={{ color: '#5a7a5e' }}>Norden</div>
-                  <div className="text-[9px]" style={{ color: '#8a9a8e' }}>Luft</div>
+                  <div className="text-[10px] font-semibold" style={{ color: '#5a7a5e' }}>
+                    Norden
+                  </div>
+                  <div className="text-[9px]" style={{ color: '#8a9a8e' }}>
+                    Luft
+                  </div>
                 </div>
               </div>
 
               {/* South — Wasser / Emotionen */}
               <div
                 className="absolute w-20 h-20 rounded-full flex items-center justify-center shadow-sm border-2 z-20"
-                style={{ bottom: '0', left: '50%', transform: 'translate(-50%, 50%)', background: '#e8f0f4', borderColor: '#b8c8d0' }}
+                style={{
+                  bottom: '0',
+                  left: '50%',
+                  transform: 'translate(-50%, 50%)',
+                  background: '#e8f0f4',
+                  borderColor: '#b8c8d0',
+                }}
               >
                 <div className="text-center">
                   <div className="text-lg">💧</div>
-                  <div className="text-[10px] font-semibold" style={{ color: '#4a7a9a' }}>Süden</div>
-                  <div className="text-[9px]" style={{ color: '#7a9aaa' }}>Wasser</div>
+                  <div className="text-[10px] font-semibold" style={{ color: '#4a7a9a' }}>
+                    Süden
+                  </div>
+                  <div className="text-[9px]" style={{ color: '#7a9aaa' }}>
+                    Wasser
+                  </div>
                 </div>
               </div>
 
               {/* West — Erde / Tun */}
               <div
                 className="absolute w-20 h-20 rounded-full flex items-center justify-center shadow-sm border-2 z-20"
-                style={{ top: '50%', left: '0', transform: 'translate(-50%, -50%)', background: '#f4ede8', borderColor: '#d8c8b8' }}
+                style={{
+                  top: '50%',
+                  left: '0',
+                  transform: 'translate(-50%, -50%)',
+                  background: '#f4ede8',
+                  borderColor: '#d8c8b8',
+                }}
               >
                 <div className="text-center">
                   <div className="text-lg">🌍</div>
-                  <div className="text-[10px] font-semibold" style={{ color: '#7a5a3a' }}>Westen</div>
-                  <div className="text-[9px]" style={{ color: '#9a8a7a' }}>Erde</div>
+                  <div className="text-[10px] font-semibold" style={{ color: '#7a5a3a' }}>
+                    Westen
+                  </div>
+                  <div className="text-[9px]" style={{ color: '#9a8a7a' }}>
+                    Erde
+                  </div>
                 </div>
               </div>
 
               {/* East — Feuer / Spirit */}
               <div
                 className="absolute w-20 h-20 rounded-full flex items-center justify-center shadow-sm border-2 z-20"
-                style={{ top: '50%', right: '0', transform: 'translate(50%, -50%)', background: '#f8ece4', borderColor: '#e0c8b0' }}
+                style={{
+                  top: '50%',
+                  right: '0',
+                  transform: 'translate(50%, -50%)',
+                  background: '#f8ece4',
+                  borderColor: '#e0c8b0',
+                }}
               >
                 <div className="text-center">
                   <div className="text-lg">🔥</div>
-                  <div className="text-[10px] font-semibold" style={{ color: '#8a4a2a' }}>Osten</div>
-                  <div className="text-[9px]" style={{ color: '#aa7a5a' }}>Feuer</div>
+                  <div className="text-[10px] font-semibold" style={{ color: '#8a4a2a' }}>
+                    Osten
+                  </div>
+                  <div className="text-[9px]" style={{ color: '#aa7a5a' }}>
+                    Feuer
+                  </div>
                 </div>
               </div>
 
@@ -324,7 +385,10 @@ export default function ElementalPage() {
       <section className="border-t" style={{ borderColor: '#e5e3dc', background: '#f2f0ea' }}>
         <div className="max-w-6xl mx-auto px-4 py-20">
           <div className="max-w-2xl mb-12">
-            <p className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: '#8a8a7e' }}>
+            <p
+              className="text-xs font-medium uppercase tracking-widest mb-3"
+              style={{ color: '#8a8a7e' }}
+            >
               Klingt bekannt?
             </p>
             <h2 className="text-3xl font-bold mb-4" style={{ color: '#1a1a18' }}>
@@ -344,17 +408,24 @@ export default function ElementalPage() {
                 style={{ background: '#faf9f5', border: '1px solid #e5e3dc' }}
               >
                 <div className="text-2xl mb-3">{icon}</div>
-                <h3 className="font-semibold mb-2" style={{ color: '#1a1a18' }}>{title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: '#6a6a62' }}>{text}</p>
+                <h3 className="font-semibold mb-2" style={{ color: '#1a1a18' }}>
+                  {title}
+                </h3>
+                <p className="text-sm leading-relaxed" style={{ color: '#6a6a62' }}>
+                  {text}
+                </p>
               </div>
             ))}
           </div>
 
-          <div className="mt-10 p-6 rounded-xl" style={{ background: '#e8ede7', border: '1px solid #c8d4c2' }}>
+          <div
+            className="mt-10 p-6 rounded-xl"
+            style={{ background: '#e8ede7', border: '1px solid #c8d4c2' }}
+          >
             <p className="text-base" style={{ color: '#3a4a38' }}>
-              <strong>Die gute Nachricht:</strong> Du brauchst keine neue Persönlichkeit. Du brauchst
-              keine Lösung von außen. Du brauchst einen Kompass — und die Elemente sind einer der
-              ältesten, die es gibt. Praktisch. Bodenständig. Logisch.
+              <strong>Die gute Nachricht:</strong> Du brauchst keine neue Persönlichkeit. Du
+              brauchst keine Lösung von außen. Du brauchst einen Kompass — und die Elemente sind
+              einer der ältesten, die es gibt. Praktisch. Bodenständig. Logisch.
             </p>
           </div>
         </div>
@@ -364,7 +435,10 @@ export default function ElementalPage() {
       <section id="weg" className="border-t" style={{ borderColor: '#e5e3dc' }}>
         <div className="max-w-6xl mx-auto px-4 py-20">
           <div className="text-center mb-16">
-            <p className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: '#8a8a7e' }}>
+            <p
+              className="text-xs font-medium uppercase tracking-widest mb-3"
+              style={{ color: '#8a8a7e' }}
+            >
               4 Schritte
             </p>
             <h2 className="text-3xl font-bold mb-4" style={{ color: '#1a1a18' }}>
@@ -396,7 +470,9 @@ export default function ElementalPage() {
                     background: `linear-gradient(135deg, ${color.replace('from-', '').split(' ')[0].replace('-50', '.5')}, white)`,
                     borderColor: highlight ? '#3d6a40' : undefined,
                     border: highlight ? '2px solid #3d6a40' : `1px solid ${border.split('-')[1]}`,
-                    ...(highlight ? { background: 'linear-gradient(135deg, #e8f2ec, #f0f7f2)' } : {}),
+                    ...(highlight
+                      ? { background: 'linear-gradient(135deg, #e8f2ec, #f0f7f2)' }
+                      : {}),
                   }}
                 >
                   <div className="flex items-start justify-between mb-4">
@@ -407,7 +483,9 @@ export default function ElementalPage() {
                       >
                         {number}
                       </span>
-                      <h3 className="text-xl font-bold mt-2" style={{ color: '#1a1a18' }}>{title}</h3>
+                      <h3 className="text-xl font-bold mt-2" style={{ color: '#1a1a18' }}>
+                        {title}
+                      </h3>
                       <p className={`text-sm font-medium ${textAccent}`}>{subtitle}</p>
                     </div>
                     {highlight && (
@@ -434,7 +512,7 @@ export default function ElementalPage() {
                     ))}
                   </div>
                 </div>
-              ),
+              )
             )}
           </div>
 
@@ -455,10 +533,17 @@ export default function ElementalPage() {
       </section>
 
       {/* ── Angebote / Services ── */}
-      <section id="angebote" className="border-t" style={{ borderColor: '#e5e3dc', background: '#f2f0ea' }}>
+      <section
+        id="angebote"
+        className="border-t"
+        style={{ borderColor: '#e5e3dc', background: '#f2f0ea' }}
+      >
         <div className="max-w-6xl mx-auto px-4 py-20">
           <div className="text-center mb-14">
-            <p className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: '#8a8a7e' }}>
+            <p
+              className="text-xs font-medium uppercase tracking-widest mb-3"
+              style={{ color: '#8a8a7e' }}
+            >
               Einzelangebote
             </p>
             <h2 className="text-3xl font-bold mb-4" style={{ color: '#1a1a18' }}>
@@ -486,8 +571,12 @@ export default function ElementalPage() {
                     {tag}
                   </span>
                 </div>
-                <h3 className="font-semibold mb-2" style={{ color: '#1a1a18' }}>{title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: '#6a6a62' }}>{desc}</p>
+                <h3 className="font-semibold mb-2" style={{ color: '#1a1a18' }}>
+                  {title}
+                </h3>
+                <p className="text-sm leading-relaxed" style={{ color: '#6a6a62' }}>
+                  {desc}
+                </p>
               </div>
             ))}
           </div>
@@ -508,9 +597,7 @@ export default function ElementalPage() {
             >
               <span>✦</span> Premium-Begleitung
             </span>
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
-              Die Visionssuche
-            </h2>
+            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">Die Visionssuche</h2>
             <p className="text-base max-w-2xl mx-auto" style={{ color: '#a8b8a4' }}>
               4 strukturierte Sitzungen über 4–6 Wochen. Der vollständige Weg: Vom Elementekreis zur
               persönlichen Vision. Im Zentrum angekommen — mit Klarheit, Kraft und einem Ruf, der
@@ -521,19 +608,40 @@ export default function ElementalPage() {
           {/* What's included */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
             {[
-              { step: '①', title: 'Mentalübungen', desc: 'Nord + Ost: Klarheit über Glaubenssysteme, Offenheit für das, was ruft.' },
-              { step: '②', title: 'Lebenskraft', desc: 'West + Süd: In die Kraft kommen, in den Flow. Bewegungsblockaden lösen.' },
-              { step: '③', title: 'Hemmnisse', desc: 'Schatten der Richtungen integrieren. Was blockiert, wird sichtbar — und losgelassen.' },
-              { step: '④', title: 'Vision', desc: 'Im Zentrum angekommen. Deine Vision — klar, verankert, umsetzbar.' },
+              {
+                step: '①',
+                title: 'Mentalübungen',
+                desc: 'Nord + Ost: Klarheit über Glaubenssysteme, Offenheit für das, was ruft.',
+              },
+              {
+                step: '②',
+                title: 'Lebenskraft',
+                desc: 'West + Süd: In die Kraft kommen, in den Flow. Bewegungsblockaden lösen.',
+              },
+              {
+                step: '③',
+                title: 'Hemmnisse',
+                desc: 'Schatten der Richtungen integrieren. Was blockiert, wird sichtbar — und losgelassen.',
+              },
+              {
+                step: '④',
+                title: 'Vision',
+                desc: 'Im Zentrum angekommen. Deine Vision — klar, verankert, umsetzbar.',
+              },
             ].map(({ step, title, desc }) => (
               <div
                 key={title}
                 className="rounded-xl p-5"
-                style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)' }}
+                style={{
+                  background: 'rgba(255,255,255,0.07)',
+                  border: '1px solid rgba(255,255,255,0.12)',
+                }}
               >
                 <div className="text-2xl mb-3 text-white">{step}</div>
                 <h3 className="font-semibold text-white mb-2">{title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: '#a8b8a4' }}>{desc}</p>
+                <p className="text-sm leading-relaxed" style={{ color: '#a8b8a4' }}>
+                  {desc}
+                </p>
               </div>
             ))}
           </div>
@@ -541,7 +649,10 @@ export default function ElementalPage() {
           {/* CTA Card */}
           <div
             className="max-w-lg mx-auto rounded-2xl p-8 text-center"
-            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)' }}
+            style={{
+              background: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.15)',
+            }}
           >
             <div className="text-sm mb-2" style={{ color: '#8a9a84' }}>
               4 Sitzungen · 4–6 Wochen
@@ -578,16 +689,23 @@ export default function ElementalPage() {
                 <div
                   key={name}
                   className="rounded-xl p-5"
-                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}
+                  style={{
+                    background: 'rgba(255,255,255,0.05)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                  }}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-semibold text-white">{name}</h3>
                     <div className="text-right">
                       <div className="font-bold text-white">{price}</div>
-                      <div className="text-xs" style={{ color: '#6a7a64' }}>{duration}</div>
+                      <div className="text-xs" style={{ color: '#6a7a64' }}>
+                        {duration}
+                      </div>
                     </div>
                   </div>
-                  <p className="text-sm mb-4" style={{ color: '#a8b8a4' }}>{desc}</p>
+                  <p className="text-sm mb-4" style={{ color: '#a8b8a4' }}>
+                    {desc}
+                  </p>
                   <a
                     href={ctaLink}
                     className="inline-flex items-center gap-1 text-sm font-medium px-4 py-2 rounded-lg transition-opacity hover:opacity-80"
@@ -606,7 +724,10 @@ export default function ElementalPage() {
         <div className="max-w-6xl mx-auto px-4 py-20">
           <div className="grid lg:grid-cols-3 gap-12 items-start">
             <div className="lg:col-span-2">
-              <p className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: '#8a8a7e' }}>
+              <p
+                className="text-xs font-medium uppercase tracking-widest mb-3"
+                style={{ color: '#8a8a7e' }}
+              >
                 Über mich
               </p>
               <h2 className="text-3xl font-bold mb-6" style={{ color: '#1a1a18' }}>
@@ -633,17 +754,22 @@ export default function ElementalPage() {
               </div>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                {['Shiatsu Practitioner', 'Hypnose', 'Yager-Code', 'Mesmerismus', 'Medizinrad', 'Naturzeremonien'].map(
-                  (tag) => (
-                    <span
-                      key={tag}
-                      className="text-xs px-3 py-1 rounded-full"
-                      style={{ background: '#e8ede7', color: '#4a6a4e' }}
-                    >
-                      {tag}
-                    </span>
-                  ),
-                )}
+                {[
+                  'Shiatsu Practitioner',
+                  'Hypnose',
+                  'Yager-Code',
+                  'Mesmerismus',
+                  'Medizinrad',
+                  'Naturzeremonien',
+                ].map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-xs px-3 py-1 rounded-full"
+                    style={{ background: '#e8ede7', color: '#4a6a4e' }}
+                  >
+                    {tag}
+                  </span>
+                ))}
               </div>
             </div>
 
@@ -655,10 +781,15 @@ export default function ElementalPage() {
                 style={{ background: '#f2f0ea', border: '1px solid #e5e3dc' }}
               >
                 <div className="text-3xl mb-3">🪶</div>
-                <blockquote className="text-sm italic leading-relaxed mb-3" style={{ color: '#4a4a42' }}>
+                <blockquote
+                  className="text-sm italic leading-relaxed mb-3"
+                  style={{ color: '#4a4a42' }}
+                >
                   „Omitakuyasin — Wir sind alle verbunden. Nicht als Idee. Als Tatsache."
                 </blockquote>
-                <p className="text-xs" style={{ color: '#8a8a7e' }}>Lakota-Tradition</p>
+                <p className="text-xs" style={{ color: '#8a8a7e' }}>
+                  Lakota-Tradition
+                </p>
               </div>
 
               {/* Cross-links */}
@@ -727,7 +858,10 @@ export default function ElementalPage() {
             ))}
           </div>
 
-          <div className="mt-10 p-6 rounded-xl text-center" style={{ background: '#e8ede7', border: '1px solid #c8d4c2' }}>
+          <div
+            className="mt-10 p-6 rounded-xl text-center"
+            style={{ background: '#e8ede7', border: '1px solid #c8d4c2' }}
+          >
             <p className="text-sm mb-4" style={{ color: '#3a4a38' }}>
               Keine Antwort auf deine Frage dabei?
             </p>
@@ -749,36 +883,68 @@ export default function ElementalPage() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <span className="text-lg">🌿</span>
-                <span className="font-semibold" style={{ color: '#2d3a2e' }}>Elemental LifeCoach</span>
+                <span className="font-semibold" style={{ color: '#2d3a2e' }}>
+                  Elemental LifeCoach
+                </span>
               </div>
               <p className="text-sm" style={{ color: '#6a6a62' }}>
-                Ganzheitliche Begleitung bei Lebensübergängen. Elemente als Kompass. Vision als Ziel.
+                Ganzheitliche Begleitung bei Lebensübergängen. Elemente als Kompass. Vision als
+                Ziel.
               </p>
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-3" style={{ color: '#1a1a18' }}>Navigation</h4>
+              <h4 className="text-sm font-semibold mb-3" style={{ color: '#1a1a18' }}>
+                Navigation
+              </h4>
               <ul className="space-y-2 text-sm" style={{ color: '#6a6a62' }}>
-                <li><a href="#weg" className="hover:underline">Der Weg</a></li>
-                <li><a href="#angebote" className="hover:underline">Angebote</a></li>
-                <li><a href="#vision" className="hover:underline">Visionssuche</a></li>
-                <li><a href="#ueber" className="hover:underline">Über mich</a></li>
+                <li>
+                  <a href="#weg" className="hover:underline">
+                    Der Weg
+                  </a>
+                </li>
+                <li>
+                  <a href="#angebote" className="hover:underline">
+                    Angebote
+                  </a>
+                </li>
+                <li>
+                  <a href="#vision" className="hover:underline">
+                    Visionssuche
+                  </a>
+                </li>
+                <li>
+                  <a href="#ueber" className="hover:underline">
+                    Über mich
+                  </a>
+                </li>
               </ul>
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-3" style={{ color: '#1a1a18' }}>Buchen</h4>
+              <h4 className="text-sm font-semibold mb-3" style={{ color: '#1a1a18' }}>
+                Buchen
+              </h4>
               <ul className="space-y-2 text-sm" style={{ color: '#6a6a62' }}>
                 <li>
-                  <a href="https://kit.com/matthias-zillig/erstgespraech" className="hover:underline">
+                  <a
+                    href="https://kit.com/matthias-zillig/erstgespraech"
+                    className="hover:underline"
+                  >
                     Erstgespräch (kostenlos)
                   </a>
                 </li>
                 <li>
-                  <a href="https://kit.com/matthias-zillig/einzelsitzung" className="hover:underline">
+                  <a
+                    href="https://kit.com/matthias-zillig/einzelsitzung"
+                    className="hover:underline"
+                  >
                     Einzelsitzung
                   </a>
                 </li>
                 <li>
-                  <a href="https://kit.com/matthias-zillig/visionssuche" className="hover:underline">
+                  <a
+                    href="https://kit.com/matthias-zillig/visionssuche"
+                    className="hover:underline"
+                  >
                     Visionssuche (880 EUR)
                   </a>
                 </li>
@@ -797,8 +963,13 @@ export default function ElementalPage() {
               </a>
             </p>
             <p className="text-xs" style={{ color: '#8a8a7e' }}>
-              <a href="/impressum" className="hover:underline">Impressum</a> ·{' '}
-              <a href="/datenschutz" className="hover:underline">Datenschutz</a>
+              <a href="/impressum" className="hover:underline">
+                Impressum
+              </a>{' '}
+              ·{' '}
+              <a href="/datenschutz" className="hover:underline">
+                Datenschutz
+              </a>
             </p>
           </div>
         </div>

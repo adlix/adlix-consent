@@ -74,9 +74,7 @@ export default function AbstentionAnalysisView({
       })
     } catch (err) {
       console.error('Failed to run analysis:', err)
-      setAnalysisError(
-        'Analyse konnte nicht geladen werden. Bitte versuche es erneut.',
-      )
+      setAnalysisError('Analyse konnte nicht geladen werden. Bitte versuche es erneut.')
     } finally {
       setLoading(false)
     }
@@ -93,7 +91,6 @@ export default function AbstentionAnalysisView({
       </div>
     )
   }
-
 
   const totalReasons = Object.values(
     data?.reasonCounts ?? ({ A: 0, B: 0, C: 0, D: 0, E: 0 } as ReasonCounts)

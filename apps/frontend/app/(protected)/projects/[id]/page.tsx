@@ -233,7 +233,7 @@ export default function ProjectDetailPage() {
   const userHasVoted = selectedRound?.votes.some((v) => String(v.user?.id) === userId)
 
   const handleAbstainSubmit = async (data: {
-    reason: string
+    reason: 'A' | 'B' | 'C' | 'D' | 'E'
     detail?: string
     isObjection?: boolean
     objectionSeverity?: 'minor' | 'major'

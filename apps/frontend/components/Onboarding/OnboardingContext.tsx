@@ -44,7 +44,6 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
         setIsCompleted(() => true)
       }
     }
-    // eslint-disable-next-line react-hooks/set-state-in-effect
   }, [])
 
   const completeOnboarding = () => {

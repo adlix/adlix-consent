@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { strapi } from '../../lib/strapi'
+import { strapi } from '@/lib/strapi'
 
 type AbstainReason = 'A' | 'B' | 'C' | 'D' | 'E'
 

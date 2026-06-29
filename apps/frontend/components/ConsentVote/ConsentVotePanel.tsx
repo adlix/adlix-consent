@@ -300,7 +300,15 @@ export default function ConsentVotePanel({
 
 // ─── Vote Results sub-component ─────────────────────────────────────────────
 
-function VoteResults({ votes, participantCount, showMobileBar = false }: { votes: Vote[]; participantCount: number; showMobileBar?: boolean }) {
+function VoteResults({
+  votes,
+  participantCount,
+  showMobileBar = false,
+}: {
+  votes: Vote[]
+  participantCount: number
+  showMobileBar?: boolean
+}) {
   const countFor = (c: ConsentChoice) => votes.filter((v) => v.choice === c).length
   const total = votes.length
   const remaining = Math.max(0, participantCount - total)

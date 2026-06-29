@@ -13,7 +13,8 @@ export default function LoginForm({ error: initialError, callbackUrl }: LoginFor
   const router = useRouter()
   const [error, setError] = useState(() => {
     if (initialError === 'abgelehnt') return 'Anmeldung abgelehnt.'
-    if (initialError === 'social_login_failed') return 'Social-Login fehlgeschlagen. Bitte erneut versuchen.'
+    if (initialError === 'social_login_failed')
+      return 'Social-Login fehlgeschlagen. Bitte erneut versuchen.'
     if (initialError === 'no_token') return 'Keine Anmeldedaten erhalten. Bitte erneut versuchen.'
     return ''
   })
@@ -538,5 +539,3 @@ export default function LoginForm({ error: initialError, callbackUrl }: LoginFor
     </div>
   )
 }
-
-

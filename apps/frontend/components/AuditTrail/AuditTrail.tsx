@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import strapi from '../../lib/strapi'
+import { strapi } from '@/lib/strapi'
 
 interface AuditEntry {
   id: number
@@ -17,21 +17,111 @@ const ACTION_CONFIG: Record<
   string,
   { label: string; icon: string; color: string; dotColor: string; group: string }
 > = {
-  create_project: { label: 'Vorhaben erstellt', icon: '📋', color: 'text-blue-700', dotColor: 'bg-blue-500', group: 'Erstellen' },
-  start_round: { label: 'Runde gestartet', icon: '🔄', color: 'text-indigo-700', dotColor: 'bg-indigo-500', group: 'Prozess' },
-  phase_transition: { label: 'Phase gewechselt', icon: '➡️', color: 'text-violet-700', dotColor: 'bg-violet-500', group: 'Prozess' },
-  submit_question: { label: 'Frage gestellt', icon: '❓', color: 'text-cyan-700', dotColor: 'bg-cyan-500', group: 'Kommunikation' },
-  submit_answer: { label: 'Frage beantwortet', icon: '💡', color: 'text-blue-700', dotColor: 'bg-blue-400', group: 'Kommunikation' },
-  submit_reaction: { label: 'Perspektive geteilt', icon: '💬', color: 'text-purple-700', dotColor: 'bg-purple-500', group: 'Kommunikation' },
-  submit_vote: { label: 'Hat abgestimmt', icon: '🗳️', color: 'text-emerald-700', dotColor: 'bg-emerald-500', group: 'Abstimmung' },
-  change_vote: { label: 'Stimme geändert', icon: '🔄', color: 'text-amber-700', dotColor: 'bg-amber-500', group: 'Abstimmung' },
-  submit_objection: { label: 'Einwand erhoben', icon: '🔴', color: 'text-red-700', dotColor: 'bg-red-500', group: 'Einwände' },
-  resolve_objection: { label: 'Einwand aufgelöst', icon: '✅', color: 'text-green-700', dotColor: 'bg-green-500', group: 'Einwände' },
-  adjust_proposal: { label: 'Vorschlag angepasst', icon: '✏️', color: 'text-orange-700', dotColor: 'bg-orange-500', group: 'Prozess' },
-  complete_round: { label: 'Beschluss gefasst', icon: '✅', color: 'text-green-700', dotColor: 'bg-green-600', group: 'Abschluss' },
-  create_outcome: { label: 'Ergebnis dokumentiert', icon: '📋', color: 'text-green-700', dotColor: 'bg-green-500', group: 'Abschluss' },
-  invite_participant: { label: 'Teilnehmer eingeladen', icon: '👤', color: 'text-slate-700', dotColor: 'bg-slate-400', group: 'Team' },
-  join_circle: { label: 'Dem Kreis beigetreten', icon: '🔵', color: 'text-slate-700', dotColor: 'bg-slate-500', group: 'Team' },
+  create_project: {
+    label: 'Vorhaben erstellt',
+    icon: '📋',
+    color: 'text-blue-700',
+    dotColor: 'bg-blue-500',
+    group: 'Erstellen',
+  },
+  start_round: {
+    label: 'Runde gestartet',
+    icon: '🔄',
+    color: 'text-indigo-700',
+    dotColor: 'bg-indigo-500',
+    group: 'Prozess',
+  },
+  phase_transition: {
+    label: 'Phase gewechselt',
+    icon: '➡️',
+    color: 'text-violet-700',
+    dotColor: 'bg-violet-500',
+    group: 'Prozess',
+  },
+  submit_question: {
+    label: 'Frage gestellt',
+    icon: '❓',
+    color: 'text-cyan-700',
+    dotColor: 'bg-cyan-500',
+    group: 'Kommunikation',
+  },
+  submit_answer: {
+    label: 'Frage beantwortet',
+    icon: '💡',
+    color: 'text-blue-700',
+    dotColor: 'bg-blue-400',
+    group: 'Kommunikation',
+  },
+  submit_reaction: {
+    label: 'Perspektive geteilt',
+    icon: '💬',
+    color: 'text-purple-700',
+    dotColor: 'bg-purple-500',
+    group: 'Kommunikation',
+  },
+  submit_vote: {
+    label: 'Hat abgestimmt',
+    icon: '🗳️',
+    color: 'text-emerald-700',
+    dotColor: 'bg-emerald-500',
+    group: 'Abstimmung',
+  },
+  change_vote: {
+    label: 'Stimme geändert',
+    icon: '🔄',
+    color: 'text-amber-700',
+    dotColor: 'bg-amber-500',
+    group: 'Abstimmung',
+  },
+  submit_objection: {
+    label: 'Einwand erhoben',
+    icon: '🔴',
+    color: 'text-red-700',
+    dotColor: 'bg-red-500',
+    group: 'Einwände',
+  },
+  resolve_objection: {
+    label: 'Einwand aufgelöst',
+    icon: '✅',
+    color: 'text-green-700',
+    dotColor: 'bg-green-500',
+    group: 'Einwände',
+  },
+  adjust_proposal: {
+    label: 'Vorschlag angepasst',
+    icon: '✏️',
+    color: 'text-orange-700',
+    dotColor: 'bg-orange-500',
+    group: 'Prozess',
+  },
+  complete_round: {
+    label: 'Beschluss gefasst',
+    icon: '✅',
+    color: 'text-green-700',
+    dotColor: 'bg-green-600',
+    group: 'Abschluss',
+  },
+  create_outcome: {
+    label: 'Ergebnis dokumentiert',
+    icon: '📋',
+    color: 'text-green-700',
+    dotColor: 'bg-green-500',
+    group: 'Abschluss',
+  },
+  invite_participant: {
+    label: 'Teilnehmer eingeladen',
+    icon: '👤',
+    color: 'text-slate-700',
+    dotColor: 'bg-slate-400',
+    group: 'Team',
+  },
+  join_circle: {
+    label: 'Dem Kreis beigetreten',
+    icon: '🔵',
+    color: 'text-slate-700',
+    dotColor: 'bg-slate-500',
+    group: 'Team',
+  },
 }
 
 interface DayGroup {
