@@ -294,6 +294,78 @@ export default function ConsentVotePanel({
       {votes.length > 0 && (
         <VoteResults votes={votes} participantCount={participantCount} showMobileBar />
       )}
+
+      {/* Consent-status indicator */}
+      {votes.length === participantCount && <ConsentStatusBanner votes={votes} />}
+    </div>
+  )
+}
+
+// ─── Consent Status Banner ──────────────────────────────────────────────────────
+
+function ConsentStatusBanner({ votes }: { votes: Vote[] }) {
+  const majorObjections = votes.filter((v) => v.choice === 'major_objection')
+  const minorObjections = votes.filter((v) => v.choice === 'minor_objection')
+  const consents = votes.filter((v) => v.choice === 'consent')
+  const abstains = votes.filter((v) => v.choice === 'abstain')
+
+  if (majorObjections.length > 0) {
+    return (
+      <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-xl">
+        <div className="flex items-start gap-2">
+          <span className="text-lg">🔴</span>
+          <div>
+            <p className="text-sm font-semibold text-red-800">
+              {majorObjections.length} schwerwiegender{' '}
+              {majorObjections.length === 1 ? 'Einwand' : 'Einwände'} blockiert{' '}
+              {consents.length === 0
+                ? ''
+                : `— ${consents.length} ${consents.length === 1 ? 'Konsent' : 'Konsente'}`}
+            </p>
+            <p className="text-xs text-red-600 mt-0.5">
+              Der 6-Phasen-Dialog wird gestartet, um den Einwand zu integrieren.
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (minorObjections.length > 0) {
+    return (
+      <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-xl">
+        <div className="flex items-start gap-2">
+          <span className="text-lg">⚠️</span>
+          <div>
+            <p className="text-sm font-semibold text-amber-800">
+              Konsent erreicht — mit {minorObjections.length}{' '}
+              {minorObjections.length === 1 ? 'Anmerkung' : 'Anmerkungen'}
+            </p>
+            <p className="text-xs text-amber-600 mt-0.5">
+              {consents.length} Konsent · {minorObjections.length} Anmerkungen · {abstains.length}{' '}
+              Enthaltungen — Beschluss möglich; Anmerkungen werden dokumentiert.
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Pure consent (possibly with abstains but no objections)
+  return (
+    <div className="mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-xl">
+      <div className="flex items-start gap-2">
+        <span className="text-lg">✅</span>
+        <div>
+          <p className="text-sm font-semibold text-emerald-800">Konsent erreicht</p>
+          <p className="text-xs text-emerald-600 mt-0.5">
+            {consents.length} Konsent · {abstains.length} Enthaltungen — kein Einwand.{' '}
+            {abstains.length > 0
+              ? 'Enthaltungen werden dokumentiert und berücksichtigt.'
+              : 'Das Vorhaben kann umgesetzt werden.'}
+          </p>
+        </div>
+      </div>
     </div>
   )
 }

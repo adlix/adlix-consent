@@ -109,10 +109,11 @@ export default function AbstentionAnalysisView({
       <div className="flex items-center justify-between mb-3">
         <h4 className="font-semibold text-indigo-800 flex items-center gap-2">
           📊 Enthaltungs-Analyse
-          <span className="text-xs bg-indigo-200 text-indigo-700 px-2 py-0.5 rounded-full">
-            Musteranalyse
-          </span>
-          {abstentionCount >= 3 && (
+          {data ? (
+            <span className="text-xs bg-indigo-200 text-indigo-700 px-2 py-0.5 rounded-full">
+              Berechnet
+            </span>
+          ) : (
             <span className="text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full">
               {abstentionCount} Enthaltungen
             </span>

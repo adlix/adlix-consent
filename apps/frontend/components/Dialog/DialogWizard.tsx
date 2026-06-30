@@ -247,6 +247,7 @@ export default function DialogWizard({
             phaseId={currentPhase?.id || 0}
             currentUserId={currentUserId}
             existingBeitraege={beitraege}
+            totalMembers={members.length}
             onAddBeitrag={addBeitrag}
             onNext={advance}
           />

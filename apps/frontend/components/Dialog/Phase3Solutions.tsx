@@ -13,6 +13,7 @@ interface Phase3Props {
   phaseId: number
   currentUserId: number
   existingBeitraege: Beitrag[]
+  totalMembers: number
   onAddBeitrag: (type: 'idea' | 'question' | 'support' | 'passe', content?: string) => Promise<void>
   onNext: () => void
 }
@@ -52,6 +53,7 @@ export default function Phase3Solutions({
   phaseId: _phaseId,
   currentUserId,
   existingBeitraege,
+  totalMembers,
   onAddBeitrag,
   onNext,
 }: Phase3Props) {
@@ -60,8 +62,12 @@ export default function Phase3Solutions({
   >(null)
   const [content, setContent] = useState('')
   const [saving, setSaving] = useState(false)
+  const [confirmedAdvance, setConfirmedAdvance] = useState(false)
 
   const myBeitrag = existingBeitraege.find((b) => b.user?.id === currentUserId)
+  const uniqueContributors = new Set(existingBeitraege.map((b) => b.user?.id)).size
+  const missingContributions = totalMembers - uniqueContributors
+  const allContributed = missingContributions <= 0
 
   const handleSubmit = async () => {
     if (!selectedType) return
@@ -182,12 +188,53 @@ export default function Phase3Solutions({
         </div>
       )}
 
-      <button
-        onClick={onNext}
-        className="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
-      >
-        Weiter zur Synthese →
-      </button>
+      {/* Advance warning */}
+      {!allContributed && !confirmedAdvance && (
+        <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-sm">
+          <div className="flex items-start gap-2">
+            <span className="text-amber-500 shrink-0 mt-0.5">⚠️</span>
+            <div>
+              <p className="text-amber-800 font-medium">
+                {missingContributions}{' '}
+                {missingContributions === 1 ? 'Person hat' : 'Personen haben'} noch keinen Beitrag
+                geleistet.
+              </p>
+              <p className="text-amber-600 text-xs mt-0.5">
+                Ideen werden in der Synthese berücksichtigt — auch die, die noch nicht eingereicht
+                wurden. Trotzdem weiter?
+              </p>
+              <button
+                onClick={() => setConfirmedAdvance(true)}
+                className="mt-2 px-3 py-1.5 bg-amber-200 text-amber-800 text-xs font-semibold rounded-lg hover:bg-amber-300 transition-colors"
+              >
+                Trotzdem weiter zur Synthese →
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Show "all contributed" success state when everyone has participated */}
+      {allContributed && myBeitrag && (
+        <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-sm">
+          <div className="flex items-center gap-2">
+            <span className="text-emerald-500">✅</span>
+            <span className="text-emerald-800 font-medium">
+              Alle {totalMembers} Kreismitglieder haben Beiträge geleistet. Weiter zur Synthese.
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* Confirm advance button (only after confirmation or when all contributed) */}
+      {(confirmedAdvance || allContributed) && (
+        <button
+          onClick={onNext}
+          className="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+        >
+          Weiter zur Synthese →
+        </button>
+      )}
     </div>
   )
 }
