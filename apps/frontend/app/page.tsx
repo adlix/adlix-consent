@@ -880,6 +880,281 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── So verändert Consent Teams ── */}
+        <section
+          className="py-16 bg-gradient-to-b from-indigo-50/30 via-white to-white border-t border-gray-100"
+          aria-labelledby="team-transform-heading"
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium mb-4">
+                <span aria-hidden="true">🌱</span> Die Veränderung ist real
+              </div>
+              <h2 id="team-transform-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                So verändert Consent Teams — konkret
+              </h2>
+              <p className="text-gray-500 max-w-xl mx-auto text-lg">
+                Consent ist kein Prozess-Werkzeug. Es verändert, wie Menschen miteinander
+                kommunizieren — auch außerhalb formaler Abstimmungen.
+              </p>
+            </div>
+
+            {/* Transformation cards */}
+            <div className="space-y-6">
+              {[
+                {
+                  icon: '💬',
+                  beforeLabel: 'Vorher',
+                  beforeBg: 'bg-red-50',
+                  beforeAccent: 'text-red-600',
+                  beforeItems: [
+                    'Meetings werden dominiert — wer am lautesten ist, gewinnt',
+                    'Bedenken werden nach der Abstimmung geäußert — zu spät',
+                    'Entscheidungen werden „durchgewunken" — niemand fragt nach',
+                    'Stille Teammitglieder fühlen sich übergangen',
+                  ],
+                  afterLabel: 'Nachher',
+                  afterBg: 'bg-emerald-50',
+                  afterAccent: 'text-emerald-700',
+                  afterItems: [
+                    'Jede Person hat eine zugewiesene Zeit — reihum, fair',
+                    'Bedenken werden im Prozess gehört — nicht überstimmt',
+                    'Einwand = Geschenk — nicht als Angriff gewertet',
+                    'Psychologische Sicherheit entsteht durch den Prozess selbst',
+                  ],
+                  label: 'Kommunikationskultur',
+                },
+                {
+                  icon: '🛡️',
+                  beforeLabel: 'Vorher',
+                  beforeBg: 'bg-red-50',
+                  beforeAccent: 'text-red-600',
+                  beforeItems: [
+                    'Einwände werden vermieden — „bringt ja doch nichts"',
+                    'Personenkonflikte entstehen, weil Bedenken nicht gehört werden',
+                    'Retrospektiven werden zu Ventilen für aufgestauten Frust',
+                    'Vertrauen erodiert schleichend — Meetings werden gemieden',
+                  ],
+                  afterLabel: 'Nachher',
+                  afterBg: 'bg-emerald-50',
+                  afterAccent: 'text-emerald-700',
+                  afterItems: [
+                    'Einwände zu äußern wird normal — und geschätzt',
+                    'Konflikte werden früh adressiert, nicht eskaliert',
+                    'Der Consent-Prozess ist der stabilisierende Rahmen',
+                    'Vertrauen wächst mit jeder getroffenen Entscheidung',
+                  ],
+                  label: 'Psychologische Sicherheit',
+                },
+                {
+                  icon: '📋',
+                  beforeLabel: 'Vorher',
+                  beforeBg: 'bg-red-50',
+                  beforeAccent: 'text-red-600',
+                  beforeItems: [
+                    'Protokoll ist Extra-Aufwand — oft lückenhaft oder veraltet',
+                    'Entscheidungsgründe gehen verloren — „Warum haben wir das gemacht?"',
+                    'Beschlossenes wird stillschweigend ignoriert — weil nicht getragen',
+                    'Evaluations? Fehlanzeige — Entscheidungen verfallen',
+                  ],
+                  afterLabel: 'Nachher',
+                  afterBg: 'bg-emerald-50',
+                  afterAccent: 'text-emerald-700',
+                  afterItems: [
+                    'Audit-Trail ist eingebaut — jede Phase, jeder Beitrag dokumentiert',
+                    'Entscheidungsgründe sind nachvollziehbar — für alle, jederzeit',
+                    'Getroffene Entscheidungen werden mitgetragen — weil niemand überstimmt',
+                    'Evaluationsdatum macht Entscheidungen bewusst vorläufig',
+                  ],
+                  label: 'Dokumentation & Verantwortung',
+                },
+                {
+                  icon: '⚡',
+                  beforeLabel: 'Vorher',
+                  beforeBg: 'bg-red-50',
+                  beforeAccent: 'text-red-600',
+                  beforeItems: [
+                    'Entscheidungen werden aufgeschoben — bis alle einverstanden sind',
+                    'Kleine Entscheidungen brauchen große Meetings',
+                    'Jede Abstimmung fühlt sich an wie eine Abstimmung mit Konsequenzen',
+                    'Der Prozess frisst die Energie für die Umsetzung',
+                  ],
+                  afterLabel: 'Nachher',
+                  afterBg: 'bg-emerald-50',
+                  afterAccent: 'text-emerald-700',
+                  afterItems: [
+                    'Consent braucht nur die Abwesenheit schwerwiegender Einwände',
+                    'Kleine Entscheidungen laufen nebenbei — ohne formelle Abstimmung',
+                    'Die Hürde für eine Abstimmung sinkt — weil sie fair ist',
+                    'Mehr Energie für Umsetzung — weil die Entscheidung klar ist',
+                  ],
+                  label: 'Geschwindigkeit & Energie',
+                },
+              ].map(
+                ({
+                  icon,
+                  beforeLabel,
+                  beforeBg,
+                  beforeAccent,
+                  beforeItems,
+                  afterLabel,
+                  afterBg,
+                  afterAccent,
+                  afterItems,
+                  label,
+                }) => (
+                  <article
+                    key={label}
+                    className="rounded-2xl border border-gray-200 bg-white overflow-hidden shadow-sm"
+                  >
+                    <div className="bg-gray-50 px-6 py-3 border-b border-gray-100 flex items-center gap-3">
+                      <span className="text-xl" aria-hidden="true">
+                        {icon}
+                      </span>
+                      <h3 className="font-semibold text-gray-800 text-sm">{label}</h3>
+                    </div>
+                    <div className="grid sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
+                      <div className={`p-5 ${beforeBg}`}>
+                        <div
+                          className={`text-xs font-bold uppercase tracking-widest mb-3 ${beforeAccent}`}
+                        >
+                          {beforeLabel}
+                        </div>
+                        <ul className="space-y-2">
+                          {beforeItems.map((item, i) => (
+                            <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+                              <span className="text-red-400 mt-0.5 shrink-0">✗</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className={`p-5 ${afterBg}`}>
+                        <div
+                          className={`text-xs font-bold uppercase tracking-widest mb-3 ${afterAccent}`}
+                        >
+                          {afterLabel}
+                        </div>
+                        <ul className="space-y-2">
+                          {afterItems.map((item, i) => (
+                            <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+                              <span className="text-emerald-500 mt-0.5 shrink-0">✓</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </article>
+                )
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Häufige Consent-Fehler ── */}
+        <section
+          className="py-16 bg-white border-t border-gray-100"
+          aria-labelledby="consent-mistakes-heading"
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-50 text-amber-700 rounded-full text-sm font-medium mb-4">
+                <span aria-hidden="true">⚠️</span> Learning Curve
+              </div>
+              <h2 id="consent-mistakes-heading" className="text-3xl font-bold mb-4">
+                Häufige Consent-Fehler — und wie man sie vermeidet
+              </h2>
+              <p className="text-gray-500 max-w-xl mx-auto">
+                Consent klingt einfach. Ist es auch — wenn man die Fallen kennt.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {[
+                {
+                  mistakeTitle: '"Konsens" statt "Konsent"',
+                  mistakeDesc:
+                    'Das Team versucht, 100% aktive Zustimmung zu bekommen — und ist frustriert, wenn es nicht gelingt. Das ist Konsens, nicht Konsent.',
+                  fixTitle: 'Konsent statt Konsens',
+                  fixDesc:
+                    'Konsent fragt: „Gibt es einen schwerwiegenden Einwand?" Nicht: „Stimmt ihr alle zu?" Dieser Unterschied ist der Kern des Prozesses.',
+                  color: 'bg-amber-50 border-amber-200',
+                },
+                {
+                  mistakeTitle: 'Einwände als persönlichen Angriff nehmen',
+                  mistakeDesc:
+                    'Der Einreicher eines Vorhabens reagiert defensiv auf Einwände — als Kritik an seiner Person statt als wertvolle Information.',
+                  fixTitle: 'Einwände als Geschenk',
+                  fixDesc:
+                    'Jeder Einwand zeigt einen blinden Fleck. Der Einreicher ist eingeladen — nicht gezwungen — ihn zu integrieren. Dankbarkeit statt Verteidigung.',
+                  color: 'bg-red-50 border-red-200',
+                },
+                {
+                  mistakeTitle: 'Diskussion statt strukturierter Prozess',
+                  mistakeDesc:
+                    'Die Informationsrunde wird zur offenen Debatte. Plötzlich wird diskutiert statt nur verstanden — die Phase wird verwässert.',
+                  fixTitle: 'Prozess-Treue',
+                  fixDesc:
+                    'Jede Phase hat eine klare Funktion: Fragen, Reagieren, Anpassen, Abstimmen. Nicht alles auf einmal. Der strukturierte Ablauf ist der Schutz.',
+                  color: 'bg-orange-50 border-orange-200',
+                },
+                {
+                  mistakeTitle: 'Zu viele formale Abstimmungen',
+                  mistakeDesc:
+                    'Alles wird zum Vorhaben gemacht — auch Kleinigkeiten, die kein formelles Consent brauchen. Das ermüdet das Team.',
+                  fixTitle: 'Faustregel kennen',
+                  fixDesc:
+                    'Consent für Entscheidungen mit Konsequenzen und Betroffenen. Nicht für Terminabsprachen, Essen bestellen oder kleine Koordinationsfragen.',
+                  color: 'bg-blue-50 border-blue-200',
+                },
+                {
+                  mistakeTitle: 'Enthaltungen als Ausrede',
+                  mistakeDesc:
+                    'Enthaltung wird als bequemer Weg genutzt, um Verantwortung zu vermeiden. „Ich enthalte mich einfach" ersetzt echte Auseinandersetzung.',
+                  fixTitle: 'Enthaltungs-Prozess ernst nehmen',
+                  fixDesc:
+                    'Enthaltung braucht einen Grund (A–E). Der Grund D und E aktiviert Reflexionsprozesse. Das ist kein Hindernis — das ist der Prozess.',
+                  color: 'bg-purple-50 border-purple-200',
+                },
+                {
+                  mistakeTitle: 'Evaluationsdatum vergessen',
+                  mistakeDesc:
+                    'Beschlossene Entscheidungen werden nie überprüft — auch wenn sich die Welt weiterdreht. Der Prozess verliert seine Lernfähigkeit.',
+                  fixTitle: 'Evaluationsdatum ist Pflicht',
+                  fixDesc:
+                    'Jede beschlossene Entscheidung braucht ein Datum, an dem sie bewusst überprüft wird. „Gut genug für jetzt — sicher genug zum Ausprobieren" ist kein Freifahrtschein.',
+                  color: 'bg-emerald-50 border-emerald-200',
+                },
+              ].map(({ mistakeTitle, mistakeDesc, fixTitle, fixDesc, color }) => (
+                <div key={mistakeTitle} className={`rounded-2xl border p-5 ${color}`}>
+                  <div className="flex items-start gap-3 mb-4">
+                    <div className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center shrink-0 text-base">
+                      ❌
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-800 text-sm">{mistakeTitle}</p>
+                      <p className="text-gray-600 text-xs mt-0.5 leading-relaxed">{mistakeDesc}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-full bg-white border border-emerald-200 flex items-center justify-center shrink-0 text-base">
+                      ✅
+                    </div>
+                    <div>
+                      <p className="font-semibold text-emerald-800 text-sm">{fixTitle}</p>
+                      <p className="text-emerald-700 text-xs mt-0.5 leading-relaxed">{fixDesc}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Was ist ein Kreis? */}
+
+        {/* Was ist ein Kreis? */}
         {/* Was ist ein Kreis? */}
         <section className="py-16 bg-white" aria-labelledby="circle-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -3408,7 +3683,8 @@ export default function HomePage() {
                 Der Consent-Prozess im Detail
               </h2>
               <p className="text-gray-500 max-w-2xl mx-auto text-lg">
-                6 Phasen, 0 Hierarchie, 100% Transparenz. So funktioniert Consent-Findung in der Praxis — von der ersten Idee bis zum Beschluss.
+                6 Phasen, 0 Hierarchie, 100% Transparenz. So funktioniert Consent-Findung in der
+                Praxis — von der ersten Idee bis zum Beschluss.
               </p>
             </div>
 
@@ -3420,7 +3696,8 @@ export default function HomePage() {
                   title: '1. Vorhaben einreichen',
                   who: 'Jedes Kreis-Mitglied',
                   duration: '1 Minute',
-                  description: 'Du hast eine Idee oder einen Vorschlag? Trage ihn als Vorhaben ein. Beschreibe das Was, das Warum und — wenn bekannt — das Wer, Wie und Wann. Je klarer, desto besser die Abstimmung.',
+                  description:
+                    'Du hast eine Idee oder einen Vorschlag? Trage ihn als Vorhaben ein. Beschreibe das Was, das Warum und — wenn bekannt — das Wer, Wie und Wann. Je klarer, desto besser die Abstimmung.',
                   tips: [
                     'Formuliere den Vorschlag positiv: „Wir machen X" statt „Wir machen nicht Y"',
                     'Benenne die Spannung: Was hat dich dazu gebracht, diesen Vorschlag zu machen?',
@@ -3436,7 +3713,8 @@ export default function HomePage() {
                   title: '2. Informationsrunde',
                   who: 'Alle Kreis-Mitglieder',
                   duration: 'Offen — bis alle Fragen beantwortet',
-                  description: 'Nur Verständnisfragen — keine Meinungen, kein Gegenargumentieren. Jeder, der etwas nicht versteht, kann fragen. Der Einreicher antwortet. Ziel: gemeinsames Verständnis des Vorhabens.',
+                  description:
+                    'Nur Verständnisfragen — keine Meinungen, kein Gegenargumentieren. Jeder, der etwas nicht versteht, kann fragen. Der Einreicher antwortet. Ziel: gemeinsames Verständnis des Vorhabens.',
                   tips: [
                     'Stelle Fragen, nicht Thesen — „Wie genau funktioniert X?" statt „Ich glaube, X ist problematisch"',
                     'Antworte als Einreicher klar und kurz — kein Rechtfertigen, nur Erklären',
@@ -3452,7 +3730,8 @@ export default function HomePage() {
                   title: '3. Reaktionsrunde',
                   who: 'Alle Kreis-Mitglieder',
                   duration: 'Offen — bis alle reagiert haben',
-                  description: 'Jede Person teilt ihre Perspektive — reihum, ohne zu kommentieren. Keine Diskussion, kein Gegenargumentieren. Nur: Was löst das Vorhaben in dir aus?',
+                  description:
+                    'Jede Person teilt ihre Perspektive — reihum, ohne zu kommentieren. Keine Diskussion, kein Gegenargumentieren. Nur: Was löst das Vorhaben in dir aus?',
                   tips: [
                     'Reagiere als Zuhörer*in — nicht als Debattant*in',
                     'Kein „Aber" — nur eigene Perspektiven teilen',
@@ -3468,7 +3747,8 @@ export default function HomePage() {
                   title: '4. Anpassung (Optional)',
                   who: 'Einreicher — aber alle können Vorschläge machen',
                   duration: 'Flexibel',
-                  description: 'Der Einreicher überarbeitet den Vorschlag auf Basis der Perspektiven. Das ist kein Schwäche-Zeichen — das ist der Prozess. Ein guter Vorschlag wird durch Perspektiven besser.',
+                  description:
+                    'Der Einreicher überarbeitet den Vorschlag auf Basis der Perspektiven. Das ist kein Schwäche-Zeichen — das ist der Prozess. Ein guter Vorschlag wird durch Perspektiven besser.',
                   tips: [
                     'Nimm Perspektiven als Geschenk — nicht als Kritik',
                     'Du musst nicht alle Vorschläge integrieren — aber jeden beachten',
@@ -3484,7 +3764,8 @@ export default function HomePage() {
                   title: '5. Konsent-Abstimmung',
                   who: 'Alle Kreis-Mitglieder',
                   duration: 'Offen — bis alle abgestimmt haben',
-                  description: 'Jetzt wird abgestimmt: Konsent (kein schwerwiegender Einwand), leichter Einwand (Anmerkung), schwerwiegender Einwand (Blocker), oder Enthaltung (mit Begründung). Ergebnis: tragfähiger Beschluss.',
+                  description:
+                    'Jetzt wird abgestimmt: Konsent (kein schwerwiegender Einwand), leichter Einwand (Anmerkung), schwerwiegender Einwand (Blocker), oder Enthaltung (mit Begründung). Ergebnis: tragfähiger Beschluss.',
                   tips: [
                     'Prüfe ehrlich: Habe ich einen schwerwiegenden, begründeten Einwand — oder nur eine Präferenz?',
                     'Enthaltungen sind okay — aber nur mit Begründung',
@@ -3500,7 +3781,8 @@ export default function HomePage() {
                   title: '6. Integration (bei Einwänden)',
                   who: 'Einreicher + Einwand-Geber',
                   duration: 'Bis Lösung gefunden',
-                  description: 'Wenn jemand einen schwerwiegenden Einwand hat, startet der 6-Phasen-Dialog: Verstehen → Validieren → Lösungen suchen → Synthese → Neuen Vorschlag präsentieren → Erneut abstimmen. Bis Konsent erreicht ist.',
+                  description:
+                    'Wenn jemand einen schwerwiegenden Einwand hat, startet der 6-Phasen-Dialog: Verstehen → Validieren → Lösungen suchen → Synthese → Neuen Vorschlag präsentieren → Erneut abstimmen. Bis Konsent erreicht ist.',
                   tips: [
                     'Der Einwand zeigt dir einen blinden Fleck — geh neugierig damit um',
                     'Suche gemeinsam nach Anpassungen — nicht nach Kompromissen',
@@ -3510,40 +3792,61 @@ export default function HomePage() {
                   border: 'border-emerald-200',
                   accent: 'bg-emerald-500',
                 },
-              ].map(({ phase, icon, title, who, duration, description, tips, color, border, accent }) => (
-                <article
-                  key={phase}
-                  className={`rounded-2xl border ${border} bg-gradient-to-br ${color} overflow-hidden`}
-                >
-                  <div className="flex flex-col sm:flex-row">
-                    <div className={`${accent} text-white p-6 sm:w-36 flex flex-col items-center justify-center shrink-0`}>
-                      <div className="text-3xl mb-2">{icon}</div>
-                      <div className="text-xs font-bold uppercase tracking-wider opacity-80">Phase {phase}</div>
-                    </div>
-                    <div className="flex-1 p-6">
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-3">
-                        <h3 className="font-bold text-lg">{title}</h3>
-                        <div className="flex gap-3 sm:ml-auto text-xs text-gray-500">
-                          <span className="px-2 py-0.5 bg-white/70 rounded-full">👤 {who}</span>
-                          <span className="px-2 py-0.5 bg-white/70 rounded-full">⏱️ {duration}</span>
+              ].map(
+                ({
+                  phase,
+                  icon,
+                  title,
+                  who,
+                  duration,
+                  description,
+                  tips,
+                  color,
+                  border,
+                  accent,
+                }) => (
+                  <article
+                    key={phase}
+                    className={`rounded-2xl border ${border} bg-gradient-to-br ${color} overflow-hidden`}
+                  >
+                    <div className="flex flex-col sm:flex-row">
+                      <div
+                        className={`${accent} text-white p-6 sm:w-36 flex flex-col items-center justify-center shrink-0`}
+                      >
+                        <div className="text-3xl mb-2">{icon}</div>
+                        <div className="text-xs font-bold uppercase tracking-wider opacity-80">
+                          Phase {phase}
                         </div>
                       </div>
-                      <p className="text-gray-700 text-sm leading-relaxed mb-4">{description}</p>
-                      <div className="bg-white/60 rounded-xl p-4 border border-gray-100">
-                        <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">💡 Praktische Tipps</p>
-                        <ul className="space-y-1.5">
-                          {tips.map((tip, i) => (
-                            <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
-                              <span className="text-gray-400 shrink-0 mt-0.5">→</span>
-                              <span>{tip}</span>
-                            </li>
-                          ))}
-                        </ul>
+                      <div className="flex-1 p-6">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-3">
+                          <h3 className="font-bold text-lg">{title}</h3>
+                          <div className="flex gap-3 sm:ml-auto text-xs text-gray-500">
+                            <span className="px-2 py-0.5 bg-white/70 rounded-full">👤 {who}</span>
+                            <span className="px-2 py-0.5 bg-white/70 rounded-full">
+                              ⏱️ {duration}
+                            </span>
+                          </div>
+                        </div>
+                        <p className="text-gray-700 text-sm leading-relaxed mb-4">{description}</p>
+                        <div className="bg-white/60 rounded-xl p-4 border border-gray-100">
+                          <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">
+                            💡 Praktische Tipps
+                          </p>
+                          <ul className="space-y-1.5">
+                            {tips.map((tip, i) => (
+                              <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+                                <span className="text-gray-400 shrink-0 mt-0.5">→</span>
+                                <span>{tip}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                )
+              )}
             </div>
 
             <div className="mt-12 text-center">

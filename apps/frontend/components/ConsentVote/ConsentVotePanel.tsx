@@ -134,12 +134,76 @@ export default function ConsentVotePanel({
   const votesCount = votes.length
   const remaining = Math.max(0, participantCount - votesCount)
 
-  // --- Already voted state ---
+  // ── Consent Score ────────────────────────────────────────────────────────
+  const score = {
+    consents: votes.filter((v) => v.choice === 'consent').length,
+    minor: votes.filter((v) => v.choice === 'minor_objection').length,
+    major: votes.filter((v) => v.choice === 'major_objection').length,
+    abstains: votes.filter((v) => v.choice === 'abstain').length,
+  }
+
+  // Score 0–100: 100 when all consents, lower with objections
+  const consentPct =
+    participantCount > 0 ? Math.round((score.consents / participantCount) * 100) : 0
+
+  const scoreColor =
+    consentPct >= 80 ? 'text-emerald-600' : consentPct >= 50 ? 'text-amber-600' : 'text-red-600'
+
+  const scoreLabel =
+    consentPct >= 80
+      ? 'Konsent in Sicht'
+      : consentPct >= 50
+        ? 'Gemischtes Bild'
+        : consentPct >= 1
+          ? 'Einwände blockieren'
+          : 'Noch offen'
+
+  const scoreBg =
+    consentPct >= 80
+      ? 'bg-emerald-50 border-emerald-200'
+      : consentPct >= 50
+        ? 'bg-amber-50 border-amber-200'
+        : consentPct >= 1
+          ? 'bg-red-50 border-red-200'
+          : 'bg-gray-50 border-gray-200'
+
+  // ── Already voted state ──
   if (userHasVoted) {
     const myVote = currentUserId ? votes.find((v) => v.user?.id === currentUserId) : undefined
     const myChoice = CHOICES.find((c) => c.key === myVote?.choice)
     return (
       <div className="space-y-3">
+        {/* Consent Score Gauge */}
+        <div
+          className={`rounded-xl border p-4 ${scoreBg}`}
+          role="status"
+          aria-live="polite"
+          aria-label={`Konsent-Score: ${consentPct}% — ${scoreLabel}`}
+        >
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-xl" aria-hidden="true">
+              {consentPct >= 80 ? '✅' : consentPct >= 50 ? '⚠️' : consentPct >= 1 ? '🔴' : '⏳'}
+            </span>
+            <div className="flex-1">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-semibold text-gray-700">Konsent-Score</span>
+                <span className={`text-sm font-bold ${scoreColor}`}>{consentPct}%</span>
+              </div>
+              <div className="mt-1.5 h-2 bg-white/70 rounded-full overflow-hidden">
+                <div
+                  className={`h-full rounded-full transition-all duration-700 ${consentPct >= 80 ? 'bg-emerald-500' : consentPct >= 50 ? 'bg-amber-400' : consentPct >= 1 ? 'bg-red-400' : 'bg-gray-300'}`}
+                  style={{ width: `${Math.max(consentPct, 5)}%` }}
+                />
+              </div>
+            </div>
+          </div>
+          <p className="text-xs text-gray-500">
+            {score.consents} Konsent · {score.minor} Anmerkung{score.minor !== 1 ? 'en' : ''} ·{' '}
+            {score.major} Einwand{score.major !== 1 ? 'wände' : ''} · {score.abstains} Enthaltung
+            {score.abstains !== 1 ? 'en' : ''} · {remaining} ausstehend
+          </p>
+        </div>
+
         <div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-50 border border-emerald-200">
           <span className="text-2xl">{myChoice?.emoji ?? '✅'}</span>
           <div className="flex-1 min-w-0">
@@ -245,6 +309,37 @@ export default function ConsentVotePanel({
   // --- Initial vote selection ---
   return (
     <div className="space-y-4">
+      {/* Consent Score Gauge (live during voting) */}
+      {votesCount > 0 && (
+        <div
+          className={`rounded-xl border p-3 ${scoreBg}`}
+          role="status"
+          aria-live="polite"
+          aria-label={`Konsent-Score: ${consentPct}% — ${scoreLabel}`}
+        >
+          <div className="flex items-center gap-2">
+            <span className="text-lg shrink-0" aria-hidden="true">
+              {consentPct >= 80 ? '✅' : consentPct >= 50 ? '⚠️' : '⏳'}
+            </span>
+            <div className="flex-1">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-gray-700">Konsent-Score</span>
+                <span className={`text-xs font-bold ${scoreColor}`}>{consentPct}%</span>
+              </div>
+              <div className="mt-1 h-1.5 bg-white/70 rounded-full overflow-hidden">
+                <div
+                  className={`h-full rounded-full transition-all duration-700 ${consentPct >= 80 ? 'bg-emerald-500' : consentPct >= 50 ? 'bg-amber-400' : 'bg-gray-300'}`}
+                  style={{ width: `${Math.max(consentPct, 5)}%` }}
+                />
+              </div>
+            </div>
+            <span className="text-xs text-gray-500 shrink-0">
+              {score.consents}/{votesCount}
+            </span>
+          </div>
+        </div>
+      )}
+
       {/* Reminder: waiting votes */}
       {remaining > 0 && (
         <div className="flex items-center gap-2 p-3 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800">
@@ -260,6 +355,25 @@ export default function ConsentVotePanel({
         Konsent bedeutet: <em>Niemand hat einen schwerwiegenden, begründeten Einwand.</em>
         Wähle deine Position:
       </p>
+
+      {/* Quick-reference legend */}
+      <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 text-xs text-blue-700 space-y-1">
+        <p className="font-semibold text-blue-800 mb-1.5">📖 Schnell erklärt</p>
+        <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+          <span>
+            ✅ <strong>Konsent</strong> = Kein Einwand — trage mit
+          </span>
+          <span>
+            💛 <strong>Anmerkung</strong> = Leichter Einwand — kein Blocker
+          </span>
+          <span>
+            🔴 <strong>Einwand</strong> = Muss integriert werden
+          </span>
+          <span>
+            ⏸️ <strong>Enthalten</strong> = Mit Begründung — Folgeprozess
+          </span>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {CHOICES.map((choice) => (

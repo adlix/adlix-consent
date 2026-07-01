@@ -1402,6 +1402,19 @@ export default function ProjectDetailPage() {
                 </div>
               )}
 
+              {/* Abstention Analysis — prominent in integration phase */}
+              {selectedRound.status === 'integration' && (
+                <div className="mb-4">
+                  <AbstentionAnalysisView
+                    roundId={selectedRound.id}
+                    abstentionCount={
+                      selectedRound.votes.filter((v) => v.choice === 'abstain').length
+                    }
+                    isOwner={String(userId) === String(project?.owner?.id)}
+                  />
+                </div>
+              )}
+
               {/* Integration Phase — After dialog, start new round */}
               {selectedRound.status === 'integration' && (
                 <div className="mb-6 p-5 rounded-xl bg-orange-50 border border-orange-200">
