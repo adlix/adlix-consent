@@ -318,6 +318,108 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── 3 Schritte zum ersten Consent-Loop ── */}
+        <section
+          className="py-16 bg-gradient-to-b from-emerald-50/40 via-white to-white border-t border-gray-100"
+          aria-labelledby="quickstart-heading"
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium mb-4">
+                <span aria-hidden="true">🚀</span> Sofort loslegen
+              </div>
+              <h2 id="quickstart-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                In 3 Schritten zum ersten Consent-Loop
+              </h2>
+              <p className="text-gray-500 max-w-xl mx-auto text-lg">
+                Kein Onboarding-Marathon. Kein Tooltip-Labyrinth. Du brauchst 5 Minuten — und ein
+                Team mit einer Entscheidung.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  step: 1,
+                  icon: '🌀',
+                  title: 'Kreis erstellen',
+                  desc: 'Nenne deinen Kreis — z.B. "Produktteam" oder "Vereinsvorstand". Lade dein Team über einen Link ein.',
+                  detail: 'Keine E-Mail-Adressen nötig. Ein Link genügt.',
+                  time: '30 Sekunden',
+                  color: 'border-indigo-200 bg-indigo-50/50',
+                  accent: 'text-indigo-600',
+                  stepBg: 'bg-indigo-600',
+                },
+                {
+                  step: 2,
+                  icon: '📋',
+                  title: 'Vorhaben einreichen',
+                  desc: 'Beschreibe deinen Vorschlag — was möchtest du entscheiden? Was ist die Spannung dahinter?',
+                  detail: 'Adlix consent führt dich durch die Felder. Kein Format-Chaos.',
+                  time: '2 Minuten',
+                  color: 'border-blue-200 bg-blue-50/50',
+                  accent: 'text-blue-600',
+                  stepBg: 'bg-blue-600',
+                },
+                {
+                  step: 3,
+                  icon: '🗳️',
+                  title: 'Consent-Loop starten',
+                  desc: 'Dein Team erhält eine Benachrichtigung. Jede Person kann — asynchron, in Ruhe — abstimmen, Fragen stellen und Einwände einbringen.',
+                  detail: 'Async, dokumentiert, mit Erinnerungen. Kein Meeting nötig.',
+                  time: '72 Stunden (Median)',
+                  color: 'border-emerald-200 bg-emerald-50/50',
+                  accent: 'text-emerald-600',
+                  stepBg: 'bg-emerald-600',
+                },
+              ].map(({ step, icon, title, desc, detail, time, color, accent, stepBg }) => (
+                <div key={step} className={`rounded-2xl border-2 p-6 relative ${color}`}>
+                  <div
+                    className={`absolute -top-4 left-6 w-10 h-10 ${stepBg} rounded-full flex items-center justify-center text-white text-lg font-black shadow-md`}
+                  >
+                    {step}
+                  </div>
+                  <div className="mt-2 mb-4">
+                    <span className="text-4xl" aria-hidden="true">
+                      {icon}
+                    </span>
+                  </div>
+                  <h3 className={`font-bold text-lg mb-2 ${accent}`}>{title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed mb-3">{desc}</p>
+                  <div className="flex items-start gap-2 bg-white/70 rounded-lg p-3">
+                    <span className="text-emerald-500 mt-0.5 shrink-0">✓</span>
+                    <p className="text-xs text-gray-600 leading-relaxed">{detail}</p>
+                  </div>
+                  <div className="mt-4 pt-3 border-t border-gray-200/50 flex items-center gap-2">
+                    <span className="text-gray-400 text-sm">⏱️</span>
+                    <span className="text-xs font-medium text-gray-500">{time}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 text-center">
+              <p className="text-gray-500 text-sm mb-4">
+                Kostenlos für Teams bis 10 Personen. Keine Kreditkarte.
+              </p>
+              <div className="flex justify-center gap-4 flex-wrap">
+                <Link
+                  href="/register"
+                  className="px-6 py-3 bg-emerald-600 text-white font-medium rounded-xl hover:bg-emerald-700 transition-colors"
+                >
+                  Kostenlos starten →
+                </Link>
+                <Link
+                  href="#how-it-works-heading"
+                  className="px-6 py-3 bg-white text-gray-700 font-medium rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors"
+                >
+                  So funktioniert's ↓
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Das Problem kennt jeder */}
         <section className="py-14 border-t border-gray-100" aria-labelledby="problem-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

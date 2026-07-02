@@ -11,6 +11,7 @@ import AuditTrail from '@/components/AuditTrail/AuditTrail'
 import ConsentVotePanel from '@/components/ConsentVote/ConsentVotePanel'
 import AnonymousConcernsView from '@/components/AnonymousConcerns/AnonymousConcernsView'
 import AbstentionAnalysisView from '@/components/AbstentionAnalysis/AbstentionAnalysisView'
+import ConsentPhaseTracker from '@/components/ConsentPhaseTracker/ConsentPhaseTracker'
 
 const AbstainReasonModal = dynamic(() => import('@/components/AbstainReason/AbstainReasonModal'), {
   ssr: false,
@@ -226,7 +227,6 @@ export default function ProjectDetailPage() {
   }, [params.id, jwt, authStatus])
 
   const currentPhaseIndex = selectedRound ? phaseOrder.indexOf(selectedRound.status) : -1
-  const currentPhase = currentPhaseIndex >= 0 ? flowPhases[currentPhaseIndex] : null
 
   // Check if current user has already voted
   const userId = session?.user?.id
@@ -536,72 +536,13 @@ export default function ProjectDetailPage() {
 
           {/* Consent Flow Progress */}
           <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
-            <h2 className="text-lg font-semibold mb-4">Consent-Prozess</h2>
-            {/* Only show 'integration' phase node if there actually are objections or we're in/past integration */}
-            <div className="flex items-center justify-between overflow-x-auto pb-2">
-              {flowPhases
-                .filter((p) => {
-                  if (p.key === 'integration') {
-                    const hasObjections = (selectedRound?.objections?.length ?? 0) > 0
-                    const inOrPastIntegration =
-                      currentPhaseIndex >= phaseOrder.indexOf('integration')
-                    return hasObjections || inOrPastIntegration
-                  }
-                  return true
-                })
-                .map((phase, index, visiblePhases) => {
-                  const originalIndex = flowPhases.indexOf(phase)
-                  const isCompleted = originalIndex < currentPhaseIndex
-                  const isActive = originalIndex === currentPhaseIndex
-                  return (
-                    <div key={phase.key} className="flex items-center min-w-0">
-                      <div className="flex flex-col items-center">
-                        <div
-                          className={`w-10 h-10 rounded-full flex items-center justify-center text-lg mb-1.5 shrink-0 transition-all duration-300 ${
-                            isCompleted
-                              ? 'bg-emerald-500 text-white shadow-sm'
-                              : isActive
-                                ? 'bg-blue-600 text-white ring-4 ring-blue-100 shadow-md scale-110'
-                                : 'bg-gray-100 text-gray-400'
-                          }`}
-                        >
-                          {isCompleted ? '✓' : phase.icon}
-                        </div>
-                        <div
-                          className={`text-xs font-medium text-center max-w-[72px] leading-tight ${
-                            isActive
-                              ? 'text-blue-600'
-                              : isCompleted
-                                ? 'text-emerald-600'
-                                : 'text-gray-400'
-                          }`}
-                        >
-                          {phase.label}
-                        </div>
-                      </div>
-                      {index < visiblePhases.length - 1 && (
-                        <div
-                          className={`w-5 sm:w-10 h-0.5 mx-1 sm:mx-2 shrink-0 transition-colors duration-300 ${
-                            isCompleted ? 'bg-emerald-400' : 'bg-gray-200'
-                          }`}
-                        />
-                      )}
-                    </div>
-                  )
-                })}
-            </div>
-            {currentPhase && (
-              <div
-                className="mt-4 p-3 rounded-xl text-sm"
-                style={{ background: 'var(--sage-pale)', color: 'var(--forest-mid)' }}
-              >
-                <span className="font-semibold">
-                  {currentPhase.icon} {currentPhase.label}:
-                </span>{' '}
-                {currentPhase.hint}
-              </div>
-            )}
-
+            <ConsentPhaseTracker
+              currentPhase={selectedRound?.status ?? 'information'}
+              phases={flowPhases.map((p) => ({ key: p.key, label: p.label, icon: p.icon, description: p.hint }))}
+              votes={selectedRound?.votes ?? []}
+              objections={selectedRound?.objections ?? []}
+              participantCount={participantCount}
+            />
             {String(userId) === String(project?.owner?.id) &&
               selectedRound &&
               selectedRound.status !== 'completed' &&
