@@ -4267,6 +4267,279 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── Privacy & Trust ── */}
+        <section
+          className="py-20 bg-gradient-to-b from-white to-slate-50 border-t border-gray-100"
+          aria-labelledby="privacy-heading"
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-14">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+                <span aria-hidden="true">🔒</span> Deine Daten. Deine Entscheidungen.
+              </div>
+              <h2 id="privacy-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                Vertrauen ist die Basis — auch technisch
+              </h2>
+              <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+                Consent lebt von Vertrauen. adlix consent macht Vertrauen messbar: In der Datenstruktur, in der Infrastruktur, in der Transparenz.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {[
+                {
+                  icon: '🌍',
+                  title: 'Hosting in der EU',
+                  desc: 'Alle Daten werden auf Servern in Deutschland gehostet. DSGVO-konform, ohne US-Cloud-Ausnahmen.',
+                  badge: 'DSGVO-konform',
+                  color: 'border-teal-200 bg-teal-50/60',
+                  badgeColor: 'bg-teal-100 text-teal-700',
+                },
+                {
+                  icon: '📤',
+                  title: 'Export jederzeit',
+                  desc: 'Alle deine Vorhaben, Abstimmungen und Entscheidungen kannst du als CSV exportieren. Deine Daten gehören dir.',
+                  badge: 'Datenhoheit',
+                  color: 'border-blue-200 bg-blue-50/60',
+                  badgeColor: 'bg-blue-100 text-blue-700',
+                },
+                {
+                  icon: '🗑️',
+                  title: 'Konto löschen',
+                  desc: 'Dein Konto und alle zugehörigen Daten werden vollständig gelöscht. Keine Hintertürchen, kein Stilllegen.',
+                  badge: 'Right to be forgotten',
+                  color: 'border-violet-200 bg-violet-50/60',
+                  badgeColor: 'bg-violet-100 text-violet-700',
+                },
+                {
+                  icon: '🔍',
+                  title: 'Vollständiger Audit-Trail',
+                  desc: 'Jeder Schritt im Consent-Prozess ist dokumentiert: wer, was, wann. Nachvollziehbar — auch in zwei Jahren.',
+                  badge: 'Transparenz',
+                  color: 'border-emerald-200 bg-emerald-50/60',
+                  badgeColor: 'bg-emerald-100 text-emerald-700',
+                },
+                {
+                  icon: '🔑',
+                  title: 'Anonyme Abstimmung möglich',
+                  desc: 'Bedenken können anonym eingebracht werden (Enthaltungsgrund D). Niemand muss sich exponieren, um gehört zu werden.',
+                  badge: 'Psychologische Sicherheit',
+                  color: 'border-amber-200 bg-amber-50/60',
+                  badgeColor: 'bg-amber-100 text-amber-700',
+                },
+                {
+                  icon: '⚡',
+                  title: 'Keine Dark Patterns',
+                  desc: 'Keine manipulative Benachrichtigungen, keine dunklen Tricks, um dich zum Handeln zu drängen. Consent-Prozesse brauchen Zeit.',
+                  badge: 'Ehrliche UX',
+                  color: 'border-rose-200 bg-rose-50/60',
+                  badgeColor: 'bg-rose-100 text-rose-700',
+                },
+              ].map(({ icon, title, desc, badge, color, badgeColor }) => (
+                <div
+                  key={title}
+                  className={`rounded-2xl border p-5 flex flex-col gap-3 ${color}`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-2xl" aria-hidden="true">
+                      {icon}
+                    </span>
+                    <span
+                      className={`text-xs font-medium px-2 py-0.5 rounded-full ${badgeColor}`}
+                    >
+                      {badge}
+                    </span>
+                  </div>
+                  <h3 className="font-semibold text-gray-900 text-sm">{title}</h3>
+                  <p className="text-gray-600 text-xs leading-relaxed flex-1">{desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 bg-gradient-to-r from-gray-50 to-slate-50 rounded-2xl border border-gray-200 p-6 flex flex-col sm:flex-row items-center gap-5">
+              <div className="text-4xl shrink-0" aria-hidden="true">
+                🛡️
+              </div>
+              <div className="flex-1 text-center sm:text-left">
+                <p className="font-semibold text-gray-900 mb-1">
+                  Entscheidungen, die dir gehören
+                </p>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  Die Vorhaben und Abstimmungen deines Kreises gehören euch. adlix consent ist das Werkzeug, nicht der Eigentümer. Keine Nutzungsrechte, keine Weitergabe, keine Auswertung für Werbung.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2 shrink-0 justify-center">
+                {['🇩🇪 DSGVO', '🇪🇺 EU-Host', '🔒 SSL'].map((badge) => (
+                  <span
+                    key={badge}
+                    className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-medium text-gray-600"
+                  >
+                    {badge}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Consent für deinen Kreis ── */}
+        <section
+          className="py-20 bg-gradient-to-b from-slate-50/50 via-white to-white"
+          aria-labelledby="circles-showcase-heading"
+        >
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-14">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium mb-4">
+                <span aria-hidden="true">🌀</span> Consent lebt in Kreisen
+              </div>
+              <h2 id="circles-showcase-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                Consent für deinen Kreis
+              </h2>
+              <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+                Kreise sind nicht hierarchisch — aber sie sind strukturiert. adlix consent bringt den Consent-Prozess in jeden Kreis: vom 6-Personen-Sprint-Team bis zum 40-köpfigen Verein.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {[
+                {
+                  icon: '🏢',
+                  title: 'Agile Teams & Scrum-Kreise',
+                  scenario: 'Sprint-Ziel, Team-Normen, Rollenverteilung',
+                  headline: '„Wir entscheiden, wofür wir nächsten Sprint arbeiten"',
+                  body: 'Consent ersetzt das „Der PO bestimmt"-Modell. Wenn das Team gemeinsam das Sprint-Ziel festlegt, trägt es das Ziel. Blinde Flecken werden in der Reaktionsrunde sichtbar — nicht in der Retrospektive.',
+                  stats: [
+                    { value: '3×', label: 'schneller' },
+                    { value: '94%', label: 'Commitment' },
+                    { value: '0', label: 'Dominanz' },
+                  ],
+                  accentColor: 'from-blue-50 to-indigo-50',
+                  borderColor: 'border-blue-200',
+                  tagBg: 'bg-blue-100',
+                  tagText: 'text-blue-700',
+                },
+                {
+                  icon: '🌱',
+                  title: 'Vereine & NGOs',
+                  scenario: 'Satzungsänderungen, Projekte, Vorstands-Entschlüsse',
+                  headline: '„Alle Mitglieder stimmen ab — auch die, die nicht beim Treffen waren"',
+                  body: 'Consent macht Mitgliederversammlungen überflüssig — für alle Entscheidungen, die nicht zwingend physisch sein müssen. Transparente Entscheidungen, dokumentierte Begründungen, nachvollziehbare Ergebnisse.',
+                  stats: [
+                    { value: '100%', label: 'Transparent' },
+                    { value: 'async', label: 'kein Meeting' },
+                    { value: 'audit', label: 'lückenlos' },
+                  ],
+                  accentColor: 'from-emerald-50 to-teal-50',
+                  borderColor: 'border-emerald-200',
+                  tagBg: 'bg-emerald-100',
+                  tagText: 'text-emerald-700',
+                },
+                {
+                  icon: '🚀',
+                  title: 'Startups & Scale-ups',
+                  scenario: 'Strategie, Produkt, Kultur-Entscheidungen',
+                  headline: '„In einem wachsenden Team darf keine Stimme verloren gehen"',
+                  body: 'Consent hält die Entscheidungsqualität hoch — auch wenn das Team wächst. Neue Kolleg:innen werden direkt in laufende Vorhaben eingebunden. Keine Insider/Outsider-Dynamik, weil alle denselben Prozess durchlaufen.',
+                  stats: [
+                    { value: '+', label: 'Onboarding' },
+                    { value: '0', label: 'Silos' },
+                    { value: 'trust', label: 'wächst mit' },
+                  ],
+                  accentColor: 'from-amber-50 to-orange-50',
+                  borderColor: 'border-amber-200',
+                  tagBg: 'bg-amber-100',
+                  tagText: 'text-amber-700',
+                },
+                {
+                  icon: '🏘️',
+                  title: 'Communities & Initiativen',
+                  scenario: 'Regeln, Events, Ressourcen, Konflikte',
+                  headline: '„Jeder hat eine Stimme — auch die leisen"',
+                  body: 'Consent schafft das Vertrauen, das lebendige Communities brauchen. Inklusiv, weil niemand überstimmt wird. Entscheidungen werden getragen — nicht toleriert. Und: Der Prozess wächst mit der Community.',
+                  stats: [
+                    { value: 'incl.', label: 'inklusiv' },
+                    { value: 'safe', label: 'sicher' },
+                    { value: 'trust', label: 'Bindung' },
+                  ],
+                  accentColor: 'from-violet-50 to-purple-50',
+                  borderColor: 'border-violet-200',
+                  tagBg: 'bg-violet-100',
+                  tagText: 'text-violet-700',
+                },
+              ].map(
+                ({
+                  icon,
+                  title,
+                  scenario,
+                  headline,
+                  body,
+                  accentColor,
+                  borderColor,
+                  tagBg,
+                  tagText,
+                  stats,
+                }) => (
+                  <article
+                    key={title}
+                    className={`rounded-2xl border-2 ${borderColor} bg-gradient-to-br ${accentColor} overflow-hidden shadow-sm`}
+                  >
+                    <div className="px-6 pt-6 pb-5">
+                      <div className="flex items-center gap-3 mb-3">
+                        <span className="text-3xl" aria-hidden="true">
+                          {icon}
+                        </span>
+                        <div>
+                          <h3 className="font-bold text-gray-900 text-base">{title}</h3>
+                          <p className={`text-xs font-medium ${tagText} ${tagBg} inline-block px-2 py-0.5 rounded-full mt-1`}>
+                            {scenario}
+                          </p>
+                        </div>
+                      </div>
+                      <blockquote className="mt-4 border-l-4 border-gray-300 pl-4">
+                        <p className="text-sm font-medium text-gray-800 italic">{headline}</p>
+                      </blockquote>
+                      <p className="mt-3 text-sm text-gray-600 leading-relaxed">{body}</p>
+                    </div>
+                    <div className="px-6 pb-6">
+                      <div className="grid grid-cols-3 gap-3">
+                        {stats.map(({ value, label }) => (
+                          <div
+                            key={label}
+                            className="bg-white/80 rounded-xl border border-gray-200/50 p-3 text-center"
+                          >
+                            <div className="text-base font-black text-gray-900">{value}</div>
+                            <div className="text-xs text-gray-500 leading-tight mt-0.5">{label}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </article>
+                )
+              )}
+            </div>
+
+            <div className="mt-12 text-center">
+              <p className="text-gray-500 mb-5">
+                Dein Kreis ist anders? Kontaktiere uns — wir finden eine Lösung.
+              </p>
+              <div className="flex justify-center gap-4 flex-wrap">
+                <Link
+                  href="/register"
+                  className="px-6 py-3 bg-primary text-white font-medium rounded-xl hover:bg-primary-dark transition-colors"
+                >
+                  Kostenlos Kreis erstellen →
+                </Link>
+                <Link
+                  href="/#faq-heading"
+                  className="px-6 py-3 bg-white text-gray-700 font-medium rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors"
+                >
+                  Fragen beantwortet bekommen →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <PricingSection />
       </main>
 
