@@ -4,7 +4,7 @@
  */
 'use client'
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, ReactNode } from 'react'
 
 interface OnboardingContextType {
   step: number
@@ -34,17 +34,12 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     description?: string
     inviteCode?: string
   }>({ name: '' })
-  const [isCompleted, setIsCompleted] = useState(false)
-
-  // Check if onboarding is already completed
-  useEffect(() => {
+  const [isCompleted, setIsCompleted] = useState(() => {
     if (typeof window !== 'undefined') {
-      const completed = localStorage.getItem('onboarding_completed')
-      if (completed === 'true') {
-        setIsCompleted(() => true)
-      }
+      return localStorage.getItem('onboarding_completed') === 'true'
     }
-  }, [])
+    return false
+  })
 
   const completeOnboarding = () => {
     setIsCompleted(true)

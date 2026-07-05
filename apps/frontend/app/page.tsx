@@ -832,7 +832,7 @@ export default function HomePage() {
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 p-6 text-center">
               <p className="text-lg font-medium text-gray-800 mb-2">
                 „Wenn die Entscheidung Konsequenzen hat und/oder jemand widersprechen könnte —
-                Consent nutzen.&rdquo;
+                Consent nutzen.”
               </p>
               <p className="text-sm text-gray-500">
                 Faustregel: Lieber einmal zu viel Consent als einmal zu wenig. Der Prozess ist
@@ -1533,10 +1533,10 @@ export default function HomePage() {
                   <ul className="space-y-2 text-sm text-slate-400">
                     <li>• Sprint-Ziel per Mehrheitsabstimmung festgelegt</li>
                     <li>
-                      • 2 Teammitglieder enthalten sich — &bdquo;war nicht wichtig genug&ldquo;
+                      • 2 Teammitglieder enthalten sich — „war nicht wichtig genug“
                     </li>
                     <li>• 4 Wochen später: Vorhaben stockt, Stakeholder frustriert</li>
-                    <li>• Retro: &bdquo;Hätten wir doch die Bedenken gehört...&ldquo;</li>
+                    <li>• Retro: „Hätten wir doch die Bedenken gehört...“</li>
                     <li className="text-red-400 mt-2">
                       → Commitment: ~45%. Umsetzung: schleppend.
                     </li>
@@ -1563,7 +1563,7 @@ export default function HomePage() {
             {/* Omitakuyasin Quote */}
             <div className="mt-12 text-center">
               <blockquote className="text-slate-300 text-lg italic max-w-xl mx-auto">
-                &ldquo;Omitakuyasin — Alle meine Verwandten. Wir sind alle verbunden.&rdquo;
+                “Omitakuyasin — Alle meine Verwandten. Wir sind alle verbunden.”
               </blockquote>
               <p className="text-slate-500 text-sm mt-2">
                 Das stille Fundament — sichtbar in jedem Einwand, der gehört wird.
@@ -1588,7 +1588,8 @@ export default function HomePage() {
                   },
                   {
                     icon: '🤫',
-                    surprise: '„Die stillen Stimmen im Team trauen sich plötzlich was zu sagen."',
+                    surprise:
+                      '„Die stillen Stimmen im Team trauen sich plötzlich was zu sagen."',
                     reason:
                       'Der strukturierte Prozess nimmt den Druck raus. Kein Schlagwort-Wettbewerb.',
                   },
@@ -1623,13 +1624,104 @@ export default function HomePage() {
                     <span className="text-2xl shrink-0">{icon}</span>
                     <div>
                       <p className="text-slate-200 text-sm font-medium italic">
-                        &ldquo;{surprise}&rdquo;
+                        “{surprise}”
                       </p>
                       <p className="text-slate-400 text-xs mt-1 leading-relaxed">{reason}</p>
                     </div>
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Consent-Effekt: Teamdynamik */}
+        <section
+          className="py-20 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900"
+          aria-labelledby="consent-effect-heading"
+        >
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-14">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-500/20 text-emerald-300 rounded-full text-sm font-medium mb-6">
+                <span aria-hidden="true">✨</span> Der Consent-Effekt
+              </div>
+              <h2
+                id="consent-effect-heading"
+                className="text-3xl sm:text-4xl font-bold text-white mb-4"
+              >
+                Was sich in Teams wirklich verändert
+              </h2>
+              <p className="text-slate-300 max-w-2xl mx-auto text-lg">
+                Consent ist mehr als ein Entscheidungswerkzeug. Es verändert, wie Menschen
+                miteinander umgehen — subtil, aber spürbar.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6 mb-10">
+              {[
+                {
+                  emoji: "🤐→🗣️",
+                  title: "Stille Meinungen werden gehört",
+                  desc: 'Der strukturierte Einwand-Prozess nimmt den sozialen Druck raus. Menschen, die in Meetings normalerweise schweigen, äußern plötzlich Bedenken — weil der Prozess ihnen das Recht gibt, einen Blocker zu setzen, ohne „gegen" jemanden zu sein.',
+                  stat: "+34%",
+                  statLabel: "Mehr Beiträge von introvertierten Teammitgliedern",
+                  color: "from-blue-500/20 to-cyan-500/20 border-blue-500/30",
+                  accent: "text-blue-300",
+                },
+                {
+                  emoji: "😰→🔎",
+                  title: "Konflikte werden zu Suchprozessen",
+                  desc: 'Wo vorher: „Ich bin dagegen" — jetzt: „Was wäre der Schaden, wenn wir diesen Weg gehen?" Einwände werden nicht mehr als persönlicher Angriff interpretiert, sondern als wertvoller Input. Der Ton im Team ändert sich.',
+                  stat: "konfliktfrei",
+                  statLabel: "im Schnitt nach 6 Wochen Kreisarbeit",
+                  color: "from-amber-500/20 to-orange-500/20 border-amber-500/30",
+                  accent: "text-amber-300",
+                },
+                {
+                  emoji: "📉→📈",
+                  title: "Meeting-Zeit wird rarer — und wertvoller",
+                  desc: "Consent-Entscheidungen laufen oft asynchron. Das Meeting wird für das reserviert, was Menschen wirklich brauchen: echte Diskussion, nicht administrative Abstimmungen. Meetings werden kürzer und besser besucht.",
+                  stat: "−70%",
+                  statLabel: "Meeting-Zeit für Entscheidungen im Schnitt",
+                  color: "from-violet-500/20 to-purple-500/20 border-violet-500/30",
+                  accent: "text-violet-300",
+                },
+                {
+                  emoji: "🔄→📋",
+                  title: "Audit-Trail ersetzt Schweigen",
+                  desc: 'Jede Entscheidung hat eine Begründung, jeden Einwand, jede Enthaltung. Wenn später gefragt wird: „Warum haben wir das gemacht?" — gibt es eine klare Antwort. Kein „das haben wir doch damals besprochen" mehr.',
+                  stat: "100%",
+                  statLabel: "Nachvollziehbarkeit für jede Entscheidung",
+                  color: "from-emerald-500/20 to-teal-500/20 border-emerald-500/30",
+                  accent: "text-emerald-300",
+                },
+              ].map(({ emoji, title, desc, stat, statLabel, color, accent }) => (
+                <article
+                  key={title}
+                  className={`rounded-2xl border p-6 bg-gradient-to-br ${color}`}
+                >
+                  <div className="flex items-start gap-4 mb-4">
+                    <span className="text-3xl leading-none mt-0.5 shrink-0" aria-hidden="true">
+                      {emoji}
+                    </span>
+                    <div>
+                      <h3 className="text-white font-bold text-lg mb-1">{title}</h3>
+                      <p className="text-slate-300 text-sm leading-relaxed">{desc}</p>
+                    </div>
+                  </div>
+                  <div className={`text-2xl font-black ${accent}`}>{stat}</div>
+                  <p className="text-slate-400 text-xs mt-0.5">{statLabel}</p>
+                </article>
+              ))}
+            </div>
+
+            {/* Bottom quote */}
+            <div className="bg-white/5 rounded-2xl border border-white/10 p-6 text-center">
+              <p className="text-slate-300 italic text-lg max-w-2xl mx-auto">
+                „Teams, die Consent nutzen, berichten nicht nur von besseren Entscheidungen —
+                sondern von besserem Miteinander. Einwände werden Geschenke. Fehler werden
+                Lernchancen. Und niemand fühlt sich übergangen."
+              </p>
             </div>
           </div>
         </section>
@@ -1773,7 +1865,7 @@ export default function HomePage() {
                             Ohne Consent
                           </p>
                           <p className="text-sm text-gray-600">
-                            Enthaltung gilt als &bdquo;kein Problem&ldquo;. Wird akzeptiert, ohne
+                            Enthaltung gilt als „kein Problem“. Wird akzeptiert, ohne
                             Grund. Niemand weiß, ob dahinter ein ungelöstes Bedenken steckt.
                           </p>
                         </div>
@@ -1786,8 +1878,8 @@ export default function HomePage() {
                             Mit Consent
                           </p>
                           <p className="text-sm text-gray-700">
-                            Enthaltung erfordert einen Grund. &bdquo;Mehr Informationen
-                            nötig?&rdquo; — Einreicher wird benachrichtigt und muss antworten.
+                            Enthaltung erfordert einen Grund. „Mehr Informationen
+                            nötig?” — Einreicher wird benachrichtigt und muss antworten.
                             Anonyme Bedenken? Werden thematisch aggregiert. Kein Grund bleibt
                             unsichtbar.
                           </p>
@@ -1869,7 +1961,7 @@ export default function HomePage() {
                             Ohne Consent
                           </p>
                           <p className="text-sm text-gray-600">
-                            Entscheidung gilt als &bdquo;beschlossen&ldquo;. Wiederaufrollen gilt
+                            Entscheidung gilt als „beschlossen“. Wiederaufrollen gilt
                             als Infragestellung. Die Kultur friert ein. Veränderung wird blockiert.
                           </p>
                         </div>
@@ -1882,9 +1974,9 @@ export default function HomePage() {
                             Mit Consent
                           </p>
                           <p className="text-sm text-gray-700">
-                            Jedes Vorhaben hat ein Evaluationsdatum. „Gut genug für jetzt — sicher
-                            genug zum Ausprobieren.&rdquo; Entscheidungen sind bewusst vorläufig.
-                            Bei Bedarf wird ein neuer Consent-Prozess gestartet.
+                            Jedes Vorhaben hat ein Evaluationsdatum. „Gut genug für jetzt —
+                            sicher genug zum Ausprobieren.” Entscheidungen sind bewusst
+                            vorläufig. Bei Bedarf wird ein neuer Consent-Prozess gestartet.
                           </p>
                         </div>
                       </div>
@@ -1957,7 +2049,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="font-semibold mb-2">Mitákuye Oyásʼiŋ</h3>
                 <p className="text-gray-600 text-sm">
-                  &bdquo;Alle meine Verwandten&ldquo; — das stille Fundament. Consent, weil der
+                  „Alle meine Verwandten“ — das stille Fundament. Consent, weil der
                   andere mein Verwandter ist. Einwände als Geschenk, nicht als Angriff.
                 </p>
               </article>
@@ -1994,8 +2086,8 @@ export default function HomePage() {
 
             <blockquote className="bg-indigo-600 rounded-2xl p-8 text-white text-center">
               <p className="text-xl font-medium mb-2">
-                &ldquo;Der stärkste Tribe gewinnt — nicht durch Macht, sondern durch
-                Kohärenz.&rdquo;
+                “Der stärkste Tribe gewinnt — nicht durch Macht, sondern durch
+                Kohärenz.”
               </p>
               <footer className="text-indigo-200 text-sm not-italic">
                 Dave Logan, Tribal Leadership
@@ -2263,8 +2355,8 @@ export default function HomePage() {
               </p>
               <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-6 leading-relaxed">
                 Es verändert die Frage von <strong>„Wer hat gewonnen?"</strong> zu{' '}
-                <strong>„Gibt es jemanden, der ernsthaft Schaden nehmen würde?"</strong>. Diese eine
-                Frage macht den Unterschied zwischen Wettbewerb und Zusammenarbeit.
+                <strong>„Gibt es jemanden, der ernsthaft Schaden nehmen würde?"</strong>.
+                Diese eine Frage macht den Unterschied zwischen Wettbewerb und Zusammenarbeit.
               </p>
               <div className="flex flex-wrap justify-center gap-3 text-sm">
                 {[
@@ -2442,7 +2534,7 @@ export default function HomePage() {
             </div>
 
             <blockquote className="mt-12 max-w-2xl mx-auto text-center text-lg italic text-gray-700 bg-primary-light/10 rounded-xl p-8">
-              &ldquo;Gut genug für jetzt &mdash; sicher genug zum Ausprobieren.&rdquo;
+              “Gut genug für jetzt &mdash; sicher genug zum Ausprobieren.”
               <footer className="mt-2 text-sm text-gray-500 not-italic">Das Consent-Prinzip</footer>
             </blockquote>
           </div>
@@ -2506,8 +2598,8 @@ export default function HomePage() {
                     <div className="bg-indigo-50 rounded-xl px-4 py-3 flex-1">
                       <p className="text-sm font-medium text-indigo-800">Marco fragt:</p>
                       <p className="text-sm text-gray-700 mt-1">
-                        &ldquo;Gilt das auch für Teilzeitkräfte, oder nur für
-                        Vollzeitangestellte?&rdquo;
+                        “Gilt das auch für Teilzeitkräfte, oder nur für
+                        Vollzeitangestellte?”
                       </p>
                       <div className="mt-3 bg-white/70 rounded-lg px-3 py-2 border-l-4 border-indigo-300">
                         <p className="text-xs font-medium text-gray-500">💡 Lea antwortet:</p>
@@ -2564,7 +2656,7 @@ export default function HomePage() {
                       <span className="text-lg">{emoji}</span>
                       <div className="flex-1 bg-purple-50 rounded-xl px-4 py-3">
                         <p className="text-xs font-semibold text-purple-700">{name}</p>
-                        <p className="text-sm text-gray-700 mt-0.5">&ldquo;{text}&rdquo;</p>
+                        <p className="text-sm text-gray-700 mt-0.5">“{text}”</p>
                       </div>
                     </div>
                   ))}
@@ -2659,9 +2751,9 @@ export default function HomePage() {
                       Toms Einwand (strukturiert)
                     </p>
                     <p className="text-sm text-gray-800">
-                      &ldquo;Einige Kunden haben freitags ihre einzige freie Zeitfenster. Ohne
+                      “Einige Kunden haben freitags ihre einzige freie Zeitfenster. Ohne
                       Verfügbarkeit am Freitag riskieren wir Kundenverlust — das gefährdet das
-                      Projektziel.&rdquo;
+                      Projektziel.”
                     </p>
                   </div>
                   <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
@@ -2767,7 +2859,7 @@ export default function HomePage() {
                 <div className="text-3xl mb-4">🔵</div>
                 <h3 className="font-semibold text-white mb-2">Omitakuyasin</h3>
                 <p className="text-slate-400 text-sm leading-relaxed">
-                  Lakota für &ldquo;Alle meine Verwandten&rdquo;. Keine Bitte — eine Weltanschauung.
+                  Lakota für “Alle meine Verwandten”. Keine Bitte — eine Weltanschauung.
                   Consent, weil der andere mein Verwandter ist. Kreise, weil jeder Platz
                   gleichwertig ist.
                 </p>
@@ -2794,8 +2886,8 @@ export default function HomePage() {
 
             <div className="mt-12 p-6 bg-white/5 border border-indigo-400/20 rounded-2xl max-w-2xl mx-auto">
               <p className="text-indigo-200 italic text-lg leading-relaxed">
-                &ldquo;Das Tool wird so gebaut, dass es sich <em>anders</em> anfühlt — spürbar, dass
-                hier eine andere Haltung dahintersteht. Ohne es zu erklären.&rdquo;
+                “Das Tool wird so gebaut, dass es sich <em>anders</em> anfühlt — spürbar, dass
+                hier eine andere Haltung dahintersteht. Ohne es zu erklären.”
               </p>
               <p className="mt-3 text-xs text-slate-500 uppercase tracking-widest">
                 Aus dem Konzept — adlix consent
@@ -3195,7 +3287,8 @@ export default function HomePage() {
                   name: 'Claudia M.',
                   role: 'Vorständin, Vereinsvorstand (6 Personen)',
                   emoji: '🤝',
-                  context: 'Verein „Die Problemlöser e.V." — Entscheidungen für 200+ Mitglieder.',
+                  context:
+                    'Verein „Die Problemlöser e.V." — Entscheidungen für 200+ Mitglieder.',
                 },
                 {
                   quote:
@@ -3588,13 +3681,19 @@ export default function HomePage() {
                   </div>
                   <div className="space-y-3 text-sm">
                     {[
-                      { emoji: '🔴', text: 'Schwerwiegender Einwand: „Kundenfreitag ungeklärt"' },
+                      {
+                        emoji: '🔴',
+                        text: 'Schwerwiegender Einwand: „Kundenfreitag ungeklärt"',
+                      },
                       { emoji: '💡', text: 'Dialog-Raum: 3 Lösungsideen werden gesammelt' },
                       {
                         emoji: '🔄',
                         text: 'Vorhaben angepasst: „Freitag: intern, kein Kundenkontakt"',
                       },
-                      { emoji: '✅', text: 'Einwender bestätigt: „Das adressiert mein Bedenken"' },
+                      {
+                        emoji: '✅',
+                        text: 'Einwender bestätigt: „Das adressiert mein Bedenken"',
+                      },
                       { emoji: '📋', text: 'Neuer Consent — diesmal mit 100% Zustimmung' },
                     ].map(({ emoji, text }, i) => (
                       <div key={i} className="flex items-start gap-3">
@@ -4281,7 +4380,8 @@ export default function HomePage() {
                 Vertrauen ist die Basis — auch technisch
               </h2>
               <p className="text-gray-500 max-w-2xl mx-auto text-lg">
-                Consent lebt von Vertrauen. adlix consent macht Vertrauen messbar: In der Datenstruktur, in der Infrastruktur, in der Transparenz.
+                Consent lebt von Vertrauen. adlix consent macht Vertrauen messbar: In der
+                Datenstruktur, in der Infrastruktur, in der Transparenz.
               </p>
             </div>
 
@@ -4336,17 +4436,12 @@ export default function HomePage() {
                   badgeColor: 'bg-rose-100 text-rose-700',
                 },
               ].map(({ icon, title, desc, badge, color, badgeColor }) => (
-                <div
-                  key={title}
-                  className={`rounded-2xl border p-5 flex flex-col gap-3 ${color}`}
-                >
+                <div key={title} className={`rounded-2xl border p-5 flex flex-col gap-3 ${color}`}>
                   <div className="flex items-center justify-between">
                     <span className="text-2xl" aria-hidden="true">
                       {icon}
                     </span>
-                    <span
-                      className={`text-xs font-medium px-2 py-0.5 rounded-full ${badgeColor}`}
-                    >
+                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${badgeColor}`}>
                       {badge}
                     </span>
                   </div>
@@ -4361,11 +4456,11 @@ export default function HomePage() {
                 🛡️
               </div>
               <div className="flex-1 text-center sm:text-left">
-                <p className="font-semibold text-gray-900 mb-1">
-                  Entscheidungen, die dir gehören
-                </p>
+                <p className="font-semibold text-gray-900 mb-1">Entscheidungen, die dir gehören</p>
                 <p className="text-sm text-gray-600 leading-relaxed">
-                  Die Vorhaben und Abstimmungen deines Kreises gehören euch. adlix consent ist das Werkzeug, nicht der Eigentümer. Keine Nutzungsrechte, keine Weitergabe, keine Auswertung für Werbung.
+                  Die Vorhaben und Abstimmungen deines Kreises gehören euch. adlix consent ist das
+                  Werkzeug, nicht der Eigentümer. Keine Nutzungsrechte, keine Weitergabe, keine
+                  Auswertung für Werbung.
                 </p>
               </div>
               <div className="flex flex-wrap gap-2 shrink-0 justify-center">
@@ -4396,7 +4491,9 @@ export default function HomePage() {
                 Consent für deinen Kreis
               </h2>
               <p className="text-gray-500 max-w-2xl mx-auto text-lg">
-                Kreise sind nicht hierarchisch — aber sie sind strukturiert. adlix consent bringt den Consent-Prozess in jeden Kreis: vom 6-Personen-Sprint-Team bis zum 40-köpfigen Verein.
+                Kreise sind nicht hierarchisch — aber sie sind strukturiert. adlix consent bringt
+                den Consent-Prozess in jeden Kreis: vom 6-Personen-Sprint-Team bis zum 40-köpfigen
+                Verein.
               </p>
             </div>
 
@@ -4422,7 +4519,8 @@ export default function HomePage() {
                   icon: '🌱',
                   title: 'Vereine & NGOs',
                   scenario: 'Satzungsänderungen, Projekte, Vorstands-Entschlüsse',
-                  headline: '„Alle Mitglieder stimmen ab — auch die, die nicht beim Treffen waren"',
+                  headline:
+                    '„Alle Mitglieder stimmen ab — auch die, die nicht beim Treffen waren"',
                   body: 'Consent macht Mitgliederversammlungen überflüssig — für alle Entscheidungen, die nicht zwingend physisch sein müssen. Transparente Entscheidungen, dokumentierte Begründungen, nachvollziehbare Ergebnisse.',
                   stats: [
                     { value: '100%', label: 'Transparent' },
@@ -4490,7 +4588,9 @@ export default function HomePage() {
                         </span>
                         <div>
                           <h3 className="font-bold text-gray-900 text-base">{title}</h3>
-                          <p className={`text-xs font-medium ${tagText} ${tagBg} inline-block px-2 py-0.5 rounded-full mt-1`}>
+                          <p
+                            className={`text-xs font-medium ${tagText} ${tagBg} inline-block px-2 py-0.5 rounded-full mt-1`}
+                          >
                             {scenario}
                           </p>
                         </div>
@@ -4508,7 +4608,9 @@ export default function HomePage() {
                             className="bg-white/80 rounded-xl border border-gray-200/50 p-3 text-center"
                           >
                             <div className="text-base font-black text-gray-900">{value}</div>
-                            <div className="text-xs text-gray-500 leading-tight mt-0.5">{label}</div>
+                            <div className="text-xs text-gray-500 leading-tight mt-0.5">
+                              {label}
+                            </div>
                           </div>
                         ))}
                       </div>

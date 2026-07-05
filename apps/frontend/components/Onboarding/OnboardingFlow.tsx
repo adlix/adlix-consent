@@ -237,7 +237,7 @@ function CompleteStep({ onComplete, jwt }: { onComplete: () => void; jwt?: strin
         await strapi.joinCircle(circleData.inviteCode)
       }
       onComplete()
-    } catch (err) {
+    } catch {
       setError('Etwas ist schiefgelaufen. Bitte versuche es erneut.')
     } finally {
       setSaving(false)

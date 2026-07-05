@@ -538,7 +538,12 @@ export default function ProjectDetailPage() {
           <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
             <ConsentPhaseTracker
               currentPhase={selectedRound?.status ?? 'information'}
-              phases={flowPhases.map((p) => ({ key: p.key, label: p.label, icon: p.icon, description: p.hint }))}
+              phases={flowPhases.map((p) => ({
+                key: p.key,
+                label: p.label,
+                icon: p.icon,
+                description: p.hint,
+              }))}
               votes={selectedRound?.votes ?? []}
               objections={selectedRound?.objections ?? []}
               participantCount={participantCount}
