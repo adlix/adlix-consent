@@ -143,8 +143,10 @@ export default function ConsentVotePanel({
   }
 
   // Score 0–100: 100 when all consents, lower with objections
+  // Exclude abstentions from denominator — they are not against consent, just neutral
+  const activeVoters = participantCount - score.abstains
   const consentPct =
-    participantCount > 0 ? Math.round((score.consents / participantCount) * 100) : 0
+    activeVoters > 0 ? Math.round((score.consents / activeVoters) * 100) : 0
 
   const scoreColor =
     consentPct >= 80 ? 'text-emerald-600' : consentPct >= 50 ? 'text-amber-600' : 'text-red-600'
@@ -224,6 +226,35 @@ export default function ConsentVotePanel({
           )}
         </div>
         <VoteResults votes={votes} participantCount={participantCount} showMobileBar />
+
+        {/* What happens next */}
+        {remaining > 0 && (
+          <div className="mt-2 flex items-start gap-2 p-3 bg-blue-50 border border-blue-100 rounded-xl text-xs text-blue-700">
+            <span className="text-blue-400 mt-0.5 shrink-0">⏳</span>
+            <p>
+              Die Abstimmung läuft, bis alle {participantCount} Teilnehmer abgestimmt haben. Sobald
+              alle Stimmen da sind, wird das Ergebnis automatisch ausgewertet.
+              {votes.some((v) => v.choice === 'major_objection')
+                ? ' Ein schwerwiegender Einwand liegt vor — der Dialog zur Einwand-Integration wird dann starten.'
+                : ' Wenn kein schwerwiegender Einwand vorliegt, ist Konsent erreicht.'}
+            </p>
+          </div>
+        )}
+        {remaining === 0 && !votes.some((v) => v.choice === 'major_objection') && (
+          <div className="mt-2 flex items-start gap-2 p-3 bg-emerald-50 border border-emerald-100 rounded-xl text-xs text-emerald-700">
+            <span className="text-emerald-500 mt-0.5 shrink-0">✅</span>
+            <p>Alle haben abgestimmt. Das Ergebnis wird nun ausgewertet — Konsent ist möglich.</p>
+          </div>
+        )}
+        {remaining === 0 && votes.some((v) => v.choice === 'major_objection') && (
+          <div className="mt-2 flex items-start gap-2 p-3 bg-red-50 border border-red-100 rounded-xl text-xs text-red-700">
+            <span className="text-red-400 mt-0.5 shrink-0">🔴</span>
+            <p>
+              Alle haben abgestimmt. Schwerwiegende Einwände blockieren den Konsent — der
+              6-Phasen-Dialog wird gestartet, um den Einwand zu integrieren.
+            </p>
+          </div>
+        )}
       </div>
     )
   }
@@ -301,6 +332,20 @@ export default function ConsentVotePanel({
           >
             Zurück
           </button>
+        </div>
+
+        {/* Next steps hint */}
+        <div className="flex items-start gap-2 p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600">
+          <span className="text-slate-400 mt-0.5 shrink-0">💡</span>
+          <p>
+            {selected === 'consent'
+              ? 'Deine Stimme zählt: Konsent bedeutet, niemand hat einen schwerwiegenden Einwand. Die Abstimmung läuft weiter, bis alle Teilnehmer ihre Stimme abgegeben haben.'
+              : selected === 'minor_objection'
+                ? 'Deine Anmerkung wird dokumentiert — sie ist kein Blocker für die Gruppe, aber wichtig für die Umsetzung.'
+                : selected === 'major_objection'
+                  ? 'Dein Einwand wird im 6-Phasen-Dialog bearbeitet, falls Konsent nicht erreicht wird. Die Gruppe wird deinen Einwand ernst nehmen.'
+                  : 'Enthaltung bedeutet Mitverantwortung: Du trägst die Entscheidung mit, auch wenn du keinen Konsent gibst.'}
+          </p>
         </div>
       </div>
     )

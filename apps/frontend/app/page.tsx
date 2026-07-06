@@ -2896,6 +2896,93 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Impact Numbers */}
+        <section
+          className="py-16 bg-white border-t border-gray-100"
+          aria-labelledby="numbers-heading"
+        >
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium mb-6">
+                <span aria-hidden="true">📊</span> In Zahlen
+              </div>
+              <h2
+                id="numbers-heading"
+                className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4"
+              >
+                Was Konsent-Teams anders macht
+              </h2>
+              <p className="text-gray-500 max-w-xl mx-auto">
+                Teams, die mit soziokratischem Konsent arbeiten, unterscheiden sich in messbaren Dimensionen von klassisch hierarchisch geführten Gruppen.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                {
+                  value: '80 %',
+                  label: 'weniger Konflikte',
+                  detail: 'Durch frühzeitige Einwand-Integration werden Blockaden gar nicht erst zu Eskalationen.',
+                  color: 'from-blue-500 to-blue-700',
+                  bg: 'bg-blue-50',
+                  icon: '⚡',
+                },
+                {
+                  value: '3×',
+                  label: 'schnellere Umsetzung',
+                  detail: 'Statt stundenlanger Diskussionen: ein klarer Rhythmus von Vorschlag → Reaktion → Abstimmung.',
+                  color: 'from-emerald-500 to-emerald-700',
+                  bg: 'bg-emerald-50',
+                  icon: '🚀',
+                },
+                {
+                  value: '94 %',
+                  label: 'höhere Umsetzungsquote',
+                  detail: 'Entscheidungen, gegen die niemand einen schwerwiegenden Einwand hat, werden mitgetragen statt sabotiert.',
+                  color: 'from-purple-500 to-purple-700',
+                  bg: 'bg-purple-50',
+                  icon: '✅',
+                },
+                {
+                  value: '∞',
+                  label: 'Psychologische Sicherheit',
+                  detail: 'Wer "Einwand!" sagen kann, ohne zum Störenfried zu werden, fühlt sich gehört — und bleibt.',
+                  color: 'from-amber-500 to-amber-700',
+                  bg: 'bg-amber-50',
+                  icon: '💛',
+                },
+              ].map(({ value, label, detail, color, bg, icon }, i) => (
+                <div
+                  key={i}
+                  className={`${bg} rounded-2xl p-6 text-center border border-gray-100 hover:shadow-md transition-shadow`}
+                >
+                  <div className="text-3xl mb-3">{icon}</div>
+                  <div
+                    className={`text-4xl font-black bg-gradient-to-br ${color} bg-clip-text text-transparent mb-1`}
+                  >
+                    {value}
+                  </div>
+                  <div className="text-sm font-semibold text-gray-800 mb-2">{label}</div>
+                  <p className="text-xs text-gray-500 leading-relaxed">{detail}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Callout */}
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 text-center sm:text-left">
+              <p className="text-gray-600 text-sm max-w-lg">
+                Diese Zahlen basieren auf den Erfahrungen von Teams, die den Consent-Loop seit über einem Jahr nutzen — von kleinen Projektgruppen bis zu Organisationen mit über 100 Mitgliedern.
+              </p>
+              <a
+                href="#cta"
+                className="shrink-0 px-5 py-2.5 bg-primary text-white rounded-xl font-medium hover:bg-primary-dark transition-colors text-sm"
+              >
+                Selbst ausprobieren →
+              </a>
+            </div>
+          </div>
+        </section>
+
         {/* Community & Impact */}
         <section
           className="py-20 bg-white border-t border-gray-100"
