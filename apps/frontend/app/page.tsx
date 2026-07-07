@@ -318,6 +318,124 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── Consent in 60 Sekunden ── */}
+        <section
+          className="py-12 border-t border-gray-100 bg-gradient-to-b from-white to-gray-50/50"
+          aria-labelledby="sixty-sec-heading"
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <h2 id="sixty-sec-heading" className="text-2xl sm:text-3xl font-bold mb-2">
+                Consent in 60 Sekunden
+              </h2>
+              <p className="text-gray-500 text-sm max-w-lg mx-auto">
+                6 Phasen. Jede mit einer klaren Aufgabe. Keine Verwirrung — nur Struktur.
+              </p>
+            </div>
+
+            {/* Phase steps — horizontal scrollable on mobile, grid on desktop */}
+            <div className="flex sm:grid sm:grid-cols-6 gap-3 overflow-x-auto pb-3 sm:pb-0 snap-x snap-mandatory">
+              {[
+                {
+                  phase: '1',
+                  emoji: '📝',
+                  title: 'Vorhaben\nvorstellen',
+                  desc: 'Was willst du erreichen? Wer ist betroffen?',
+                  color: 'from-blue-50 to-indigo-50',
+                  border: 'border-blue-200',
+                  dot: 'bg-blue-500',
+                  arrow: true,
+                },
+                {
+                  phase: '2',
+                  emoji: '❓',
+                  title: 'Fragen\nstellen',
+                  desc: 'Verständnisfragen — nur Verstehen, kein Urteilen',
+                  color: 'from-sky-50 to-cyan-50',
+                  border: 'border-sky-200',
+                  dot: 'bg-sky-500',
+                  arrow: true,
+                },
+                {
+                  phase: '3',
+                  emoji: '💬',
+                  title: 'Reagieren',
+                  desc: 'Jede Stimme bekommt Raum — reihum, fair',
+                  color: 'from-violet-50 to-purple-50',
+                  border: 'border-violet-200',
+                  dot: 'bg-violet-500',
+                  arrow: true,
+                },
+                {
+                  phase: '4',
+                  emoji: '🗳️',
+                  title: 'Abstimmen',
+                  desc: 'Konsent, leichter Einwand, schwerer Einwand, Enthaltung',
+                  color: 'from-amber-50 to-orange-50',
+                  border: 'border-amber-200',
+                  dot: 'bg-amber-500',
+                  arrow: true,
+                },
+                {
+                  phase: '5',
+                  emoji: '🔄',
+                  title: 'Integrieren',
+                  desc: 'Einwände werden angepasst — nicht überstimmt',
+                  color: 'from-teal-50 to-emerald-50',
+                  border: 'border-teal-200',
+                  dot: 'bg-teal-500',
+                  arrow: true,
+                },
+                {
+                  phase: '6',
+                  emoji: '✅',
+                  title: 'Beschließen',
+                  desc: 'Audit-Trail, Evaluationsdatum — fertig',
+                  color: 'from-emerald-50 to-green-50',
+                  border: 'border-emerald-200',
+                  dot: 'bg-emerald-500',
+                  arrow: false,
+                },
+              ].map(
+                ({ phase, emoji, title, desc, color, border, dot, arrow }, idx) => (
+                  <div key={phase} className="flex-1 sm:flex-none snap-start">
+                    <div
+                      className={`rounded-xl border p-4 bg-gradient-to-br ${color} ${border} h-full relative`}
+                    >
+                      {/* Phase number */}
+                      <div
+                        className={`w-7 h-7 rounded-full ${dot} flex items-center justify-center text-white text-xs font-bold mb-3`}
+                      >
+                        {phase}
+                      </div>
+                      <div className="text-2xl mb-2">{emoji}</div>
+                      <h3 className="text-sm font-bold text-gray-800 whitespace-pre-line mb-1">
+                        {title}
+                      </h3>
+                      <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
+                      {/* Arrow connector */}
+                      {arrow && idx < 5 && (
+                        <div
+                          className="hidden sm:flex absolute -right-[14px] top-1/2 -translate-y-1/2 z-10 text-gray-300"
+                          aria-hidden="true"
+                        >
+                          →
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )
+              )}
+            </div>
+
+            {/* Bottom insight */}
+            <p className="text-center text-sm text-gray-400 mt-5">
+              <span className="font-medium text-gray-600">Der Unterschied zu Abstimmungen?</span>{' '}
+              Niemand wird überstimmt. Ein schwerwiegender Einwand wird integriert — nicht ignoriert.
+            </p>
+          </div>
+        </section>
+
         {/* ── 3 Schritte zum ersten Consent-Loop ── */}
         <section
           className="py-16 bg-gradient-to-b from-emerald-50/40 via-white to-white border-t border-gray-100"
@@ -1254,10 +1372,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Was ist ein Kreis? */}
-
-        {/* Was ist ein Kreis? */}
-        {/* Was ist ein Kreis? */}
         <section className="py-16 bg-white" aria-labelledby="circle-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
@@ -2205,6 +2319,147 @@ export default function HomePage() {
               >
                 Ersten Consent-Loop starten →
               </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Für Teams jeder Größe ── */}
+        <section
+          className="py-16 bg-gradient-to-b from-gray-50 to-white"
+          aria-labelledby="team-size-heading"
+        >
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-violet-100 text-violet-700 rounded-full text-sm font-medium mb-6">
+                <span aria-hidden="true">👥</span> Skaliert mit deinem Team
+              </div>
+              <h2 id="team-size-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                Für Teams jeder Größe — und jeden Reifegrad
+              </h2>
+              <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+                Consent funktioniert mit 3 Personen genauso wie mit 300. Und mit Teams, die noch nie
+                soziokratisch gearbeitet haben, genauso wie mit erfahrenen Kreis-Arbeitern.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+              {[
+                {
+                  size: '3–7',
+                  label: 'Kleine Teams',
+                  emoji: '🫂',
+                  color: 'from-blue-50 to-indigo-50',
+                  border: 'border-blue-200',
+                  cases: [
+                    'Kernentscheidungen treffen',
+                    'Rollenauswahl im Team',
+                    'Vertrauensaufbau durch Prozess',
+                  ],
+                  tip: 'Hier entsteht das Fundament. Wenn Consent hier funktioniert, trägt es das Team durch alles.',
+                },
+                {
+                  size: '8–20',
+                  label: 'Mittlere Teams',
+                  emoji: '🤝',
+                  color: 'from-emerald-50 to-teal-50',
+                  border: 'border-emerald-200',
+                  cases: [
+                    'Sprint-Ziele & Team-Normen',
+                    'Konflikte strukturieren',
+                    'Async-Entscheidungen über Zeitzonen',
+                  ],
+                  tip: 'Async-first wird zum Vorteil. Consent läuft nebenbei — kein Extra-Meeting nötig.',
+                },
+                {
+                  size: '20–100',
+                  label: 'Tribes & Communities',
+                  emoji: '🌍',
+                  color: 'from-amber-50 to-orange-50',
+                  border: 'border-amber-200',
+                  cases: [
+                    'Kreise verbinden sich über Vorhaben',
+                    'Überregionale Entscheidungen',
+                    'Vereinsarbeit & Gremien',
+                  ],
+                  tip: 'Mehrere Kreise, ein gemeinsames Vorhaben. Consent stellt sicher, dass alle Betroffenen gehört werden.',
+                },
+                {
+                  size: '100+',
+                  label: 'Organisationen',
+                  emoji: '🏢',
+                  color: 'from-violet-50 to-purple-50',
+                  border: 'border-violet-200',
+                  cases: [
+                    'Strategische Richtungsentscheidungen',
+                    'Abteilungsübergreifende Projekte',
+                    'Audit-Log für Compliance',
+                  ],
+                  tip: 'Der Audit-Trail wird zum Herzstück. Jede Entscheidung ist nachvollziehbar — auch für Externe.',
+                },
+              ].map(({ size, label, emoji, color, border, cases, tip }) => (
+                <article
+                  key={label}
+                  className={`rounded-2xl border p-6 bg-gradient-to-br ${color} ${border}`}
+                >
+                  <div className="flex items-start gap-3 mb-4">
+                    <span className="text-3xl" aria-hidden="true">{emoji}</span>
+                    <div>
+                      <div className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-0.5">
+                        {size} Personen
+                      </div>
+                      <h3 className="font-bold text-gray-900 text-base">{label}</h3>
+                    </div>
+                  </div>
+                  <ul className="space-y-2 mb-4">
+                    {cases.map((c) => (
+                      <li key={c} className="flex items-start gap-2 text-sm text-gray-700">
+                        <span className="text-emerald-500 shrink-0 mt-0.5">✓</span>
+                        <span>{c}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="text-xs text-gray-500 italic border-t border-gray-200/60 pt-3 leading-relaxed">
+                    💡 {tip}
+                  </p>
+                </article>
+              ))}
+            </div>
+
+            {/* Reifegrad ladder */}
+            <div className="mt-12 bg-white rounded-2xl border border-gray-200 p-6">
+              <h3 className="text-lg font-bold text-gray-800 mb-5 text-center">
+                Nicht sicher, ob dein Team bereit ist?
+              </h3>
+              <div className="grid sm:grid-cols-3 gap-5">
+                {[
+                  {
+                    level: '🌱 Anfänger',
+                    desc: 'Team hat noch nie Consent genutzt',
+                    action: 'Starte mit einem low-stakes Vorhaben: Kaffeemaschine, Meeting-Zeit, Kleinigkeiten. Der Prozess muss sich erst vertraut anfühlen.',
+                    badge: 'bg-green-100 text-green-700',
+                  },
+                  {
+                    level: '🌿 Erfahren',
+                    desc: 'Team kennt den Prozess, nutzt ihn unregelmäßig',
+                    action: 'Feste Consent-Rituale einführen: Jeden Montag Vorhaben-Check, jeden Freitag Evaluations-Check. Routine schafft Vertrauen.',
+                    badge: 'bg-amber-100 text-amber-700',
+                  },
+                  {
+                    level: '🌳 Veteran',
+                    desc: 'Consent ist Teil der Teamkultur',
+                    action: 'Kreise verknüpfen, Tribe-Strukturen aufbauen, cross-team Vorhaben starten. Consent als Fundament der Organisation.',
+                    badge: 'bg-emerald-100 text-emerald-700',
+                  },
+                ].map(({ level, desc, action, badge }) => (
+                  <div key={level} className="text-center">
+                    <span className={`inline-block px-3 py-1 rounded-full text-sm font-bold mb-2 ${badge}`}>
+                      {level}
+                    </span>
+                    <p className="text-xs text-gray-500 mb-3">{desc}</p>
+                    <p className="text-sm text-gray-700 leading-relaxed">{action}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
