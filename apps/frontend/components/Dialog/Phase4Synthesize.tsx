@@ -25,28 +25,28 @@ function diffWords(original: string, adapted: string): React.ReactNode[] {
     const o = origWords[i]
     const a = adaptWords[i]
     if (o === a) {
-      result.push(<span key={i}>{a} </span>)
+      result.push(<span key={`${i}-eq`}>{a} </span>)
     } else if (!o && a) {
       result.push(
-        <mark key={i} className="bg-green-200 px-0.5 rounded">
+        <mark key={`${i}-add`} className="bg-green-200 px-0.5 rounded">
           {a}{' '}
         </mark>
       )
     } else if (o && !a) {
       result.push(
-        <del key={i} className="text-red-400">
+        <del key={`${i}-del`} className="text-red-400">
           {o}{' '}
         </del>
       )
     } else {
       result.push(
-        <del key={i} className="text-red-400">
+        <del key={`${i}-del`} className="text-red-400">
           {o}{' '}
         </del>
       )
       if (a)
         result.push(
-          <mark key={`${i}n`} className="bg-green-200 px-0.5 rounded">
+          <mark key={`${i}-add`} className="bg-green-200 px-0.5 rounded">
             {a}{' '}
           </mark>
         )

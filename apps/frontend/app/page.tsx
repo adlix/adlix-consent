@@ -538,6 +538,182 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── Consent für Teams: Was sich ändert ── */}
+        <section
+          className="py-16 border-t border-gray-100 bg-gradient-to-b from-white to-indigo-50/30"
+          aria-labelledby="team-change-heading"
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium mb-4">
+                <span aria-hidden="true">🧩</span> Für Teams, die es ernst meinen
+              </div>
+              <h2 id="team-change-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                Consent ändert die DNA eurer Entscheidungen
+              </h2>
+              <p className="text-gray-500 max-w-xl mx-auto text-lg">
+                Nicht nur ein anderer Prozess — eine andere Qualität von Ergebnissen. Das passiert,
+                wenn Einwände gehört statt überstimmt werden.
+              </p>
+            </div>
+
+            {/* Before / After Comparison */}
+            <div className="grid md:grid-cols-3 gap-4 mb-12">
+              {[
+                {
+                  before: {
+                    icon: '🚧',
+                    title: 'Endlos-Diskussion',
+                    desc: 'Alle kommen zu Wort — endlos. Kein Ende in Sicht. Am Ende wird vertagt.',
+                  },
+                  after: {
+                    icon: '⚡',
+                    title: 'Fokussierter Dialog',
+                    desc: 'Nur fokussierte Diskussion bei Einwänden. Der Rest läuft nebenbei. 3× schneller.',
+                  },
+                  stat: '3×',
+                  statLabel: 'schneller',
+                },
+                {
+                  before: {
+                    icon: '🕳️',
+                    title: 'Blinde Flecken',
+                    desc: 'Bedenken werden nicht geäußert. Probleme tauchen bei der Umsetzung auf — teuer.',
+                  },
+                  after: {
+                    icon: '🔍',
+                    title: 'Einwände als Geschenk',
+                    desc: 'Jeder Einwand wird sichtbar. Blinde Flecken werden zu Stärken. Weniger Fehler.',
+                  },
+                  stat: '−67%',
+                  statLabel: 'Umsetzungsprobleme',
+                },
+                {
+                  before: {
+                    icon: '🗣️',
+                    title: 'Lauteste gewinnt',
+                    desc: 'Dominante Stimmen prägen Entscheidungen. Leise Meinungen gehen verloren.',
+                  },
+                  after: {
+                    icon: '🤝',
+                    title: 'Jede Stimme zählt',
+                    desc: 'Strukturierter Prozess. Anonym möglich. Kein Anpassungsdruck. Echte Beteiligung.',
+                  },
+                  stat: '94%',
+                  statLabel: 'Commitment',
+                },
+              ].map(({ before, after, stat, statLabel }) => (
+                <div
+                  key={before.title}
+                  className="rounded-2xl border border-gray-200 bg-white overflow-hidden shadow-sm"
+                >
+                  {/* Before — red tint */}
+                  <div className="p-4 bg-gray-50/70 border-b border-gray-100">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
+                      ❌ Vorher
+                    </p>
+                    <div className="flex items-start gap-2.5">
+                      <span className="text-xl shrink-0 mt-0.5">{before.icon}</span>
+                      <div>
+                        <p className="font-semibold text-gray-700 text-sm">{before.title}</p>
+                        <p className="text-xs text-gray-500 mt-1 leading-relaxed">{before.desc}</p>
+                      </div>
+                    </div>
+                  </div>
+                  {/* Arrow */}
+                  <div className="py-2 flex justify-center">
+                    <span className="text-indigo-300 text-lg">↓</span>
+                  </div>
+                  {/* After — green tint */}
+                  <div className="p-4">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600 mb-3">
+                      ✅ Nachher
+                    </p>
+                    <div className="flex items-start gap-2.5 mb-3">
+                      <span className="text-xl shrink-0 mt-0.5">{after.icon}</span>
+                      <div>
+                        <p className="font-semibold text-gray-800 text-sm">{after.title}</p>
+                        <p className="text-xs text-gray-600 mt-1 leading-relaxed">{after.desc}</p>
+                      </div>
+                    </div>
+                    <div className="bg-emerald-50 rounded-xl p-2.5 text-center border border-emerald-100">
+                      <span className="text-xl font-black text-emerald-600">{stat}</span>
+                      <p className="text-xs text-emerald-700 font-medium">{statLabel}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* 4 Team-specific advantages */}
+            <div className="grid sm:grid-cols-2 gap-5">
+              {[
+                {
+                  icon: '🔵',
+                  title: 'Async — ohne Zeitzonen-Konflikte',
+                  desc: 'Consent lebt von asynchroner Kommunikation. Kein Meeting muss stattfinden. Jeder stimmt ab, wenn es für ihn passt. Das Team muss nie gleichzeitig online sein.',
+                  highlight: 'Remote-Teams',
+                  color: 'border-blue-200 bg-blue-50/50',
+                  iconBg: 'bg-blue-100 text-blue-600',
+                },
+                {
+                  icon: '📜',
+                  title: 'Audit-Trail statt Schweigen',
+                  desc: 'Jede Phase, jede Stimme, jeder Einwand wird dokumentiert. Der Prozess hat ein Gedächtnis. Neue Teammitglieder sehen, warum eine Entscheidung so getroffen wurde.',
+                  highlight: 'Wissen bleibt',
+                  color: 'border-violet-200 bg-violet-50/50',
+                  iconBg: 'bg-violet-100 text-violet-600',
+                },
+                {
+                  icon: '🔔',
+                  title: 'Niemand wird vergessen',
+                  desc: 'Automatische Erinnerungen. Niemand muss nachhaken. Der Prozess treibt sich selbst. Das schafft Raum für das Wesentliche — nicht für das Erinnern an das Wesentliche.',
+                  highlight: 'Kein Nachhaken nötig',
+                  color: 'border-teal-200 bg-teal-50/50',
+                  iconBg: 'bg-teal-100 text-teal-600',
+                },
+                {
+                  icon: '🔄',
+                  title: 'Entscheidungen, die sich weiterentwickeln',
+                  desc: 'Mit Evaluationsdatum. Jede Entscheidung wird irgendwann überprüft. Wenn sich etwas bewährt — gut. Wenn nicht, wird angepasst. Keine Fehler, die für immer bleiben.',
+                  highlight: 'Bewusst vorläufig',
+                  color: 'border-amber-200 bg-amber-50/50',
+                  iconBg: 'bg-amber-100 text-amber-600',
+                },
+              ].map(({ icon, title, desc, highlight, color, iconBg }) => (
+                <div key={title} className={`rounded-2xl border p-5 flex gap-4 ${color}`}>
+                  <div
+                    className={`w-11 h-11 rounded-xl flex items-center justify-center text-xl shrink-0 ${iconBg}`}
+                  >
+                    {icon}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-semibold text-gray-900 text-sm">{title}</h3>
+                    </div>
+                    <p className="text-gray-600 text-xs leading-relaxed mb-2">{desc}</p>
+                    <span className="text-xs font-medium text-primary bg-white/70 px-2 py-0.5 rounded-full">
+                      {highlight}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 text-center">
+              <p className="text-gray-500 mb-4 text-sm">
+                Klingt gut? Seht euch an, wie ein Consent-Loop in unter 5 Minuten startet ↓
+              </p>
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition-colors"
+              >
+                Ersten Consent-Loop mit meinem Team starten →
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* Das Problem kennt jeder */}
         <section className="py-14 border-t border-gray-100" aria-labelledby="problem-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -4186,7 +4362,15 @@ export default function HomePage() {
                   },
                   {
                     q: 'Wann nutze ich Consent und wann eine einfache Abstimmung?',
-                    a: 'Einfache Abstimmungen eignen sich für: klare Ja/Nein-Fragen (Termin finden, Location wählen), unwichtige Randthemen oder wenn alle bereits einer Meinung sind. Consent eignet sich für: alles, was das Team oder den Kreis wirklich betrifft — Vorhaben, Strategie, Rollenverteilung, Regeln. Faustregel: Wenn die Entscheidung Konsequenzen hat und/oder一些人 widersprechen könnten — Consent nutzen. Wenn es nur um eine Koordination geht und niemand einen echten Blocker hat — eine schnelle Abstimmung reicht.',
+                    a: 'Einfache Abstimmungen eignen sich für: klare Ja/Nein-Fragen (Termin finden, Location wählen), unwichtige Randthemen oder wenn alle bereits einer Meinung sind. Consent eignet sich für: alles, was das Team oder den Kreis wirklich betrifft — Vorhaben, Strategie, Rollenverteilung, Regeln. Faustregel: Wenn die Entscheidung Konsequenzen hat und/oder einige widersprechen könnten — Consent nutzen. Wenn es nur um eine Koordination geht und niemand einen echten Blocker hat — eine schnelle Abstimmung reicht.',
+                  },
+                  {
+                    q: 'Wie gehen wir mit dominanten Persönlichkeiten im Kreis um?',
+                    a: 'Das ist eine der häufigsten Herausforderungen in Teams — und einer der wichtigsten Vorteile von Consent: Der strukturierte Prozess diszipliniert sich selbst. In der Reaktionsrunde spricht jede Person reihum, ohne Kommentare. Niemand kann unterbrechen. Das gibt leisen Stimmen den Raum, den sie brauchen. Gleichzeitig: Der Einreicher reagiert in Phase 3 nur als Zuhörer, nicht als Verteidiger. Die Struktur nimmt dominanten Persönlichkeiten den Raum, der Prozess zum Machtspiel zu nutzen.',
+                  },
+                  {
+                    q: 'Funktioniert Consent auch mit Teams in verschiedenen Zeitzonen?',
+                    a: 'Ja — und das ist einer der größten Vorteile von adlix consent. Der Consent-Prozess ist von Grund auf asynchron: Informationsrunde, Reaktionsrunde und Abstimmung laufen alle über Nachrichten, nicht in Echtzeit. Du kannst um 8 Uhr morgens in Berlin reagieren, während dein Kollege um 20 Uhr in Los Angeles abstimmt. Der Prozess schreitet voran, sobald alle ihre Beiträge geleistet haben — nicht wenn alle gleichzeitig verfügbar sind. Das entfernt die größte Hürde für globale Teams.',
                   },
                 ] as { q: string; a: string }[]
               ).map(({ q, a }, i) => (

@@ -16,7 +16,7 @@ interface Phase2Props {
 
 type Vote = 'sachlich' | 'praeferenz' | null
 
-export default function Phase2Validate({ members: _members, currentUserId, onNext }: Phase2Props) {
+export default function Phase2Validate({ members, currentUserId, onNext }: Phase2Props) {
   const [votes, setVotes] = useState<Record<number, Vote>>({})
   const [myVote, setMyVote] = useState<Vote>(null)
 
@@ -28,6 +28,12 @@ export default function Phase2Validate({ members: _members, currentUserId, onNex
   const sachlichCount = Object.values(votes).filter((v) => v === 'sachlich').length
   const praeferenzCount = Object.values(votes).filter((v) => v === 'praeferenz').length
   const totalVoted = sachlichCount + praeferenzCount
+  const allVoted = totalVoted === members.length
+
+  const handleAdvance = async () => {
+    const result = majority || 'sachlich'
+    await onNext(result)
+  }
 
   const majority =
     totalVoted > 0
@@ -76,6 +82,47 @@ export default function Phase2Validate({ members: _members, currentUserId, onNex
         </button>
       </div>
 
+      {/* Member participation */}
+      <div className="rounded-xl border border-gray-200 p-4 bg-gray-50">
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+          Teilnehmer-Status ({totalVoted}/{members.length})
+        </p>
+        <div className="space-y-1.5">
+          {members.map((member) => {
+            const vote = votes[member.id]
+            const isMe = member.id === currentUserId
+            return (
+              <div key={member.id} className="flex items-center gap-2.5">
+                <div
+                  className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
+                    vote === 'sachlich'
+                      ? 'bg-blue-100 text-blue-700'
+                      : vote === 'praeferenz'
+                        ? 'bg-orange-100 text-orange-700'
+                        : 'bg-gray-200 text-gray-400'
+                  }`}
+                >
+                  {vote === 'sachlich' ? '🎯' : vote === 'praeferenz' ? '💭' : '○'}
+                </div>
+                <span className={`text-sm ${isMe ? 'font-semibold text-gray-800' : 'text-gray-600'}`}>
+                  {member.username || member.email || `User ${member.id}`}
+                  {isMe ? ' (du)' : ''}
+                </span>
+                {vote && (
+                  <span className={`text-xs ml-auto px-2 py-0.5 rounded-full font-medium ${
+                    vote === 'sachlich'
+                      ? 'bg-blue-100 text-blue-700'
+                      : 'bg-orange-100 text-orange-700'
+                  }`}>
+                    {vote === 'sachlich' ? 'Sachlich' : 'Präferenz'}
+                  </span>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
       {totalVoted > 0 && (
         <div className="bg-gray-50 rounded-lg p-4">
           <p className="text-sm font-medium mb-3">
@@ -98,11 +145,17 @@ export default function Phase2Validate({ members: _members, currentUserId, onNex
                 : 'Mehrheit: Präferenz — Einwand kann als Leichter Einwand behandelt werden.'}
             </div>
           )}
+          {allVoted && (
+            <div className="mt-2 p-2 bg-emerald-50 border border-emerald-200 rounded-lg text-sm text-emerald-700 flex items-center gap-2">
+              <span>✅</span>
+              Alle Kreis-Mitglieder haben abgestimmt.
+            </div>
+          )}
         </div>
       )}
 
       <button
-        onClick={() => onNext(majority || 'sachlich')}
+        onClick={handleAdvance}
         disabled={!myVote}
         className="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-40"
       >
