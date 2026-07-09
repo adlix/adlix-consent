@@ -133,7 +133,8 @@ export default function AbstainReasonModal({
     if (!selectedReason) return
     setSubmitting(true)
 
-    const isObjection = finalChoice === 'minor' || finalChoice === 'major'
+    // Reason D: anonymous concerns are a form of major objection — user couldn't openly object
+    const isObjection = finalChoice === 'minor' || finalChoice === 'major' || selectedReason === 'D'
     const finalChoiceValue =
       finalChoice === 'abstain'
         ? 'abstain'
@@ -143,14 +144,17 @@ export default function AbstainReasonModal({
             ? 'major_objection'
             : finalChoice === 'anonymous'
               ? 'anonymous'
-              : undefined
+              : selectedReason === 'D'
+                ? 'major_objection'
+                : undefined
 
     await saveAbstention({
       reason: selectedReason,
       detail: detail.trim() || undefined,
       finalChoice: finalChoiceValue,
       reflexionAnswers: reflexionAnswers.some((a) => a.trim()) ? reflexionAnswers : undefined,
-      anonymousConcern: finalChoice === 'anonymous' ? detail : undefined,
+      anonymousConcern:
+        finalChoice === 'anonymous' || selectedReason === 'D' ? detail.trim() || undefined : undefined,
     })
 
     setSubmitting(false)
@@ -159,7 +163,11 @@ export default function AbstainReasonModal({
       detail: detail.trim() || undefined,
       isObjection,
       objectionSeverity:
-        finalChoice === 'major' ? 'major' : finalChoice === 'minor' ? 'minor' : undefined,
+        finalChoice === 'major' || selectedReason === 'D'
+          ? 'major'
+          : finalChoice === 'minor'
+            ? 'minor'
+            : undefined,
     })
   }
 

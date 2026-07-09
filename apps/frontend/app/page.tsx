@@ -4372,6 +4372,14 @@ export default function HomePage() {
                     q: 'Funktioniert Consent auch mit Teams in verschiedenen Zeitzonen?',
                     a: 'Ja — und das ist einer der größten Vorteile von adlix consent. Der Consent-Prozess ist von Grund auf asynchron: Informationsrunde, Reaktionsrunde und Abstimmung laufen alle über Nachrichten, nicht in Echtzeit. Du kannst um 8 Uhr morgens in Berlin reagieren, während dein Kollege um 20 Uhr in Los Angeles abstimmt. Der Prozess schreitet voran, sobald alle ihre Beiträge geleistet haben — nicht wenn alle gleichzeitig verfügbar sind. Das entfernt die größte Hürde für globale Teams.',
                   },
+                  {
+                    q: 'Was passiert, wenn mehrere Personen einen schwerwiegenden Einwand haben?',
+                    a: 'Der erste major-Objection startet den 6-Phasen-Dialog mit dem Einreicher. Weitere major-Objections werden im selben Dialog integriert — gemeinsam mit dem Einreicher werden alle Einwände adressiert. Es gibt nicht einen Dialog pro Einwand, sondern einen Dialog für alle Bedenken. Das ist effizienter und sorgt dafür, dass der angepasste Vorschlag alle relevanten Perspektiven berücksichtigt.',
+                  },
+                  {
+                    q: 'Wie funktioniert der 6-Phasen-Dialog — und wie lange dauert er?',
+                    a: 'Der 6-Phasen-Dialog wird gestartet, sobald ein schwerwiegender Einwand vorliegt: 1) Verstehen — der Einwand wird im Detail gelesen. 2) Validieren — das Team bestätigt, dass der Einwand verstanden wurde. 3) Lösungen — jede Person kann Lösungsvorschläge einbringen. 4) Synthese — der Einreicher integriert die besten Ideen in einen angepassten Vorschlag. 5) Präsentation — der neue Vorschlag wird dem Kreis vorgestellt. 6) Erneute Abstimmung. Jede Phase läuft asynchron. Der Median: 48–72 Stunden für einen vollständigen Dialog.',
+                  },
                 ] as { q: string; a: string }[]
               ).map(({ q, a }, i) => (
                 <details
