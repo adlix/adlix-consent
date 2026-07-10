@@ -240,7 +240,7 @@ export default function HomePage() {
             <ul className="flex items-center gap-3 sm:gap-4 list-none">
               <li className="hidden sm:block">
                 <Link
-                  href="#practice-heading"
+                  href="#consent-demo-heading"
                   className="text-gray-600 hover:text-gray-900 text-sm"
                 >
                   Demo
@@ -310,7 +310,7 @@ export default function HomePage() {
               Kostenlos starten →
             </Link>
             <Link
-              href="#practice-heading"
+              href="#consent-demo-heading"
               className="px-6 py-3 text-lg font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
             >
               Demo ansehen ▶️

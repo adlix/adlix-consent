@@ -66,18 +66,18 @@ const CHOICES = [
     key: 'major_objection' as ConsentChoice,
     emoji: '🔴',
     label: 'Schwerwiegender Einwand',
-    sublabel: 'Blocker',
-    description: 'Dieser Einwand muss integriert werden, bevor das Vorhaben umgesetzt werden kann.',
+    sublabel: 'Blocker — muss integriert werden',
+    description: 'Dieser Einwand muss integriert werden, bevor das Vorhaben umgesetzt werden kann. Er ist kein Nein — er ist ein Geschenk.',
     colorBg: 'bg-red-50',
     colorBorder: 'border-red-300',
     colorBorderHover: 'hover:border-red-400',
     colorSelected: 'border-red-500 bg-red-100 ring-2 ring-red-200',
     colorText: 'text-red-800',
-    colorBadge: 'bg-red-100 text-red-700',
+    colorBadge: 'bg-red-600 text-white',
     colorButton: 'bg-red-600 hover:bg-red-700 text-white',
     requiresReason: true,
     reasonPlaceholder:
-      'Bitte begründe deinen Einwand — bezogen auf das gemeinsame Ziel, nicht persönliche Präferenz.',
+      'Bitte begründe deinen Einwand — bezogen auf das gemeinsame Ziel, nicht persönliche Präferenz. Was hast du gesehen, das übersehen wurde?',
   },
   {
     key: 'abstain' as ConsentChoice,
@@ -385,13 +385,44 @@ export default function ConsentVotePanel({
         </div>
       )}
 
+      {/* Major objection alert — show when any major objection already exists */}
+      {votes.some((v) => v.choice === 'major_objection') && (
+        <div className="flex items-start gap-3 p-4 bg-red-50 border-2 border-red-300 rounded-xl shadow-sm">
+          <div className="flex flex-col items-center gap-1 shrink-0">
+            <span className="text-2xl" role="img" aria-label="Schwerwiegender Einwand">🔴</span>
+            <span className="text-xs font-bold text-red-700">
+              {votes.filter((v) => v.choice === 'major_objection').length}
+            </span>
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-semibold text-red-800 mb-1">
+              Schwerwiegende Einwände liegen vor
+            </p>
+            <p className="text-xs text-red-600 leading-relaxed">
+              {votes.filter((v) => v.choice === 'major_objection').length === 1
+                ? 'Dieser Einwand muss integriert werden, bevor das Vorhaben umgesetzt werden kann.'
+                : 'Diese Einwände müssen integriert werden, bevor das Vorhaben umgesetzt werden kann.'}
+              {' '}Deine Stimme zählt — auch wenn Einwände bestehen: Konsent heißt nicht „alle sind sich einig", sondern „niemand hat einen schwerwiegenden Blocker".
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Reminder: waiting votes */}
-      {remaining > 0 && (
+      {remaining > 0 && !votes.some((v) => v.choice === 'major_objection') && (
         <div className="flex items-center gap-2 p-3 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800">
           <span className="text-base">⏰</span>
           <span>
             <strong>{remaining}</strong> {remaining === 1 ? 'Person hat' : 'Personen haben'} noch
             nicht abgestimmt.
+          </span>
+        </div>
+      )}
+      {remaining > 0 && votes.some((v) => v.choice === 'major_objection') && (
+        <div className="flex items-center gap-2 p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600">
+          <span>⏰</span>
+          <span>
+            <strong>{remaining}</strong> {remaining === 1 ? 'Stimme' : 'Stimmen'} noch ausstehend.
           </span>
         </div>
       )}
@@ -425,7 +456,11 @@ export default function ConsentVotePanel({
           <button
             key={choice.key}
             onClick={() => handleSelect(choice.key)}
-            className={`group text-left p-4 rounded-xl border-2 transition-all duration-150 ${choice.colorBg} ${choice.colorBorder} ${choice.colorBorderHover} hover:shadow-sm`}
+            className={`group text-left p-4 rounded-xl border-2 transition-all duration-150 ${
+              choice.key === 'major_objection'
+                ? `border-red-400 bg-red-50 shadow-sm shadow-red-100 ${choice.colorBorderHover}`
+                : `${choice.colorBg} ${choice.colorBorder} ${choice.colorBorderHover} hover:shadow-sm`
+            }`}
           >
             <div className="flex items-start gap-3">
               <span className="text-3xl leading-none shrink-0 group-hover:scale-110 transition-transform">
@@ -436,11 +471,17 @@ export default function ConsentVotePanel({
                   <span className={`font-semibold text-sm ${choice.colorText}`}>
                     {choice.label}
                   </span>
-                  <span
-                    className={`text-xs px-2 py-0.5 rounded-full font-medium ${choice.colorBadge}`}
-                  >
-                    {choice.sublabel}
-                  </span>
+                  {choice.key === 'major_objection' ? (
+                    <span className="text-xs px-2 py-0.5 rounded-full font-bold bg-red-600 text-white flex items-center gap-1">
+                      <span>🚨</span>Blocker
+                    </span>
+                  ) : (
+                    <span
+                      className={`text-xs px-2 py-0.5 rounded-full font-medium ${choice.colorBadge}`}
+                    >
+                      {choice.sublabel}
+                    </span>
+                  )}
                 </div>
                 <p className="text-xs text-gray-500 leading-relaxed">{choice.description}</p>
               </div>
