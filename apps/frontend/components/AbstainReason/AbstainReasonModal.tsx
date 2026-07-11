@@ -79,7 +79,9 @@ export default function AbstainReasonModal({
   onCancel,
 }: AbstainReasonModalProps) {
   const { data: session } = useSession()
-  const [step, setStep] = useState<'reason' | 'detail' | 'reflexion' | 'confirm'>('reason')
+  const [step, setStep] = useState<'reason' | 'detail' | 'reflexion' | 'confirm' | 'submitted'>(
+    'reason'
+  )
   const [selectedReason, setSelectedReason] = useState<AbstainReason | null>(null)
   const [detail, setDetail] = useState('')
   const [reflexionAnswers, setReflexionAnswers] = useState<string[]>(['', '', ''])
@@ -154,21 +156,27 @@ export default function AbstainReasonModal({
       finalChoice: finalChoiceValue,
       reflexionAnswers: reflexionAnswers.some((a) => a.trim()) ? reflexionAnswers : undefined,
       anonymousConcern:
-        finalChoice === 'anonymous' || selectedReason === 'D' ? detail.trim() || undefined : undefined,
+        finalChoice === 'anonymous' || selectedReason === 'D'
+          ? detail.trim() || undefined
+          : undefined,
     })
 
     setSubmitting(false)
-    onSubmit({
-      reason: selectedReason,
-      detail: detail.trim() || undefined,
-      isObjection,
-      objectionSeverity:
-        finalChoice === 'major' || selectedReason === 'D'
-          ? 'major'
-          : finalChoice === 'minor'
-            ? 'minor'
-            : undefined,
-    })
+    // Show success state briefly before parent closes modal
+    setStep('submitted')
+    setTimeout(() => {
+      onSubmit({
+        reason: selectedReason,
+        detail: detail.trim() || undefined,
+        isObjection,
+        objectionSeverity:
+          finalChoice === 'major' || selectedReason === 'D'
+            ? 'major'
+            : finalChoice === 'minor'
+              ? 'minor'
+              : undefined,
+      })
+    }, 1800)
   }
 
   const handleCancel = () => {
@@ -207,6 +215,7 @@ export default function AbstainReasonModal({
                 {step === 'confirm' && 'Überprüfe deine Eingabe'}
                 {step === 'reflexion' && 'Optionale Reflexion vor deiner Entscheidung'}
                 {step === 'detail' && reasonConfig?.description}
+                {step === 'submitted' && 'Fast fertig…'}
               </p>
             )}
           </div>
@@ -542,6 +551,30 @@ export default function AbstainReasonModal({
                 </button>
               </div>
             </>
+          )}
+
+          {/* ── Step submitted: success confirmation ── */}
+          {step === 'submitted' && (
+            <div className="flex flex-col items-center justify-center py-8 text-center gap-4">
+              <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center">
+                <span className="text-4xl">✅</span>
+              </div>
+              <div className="text-center">
+                <p className="text-lg font-semibold text-gray-800 mb-1">Gespeichert!</p>
+                <p className="text-sm text-gray-500 max-w-xs">
+                  {selectedReason === 'D'
+                    ? 'Deine anonymen Bedenken wurden übermittelt. Sie werden der Kreiskoordination anonymisiert angezeigt.'
+                    : selectedReason === 'B' || selectedReason === 'C'
+                      ? 'Deine Anfrage wurde gesendet. Du wirst benachrichtigt, wenn neue Informationen verfügbar sind.'
+                      : selectedReason === 'E'
+                        ? 'Deine Reflexion wurde gespeichert. Du kannst deine Position jederzeit anpassen.'
+                        : 'Deine Enthaltung wurde dokumentiert. Danke für deine Mitverantwortung.'}
+                </p>
+              </div>
+              <div className="mt-2">
+                <div className="w-6 h-6 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin" />
+              </div>
+            </div>
           )}
 
           {/* ── Global cancel ──────────────────────────────────────── */}
