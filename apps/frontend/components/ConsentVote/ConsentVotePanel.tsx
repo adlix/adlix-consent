@@ -67,7 +67,8 @@ const CHOICES = [
     emoji: '🔴',
     label: 'Schwerwiegender Einwand',
     sublabel: 'Blocker — muss integriert werden',
-    description: 'Dieser Einwand muss integriert werden, bevor das Vorhaben umgesetzt werden kann. Er ist kein Nein — er ist ein Geschenk.',
+    description:
+      'Dieser Einwand muss integriert werden, bevor das Vorhaben umgesetzt werden kann. Er ist kein Nein — er ist ein Geschenk.',
     colorBg: 'bg-red-50',
     colorBorder: 'border-red-300',
     colorBorderHover: 'hover:border-red-400',
@@ -145,8 +146,7 @@ export default function ConsentVotePanel({
   // Score 0–100: 100 when all consents, lower with objections
   // Exclude abstentions from denominator — they are not against consent, just neutral
   const activeVoters = participantCount - score.abstains
-  const consentPct =
-    activeVoters > 0 ? Math.round((score.consents / activeVoters) * 100) : 0
+  const consentPct = activeVoters > 0 ? Math.round((score.consents / activeVoters) * 100) : 0
 
   const scoreColor =
     consentPct >= 80 ? 'text-emerald-600' : consentPct >= 50 ? 'text-amber-600' : 'text-red-600'
@@ -389,7 +389,9 @@ export default function ConsentVotePanel({
       {votes.some((v) => v.choice === 'major_objection') && (
         <div className="flex items-start gap-3 p-4 bg-red-50 border-2 border-red-300 rounded-xl shadow-sm">
           <div className="flex flex-col items-center gap-1 shrink-0">
-            <span className="text-2xl" role="img" aria-label="Schwerwiegender Einwand">🔴</span>
+            <span className="text-2xl" role="img" aria-label="Schwerwiegender Einwand">
+              🔴
+            </span>
             <span className="text-xs font-bold text-red-700">
               {votes.filter((v) => v.choice === 'major_objection').length}
             </span>
@@ -401,8 +403,9 @@ export default function ConsentVotePanel({
             <p className="text-xs text-red-600 leading-relaxed">
               {votes.filter((v) => v.choice === 'major_objection').length === 1
                 ? 'Dieser Einwand muss integriert werden, bevor das Vorhaben umgesetzt werden kann.'
-                : 'Diese Einwände müssen integriert werden, bevor das Vorhaben umgesetzt werden kann.'}
-              {' '}Deine Stimme zählt — auch wenn Einwände bestehen: Konsent heißt nicht „alle sind sich einig", sondern „niemand hat einen schwerwiegenden Blocker".
+                : 'Diese Einwände müssen integriert werden, bevor das Vorhaben umgesetzt werden kann.'}{' '}
+              Deine Stimme zählt — auch wenn Einwände bestehen: Konsent heißt nicht „alle sind sich
+              einig", sondern „niemand hat einen schwerwiegenden Blocker".
             </p>
           </div>
         </div>

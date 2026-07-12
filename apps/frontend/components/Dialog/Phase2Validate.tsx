@@ -104,16 +104,20 @@ export default function Phase2Validate({ members, currentUserId, onNext }: Phase
                 >
                   {vote === 'sachlich' ? '🎯' : vote === 'praeferenz' ? '💭' : '○'}
                 </div>
-                <span className={`text-sm ${isMe ? 'font-semibold text-gray-800' : 'text-gray-600'}`}>
+                <span
+                  className={`text-sm ${isMe ? 'font-semibold text-gray-800' : 'text-gray-600'}`}
+                >
                   {member.username || member.email || `User ${member.id}`}
                   {isMe ? ' (du)' : ''}
                 </span>
                 {vote && (
-                  <span className={`text-xs ml-auto px-2 py-0.5 rounded-full font-medium ${
-                    vote === 'sachlich'
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'bg-orange-100 text-orange-700'
-                  }`}>
+                  <span
+                    className={`text-xs ml-auto px-2 py-0.5 rounded-full font-medium ${
+                      vote === 'sachlich'
+                        ? 'bg-blue-100 text-blue-700'
+                        : 'bg-orange-100 text-orange-700'
+                    }`}
+                  >
                     {vote === 'sachlich' ? 'Sachlich' : 'Präferenz'}
                   </span>
                 )}

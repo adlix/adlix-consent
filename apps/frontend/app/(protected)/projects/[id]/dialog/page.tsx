@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -52,17 +52,7 @@ export default function DialogPage() {
   const [completed, setCompleted] = useState(false)
   const [escalated, setEscalated] = useState(false)
 
-  useEffect(() => {
-    if (authStatus === 'unauthenticated') {
-      router.push('/login')
-      return
-    }
-    if (authStatus === 'authenticated' && jwt) {
-      loadData()
-    }
-  }, [authStatus, jwt, params.id])
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setLoading(true)
     setError('')
     strapi.setJwt(jwt || null)
@@ -95,7 +85,17 @@ export default function DialogPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [jwt, params.id])
+
+  useEffect(() => {
+    if (authStatus === 'unauthenticated') {
+      router.push('/login')
+      return
+    }
+    if (authStatus === 'authenticated' && jwt) {
+      loadData()
+    }
+  }, [authStatus, jwt, params.id, loadData])
 
   if (authStatus === 'loading' || loading) {
     return (

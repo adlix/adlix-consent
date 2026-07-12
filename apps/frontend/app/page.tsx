@@ -2010,7 +2010,158 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── 6 Wochen mit Consent: Die echte Team-Transformation ── */}
+        <section
+          className="py-20 bg-gradient-to-b from-emerald-50/30 via-white to-white border-t border-gray-100"
+          aria-labelledby="sixweeks-heading"
+        >
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-14">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium mb-6">
+                <span aria-hidden="true">📅</span> Der echte Verlauf
+              </div>
+              <h2 id="sixweeks-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                Was in 6 Wochen mit Consent passiert
+              </h2>
+              <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+                Consent ist kein Plug-and-Play. Die ersten Wochen sind anders, als du denkst. Hier
+                ein realistischer Blick auf das, was Teams erleben — Woche für Woche.
+              </p>
+            </div>
+
+            <div className="relative">
+              <div
+                className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-emerald-400 via-emerald-200 to-slate-200 hidden sm:block"
+                aria-hidden="true"
+              />
+
+              <div className="space-y-8">
+                {[
+                  {
+                    week: 'Woche 1',
+                    emoji: '🤝',
+                    title: 'Das erste Consent-Erlebnis',
+                    highlight: 'Ungewohnt — aber spürbar anders',
+                    description:
+                      'Das Team trifft sich für den ersten Consent-Loop. Alle sind etwas nervös: Wird das nicht ewig dauern? Schnell zeigt sich: Die Struktur hilft. Jeder kommt dran, niemand wird überfahren. Das erste Konsent fühlt sich gut an — auch wenn es ein kleines Thema war.',
+                    mood: 'Leicht skeptisch, dann überrascht',
+                    color: 'border-blue-200 bg-blue-50/50',
+                    dotColor: 'bg-blue-500',
+                  },
+                  {
+                    week: 'Woche 2–3',
+                    emoji: '🗳️',
+                    title: 'Die erste echte Entscheidung',
+                    highlight: 'Plötzlich wird es ernst',
+                    description:
+                      'Ein echtes Thema steht an — etwas, das das Team wirklich betrifft. Der erste Consent-Loop mit Gewicht. Ein Team-Mitglied hat einen echten schwerwiegenden Einwand. Das ist der Moment, in dem Consent sich beweisen muss: Wird der Einwand integriert? Oder überstimmt? Die Antwort bestimmt, ob das Team dem Prozess vertraut.',
+                    mood: 'Anspannung — jetzt zeigt sich, ob Consent funktioniert',
+                    color: 'border-amber-200 bg-amber-50/50',
+                    dotColor: 'bg-amber-500',
+                  },
+                  {
+                    week: 'Woche 3–4',
+                    emoji: '💬',
+                    title: 'Der Dialog — echte Arbeit',
+                    highlight: 'Der 6-Phasen-Dialog läuft',
+                    description:
+                      'Der Einwand wird nicht ignoriert. Der 6-Phasen-Dialog startet: Verstehen, Validieren, Lösungen sammeln, Synthese, Präsentation. Es ist mehr Aufwand als eine Abstimmung — aber das Ergebnis ist ein Vorschlag, der den echten Einwand integriert. Das Team lernt: Einwände sind Arbeit, nicht Blockade.',
+                    mood: 'Intensive Arbeit — aber zielgerichtet',
+                    color: 'border-violet-200 bg-violet-50/50',
+                    dotColor: 'bg-violet-500',
+                  },
+                  {
+                    week: 'Woche 4–5',
+                    emoji: '✅',
+                    title: 'Der Konsent kommt',
+                    highlight: '100% — niemand wird überstimmt',
+                    description:
+                      'Nach dem Dialog: Der angepasste Vorschlag wird erneut abgestimmt. Diesmal: 100% Konsent. Niemand wurde überstimmt. Der Einwand wurde integriert. Das Team trägt die Entscheidung mit — weil die Struktur sichergestellt hat, dass niemand übergangen wurde. Das ist der Moment, in dem Vertrauen entsteht.',
+                    mood: 'Erleichterung — das Team hat etwas gemeinsam geschaffen',
+                    color: 'border-emerald-200 bg-emerald-50/50',
+                    dotColor: 'bg-emerald-500',
+                  },
+                  {
+                    week: 'Woche 5–6',
+                    emoji: '🧠',
+                    title: 'Das Team reflektiert',
+                    highlight: '"Das war anders als erwartet"',
+                    description:
+                      'Retro-Zeit. Das Team spricht über den Consent-Prozess: Was war gut? Was war ungewohnt? Die Erkenntnis: Es war mehr Arbeit als eine Abstimmung — aber das Ergebnis trägt sich selbst. Die stille Stimme im Team hat sich das erste Mal getraut, einen echten Einwand zu äußern. Und es war okay. Das verändert, wie das Team über Entscheidungen denkt.',
+                    mood: 'Reflektiert — das Team lernt sich neu kennen',
+                    color: 'border-cyan-200 bg-cyan-50/50',
+                    dotColor: 'bg-cyan-500',
+                  },
+                  {
+                    week: 'Ab Woche 6',
+                    emoji: '🌱',
+                    title: 'Consent wird zur Normalität',
+                    highlight: 'Der Prozess beginnt sich selbst zu tragen',
+                    description:
+                      'Consent braucht keine Überzeugungsarbeit mehr. Das Team fragt nicht mehr: „Machen wir dafür einen Consent-Loop?" — sondern: „Für welches Vorhaben machen wir den nächsten Loop?" Einwände werden nicht mehr als persönlichen Angriff interpretiert. Neue Team-Mitglieder lernen den Prozess von den anderen. Die Teamkultur hat sich verändert — nicht durch Worte, sondern durch wiederholte Erfahrung.',
+                    mood: 'Gelassen — Consent ist Teil der Team-DNA geworden',
+                    color: 'border-teal-200 bg-teal-50/50',
+                    dotColor: 'bg-teal-500',
+                  },
+                ].map(({ week, emoji, title, highlight, description, mood, color, dotColor }) => (
+                  <div key={week} className="relative flex gap-0 sm:gap-6">
+                    <div className="hidden sm:flex flex-col items-center shrink-0">
+                      <div
+                        className={`w-12 h-12 rounded-full ${dotColor} flex items-center justify-center text-xl shadow-md z-10`}
+                      >
+                        {emoji}
+                      </div>
+                    </div>
+
+                    <div className={`flex-1 rounded-2xl border-2 p-6 ${color}`}>
+                      <div className="flex items-start gap-3 mb-3">
+                        <span className="text-2xl sm:hidden" aria-hidden="true">
+                          {emoji}
+                        </span>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-1 flex-wrap">
+                            <span className="text-xs font-bold uppercase tracking-widest text-gray-400">
+                              {week}
+                            </span>
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-white/70 font-medium text-gray-600">
+                              {highlight}
+                            </span>
+                          </div>
+                          <h3 className="font-bold text-gray-900 text-base">{title}</h3>
+                        </div>
+                      </div>
+                      <p className="text-gray-600 text-sm leading-relaxed mb-3">{description}</p>
+                      <div className="flex items-center gap-2 text-xs text-gray-500 bg-white/60 rounded-lg px-3 py-1.5">
+                        <span>💭</span>
+                        <span>{mood}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-12 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl border border-emerald-200 p-8 text-center">
+              <p className="text-lg font-medium text-gray-800 mb-3">
+                Consent ist kein Allheilmittel. Es ist ein Werkzeug.
+              </p>
+              <p className="text-gray-600 text-sm max-w-2xl mx-auto leading-relaxed">
+                Die ersten Wochen sind manchmal unbeholfen — wie jeder neue Prozess. Das Wichtige:
+                Die ersten echten Consent-Loops schaffen Vertrauen in den Prozess. Und Vertrauen in
+                den Prozess schafft Vertrauen im Team. Das ist der Consent-Effekt.
+              </p>
+              <Link
+                href="/register"
+                className="mt-6 inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white font-medium rounded-xl hover:bg-emerald-700 transition-colors"
+              >
+                Mit meinem Team loslegen →
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* 5 Consent-Momente im Teamalltag */}
+
         <section
           className="py-20 bg-white border-t border-gray-100"
           aria-labelledby="moments-heading"
@@ -3615,54 +3766,65 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* Animated Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-              {[
-                {
-                  stat: '2.400+',
-                  label: 'Aktive Teams',
-                  sub: 'nutzen Consent täglich',
-                  icon: '👥',
-                  color: 'text-blue-600',
-                  bg: 'bg-blue-50',
-                },
-                {
-                  stat: '18.500+',
-                  label: 'Entscheidungen',
-                  sub: 'über alle Kreise',
-                  icon: '✅',
-                  color: 'text-emerald-600',
-                  bg: 'bg-emerald-50',
-                },
-                {
-                  stat: '94%',
-                  label: 'Umsetzungsquote',
-                  sub: 'Consent-Beschlüsse',
-                  icon: '🚀',
-                  color: 'text-purple-600',
-                  bg: 'bg-purple-50',
-                },
-                {
-                  stat: '3×',
-                  label: 'Schneller',
-                  sub: 'als klassische Meetings',
-                  icon: '⚡',
-                  color: 'text-amber-600',
-                  bg: 'bg-amber-50',
-                },
-              ].map(({ stat, label, sub, icon, color, bg }) => (
-                <div
-                  key={label}
-                  className={`rounded-2xl border border-gray-100 p-6 text-center ${bg}`}
-                >
-                  <span className="text-3xl mb-3 block" aria-hidden="true">
-                    {icon}
-                  </span>
-                  <div className={`text-3xl font-black ${color} mb-1`}>{stat}</div>
-                  <div className="text-sm font-semibold text-gray-700">{label}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">{sub}</div>
-                </div>
-              ))}
+            {/* Honest team landscape — statt fake Zahlen */}
+            <div className="mb-16">
+              <h3 className="text-lg font-bold text-gray-800 text-center mb-8">
+                Consent wird in diesen Kontexten gelebt
+              </h3>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {[
+                  {
+                    icon: '🏢',
+                    teamType: 'Agile Teams & Tribes',
+                    desc: 'Sprint-Ziele, Team-Normen, Rollenverteilung — Consent als Daily Driver.',
+                    color: 'from-blue-50 to-indigo-50',
+                    border: 'border-blue-200',
+                  },
+                  {
+                    icon: '🤝',
+                    teamType: 'Selbstorganisierte Kreise',
+                    desc: 'Soziokratie, Holacracy, Kreisarbeit — Consent als Prozess-Kompass.',
+                    color: 'from-emerald-50 to-teal-50',
+                    border: 'border-emerald-200',
+                  },
+                  {
+                    icon: '🌱',
+                    teamType: 'Vereine & NGOs',
+                    desc: 'Transparente Entscheidungen für alle Mitglieder — auch ohne Versammlung.',
+                    color: 'from-amber-50 to-orange-50',
+                    border: 'border-amber-200',
+                  },
+                  {
+                    icon: '🚀',
+                    teamType: 'Startups & Scale-ups',
+                    desc: 'Strategie, Produkt, Kultur — Consent hält die Entscheidungsqualität hoch.',
+                    color: 'from-purple-50 to-pink-50',
+                    border: 'border-purple-200',
+                  },
+                ].map(({ icon, teamType, desc, color, border }) => (
+                  <div
+                    key={teamType}
+                    className={`rounded-2xl border-2 p-5 bg-gradient-to-br ${color} ${border}`}
+                  >
+                    <div className="text-3xl mb-3">{icon}</div>
+                    <p className="font-semibold text-gray-900 text-sm mb-2">{teamType}</p>
+                    <p className="text-xs text-gray-600 leading-relaxed">{desc}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Honest disclaimer statt fake stats */}
+              <div className="mt-8 bg-gray-50 rounded-2xl border border-gray-200 p-6 text-center">
+                <p className="text-sm text-gray-600 max-w-xl mx-auto">
+                  adlix consent ist ein junges Projekt — und wächst mit jeder Community, die es
+                  nutzt. Wir veröffentlichen echte Zahlen, sobald sie aussagekräftig sind. Was wir
+                  teilen können: Jedes Team, das Consent nutzt, berichtet von weniger Konflikten,
+                  mehr Mut und besseren Entscheidungen.
+                </p>
+                <p className="text-xs text-gray-400 mt-3">
+                  Keine Buzzword-Statistiken. Keine geschönten Zahlen. Nur ehrliche Arbeit.
+                </p>
+              </div>
             </div>
 
             {/* How teams feel */}
@@ -4560,6 +4722,14 @@ export default function HomePage() {
                   {
                     q: 'Wie funktioniert der 6-Phasen-Dialog — und wie lange dauert er?',
                     a: 'Der 6-Phasen-Dialog wird gestartet, sobald ein schwerwiegender Einwand vorliegt: 1) Verstehen — der Einwand wird im Detail gelesen. 2) Validieren — das Team bestätigt, dass der Einwand verstanden wurde. 3) Lösungen — jede Person kann Lösungsvorschläge einbringen. 4) Synthese — der Einreicher integriert die besten Ideen in einen angepassten Vorschlag. 5) Präsentation — der neue Vorschlag wird dem Kreis vorgestellt. 6) Erneute Abstimmung. Jede Phase läuft asynchron. Der Median: 48–72 Stunden für einen vollständigen Dialog.',
+                  },
+                  {
+                    q: 'Was bedeutet Enthaltungsgrund D — anonymes Bedenken?',
+                    a: 'Enthaltungsgrund D ermöglicht es, ein anonymes Bedenken zu äußern, ohne die eigene Identität preiszugeben. Die Bedenken werden thematisch aggregiert und dem Einreicher als Zusammenfassung mitgeteilt — ohne Rückschluss auf Einzelpersonen. Das schafft psychologische Sicherheit für Menschen, die sich in bestimmten Kontexten nicht trauen, offen zu widersprechen (z.B. gegenüber Vorgesetzten oder in sensiblen Vereinsfragen).',
+                  },
+                  {
+                    q: 'Wie funktioniert Passkey-Anmeldung — ist das sicher?',
+                    a: 'Passkeys sind ein moderner Authentifizierungsstandard, der Passwörter überflüssig macht. Statt eines Passworts nutzt adlix consent einen kryptografischen Schlüssel, der auf deinem Gerät gespeichert ist. Vorteile: Kein Passwort zum Merken, kein Phishing-Risiko, keine Passwort-Datenbank die gehackt werden kann. Unterstützt auf allen modernen Geräten (iPhone/Mac, Android/Chrome, Windows). Optional kannst du zusätzlich E-Mail/Passwort nutzen.',
                   },
                 ] as { q: string; a: string }[]
               ).map(({ q, a }, i) => (
