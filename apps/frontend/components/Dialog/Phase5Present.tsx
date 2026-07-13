@@ -27,7 +27,7 @@ export default function Phase5Present({
       <div className="space-y-4">
         <div>
           <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Original</p>
-          <div className="bg-gray-50 border rounded-lg p-4 text-sm text-gray-700 line-through opacity-60">
+          <div className="bg-gray-50 border rounded-xl p-4 text-sm text-gray-700 line-through opacity-60">
             {originalProposal}
           </div>
         </div>
@@ -36,26 +36,26 @@ export default function Phase5Present({
           <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
             Angepasst
           </p>
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-sm text-gray-800">
+          <div className="bg-green-50 border border-green-200 rounded-xl p-4 text-sm text-gray-800">
             {adaptedProposal}
           </div>
         </div>
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
         <p className="text-sm font-medium text-blue-800 mb-3">
           {objectorName}: Wurde dein Einwand durch die Anpassung adressiert?
         </p>
         <div className="grid grid-cols-2 gap-3">
           <button
             onClick={onResolved}
-            className="py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors text-sm"
+            className="py-3 bg-green-600 text-white rounded-xl font-medium hover:bg-green-700 transition-colors text-sm"
           >
             ✅ Ja, adressiert
           </button>
           <button
             onClick={onNotResolved}
-            className="py-3 bg-red-100 text-red-700 rounded-lg font-medium hover:bg-red-200 transition-colors text-sm"
+            className="py-3 bg-red-100 text-red-700 rounded-xl font-medium hover:bg-red-200 transition-colors text-sm"
           >
             ❌ Nein, weiterhin
           </button>

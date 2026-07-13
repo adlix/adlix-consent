@@ -57,7 +57,7 @@ export default function Phase2Validate({ members, currentUserId, onNext }: Phase
       <div className="grid grid-cols-2 gap-3">
         <button
           onClick={() => handleVote('sachlich')}
-          className={`p-4 rounded-lg border-2 text-left transition-all ${
+          className={`p-4 rounded-xl border-2 text-left transition-all ${
             myVote === 'sachlich'
               ? 'border-blue-500 bg-blue-50'
               : 'border-gray-200 hover:border-blue-300'
@@ -70,7 +70,7 @@ export default function Phase2Validate({ members, currentUserId, onNext }: Phase
 
         <button
           onClick={() => handleVote('praeferenz')}
-          className={`p-4 rounded-lg border-2 text-left transition-all ${
+          className={`p-4 rounded-xl border-2 text-left transition-all ${
             myVote === 'praeferenz'
               ? 'border-orange-500 bg-orange-50'
               : 'border-gray-200 hover:border-orange-300'
@@ -128,7 +128,7 @@ export default function Phase2Validate({ members, currentUserId, onNext }: Phase
       </div>
 
       {totalVoted > 0 && (
-        <div className="bg-gray-50 rounded-lg p-4">
+        <div className="bg-gray-50 rounded-xl p-4">
           <p className="text-sm font-medium mb-3">
             Zwischenergebnis ({totalVoted} Stimme{totalVoted !== 1 ? 'n' : ''})
           </p>
@@ -138,7 +138,7 @@ export default function Phase2Validate({ members, currentUserId, onNext }: Phase
           </div>
           {majority && (
             <div
-              className={`mt-3 p-3 rounded-lg text-sm font-medium ${
+              className={`mt-3 p-3 rounded-xl text-sm font-medium ${
                 majority === 'sachlich'
                   ? 'bg-blue-100 text-blue-800'
                   : 'bg-orange-100 text-orange-800'
@@ -150,7 +150,7 @@ export default function Phase2Validate({ members, currentUserId, onNext }: Phase
             </div>
           )}
           {allVoted && (
-            <div className="mt-2 p-2 bg-emerald-50 border border-emerald-200 rounded-lg text-sm text-emerald-700 flex items-center gap-2">
+            <div className="mt-2 p-2 bg-emerald-50 border border-emerald-200 rounded-xl text-sm text-emerald-700 flex items-center gap-2">
               <span>✅</span>
               Alle Kreis-Mitglieder haben abgestimmt.
             </div>
@@ -161,7 +161,7 @@ export default function Phase2Validate({ members, currentUserId, onNext }: Phase
       <button
         onClick={handleAdvance}
         disabled={!myVote}
-        className="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-40"
+        className="w-full py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors disabled:opacity-40"
       >
         Weiter zum Lösungsraum →
       </button>

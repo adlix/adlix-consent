@@ -230,7 +230,7 @@ export default function Phase3Solutions({
       {(confirmedAdvance || allContributed) && (
         <button
           onClick={onNext}
-          className="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+          className="w-full py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors"
         >
           Weiter zur Synthese →
         </button>

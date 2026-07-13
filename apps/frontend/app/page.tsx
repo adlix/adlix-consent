@@ -4731,6 +4731,14 @@ export default function HomePage() {
                     q: 'Wie funktioniert Passkey-Anmeldung — ist das sicher?',
                     a: 'Passkeys sind ein moderner Authentifizierungsstandard, der Passwörter überflüssig macht. Statt eines Passworts nutzt adlix consent einen kryptografischen Schlüssel, der auf deinem Gerät gespeichert ist. Vorteile: Kein Passwort zum Merken, kein Phishing-Risiko, keine Passwort-Datenbank die gehackt werden kann. Unterstützt auf allen modernen Geräten (iPhone/Mac, Android/Chrome, Windows). Optional kannst du zusätzlich E-Mail/Passwort nutzen.',
                   },
+                  {
+                    q: 'Wie kommen neue Teammitglieder in die Consent-Kultur?',
+                    a: 'Am besten: Lass sie zuschauen, bevor sie mitmachen. Neue Kreis-Mitglieder können Vorhaben beobachten, Einwände lesen und Ergebnisse sehen — bevor sie selbst abstimmen. Der erste eigene Consent-Loop sollte ein niedrigschwelliges Vorhaben sein: keine heißen Themen, kein Druck. So lernen sie den Prozess, ohne ins kalte Wasser geworfen zu werden. Consent lebt von der Erfahrung — mit jedem Loop wächst das Verständnis.',
+                  },
+                  {
+                    q: 'Was passiert wenn das Team wächst und die Consent-Runde zu groß wird?',
+                    a: 'Consent funktioniert am besten in Kreisen von 5–20 Personen. Wenn euer Team größer wird, empfiehlt sich eine Delegierten-Struktur: Verschiedene Teilkreise wählen Vertreter, die an übergeordneten Entscheidungen teilnehmen. Die Vertreter tragen die Perspektive ihres Kreises ein — inklusive Einwände. So bleibt der Prozess handhabbar, ohne dass Stimmen verloren gehen. adlix consent unterstützt verschachtelte Kreis-Strukturen.',
+                  },
                 ] as { q: string; a: string }[]
               ).map(({ q, a }, i) => (
                 <details

@@ -78,7 +78,7 @@ export default function Phase4Synthesize({ originalProposal, beitraege, onNext }
             {ideas.map((b) => (
               <li
                 key={b.id}
-                className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm"
+                className="bg-yellow-50 border border-yellow-200 rounded-xl p-3 text-sm"
               >
                 <span className="text-gray-500 text-xs">{b.user?.username}: </span>
                 {b.content}
@@ -93,7 +93,7 @@ export default function Phase4Synthesize({ originalProposal, beitraege, onNext }
           <p className="text-sm font-medium mb-2">❓ Offene Fragen</p>
           <ul className="space-y-2">
             {questions.map((b) => (
-              <li key={b.id} className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm">
+              <li key={b.id} className="bg-blue-50 border border-blue-200 rounded-xl p-3 text-sm">
                 <span className="text-gray-500 text-xs">{b.user?.username}: </span>
                 {b.content}
               </li>
@@ -108,7 +108,7 @@ export default function Phase4Synthesize({ originalProposal, beitraege, onNext }
           value={adapted}
           onChange={(e) => setAdapted(e.target.value)}
           rows={6}
-          className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 resize-none text-sm"
+          className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 resize-none text-sm"
         />
       </div>
 
@@ -121,7 +121,7 @@ export default function Phase4Synthesize({ originalProposal, beitraege, onNext }
       </button>
 
       {showDiff && (
-        <div className="bg-gray-50 border rounded-lg p-4 text-sm leading-relaxed">
+        <div className="bg-gray-50 border rounded-xl p-4 text-sm leading-relaxed">
           <p className="text-xs text-gray-500 mb-2">
             <del className="text-red-400">entfernt</del> /{' '}
             <mark className="bg-green-200 px-0.5 rounded">hinzugefügt</mark>
@@ -133,7 +133,7 @@ export default function Phase4Synthesize({ originalProposal, beitraege, onNext }
       <button
         onClick={() => onNext(adapted)}
         disabled={!adapted.trim()}
-        className="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-40"
+        className="w-full py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors disabled:opacity-40"
       >
         Vorschlag präsentieren →
       </button>

@@ -52,7 +52,7 @@ export default function Phase6Escalate({ onEscalate }: Phase6Props) {
           <button
             key={opt.type}
             onClick={() => setSelected(opt.type)}
-            className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
+            className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
               selected === opt.type
                 ? 'border-blue-500 bg-blue-50'
                 : 'border-gray-200 hover:border-blue-300'
@@ -72,7 +72,7 @@ export default function Phase6Escalate({ onEscalate }: Phase6Props) {
       <button
         onClick={() => selected && onEscalate(selected)}
         disabled={!selected}
-        className="w-full py-3 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 transition-colors disabled:opacity-40"
+        className="w-full py-3 bg-red-600 text-white rounded-xl font-medium hover:bg-red-700 transition-colors disabled:opacity-40"
       >
         Eskalationsweg bestätigen →
       </button>
