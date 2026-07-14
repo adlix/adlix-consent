@@ -316,6 +316,21 @@ export default function HomePage() {
               Demo ansehen ▶️
             </Link>
           </div>
+          {/* Trust badge */}
+          <div className="mt-8 flex items-center justify-center gap-6 flex-wrap text-sm text-gray-400">
+            <span className="flex items-center gap-1.5">
+              <span aria-hidden="true">✅</span> Kostenlos starten
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span aria-hidden="true">🔒</span> Keine Kreditkarte
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span aria-hidden="true">🇩🇪</span> Server in Deutschland
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span aria-hidden="true">🌀</span> Soziokratie-geprüft
+            </span>
+          </div>
         </section>
 
         {/* ── Consent in 60 Sekunden ── */}
@@ -532,6 +547,154 @@ export default function HomePage() {
                 >
                   So funktioniert's ↓
                 </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Für wen ist adlix consent? ── */}
+        <section
+          className="py-16 border-t border-gray-100 bg-white"
+          aria-labelledby="audience-heading"
+        >
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-50 text-indigo-700 rounded-full text-sm font-medium mb-4">
+                <span aria-hidden="true">🎯</span> Für wen?
+              </div>
+              <h2 id="audience-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                adlix consent ist gebaut für Teams, die{' '}
+                <span className="text-primary">anders entscheiden</span> wollen
+              </h2>
+              <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+                Nicht für jedes Team — aber für genau diese.
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+              {[
+                {
+                  icon: '🔵',
+                  title: 'Soziokratisch arbeitende Kreise',
+                  description:
+                    'Ihr arbeitet nach dem Konsent-Prinzip und braucht ein Tool, das den Prozess abbildet — nicht eines, das ihr in euren Prozess einzwängen müsst. adlix consent ist von Soziokratie-Praktikern für Soziokratie-Praktiker gebaut.',
+                  tags: ['Kreisstruktur', 'Delegierte', 'Rollenklärung'],
+                  color: 'border-blue-200 bg-blue-50/50',
+                  iconBg: 'bg-blue-100',
+                  tagColor: 'bg-blue-100 text-blue-700',
+                },
+                {
+                  icon: '⚡',
+                  title: 'Agile Teams & Scrum-Kreise',
+                  description:
+                    'Ihr rettet euch aus endlosen Planning-Meetings und Diskussionen ohne Ergebnis. Consent gibt euch einen strukturierten Weg von Idee zu Beschluss — async, dokumentiert, mit Rückendeckung des ganzen Teams.',
+                  tags: ['Scrum', 'Kanban', 'Self-org'],
+                  color: 'border-violet-200 bg-violet-50/50',
+                  iconBg: 'bg-violet-100',
+                  tagColor: 'bg-violet-100 text-violet-700',
+                },
+                {
+                  icon: '🤝',
+                  title: 'Vereine & Vorstände',
+                  description:
+                    'Ihr trefft Entscheidungen für Mitglieder, die nicht alle gleichzeitig online sind. Consent läuft async über Tage — jede Entscheidung dokumentiert, nachvollziehbar, fair. Kein Erraten mehr, warum etwas beschlossen wurde.',
+                  tags: ['Gemeinnützig', 'Transparenz', 'Mitglieder'],
+                  color: 'border-emerald-200 bg-emerald-50/50',
+                  iconBg: 'bg-emerald-100',
+                  tagColor: 'bg-emerald-100 text-emerald-700',
+                },
+                {
+                  icon: '🌱',
+                  title: 'NGOs & gemeinnützige Projekte',
+                  description:
+                    'Ihr arbeitet mit ehrenamtlichen Teams über verschiedene Zeitzonen und Verfügbarkeiten. Consent respektiert, dass nicht alle zur gleichen Zeit teilnehmen können — und macht trotzdem robuste Entscheidungen möglich.',
+                  tags: ['Ehrenamtlich', 'Remote', 'Async'],
+                  color: 'border-teal-200 bg-teal-50/50',
+                  iconBg: 'bg-teal-100',
+                  tagColor: 'bg-teal-100 text-teal-700',
+                },
+                {
+                  icon: '🚀',
+                  title: 'Startups & kleine Teams',
+                  description:
+                    'Ihr seid zu zweit bis zu 15 — und Entscheidungen werden noch zu oft vom Gründer allein getroffen. Consent gibt dem ganzen Team eine Stimme, ohne den Entscheidungsprozess zu lähmen. Schnell, strukturiert, klar.',
+                  tags: ['Gründerteam', 'Remote-first', 'Skalierbar'],
+                  color: 'border-amber-200 bg-amber-50/50',
+                  iconBg: 'bg-amber-100',
+                  tagColor: 'bg-amber-100 text-amber-700',
+                },
+                {
+                  icon: '🎓',
+                  title: 'Agile Coaches & Facilitatoren',
+                  description:
+                    'Ihr begleitet Teams auf dem Weg zu mehr Selbstorganisation. adlix consent ist euer digitales Werkzeug — ein Tool, das ihr Teams empfehlen, einführen und begleiten könnt. Kein Loomio-Workaround, sondern echter Consent.',
+                  tags: ['Facilitation', 'Training', 'Teambegleitung'],
+                  color: 'border-pink-200 bg-pink-50/50',
+                  iconBg: 'bg-pink-100',
+                  tagColor: 'bg-pink-100 text-pink-700',
+                },
+              ].map(({ icon, title, description, tags, color, iconBg, tagColor }) => (
+                <article
+                  key={title}
+                  className={`rounded-2xl border p-6 ${color} hover:shadow-md transition-shadow`}
+                >
+                  <div
+                    className={`w-12 h-12 ${iconBg} rounded-xl flex items-center justify-center text-2xl mb-4`}
+                    aria-hidden="true"
+                  >
+                    {icon}
+                  </div>
+                  <h3 className="font-bold text-gray-900 mb-2 text-lg leading-snug">{title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed mb-4">{description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className={`px-2.5 py-1 rounded-full text-xs font-medium ${tagColor}`}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            {/* Not for */}
+            <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 md:p-8">
+              <div className="grid md:grid-cols-2 gap-6 items-center">
+                <div>
+                  <h3 className="font-bold text-gray-900 text-lg mb-3">Nicht für jedes Team</h3>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    {[
+                      'Teams, die nach strikter Top-down-Hierarchie arbeiten wollen',
+                      'Einzelpersonen ohne Team (für Solo-Entscheidungen gibt es bessere Tools)',
+                      'Projekte, die keine transparente Entscheidungskultur wollen',
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-2">
+                        <span className="text-red-400 mt-0.5 shrink-0" aria-hidden="true">
+                          ✗
+                        </span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="bg-white rounded-xl border border-gray-200 p-5">
+                  <p className="text-sm text-gray-500 italic mb-3">
+                    &ldquo;adlix consent ist kein Tool für jede Organisation. Es ist ein Tool für
+                    Organisationen, die bereit sind, zuzuhören — auch den leisen Stimmen.&rdquo;
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl" aria-hidden="true">
+                      🔵
+                    </span>
+                    <div>
+                      <p className="text-xs font-semibold text-gray-700">Matthias Zillig</p>
+                      <p className="text-xs text-gray-400">Gründer, adlix consent</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
