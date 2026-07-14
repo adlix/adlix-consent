@@ -1912,7 +1912,7 @@ export default function HomePage() {
         {/* Warum für Teams genial */}
         <section
           className="bg-gradient-to-br from-slate-900 to-slate-800 py-20"
-          aria-labelledby="team-benefits-heading"
+          aria-labelledby="team-stats-heading"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
@@ -1920,7 +1920,7 @@ export default function HomePage() {
                 <span aria-hidden="true">📊</span> Consent in Zahlen
               </div>
               <h2
-                id="team-benefits-heading"
+                id="team-stats-heading"
                 className="text-3xl sm:text-4xl font-bold text-white mb-4"
               >
                 Warum Consent-Findung für Teams genial ist
@@ -3313,7 +3313,7 @@ export default function HomePage() {
         {/* Was sich ändert — Team-Transformation durch Consent */}
         <section
           className="py-20 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white"
-          aria-labelledby="team-change-heading"
+          aria-labelledby="team-transformation-heading"
         >
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
@@ -3321,7 +3321,7 @@ export default function HomePage() {
                 <span aria-hidden="true">🌱</span> Was sich wirklich verändert
               </div>
               <h2
-                id="team-change-heading"
+                id="team-transformation-heading"
                 className="text-3xl sm:text-4xl font-bold text-white mb-4"
               >
                 Was sich ändert, wenn Consent ins Team kommt
@@ -3463,13 +3463,13 @@ export default function HomePage() {
         </section>
 
         {/* Consent in der Praxis — Narrative Walkthrough */}
-        <section className="py-20 bg-white" aria-labelledby="practice-heading">
+        <section className="py-20 bg-white" aria-labelledby="consent-loop-demo-heading">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium mb-6">
                 <span aria-hidden="true">▶️</span> Live-Beispiel
               </div>
-              <h2 id="practice-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+              <h2 id="consent-loop-demo-heading" className="text-3xl sm:text-4xl font-bold mb-4">
                 So läuft ein echter Consent-Loop
               </h2>
               <p className="text-gray-500 max-w-xl mx-auto">
@@ -4376,14 +4376,14 @@ export default function HomePage() {
         {/* Feature Showcase: Was der Consent-Loop kann */}
         <section
           className="py-20 bg-gradient-to-br from-slate-50 to-blue-50 border-t border-gray-100"
-          aria-labelledby="features-heading"
+          aria-labelledby="consent-loop-features-heading"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-6">
                 <span aria-hidden="true">🛠️</span> Das MVP — alles was du brauchst
               </div>
-              <h2 id="features-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+              <h2 id="consent-loop-features-heading" className="text-3xl sm:text-4xl font-bold mb-4">
                 Was der Consent-Loop alles kann
               </h2>
               <p className="text-gray-500 max-w-2xl mx-auto text-lg">
