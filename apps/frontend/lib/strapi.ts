@@ -391,6 +391,13 @@ class StrapiClient {
       `/dialog-beitraege?filters[phase][id][$eq]=${phaseId}&populate=user&sort=createdAt:asc`
     )
   }
+
+  async sendReminders(hours: number = 48) {
+    return this.request<unknown>('/rounds/reminders', {
+      method: 'POST',
+      body: JSON.stringify({ hours }),
+    })
+  }
 }
 
 // Singleton instance

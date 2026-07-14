@@ -1086,9 +1086,27 @@ export default function ProjectDetailPage() {
                         )}
 
                         {!allVoted && (
-                          <p className="mt-3 text-xs text-blue-600">
-                            🔔 Nicht-abstimmende Teilnehmer erhalten automatisch eine Erinnerung.
-                          </p>
+                          <div className="mt-3 flex items-center justify-between gap-3 flex-wrap">
+                            <p className="text-xs text-blue-600">
+                              ⏳ {total - voted} Stimme{total - voted !== 1 ? 'n' : ''} noch ausstehend.
+                            </p>
+                            {String(userId) === String(project?.owner?.id) && (
+                              <button
+                                onClick={async () => {
+                                  try {
+                                    strapi.setJwt(jwt || null)
+                                    await strapi.sendReminders(48)
+                                    setError('')
+                                  } catch (_) {
+                                    setError('Erinnerung konnte nicht gesendet werden.')
+                                  }
+                                }}
+                                className="text-xs text-blue-700 bg-blue-100 hover:bg-blue-200 px-3 py-1 rounded-full font-medium transition-colors"
+                              >
+                                🔔 Erinnerung senden
+                              </button>
+                            )}
+                          </div>
                         )}
                       </div>
                     )
