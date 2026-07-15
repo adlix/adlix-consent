@@ -3462,6 +3462,198 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── Remote & Hybrid Teams ── */}
+        <section
+          className="py-20 bg-gradient-to-b from-sky-50 to-white border-t border-gray-100"
+          aria-labelledby="remote-teams-heading"
+        >
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-14">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-sky-100 text-sky-700 rounded-full text-sm font-medium mb-6">
+                <span aria-hidden="true">🌍</span> Remote &amp; Hybrid Teams
+              </div>
+              <h2 id="remote-teams-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                Consent funktioniert — auch wenn alle woanders sitzen
+              </h2>
+              <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+                Async-first ist kein Kompromiss. Es ist die eigentliche Stärke des
+                Consent-Prozesses. Kein erzwungener Termin. Kein Meeting um 19 Uhr für den Kollegen
+                in Vancouver.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8 mb-14">
+              {/* Pain side */}
+              <div className="rounded-2xl bg-red-50 border border-red-100 p-7">
+                <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-5">
+                  ❌ Das Remote-Problem mit klassischen Tools
+                </p>
+                <ul className="space-y-4">
+                  {[
+                    {
+                      icon: '🕐',
+                      title: 'Zeitzonen-Kalvarienberg',
+                      desc: '9 Personen, 5 Zeitzonen. Für einen gemeinsamen Termin bleibt ein 30-Minuten-Fenster — das alle hassen.',
+                    },
+                    {
+                      icon: '😶',
+                      title: 'Async bedeutet: keine Beteiligung',
+                      desc: 'Entscheidungen in Slack-Channels versinken. Wer nicht im richtigen Moment mitliest, wurde nicht gefragt.',
+                    },
+                    {
+                      icon: '🕳️',
+                      title: 'Stille Mehrheit entscheidet',
+                      desc: 'Wer keine Energie hat, auf einen Thread zu antworten, schweigt. Schweigen gilt als Zustimmung. Probleme tauchen bei der Umsetzung auf.',
+                    },
+                    {
+                      icon: '📋',
+                      title: 'Kein Protokoll, keine Verantwortung',
+                      desc: 'Wer hat was entschieden? Warum? In welchem Thread? Drei Monate später weiß es niemand mehr.',
+                    },
+                  ].map(({ icon, title, desc }) => (
+                    <li key={title} className="flex items-start gap-3">
+                      <span className="text-xl shrink-0 mt-0.5" aria-hidden="true">
+                        {icon}
+                      </span>
+                      <div>
+                        <p className="font-semibold text-gray-800 text-sm">{title}</p>
+                        <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Solution side */}
+              <div className="rounded-2xl bg-emerald-50 border border-emerald-100 p-7">
+                <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-5">
+                  ✅ Consent-first: So funktioniert Remote wirklich
+                </p>
+                <ul className="space-y-4">
+                  {[
+                    {
+                      icon: '🌐',
+                      title: 'Keine Zeitzone ausgeschlossen',
+                      desc: 'Informationsrunde, Reaktionsrunde, Abstimmung — alles läuft über die Plattform. Jeder antwortet, wann es passt. Async ist der Standard, nicht der Notfall.',
+                    },
+                    {
+                      icon: '📬',
+                      title: 'Strukturierter Prozess statt Slack-Chaos',
+                      desc: 'Jede Phase hat eine klare Frage: Verständnisfragen? Reaktionen? Einwände? Niemand muss raten, worum es geht oder ob er schon dran ist.',
+                    },
+                    {
+                      icon: '🔔',
+                      title: 'Reminders — automatisch',
+                      desc: 'Niemand fällt aus dem Loop. Die Plattform erinnert. Kein Nachhaken. Entscheidungen kommen nicht ins Stocken.',
+                    },
+                    {
+                      icon: '📜',
+                      title: 'Audit-Trail automatisch',
+                      desc: 'Jede Stimme, jeder Einwand, jede Enthaltung ist dokumentiert — mit Zeitstempel. Monatelang nachlesbar. Kein Protokoll schreiben.',
+                    },
+                  ].map(({ icon, title, desc }) => (
+                    <li key={title} className="flex items-start gap-3">
+                      <span className="text-xl shrink-0 mt-0.5" aria-hidden="true">
+                        {icon}
+                      </span>
+                      <div>
+                        <p className="font-semibold text-gray-800 text-sm">{title}</p>
+                        <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Async-Timeline Illustration */}
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8 mb-10">
+              <h3 className="font-bold text-lg text-gray-900 mb-2 text-center">
+                🗓️ Beispiel: Consent-Loop über 3 Tage — kein einziges Meeting
+              </h3>
+              <p className="text-gray-500 text-sm text-center mb-8 max-w-xl mx-auto">
+                Ein 7-köpfiges Team, verteilt über Berlin, Barcelona und Singapur.
+              </p>
+              <ol
+                className="relative border-l border-gray-200 ml-4 space-y-6"
+                aria-label="Consent-Loop Timeline"
+              >
+                {[
+                  {
+                    day: 'Tag 1 — 9:00 Uhr',
+                    actor: 'Projektleiterin (Berlin)',
+                    event: 'Stellt Vorschlag ein: Neues Sprint-Ziel für Q3.',
+                    phase: 'Informationsrunde',
+                    color: 'text-blue-600 bg-blue-50 border-blue-200',
+                  },
+                  {
+                    day: 'Tag 1 — 14:00–22:00 Uhr',
+                    actor: 'Team (alle Zeitzonen)',
+                    event: 'Stellen Verständnisfragen — strukturiert, nicht als Chat-Chaos.',
+                    phase: 'Informationsrunde',
+                    color: 'text-blue-600 bg-blue-50 border-blue-200',
+                  },
+                  {
+                    day: 'Tag 2 — 08:00 Uhr',
+                    actor: 'Projektleiterin',
+                    event: 'Beantwortet alle Fragen, startet Reaktionsrunde.',
+                    phase: 'Reaktionsrunde',
+                    color: 'text-violet-600 bg-violet-50 border-violet-200',
+                  },
+                  {
+                    day: 'Tag 2 — 09:00–20:00 Uhr',
+                    actor: 'Team',
+                    event:
+                      'Singapur-Kollege meldet: Sprint-Ziel zu eng für Release-Datum. Wird diskutiert.',
+                    phase: 'Reaktionsrunde',
+                    color: 'text-violet-600 bg-violet-50 border-violet-200',
+                  },
+                  {
+                    day: 'Tag 3 — 07:00 Uhr',
+                    actor: 'Projektleiterin',
+                    event: 'Passt Vorschlag an, startet Abstimmung.',
+                    phase: 'Abstimmung',
+                    color: 'text-emerald-600 bg-emerald-50 border-emerald-200',
+                  },
+                  {
+                    day: 'Tag 3 — bis 18:00 Uhr',
+                    actor: 'Team',
+                    event: 'Alle 7 stimmen ab. Kein schwerwiegender Einwand. Konsent erreicht.',
+                    phase: '✅ Beschluss gefasst',
+                    color: 'text-emerald-700 bg-emerald-100 border-emerald-300',
+                  },
+                ].map(({ day, actor, event, phase, color }) => (
+                  <li key={day} className="ml-6">
+                    <span
+                      className="absolute -left-1.5 w-3 h-3 bg-gray-300 rounded-full border-2 border-white"
+                      aria-hidden="true"
+                    />
+                    <div className="flex flex-wrap items-start gap-2 mb-1">
+                      <span className="text-xs text-gray-400 font-mono">{day}</span>
+                      <span
+                        className={`text-xs font-medium px-2 py-0.5 rounded-full border ${color}`}
+                      >
+                        {phase}
+                      </span>
+                    </div>
+                    <p className="text-sm font-semibold text-gray-800">{actor}</p>
+                    <p className="text-sm text-gray-500">{event}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div className="text-center">
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-sky-600 text-white font-bold rounded-xl hover:bg-sky-700 transition-colors shadow-lg"
+              >
+                Jetzt async-first entscheiden <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* Consent in der Praxis — Narrative Walkthrough */}
         <section className="py-20 bg-white" aria-labelledby="consent-loop-demo-heading">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -4224,13 +4416,13 @@ export default function HomePage() {
                       📝 Aktueller Vorschlag — Runde 2
                     </p>
                     <p className="text-sm text-gray-700 leading-relaxed">
-                      "Unser Sprint-Ziel Q2: Wir liefern den neuen Bezahlprozess bis Ende Juni.
+                      {'"'}Unser Sprint-Ziel Q2: Wir liefern den neuen Bezahlprozess bis Ende Juni.
                       Inkrementeller Go-Live: erst intern testen, dann Kunden.{' '}
                       <span className="text-emerald-600 font-medium">
                         Mit Fallback-Regel: Bei Problemen im internen Test stoppen wir den externen
                         Rollout.
                       </span>
-                      "
+                      {'"'}
                     </p>
                     <p className="text-xs text-gray-400 mt-2 italic">
                       ↑ Angepasst nach Dialog mit Jan — Fallback-Regel integriert
@@ -4246,7 +4438,7 @@ export default function HomePage() {
                       </span>
                     </div>
                     <p className="text-sm text-red-700">
-                      Jan: "Inkrementeller Go-Live gefährdet die Q2-Deadline bei Komplikationen."
+                      Jan: {'"'}Inkrementeller Go-Live gefährdet die Q2-Deadline bei Komplikationen.{'"'}
                     </p>
                     <div className="mt-2 pt-2 border-t border-red-200">
                       <p className="text-xs text-emerald-700 font-medium">
@@ -4383,7 +4575,10 @@ export default function HomePage() {
               <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-6">
                 <span aria-hidden="true">🛠️</span> Das MVP — alles was du brauchst
               </div>
-              <h2 id="consent-loop-features-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+              <h2
+                id="consent-loop-features-heading"
+                className="text-3xl sm:text-4xl font-bold mb-4"
+              >
                 Was der Consent-Loop alles kann
               </h2>
               <p className="text-gray-500 max-w-2xl mx-auto text-lg">
@@ -4901,6 +5096,26 @@ export default function HomePage() {
                   {
                     q: 'Was passiert wenn das Team wächst und die Consent-Runde zu groß wird?',
                     a: 'Consent funktioniert am besten in Kreisen von 5–20 Personen. Wenn euer Team größer wird, empfiehlt sich eine Delegierten-Struktur: Verschiedene Teilkreise wählen Vertreter, die an übergeordneten Entscheidungen teilnehmen. Die Vertreter tragen die Perspektive ihres Kreises ein — inklusive Einwände. So bleibt der Prozess handhabbar, ohne dass Stimmen verloren gehen. adlix consent unterstützt verschachtelte Kreis-Strukturen.',
+                  },
+                  {
+                    q: 'Wie funktioniert Consent in einem vollständig remote Team ohne gemeinsame Sprache?',
+                    a: 'Consent ist sprachunabhängig strukturierbar — die Phasen (Fragen, Reaktionen, Einwände) sind klar getrennt und können durch den Facilitator in der jeweiligen Sprache geführt werden. adlix consent unterstützt Deutsch und Englisch. Für mehrsprachige Teams empfehlen wir: Vorschläge auf Englisch, Einwände in der Muttersprache mit optionaler Übersetzungsnotiz. Die Plattform speichert alles — kein Sprachverlust im Audit-Trail.',
+                  },
+                  {
+                    q: 'Kann ich Consent auch in einem klassischen Unternehmensumfeld einführen, ohne die ganze Kultur umzukrempeln?',
+                    a: 'Ja — und das ist einer der häufigsten Einstiege. Du brauchst keine Soziokratie-Revolution. Fange mit einem Team, einem Thema an: z.B. die Planung des nächsten Sprints. Nach 3–5 Consent-Loops entstehen erste Erfahrungswerte. Die Kultur folgt dem Prozess — nicht umgekehrt. Wir nennen das den „Consent-Einstieg": klein anfangen, im Stil der eigenen Organisation bleiben, nach 6 Wochen evaluieren.',
+                  },
+                  {
+                    q: 'Was ist der ROI von Consent — lässt sich das messen?',
+                    a: 'Direkte Kennzahlen: Meeting-Zeit (−40–70% bei Entscheidungen), Nachbearbeitungsaufwand (−30–40%), Umsetzungs-Commitment (+34 Prozentpunkte gegenüber Mehrheitsentscheidungen). Indirekte Effekte: weniger Frustration, weniger stille Kündigung, mehr Beteiligung von introvertierten Teammitgliedern. Der einfachste Startpunkt: führe für 6 Wochen Buch über Entscheidungszeit und Umsetzungsrate. Der Unterschied wird sichtbar.',
+                  },
+                  {
+                    q: 'Kann adlix consent in Vereinen und NGOs genutzt werden?',
+                    a: 'Consent entstand aus der Vereinsarbeit — adlix consent wurde direkt für Die Problemlöser e.V. entwickelt. Für Vereine, NGOs und gemeinnützige Organisationen ist der Consent-Prozess besonders wertvoll: Freiwillige brauchen echte Mitbestimmung, nicht Alibi-Abstimmungen. Der Free-Plan reicht für viele Vereine aus. Pro und Enterprise für größere Organisationen mit mehreren Kreisen.',
+                  },
+                  {
+                    q: 'Wie verhindert Consent, dass ein Einzelner den Prozess blockiert?',
+                    a: 'Einwände müssen begründet sein und das gemeinsame Ziel des Kreises betreffen — keine persönlichen Präferenzen. Die Plattform führt durch Klärungsfragen: Ist das ein schwerwiegender Einwand oder eine Präferenz? Wenn jemand wiederholt Einwände ohne Begründung einbringt, gibt es einen Eskalationspfad: Moderation durch den Kreis, oder der Einwand wird als „nicht rollenrelevant" klassifiziert. Das Ziel ist Qualität der Einwände — nicht deren Menge.',
                   },
                 ] as { q: string; a: string }[]
               ).map(({ q, a }, i) => (

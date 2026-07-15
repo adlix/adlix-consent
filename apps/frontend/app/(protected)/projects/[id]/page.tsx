@@ -1088,7 +1088,8 @@ export default function ProjectDetailPage() {
                         {!allVoted && (
                           <div className="mt-3 flex items-center justify-between gap-3 flex-wrap">
                             <p className="text-xs text-blue-600">
-                              ⏳ {total - voted} Stimme{total - voted !== 1 ? 'n' : ''} noch ausstehend.
+                              ⏳ {total - voted} Stimme{total - voted !== 1 ? 'n' : ''} noch
+                              ausstehend.
                             </p>
                             {String(userId) === String(project?.owner?.id) && (
                               <button
@@ -1512,6 +1513,85 @@ export default function ProjectDetailPage() {
                           <strong>Evaluationsdatum:</strong>{' '}
                           {new Date(outcomeData.evaluationDate).toLocaleDateString('de-DE')}
                         </p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Owner: Neuen Consent-Loop starten (Revisit / Evaluation) */}
+                  {String(userId) === String(project?.owner?.id) && (
+                    <div className="mt-4 pt-4 border-t border-gray-100">
+                      <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold mb-2">
+                        🔁 Neuer Consent-Loop
+                      </p>
+                      {!showNewRoundForm ? (
+                        <button
+                          onClick={() => {
+                            setNewRoundProposal(selectedRound.proposal)
+                            setShowNewRoundForm(true)
+                          }}
+                          className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium"
+                        >
+                          Vorhaben evaluieren oder überarbeiten →
+                        </button>
+                      ) : (
+                        <div className="space-y-3 bg-gray-50 rounded-xl p-4 border border-gray-200">
+                          <p className="text-xs text-gray-500">
+                            Überarbeite den Vorschlag (z.B. nach Evaluation) und starte eine neue
+                            Abstimmungsrunde.
+                          </p>
+                          <label className="block">
+                            <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
+                              📝 Überarbeiteter Vorschlag (Runde {rounds.length + 1})
+                            </span>
+                            <textarea
+                              value={newRoundProposal}
+                              onChange={(e) => setNewRoundProposal(e.target.value)}
+                              rows={4}
+                              className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none text-sm"
+                              placeholder="Überarbeiteter Vorschlag nach Evaluation…"
+                            />
+                          </label>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={async () => {
+                                if (!newRoundProposal.trim()) return
+                                setAdvancing(true)
+                                strapi.setJwt(jwt || null)
+                                try {
+                                  await strapi.createRound({
+                                    roundNumber: rounds.length + 1,
+                                    proposal: newRoundProposal.trim(),
+                                    status: 'voting',
+                                    project: project!.id,
+                                  })
+                                  setShowNewRoundForm(false)
+                                  setNewRoundProposal('')
+                                  const { all: refreshed, selected: refreshedRound } =
+                                    await reloadRounds(params.id, undefined)
+                                  setRounds(refreshed)
+                                  setSelectedRound(refreshedRound)
+                                } catch (_) {
+                                  setError('Neue Runde konnte nicht gestartet werden.')
+                                } finally {
+                                  setAdvancing(false)
+                                }
+                              }}
+                              disabled={advancing || !newRoundProposal.trim()}
+                              className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 text-sm"
+                            >
+                              {advancing ? 'Starte Runde…' : '🔄 Neue Runde starten'}
+                            </button>
+                            <button
+                              onClick={() => {
+                                setShowNewRoundForm(false)
+                                setNewRoundProposal('')
+                              }}
+                              className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200"
+                            >
+                              Abbrechen
+                            </button>
+                          </div>
+                        </div>
                       )}
                     </div>
                   )}
