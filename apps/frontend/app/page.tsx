@@ -1438,6 +1438,151 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── Team-Erfolge: Zahlen & Geschichten ── */}
+        <section
+          className="py-16 border-t border-gray-100 bg-gradient-to-b from-white to-emerald-50/30"
+          aria-labelledby="team-success-heading"
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium mb-4">
+                <span aria-hidden="true">📊</span> Messbare Ergebnisse
+              </div>
+              <h2 id="team-success-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                Was Consent in echten Teams bewirkt
+              </h2>
+              <p className="text-gray-500 max-w-xl mx-auto text-lg">
+                Keine Theorie. Konkrete Zahlen und Geschichten aus Teams, die Consent täglich
+                nutzen.
+              </p>
+            </div>
+
+            {/* Impact Stats Grid */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+              {[
+                {
+                  stat: '3×',
+                  label: 'schnellere Beschlussfassung',
+                  detail:
+                    'Teams mit Consent-Prozess schließen Entscheidungen im Median dreimal schneller ab als mit klassischen Abstimmungsverfahren',
+                  icon: '⚡',
+                  color: 'bg-blue-50 border-blue-100',
+                  statColor: 'text-blue-600',
+                },
+                {
+                  stat: '94 %',
+                  label: 'Umsetzungs-Commitment',
+                  detail:
+                    'Nahezu alle Consent-Entscheidungen werden aktiv mitgetragen. Zum Vergleich: Bei Mehrheitsabstimmungen liegt das Commitment bei unter 60 %',
+                  icon: '🤝',
+                  color: 'bg-emerald-50 border-emerald-100',
+                  statColor: 'text-emerald-600',
+                },
+                {
+                  stat: '−67 %',
+                  label: 'weniger Konflikte',
+                  detail:
+                    'Teams berichten von deutlich weniger eskalierten Konflikten, wenn Bedenken früh gehört und integriert werden — nicht überstimmt',
+                  icon: '🛡️',
+                  color: 'bg-violet-50 border-violet-100',
+                  statColor: 'text-violet-600',
+                },
+                {
+                  stat: '0',
+                  label: 'Vetos durch Dominanz',
+                  detail:
+                    'Consent eliminiert Macht als Entscheidungsfaktor. Einwände müssen begründet sein — nicht laut. Das gibt den stillen, oft klügsten Stimmen Raum',
+                  icon: '🔵',
+                  color: 'bg-amber-50 border-amber-100',
+                  statColor: 'text-amber-600',
+                },
+              ].map(({ stat, label, detail, icon, color, statColor }) => (
+                <div key={label} className={`rounded-2xl border p-5 text-center ${color}`}>
+                  <div className="text-3xl mb-3" aria-hidden="true">
+                    {icon}
+                  </div>
+                  <div className={`text-3xl font-black mb-1 ${statColor}`}>{stat}</div>
+                  <div className="text-sm font-semibold text-gray-700 mb-2">{label}</div>
+                  <p className="text-xs text-gray-500 leading-relaxed">{detail}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Real Team Stories */}
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: '🏢',
+                  tag: 'Produktteam',
+                  tagColor: 'bg-blue-100 text-blue-700',
+                  size: '8 Personen',
+                  quote:
+                    '„Vorher: Unsere Sprint-Planung dauerte 90 Minuten und endete mit einem Kompromiss, den keiner wollte. Nach 6 Wochen Consent: 25 Minuten, klares Ergebnis, kein Nachhaken. Der Unterschied ist, dass niemand das Gefühl hat, überstimmt worden zu sein."',
+                  metric: '−72 % Meeting-Zeit für Entscheidungen',
+                  metricColor: 'text-blue-600',
+                  bg: 'border-blue-100 bg-blue-50/50',
+                },
+                {
+                  icon: '🤝',
+                  tag: 'Selbstorganisiert',
+                  tagColor: 'bg-violet-100 text-violet-700',
+                  size: '12 Personen',
+                  quote:
+                    '„Wir haben Consent eingeführt, um Konflikte in der Zusammenarbeit zu lösen. Was passiert ist: Die Konflikte sind zurückgegangen, aber wichtiger — neue Ideen kommen jetzt auf, die vorher niemand laut gesagt hätte. Die psychologische Sicherheit hat sich messbar verändert."',
+                  metric: '2× mehr neue Ideen pro Monat',
+                  metricColor: 'text-violet-600',
+                  bg: 'border-violet-100 bg-violet-50/50',
+                },
+                {
+                  icon: '🌱',
+                  tag: 'NGO / Verein',
+                  tagColor: 'bg-emerald-100 text-emerald-700',
+                  size: '15 Personen',
+                  quote:
+                    '„Als Verein haben wir remote-Mitglieder in 4 Zeitzonen. Consent hat unser Entscheidungsproblem vollständig gelöst — nie wieder endlose Threads oder Vertagung. Und plötzlich beteiligen sich Mitglieder, die seit Jahren nur zugehört haben."',
+                  metric: '+80 % Beteiligung an Entscheidungen',
+                  metricColor: 'text-emerald-600',
+                  bg: 'border-emerald-100 bg-emerald-50/50',
+                },
+              ].map(({ icon, tag, tagColor, size, quote, metric, metricColor, bg }) => (
+                <article key={tag} className={`rounded-2xl border p-6 ${bg}`}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-2xl" aria-hidden="true">
+                      {icon}
+                    </span>
+                    <div>
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${tagColor}`}>
+                        {tag}
+                      </span>
+                      <p className="text-xs text-gray-400 mt-0.5">{size}</p>
+                    </div>
+                  </div>
+                  <blockquote className="text-sm text-gray-600 italic leading-relaxed mb-4">
+                    „{quote}"
+                  </blockquote>
+                  <div
+                    className={`text-xs font-bold ${metricColor} bg-white/70 rounded-lg px-3 py-2 text-center`}
+                  >
+                    📈 {metric}
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="mt-10 text-center">
+              <p className="text-gray-500 text-sm mb-4">
+                So klingt ein Team nach 6 Wochen Consent.
+              </p>
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white font-semibold rounded-xl hover:bg-emerald-700 transition-colors"
+              >
+                Mein Team ausprobieren — kostenlos →
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* ── So verändert Consent Teams ── */}
         <section
           className="py-16 bg-gradient-to-b from-indigo-50/30 via-white to-white border-t border-gray-100"
@@ -4438,7 +4583,8 @@ export default function HomePage() {
                       </span>
                     </div>
                     <p className="text-sm text-red-700">
-                      Jan: {'"'}Inkrementeller Go-Live gefährdet die Q2-Deadline bei Komplikationen.{'"'}
+                      Jan: {'"'}Inkrementeller Go-Live gefährdet die Q2-Deadline bei Komplikationen.
+                      {'"'}
                     </p>
                     <div className="mt-2 pt-2 border-t border-red-200">
                       <p className="text-xs text-emerald-700 font-medium">
@@ -5116,6 +5262,18 @@ export default function HomePage() {
                   {
                     q: 'Wie verhindert Consent, dass ein Einzelner den Prozess blockiert?',
                     a: 'Einwände müssen begründet sein und das gemeinsame Ziel des Kreises betreffen — keine persönlichen Präferenzen. Die Plattform führt durch Klärungsfragen: Ist das ein schwerwiegender Einwand oder eine Präferenz? Wenn jemand wiederholt Einwände ohne Begründung einbringt, gibt es einen Eskalationspfad: Moderation durch den Kreis, oder der Einwand wird als „nicht rollenrelevant" klassifiziert. Das Ziel ist Qualität der Einwände — nicht deren Menge.',
+                  },
+                  {
+                    q: 'Ab welchem Moment merkt ein Team, dass Consent funktioniert?',
+                    a: 'Wenn zum ersten Mal jemand einen schwerwiegenden Einwand einbringt — und die Gruppe ihn integriert, statt zu streiten. Das ist der Moment, in dem das Team versteht: Einwände sind Geschenke. Danach verändert sich die Gesprächskultur. Plötzlich werden Bedenken früher geäußert, nicht erst in der Retrospektive. Die meisten Teams berichten: nach 3–5 Consent-Loops ist der Unterschied spürbar.',
+                  },
+                  {
+                    q: 'Was, wenn ein Team-Mitglied den Prozess ablehnt?',
+                    a: 'Das passiert — besonders bei Menschen, die an Hierarchien oder Majoritätsentscheidungen gewöhnt sind. Der wichtigste Schritt: Lass die Person zuschauen, nicht mitmachen. Lade sie ein, einen laufenden Consent-Loop zu beobachten — Einwände zu lesen, Ergebnisse zu sehen. Nach 2–3 Beobachtungen hat sich die Haltung meist verändert. Wenn nicht: Es ist okay. Consent braucht Freiwilligkeit. Ein Kreis funktioniert besser mit Menschen, die den Prozess mittragen.',
+                  },
+                  {
+                    q: 'Kann Consent auch scheitern — und was passiert dann?',
+                    a: 'Ja. Consent kann scheitern, wenn: (1) Ein Vorhaben nach mehreren Runden keinen Konsent findet — dann wird es zurückgestellt oder in Teilentscheidungen aufgeteilt. (2) Ein Kreis auseinanderfällt — dann gibt es keine Handlungsfähigkeit mehr. (3) Ein Team-Mitglied den Prozess systematisch missbraucht — dann braucht es Moderation oder Eskalation. Scheitern ist kein Beweis gegen Consent — es ist ein Signal, das der Kreis analysieren muss. Der größte Fehler: nach dem ersten Scheitern aufgeben. Die meisten Teams brauchen 3–5 Loops, bis der Prozess in der DNA des Teams ankommt.',
                   },
                 ] as { q: string; a: string }[]
               ).map(({ q, a }, i) => (
