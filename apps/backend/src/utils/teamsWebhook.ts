@@ -31,13 +31,18 @@ interface TeamsNotification {
     | "new_round"
     | "vote_started"
     | "objection_raised"
-    | "round_completed";
+    | "round_completed"
+    | "abstention_info_request"
+    | "abstention_clarification_request";
   details?: {
     proposal?: string;
     userName?: string;
     objectionReason?: string;
     objectionSeverity?: string;
     voteResults?: { yes: number; no: number; abstain: number };
+    abstentionReason?: string; // B or C
+    abstentionDetail?: string; // what info/clarification is needed
+    ownerName?: string;
   };
 }
 
@@ -54,6 +59,8 @@ class TeamsWebhookService {
       vote_started: "0078D4",
       objection_raised: "FFB900",
       round_completed: "107C10",
+      abstention_info_request: "FF8C00",
+      abstention_clarification_request: "FF8C00",
     };
 
     const titles: Record<string, string> = {
@@ -61,6 +68,8 @@ class TeamsWebhookService {
       vote_started: "🗳️ Abstimmung gestartet",
       objection_raised: "✋ Neuer Einspruch",
       round_completed: "✅ Runde abgeschlossen",
+      abstention_info_request: "📚 Info-Anfrage — mehr Informationen benötigt",
+      abstention_clarification_request: "🤔 Klärungsbedarf — ein Teil ist unklar",
     };
 
     const facts: { name: string; value: string }[] = [
@@ -87,6 +96,19 @@ class TeamsWebhookService {
       });
     }
 
+    if (notification.details?.abstentionReason) {
+      facts.push({
+        name: "Typ",
+        value:
+          notification.details.abstentionReason === "B"
+            ? "📚 Mehr Informationen benötigt"
+            : "🤔 Klärung benötigt",
+      });
+    }
+    if (notification.details?.ownerName) {
+      facts.push({ name: "An", value: notification.details.ownerName });
+    }
+
     let text = "";
     if (notification.details?.proposal) {
       text = `**Vorschlag:**\n${notification.details.proposal.substring(0, 200)}${
@@ -95,6 +117,9 @@ class TeamsWebhookService {
     }
     if (notification.details?.objectionReason) {
       text = `**Begründung:**\n${notification.details.objectionReason}`;
+    }
+    if (notification.details?.abstentionDetail) {
+      text = `**Anliegen:**\n${notification.details.abstentionDetail}`;
     }
 
     return {
@@ -200,6 +225,31 @@ class TeamsWebhookService {
         userName,
         objectionReason: reason,
         objectionSeverity: severity,
+      },
+    });
+  }
+
+  async notifyAbstentionRequest(
+    projectName: string,
+    roundNumber: number,
+    userName: string,
+    reason: "B" | "C",
+    detail: string,
+    ownerName: string,
+  ) {
+    return this.send({
+      webhookUrl: "",
+      projectName,
+      roundNumber,
+      eventType:
+        reason === "B"
+          ? "abstention_info_request"
+          : "abstention_clarification_request",
+      details: {
+        userName,
+        abstentionReason: reason,
+        abstentionDetail: detail,
+        ownerName,
       },
     });
   }

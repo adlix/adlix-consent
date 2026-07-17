@@ -1,6 +1,7 @@
 "use strict";
 
 const { createCoreController } = require("@strapi/strapi").factories;
+const teamsWebhook = require("../../../utils/teamsWebhook").default;
 
 /** Simple keyword-based thematic grouping */
 const THEME_KEYWORDS = {
@@ -102,6 +103,38 @@ function generateSummary(groups) {
 }
 
 const coreController = createCoreController("api::abstention.abstention");
+
+/**
+ * Audit log helper — fire-and-forget, never throws.
+ */
+async function auditLog(strapi, action, entityType, entityId, details, userId) {
+  try {
+    await strapi.entityService.create("api::audit-log.audit-log", {
+      data: { action, entityType, entityId, details, user: userId || null },
+    });
+  } catch (_) {}
+}
+
+/**
+ * Sends a Teams notification for a B/C abstention info/clarification request.
+ * Gracefully ignores if webhook not configured.
+ */
+async function notifyInfoRequest(strapi, round, user, detail, reason) {
+  try {
+    const project = round.project;
+    const owner = project?.owner;
+    await teamsWebhook.notifyAbstentionRequest(
+      project?.name || "Unbekanntes Projekt",
+      round?.roundNumber || 0,
+      user?.username || user?.email || "Unbekannt",
+      reason,
+      detail,
+      owner?.username || owner?.email || "Kreiskoordination",
+    );
+  } catch (err) {
+    console.warn("Teams notification failed:", err.message);
+  }
+}
 
 module.exports = createCoreController(
   "api::abstention.abstention",
@@ -231,6 +264,83 @@ module.exports = createCoreController(
           },
         },
       };
+    },
+
+    /**
+     * POST /abstentions/:roundId/info-request
+     * Creates an abstention for Reason B or C and notifies the project owner
+     * via Teams webhook + audit log.
+     *
+     * Body: { data: { reason: "B" | "C", detail: string, user: number, finalChoice?: string } }
+     */
+    async createInfoRequest(ctx) {
+      const { roundId } = ctx.params;
+      const body = ctx.request.body as Record<string, unknown>;
+      const data = (body?.data as Record<string, unknown>) || body;
+
+      const { reason, detail, user: userId, finalChoice } = data as {
+        reason: string;
+        detail?: string;
+        user?: number;
+        finalChoice?: string;
+      };
+
+      if (!reason || (reason !== "B" && reason !== "C")) {
+        return ctx.badRequest(
+          "Ungültiger Grund. Nur B (Mehr Info) oder C (Klärung) erlaubt.",
+        );
+      }
+      if (!userId) {
+        return ctx.badRequest("user ID required");
+      }
+
+      // Look up round with project + owner
+      const round = await strapi.entityService.findOne(
+        "api::round.round",
+        Number(roundId),
+        { populate: ["project", "project.owner"] },
+      );
+      if (!round) {
+        return ctx.notFound("Runde nicht gefunden");
+      }
+
+      // Look up user
+      const user = await strapi.entityService.findOne(
+        "plugin::users-permissions.user",
+        Number(userId),
+        { fields: ["username", "email"] },
+      );
+
+      // Create abstention record
+      const abstention = await strapi.entityService.create(
+        "api::abstention.abstention",
+        {
+          data: {
+            reason,
+            detail: detail || undefined,
+            finalChoice: finalChoice || undefined,
+            user: Number(userId),
+            round: Number(roundId),
+          },
+        },
+      );
+
+      // Notify project owner via Teams
+      if (detail) {
+        await notifyInfoRequest(strapi, round, user, detail, reason);
+      }
+
+      // Audit log
+      await auditLog(
+        strapi,
+        "abstention_info_request",
+        "abstention",
+        String(abstention.id),
+        `Enthaltung ${reason}: ${detail || "(kein Detail)"} — Round #${round?.roundNumber}`,
+        Number(userId),
+      );
+
+      ctx.body = { data: abstention };
     },
   }),
 );

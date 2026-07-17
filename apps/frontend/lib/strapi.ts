@@ -308,6 +308,13 @@ class StrapiClient {
     round: number
     user: number
   }) {
+    // B/C reasons: use info-request endpoint which notifies the project owner
+    if (data.reason === 'B' || data.reason === 'C') {
+      return this.request<unknown>(`/abstentions/${data.round}/info-request`, {
+        method: 'POST',
+        body: JSON.stringify({ data }),
+      })
+    }
     return this.request<unknown>('/abstentions', {
       method: 'POST',
       body: JSON.stringify({ data }),

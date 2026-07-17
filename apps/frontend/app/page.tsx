@@ -5275,6 +5275,10 @@ export default function HomePage() {
                     q: 'Kann Consent auch scheitern — und was passiert dann?',
                     a: 'Ja. Consent kann scheitern, wenn: (1) Ein Vorhaben nach mehreren Runden keinen Konsent findet — dann wird es zurückgestellt oder in Teilentscheidungen aufgeteilt. (2) Ein Kreis auseinanderfällt — dann gibt es keine Handlungsfähigkeit mehr. (3) Ein Team-Mitglied den Prozess systematisch missbraucht — dann braucht es Moderation oder Eskalation. Scheitern ist kein Beweis gegen Consent — es ist ein Signal, das der Kreis analysieren muss. Der größte Fehler: nach dem ersten Scheitern aufgeben. Die meisten Teams brauchen 3–5 Loops, bis der Prozess in der DNA des Teams ankommt.',
                   },
+                  {
+                    q: 'Was passiert, wenn jemand \"Mehr Infos nötig\" wählt — und dann?',
+                    a: 'Die Plattform macht aus einer Enthaltung einen klaren Workflow: Wenn ein Kreis-Mitglied \"Mehr Informationen benötigt\" (Grund B) oder \"Etwas ist unklar\" (Grund C) wählt, wird die Anfrage automatisch an den Vorhabens-Einreicher weitergeleitet — inklusive konkreter Frage. Der Einreicher erhält eine Benachrichtigung (Teams-Webhook, falls konfiguriert) und hat Zeit zu antworten. Danach wird das Team-Mitglied erneut zur Abstimmung eingeladen. So wird sichergestellt, dass niemand \"blind\" abstimmen muss — und niemand im Kreis verliert den Überblick.',
+                  },
                 ] as { q: string; a: string }[]
               ).map(({ q, a }, i) => (
                 <details
