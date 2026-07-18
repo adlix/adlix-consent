@@ -422,6 +422,24 @@ export default function ProjectDetailPage() {
 
   const participantCount = project.participants?.length || project.circle?.members?.length || 0
 
+  // ── Consent score helper ────────────────────────────────────────────
+  const voteBreakdown = selectedRound
+    ? { consent: 0, minor_objection: 0, major_objection: 0, abstain: 0 } as Record<string, number>
+    : null
+  if (voteBreakdown && selectedRound) {
+    selectedRound.votes.forEach((v) => {
+      if (v.choice in voteBreakdown) voteBreakdown[v.choice]++
+    })
+  }
+  const consentScore =
+    voteBreakdown && participantCount > 0
+      ? Math.round((voteBreakdown.consent / participantCount) * 100)
+      : null
+  const votedCount = selectedRound?.votes.length ?? 0
+  const majorObjections = selectedRound?.objections.filter(
+    (o) => o.severity === 'major' && o.status === 'open'
+  ).length ?? 0
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <header className="border-b border-gray-200 bg-white">
@@ -468,7 +486,7 @@ export default function ProjectDetailPage() {
                   </p>
                 )}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <span
                   className={`px-3 py-1 rounded-full text-xs font-medium ${
                     project.status === 'active'
@@ -488,6 +506,30 @@ export default function ProjectDetailPage() {
                         ? 'Abgeschlossen'
                         : 'Entwurf'}
                 </span>
+                {consentScore !== null && selectedRound?.status === 'voting' && (
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-bold ${
+                      consentScore >= 80
+                        ? 'bg-emerald-100 text-emerald-700'
+                        : consentScore >= 50
+                          ? 'bg-amber-100 text-amber-700'
+                          : 'bg-red-100 text-red-700'
+                    }`}
+                    title={`${voteBreakdown!.consent}/${participantCount} Konsent · ${votedCount}/${participantCount} abgestimmt`}
+                  >
+                    📊 {consentScore}% Konsent
+                  </span>
+                )}
+                {majorObjections > 0 && (
+                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700">
+                    🔴 {majorObjections} Einwand{majorObjections > 1 ? 'wände' : ''}
+                  </span>
+                )}
+                {selectedRound?.status === 'voting' && votedCount < participantCount && (
+                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                    ⏳ {participantCount - votedCount} ausstehend
+                  </span>
+                )}
                 {String(userId) === String(project.owner?.id) &&
                   project.status !== 'beschlossen' &&
                   project.status !== 'completed' && (
@@ -500,11 +542,32 @@ export default function ProjectDetailPage() {
                   )}
               </div>
             </div>
-            <div className="flex items-center gap-6 text-sm text-gray-500 mb-3">
-              <span>Erstellt von: {project.owner?.username || 'Unbekannt'}</span>
-              <span>{participantCount} Teilnehmer</span>
-              <span>{rounds.length} Runden</span>
-              {project.circle && <span>Kreis: {project.circle.name}</span>}
+            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-3">
+              <span>👤 {project.owner?.username || 'Unbekannt'}</span>
+              <span>👥 {participantCount} Teilnehmer</span>
+              {selectedRound && (
+                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                  selectedRound.status === 'voting'
+                    ? 'bg-blue-100 text-blue-700'
+                    : selectedRound.status === 'completed'
+                      ? 'bg-emerald-100 text-emerald-700'
+                      : selectedRound.status === 'information'
+                        ? 'bg-indigo-100 text-indigo-700'
+                        : selectedRound.status === 'reaction'
+                          ? 'bg-purple-100 text-purple-700'
+                          : selectedRound.status === 'integration'
+                            ? 'bg-orange-100 text-orange-700'
+                            : 'bg-gray-100 text-gray-600'
+                }`}>
+                  Runde {selectedRound.roundNumber} · {flowPhases[phaseOrder.indexOf(selectedRound.status)]?.label || selectedRound.status}
+                </span>
+              )}
+              {rounds.length > 1 && (
+                <span className="px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full text-xs">
+                  ↻ {rounds.length} Runden gesamt
+                </span>
+              )}
+              {project.circle && <span>🌀 {project.circle.name}</span>}
             </div>
             {/* Invite / Share */}
             {project.circle && (
@@ -1480,14 +1543,73 @@ export default function ProjectDetailPage() {
               {/* Completed — Result */}
               {selectedRound.status === 'completed' && (
                 <div className="space-y-4">
-                  <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-2xl">✅</span>
-                      <h3 className="text-lg font-semibold text-green-800">Beschluss gefasst</h3>
+                  {/* Consensus Summary Card */}
+                  <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl border border-emerald-200 p-5">
+                    <div className="flex items-start gap-3 mb-4">
+                      <span className="text-3xl">✅</span>
+                      <div className="flex-1">
+                        <h3 className="text-lg font-bold text-emerald-800">Beschluss gefasst</h3>
+                        <p className="text-sm text-emerald-700 mt-0.5">
+                          Konsent erreicht in Runde {selectedRound.roundNumber} — kein schwerwiegender Einwand.
+                        </p>
+                      </div>
+                      {consentScore !== null && (
+                        <div className="text-center shrink-0">
+                          <div className={`text-2xl font-black ${
+                            consentScore >= 80 ? 'text-emerald-600' : 'text-amber-600'
+                          }`}>
+                            {consentScore}%
+                          </div>
+                          <div className="text-xs text-emerald-500">Konsent</div>
+                        </div>
+                      )}
                     </div>
-                    <p className="text-sm text-green-700">
-                      Konsent erreicht — kein schwerwiegender Einwand.
-                    </p>
+
+                    {/* Vote Summary */}
+                    {voteBreakdown && (
+                      <div className="bg-white/70 rounded-lg p-3 mb-3">
+                        <p className="text-xs font-semibold text-emerald-800 mb-2">Abstimmungsergebnis</p>
+                        <div className="flex flex-wrap gap-2">
+                          {voteBreakdown.consent > 0 && (
+                            <span className="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-medium">
+                              ✅ {voteBreakdown.consent} Konsent
+                            </span>
+                          )}
+                          {voteBreakdown.minor_objection > 0 && (
+                            <span className="px-2 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-medium">
+                              💛 {voteBreakdown.minor_objection} Anmerkung
+                            </span>
+                          )}
+                          {voteBreakdown.abstain > 0 && (
+                            <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">
+                              ⏸️ {voteBreakdown.abstain} Enthaltung
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Evaluation Date Reminder */}
+                    {project.evaluationDate && (
+                      <div className="flex items-center gap-2 text-sm text-emerald-700">
+                        <span>📅</span>
+                        <span>
+                          Überprüfung am{' '}
+                          <strong>
+                            {new Date(project.evaluationDate).toLocaleDateString('de-DE', {
+                              day: '2-digit',
+                              month: 'long',
+                              year: 'numeric',
+                            })}
+                          </strong>
+                        </span>
+                        {new Date(project.evaluationDate) < new Date() && (
+                          <span className="px-2 py-0.5 bg-amber-200 text-amber-800 rounded-full text-xs font-bold">
+                            Überfällig
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   {!outcomeSubmitted && (

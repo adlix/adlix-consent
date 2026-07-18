@@ -80,16 +80,9 @@ export default function AbstentionAnalysisView({
     }
   }
 
-  // Only owners see the analysis; component stays hidden until 3+ abstentions
+  // Only owners see the analysis; show a subtle coaching hint until 3+ abstentions
   if (!isOwner || abstentionCount < 3) {
-    return (
-      <div role="region" aria-label="Enthaltungs-Analyse" aria-live="polite" className="sr-only">
-        <h4>Enthaltungs-Analyse</h4>
-        {abstentionCount < 3
-          ? `Noch nicht verfügbar — mindestens 3 Enthaltungen benötigt (aktuell: ${abstentionCount}).`
-          : 'Nur für Vorhaben-Ersteller verfügbar.'}
-      </div>
-    )
+    return null // Hidden completely — no need to distract non-owners or until threshold is met
   }
 
   const totalReasons = Object.values(

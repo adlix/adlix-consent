@@ -41,26 +41,37 @@ export default function OutcomeForm({ onSubmit, minorObjections = [] }: OutcomeF
 
   if (submitted) {
     return (
-      <div className="p-6 bg-green-50 rounded-xl border border-green-200">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-2xl">✅</span>
-          <h3 className="text-lg font-semibold text-green-800">Beschluss dokumentiert</h3>
+      <div className="p-6 bg-gradient-to-br from-green-50 to-teal-50 rounded-xl border border-green-200">
+        <div className="flex items-start gap-3 mb-4">
+          <span className="text-3xl">✅</span>
+          <div>
+            <h3 className="text-lg font-bold text-green-800">Beschluss dokumentiert</h3>
+            <p className="text-sm text-green-700 mt-1">{outcome}</p>
+          </div>
         </div>
-        <p className="text-sm text-green-700 mb-3">{outcome}</p>
+
         {nextSteps && (
-          <div className="mb-2">
-            <span className="text-sm font-medium text-green-800">Nächste Schritte:</span>
+          <div className="mb-3 p-3 bg-white/60 rounded-lg border border-green-100">
+            <p className="text-xs font-semibold text-green-800 mb-1">Nächste Schritte</p>
             <p className="text-sm text-green-700">{nextSteps}</p>
           </div>
         )}
-        {evaluationDate && (
-          <div>
-            <span className="text-sm font-medium text-green-800">Evaluationsdatum:</span>
-            <p className="text-sm text-green-700">
-              {new Date(evaluationDate).toLocaleDateString('de-DE')}
-            </p>
-          </div>
-        )}
+
+        <div className="flex items-center gap-3 text-sm">
+          <span className="text-green-700">📅</span>
+          <span className="text-green-700">
+            Evaluationsdatum:{' '}
+            <strong>
+              {evaluationDate
+                ? new Date(evaluationDate).toLocaleDateString('de-DE', {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric',
+                  })
+                : 'Nicht gesetzt'}
+            </strong>
+          </span>
+        </div>
       </div>
     )
   }
