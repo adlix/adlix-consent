@@ -20,5 +20,14 @@ module.exports = {
         policies: [],
       },
     },
+    {
+      method: "POST",
+      path: "/rounds/check-evaluations",
+      handler: "round.checkEvaluationDates",
+      config: {
+        auth: { strategies: ["api-token", "jwt"] },
+        policies: [],
+      },
+    },
   ],
 };

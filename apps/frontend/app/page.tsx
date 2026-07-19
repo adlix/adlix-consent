@@ -5099,6 +5099,273 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Consent in der Praxis — Mini-Fallstudien */}
+        <section
+          className="py-20 bg-white border-t border-gray-100"
+          aria-labelledby="practice-stories-heading"
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-14">
+              <span className="inline-block px-3 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700 rounded-full mb-4">
+                Consent in der Praxis
+              </span>
+              <h2 id="practice-stories-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                Wie Teams wirklich entscheiden
+              </h2>
+              <p className="text-gray-600 max-w-xl mx-auto">
+                Drei echte Szenarien. Wie der Consent-Prozess Blockaden auflöst, stille Stimmen
+                hörbar macht und Meetings kürzer werden lässt.
+              </p>
+            </div>
+
+            <div className="space-y-12">
+              {/* Story 1 */}
+              <article className="grid md:grid-cols-2 gap-8 items-center">
+                <div className="rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-3xl" aria-hidden="true">
+                      👨‍💻
+                    </span>
+                    <div>
+                      <h3 className="font-bold text-gray-900">Agiles Software-Team, 8 Personen</h3>
+                      <p className="text-sm text-blue-600">
+                        Architektur-Entscheidung unter Zeitdruck
+                      </p>
+                    </div>
+                  </div>
+                  <div className="space-y-3 text-sm">
+                    <div className="bg-white/70 rounded-xl p-3 border border-blue-100">
+                      <p className="font-semibold text-red-600 text-xs uppercase tracking-wide mb-1">
+                        🔴 Vorher
+                      </p>
+                      <p className="text-gray-700">
+                        Sprint-Retro, 90 Minuten. Streit über Microservice vs. Monolith.
+                        Entscheidung vertagt. Zwei Wochen später dasselbe Meeting.
+                      </p>
+                    </div>
+                    <div className="bg-white/70 rounded-xl p-3 border border-green-100">
+                      <p className="font-semibold text-green-600 text-xs uppercase tracking-wide mb-1">
+                        ✅ Mit Consent
+                      </p>
+                      <p className="text-gray-700">
+                        Vorhaben eingereicht: „Wir nutzen Microservices für den Auth-Service.“
+                        Reaktionsrunde: 6 Konsent, 1 leichter Einwand (Monitoring-Overhead), 1
+                        schwerwiegender Einwand (Deployment-Komplexität).
+                      </p>
+                    </div>
+                    <div className="bg-white/70 rounded-xl p-3 border border-indigo-100">
+                      <p className="font-semibold text-indigo-600 text-xs uppercase tracking-wide mb-1">
+                        💫 Ergebnis
+                      </p>
+                      <p className="text-gray-700">
+                        Einwand integriert: Deployment-Playbook als Voraussetzung. Beschluss in 36
+                        Stunden (async). Alle tragen es mit — auch der Einwendende.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <blockquote className="border-l-4 border-blue-400 pl-4">
+                    <p className="text-gray-700 italic text-base leading-relaxed">
+                      „Was mich überrascht hat: Der Einwand war nicht ‘dagegen sein’. Er war ein
+                      echter blinder Fleck. Wir hätten das Problem später im Deployment gehabt.
+                      Consent hat ihn sichtbar gemacht, bevor er teuer wurde.“
+                    </p>
+                    <footer className="mt-3">
+                      <cite className="text-sm not-italic">
+                        <strong>Marcus L.</strong>{' '}
+                        <span className="text-gray-500">Team Lead, Software-Entwicklung</span>
+                      </cite>
+                    </footer>
+                  </blockquote>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="text-center bg-blue-50 rounded-xl p-3">
+                      <div className="text-2xl font-black text-blue-700">36h</div>
+                      <div className="text-xs text-gray-600">statt 2 Wochen</div>
+                    </div>
+                    <div className="text-center bg-green-50 rounded-xl p-3">
+                      <div className="text-2xl font-black text-green-700">8/8</div>
+                      <div className="text-xs text-gray-600">Commitment</div>
+                    </div>
+                    <div className="text-center bg-indigo-50 rounded-xl p-3">
+                      <div className="text-2xl font-black text-indigo-700">0</div>
+                      <div className="text-xs text-gray-600">Rollback später</div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <hr className="border-gray-100" />
+
+              {/* Story 2 */}
+              <article className="grid md:grid-cols-2 gap-8 items-center">
+                <div className="order-2 md:order-1 space-y-4">
+                  <blockquote className="border-l-4 border-green-400 pl-4">
+                    <p className="text-gray-700 italic text-base leading-relaxed">
+                      „Drei Enthaltungen — wir dachten, die Leute haben keine Meinung. Dann haben
+                      wir die Enthaltungs-Analyse gelesen. Da standen Bedenken drin, die wir nie
+                      gehört hätten. Eine Person traute sich nicht, in der Gruppe zu sprechen.“
+                    </p>
+                    <footer className="mt-3">
+                      <cite className="text-sm not-italic">
+                        <strong>Anke S.</strong>{' '}
+                        <span className="text-gray-500">Projektleiterin, Gemeinschaftsprojekt</span>
+                      </cite>
+                    </footer>
+                  </blockquote>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="text-center bg-green-50 rounded-xl p-3">
+                      <div className="text-2xl font-black text-green-700">⚡</div>
+                      <div className="text-xs text-gray-600">unsichtbar → sichtbar</div>
+                    </div>
+                    <div className="text-center bg-emerald-50 rounded-xl p-3">
+                      <div className="text-2xl font-black text-emerald-700">anon.</div>
+                      <div className="text-xs text-gray-600">sicher geäußert</div>
+                    </div>
+                    <div className="text-center bg-teal-50 rounded-xl p-3">
+                      <div className="text-2xl font-black text-teal-700">❤️</div>
+                      <div className="text-xs text-gray-600">Vertrauen gewachsen</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="order-1 md:order-2 rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-3xl" aria-hidden="true">
+                      🌱
+                    </span>
+                    <div>
+                      <h3 className="font-bold text-gray-900">NGO-Team, 14 Personen</h3>
+                      <p className="text-sm text-green-600">Stille Stimmen sichtbar machen</p>
+                    </div>
+                  </div>
+                  <div className="space-y-3 text-sm">
+                    <div className="bg-white/70 rounded-xl p-3 border border-red-100">
+                      <p className="font-semibold text-red-600 text-xs uppercase tracking-wide mb-1">
+                        🔴 Problem
+                      </p>
+                      <p className="text-gray-700">
+                        Vorhaben über eine neue Partnerschaft: 11 Konsent, 3 Enthaltungen.
+                        Klassisch: Beschluss gefässt. Aber warum die Enthaltungen?
+                      </p>
+                    </div>
+                    <div className="bg-white/70 rounded-xl p-3 border border-green-100">
+                      <p className="font-semibold text-green-600 text-xs uppercase tracking-wide mb-1">
+                        ✅ Was passierte
+                      </p>
+                      <p className="text-gray-700">
+                        Enthaltungs-Analyse: Eine Person wählte „Mehr Informationen“ (Grund B) und
+                        formulierte anonym: „Ich bin unsicher über die Werte der
+                        Partnerorganisation.“
+                      </p>
+                    </div>
+                    <div className="bg-white/70 rounded-xl p-3 border border-emerald-100">
+                      <p className="font-semibold text-emerald-600 text-xs uppercase tracking-wide mb-1">
+                        💫 Wie es endete
+                      </p>
+                      <p className="text-gray-700">
+                        Einreicher beantwortete: Werte-Statement + Referenzen. Person stimmte erneut
+                        ab: Konsent. Partnerschaft trug alle mit.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <hr className="border-gray-100" />
+
+              {/* Story 3 */}
+              <article className="grid md:grid-cols-2 gap-8 items-center">
+                <div className="rounded-2xl bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-3xl" aria-hidden="true">
+                      🔵
+                    </span>
+                    <div>
+                      <h3 className="font-bold text-gray-900">
+                        Soziokratischer Kreis, 22 Personen
+                      </h3>
+                      <p className="text-sm text-violet-600">Einwand als Qualitätsfilter</p>
+                    </div>
+                  </div>
+                  <div className="space-y-3 text-sm">
+                    <div className="bg-white/70 rounded-xl p-3 border border-red-100">
+                      <p className="font-semibold text-red-600 text-xs uppercase tracking-wide mb-1">
+                        🔴 Ausgangslage
+                      </p>
+                      <p className="text-gray-700">
+                        Vorhaben: Neue Rollenbeschreibung für Moderator:innen. Schwerwiegender
+                        Einwand: „Die Beschreibung schließt erfahrene externe Facilitator:innen
+                        aus.“
+                      </p>
+                    </div>
+                    <div className="bg-white/70 rounded-xl p-3 border border-violet-100">
+                      <p className="font-semibold text-violet-600 text-xs uppercase tracking-wide mb-1">
+                        💡 Dialogprozess
+                      </p>
+                      <p className="text-gray-700">
+                        6-Phasen-Dialog: Einwand geschärft, Lösungsideen gesammelt, KI-Synthese
+                        erstellt. Ergebnis: ein Satz im Rollenprofil geändert. Einwand integriert.
+                      </p>
+                    </div>
+                    <div className="bg-white/70 rounded-xl p-3 border border-purple-100">
+                      <p className="font-semibold text-purple-600 text-xs uppercase tracking-wide mb-1">
+                        💫 Was daraus wurde
+                      </p>
+                      <p className="text-gray-700">
+                        Das geänderte Rollenprofil wurde später auf andere Rollen übertragen. Eine
+                        Einwand-Person wurde zur besten Botschafterin des Prozesses.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <blockquote className="border-l-4 border-violet-400 pl-4">
+                    <p className="text-gray-700 italic text-base leading-relaxed">
+                      „Der Einwand hat den Vorschlag besser gemacht. Nicht kompromittiert — besser.
+                      Das ist der Unterschied zum klassischen Abstimmungsprozess. Dort wäre der
+                      Einwand überstimmt worden. Hier wurde er integriert.“
+                    </p>
+                    <footer className="mt-3">
+                      <cite className="text-sm not-italic">
+                        <strong>Lisa W.</strong>{' '}
+                        <span className="text-gray-500">
+                          Kreiskoordinatorin, Soziokratie-Praktikerin
+                        </span>
+                      </cite>
+                    </footer>
+                  </blockquote>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="text-center bg-violet-50 rounded-xl p-3">
+                      <div className="text-2xl font-black text-violet-700">1</div>
+                      <div className="text-xs text-gray-600">Satz geändert</div>
+                    </div>
+                    <div className="text-center bg-purple-50 rounded-xl p-3">
+                      <div className="text-2xl font-black text-purple-700">22/22</div>
+                      <div className="text-xs text-gray-600">Konsent</div>
+                    </div>
+                    <div className="text-center bg-fuchsia-50 rounded-xl p-3">
+                      <div className="text-2xl font-black text-fuchsia-700">🌟</div>
+                      <div className="text-xs text-gray-600">neue Botschafterin</div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <div className="mt-14 text-center">
+              <p className="text-gray-500 mb-5">
+                Dein Team steckt noch in 2-Stunden-Meetings? Das muss nicht so bleiben.
+              </p>
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary-dark transition-colors shadow-sm"
+              >
+                Jetzt kostenlos starten →
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* FAQ */}
         <section className="py-16" aria-labelledby="faq-heading">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -5278,6 +5545,10 @@ export default function HomePage() {
                   {
                     q: 'Was passiert, wenn jemand \"Mehr Infos nötig\" wählt — und dann?',
                     a: 'Die Plattform macht aus einer Enthaltung einen klaren Workflow: Wenn ein Kreis-Mitglied \"Mehr Informationen benötigt\" (Grund B) oder \"Etwas ist unklar\" (Grund C) wählt, wird die Anfrage automatisch an den Vorhabens-Einreicher weitergeleitet — inklusive konkreter Frage. Der Einreicher erhält eine Benachrichtigung (Teams-Webhook, falls konfiguriert) und hat Zeit zu antworten. Danach wird das Team-Mitglied erneut zur Abstimmung eingeladen. So wird sichergestellt, dass niemand \"blind\" abstimmen muss — und niemand im Kreis verliert den Überblick.',
+                  },
+                  {
+                    q: 'Was ist ein Evaluierungs-Datum und wer erinnert daran?',
+                    a: 'Jeder Consent-Beschluss kann mit einem Evaluierungs-Datum versehen werden: einem definierten Zeitpunkt, an dem der Kreis prüft ob die Entscheidung noch trägt. Das entspricht dem Soziokratie-Prinzip „gut genug für jetzt" — Entscheidungen sind bewusst vorläufig. adlix consent erinnert Einreicher und Kreis automatisch, wenn das Evaluierungs-Datum erreicht ist (Benachrichtigung per Teams-Webhook). Du entscheidest dann: Beschluss verlängern, anpassen oder einen neuen Consent-Loop starten. Das macht Entscheidungen lebendiger statt in Stein gemeißelter Pflichten.',
                   },
                 ] as { q: string; a: string }[]
               ).map(({ q, a }, i) => (

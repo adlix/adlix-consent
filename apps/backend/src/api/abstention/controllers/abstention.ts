@@ -342,5 +342,79 @@ module.exports = createCoreController(
 
       ctx.body = { data: abstention };
     },
+
+    /**
+     * POST /abstentions/:id/answer
+     * Project owner answers a B/C info request, notifies requester via Teams
+     * so they can re-cast their vote.
+     *
+     * Body: { answer: string }
+     */
+    async answerInfoRequest(ctx) {
+      const { id } = ctx.params;
+      const body = ctx.request.body as Record<string, unknown>;
+      const answer = body?.answer as string | undefined;
+
+      if (!answer || typeof answer !== "string" || answer.trim().length === 0) {
+        return ctx.badRequest("Antwort darf nicht leer sein.");
+      }
+
+      const ownerId = ctx.state.user?.id;
+      if (!ownerId) return ctx.unauthorized();
+
+      // Load abstention with round and user
+      const abstention = await strapi.entityService.findOne(
+        "api::abstention.abstention",
+        Number(id),
+        { populate: ["round", "round.project", "round.project.owner", "user"] },
+      );
+
+      if (!abstention) return ctx.notFound("Enthaltung nicht gefunden");
+
+      // Only project owner may answer
+      const projectOwnerId = abstention.round?.project?.owner?.id;
+      if (projectOwnerId && String(projectOwnerId) !== String(ownerId)) {
+        return ctx.forbidden("Nur der Vorhaben-Einreicher kann antworten.");
+      }
+
+      // Mark abstention as answered and store the reply
+      const updated = await strapi.entityService.update(
+        "api::abstention.abstention",
+        Number(id),
+        {
+          data: {
+            ownerAnswer: answer.trim(),
+            answeredAt: new Date().toISOString(),
+            answered: true,
+          },
+        },
+      );
+
+      // Notify requester via Teams
+      try {
+        const owner = ctx.state.user;
+        const requester = abstention.user;
+        const round = abstention.round;
+        await teamsWebhook.notifyInfoRequestAnswered(
+          round?.project?.name || "Unbekanntes Projekt",
+          round?.roundNumber || 0,
+          owner?.username || owner?.email || "Einreicher",
+          answer.trim(),
+          requester?.username || requester?.email || "Anfragender",
+        );
+      } catch (_) {}
+
+      // Audit log
+      await auditLog(
+        strapi,
+        "info_request_answered",
+        "abstention",
+        String(id),
+        `Info-Anfrage beantwortet. ${answer.trim().substring(0, 200)}`,
+        ownerId,
+      );
+
+      ctx.body = { data: updated };
+    },
   }),
 );

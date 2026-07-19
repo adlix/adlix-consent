@@ -11,6 +11,7 @@ import AuditTrail from '@/components/AuditTrail/AuditTrail'
 import ConsentVotePanel from '@/components/ConsentVote/ConsentVotePanel'
 import AnonymousConcernsView from '@/components/AnonymousConcerns/AnonymousConcernsView'
 import AbstentionAnalysisView from '@/components/AbstentionAnalysis/AbstentionAnalysisView'
+import InfoRequestReplyPanel from '@/components/InfoRequestReply/InfoRequestReplyPanel'
 import ConsentPhaseTracker from '@/components/ConsentPhaseTracker/ConsentPhaseTracker'
 
 const AbstainReasonModal = dynamic(() => import('@/components/AbstainReason/AbstainReasonModal'), {
@@ -424,7 +425,7 @@ export default function ProjectDetailPage() {
 
   // ── Consent score helper ────────────────────────────────────────────
   const voteBreakdown = selectedRound
-    ? { consent: 0, minor_objection: 0, major_objection: 0, abstain: 0 } as Record<string, number>
+    ? ({ consent: 0, minor_objection: 0, major_objection: 0, abstain: 0 } as Record<string, number>)
     : null
   if (voteBreakdown && selectedRound) {
     selectedRound.votes.forEach((v) => {
@@ -436,9 +437,9 @@ export default function ProjectDetailPage() {
       ? Math.round((voteBreakdown.consent / participantCount) * 100)
       : null
   const votedCount = selectedRound?.votes.length ?? 0
-  const majorObjections = selectedRound?.objections.filter(
-    (o) => o.severity === 'major' && o.status === 'open'
-  ).length ?? 0
+  const majorObjections =
+    selectedRound?.objections.filter((o) => o.severity === 'major' && o.status === 'open').length ??
+    0
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -546,20 +547,24 @@ export default function ProjectDetailPage() {
               <span>👤 {project.owner?.username || 'Unbekannt'}</span>
               <span>👥 {participantCount} Teilnehmer</span>
               {selectedRound && (
-                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                  selectedRound.status === 'voting'
-                    ? 'bg-blue-100 text-blue-700'
-                    : selectedRound.status === 'completed'
-                      ? 'bg-emerald-100 text-emerald-700'
-                      : selectedRound.status === 'information'
-                        ? 'bg-indigo-100 text-indigo-700'
-                        : selectedRound.status === 'reaction'
-                          ? 'bg-purple-100 text-purple-700'
-                          : selectedRound.status === 'integration'
-                            ? 'bg-orange-100 text-orange-700'
-                            : 'bg-gray-100 text-gray-600'
-                }`}>
-                  Runde {selectedRound.roundNumber} · {flowPhases[phaseOrder.indexOf(selectedRound.status)]?.label || selectedRound.status}
+                <span
+                  className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                    selectedRound.status === 'voting'
+                      ? 'bg-blue-100 text-blue-700'
+                      : selectedRound.status === 'completed'
+                        ? 'bg-emerald-100 text-emerald-700'
+                        : selectedRound.status === 'information'
+                          ? 'bg-indigo-100 text-indigo-700'
+                          : selectedRound.status === 'reaction'
+                            ? 'bg-purple-100 text-purple-700'
+                            : selectedRound.status === 'integration'
+                              ? 'bg-orange-100 text-orange-700'
+                              : 'bg-gray-100 text-gray-600'
+                  }`}
+                >
+                  Runde {selectedRound.roundNumber} ·{' '}
+                  {flowPhases[phaseOrder.indexOf(selectedRound.status)]?.label ||
+                    selectedRound.status}
                 </span>
               )}
               {rounds.length > 1 && (
@@ -1413,6 +1418,14 @@ export default function ProjectDetailPage() {
                     </div>
                   )}
 
+                  {/* Info-Anfragen (B/C Enthaltungen) — Owner kann antworten */}
+                  <div className="mt-6">
+                    <InfoRequestReplyPanel
+                      roundId={selectedRound.id}
+                      isOwner={String(userId) === String(project?.owner?.id)}
+                    />
+                  </div>
+
                   {/* Enthaltungs-Analyse (nur für Owner, bei >2 Enthaltungen) */}
                   <div className="mt-6 space-y-4">
                     <AnonymousConcernsView
@@ -1550,14 +1563,17 @@ export default function ProjectDetailPage() {
                       <div className="flex-1">
                         <h3 className="text-lg font-bold text-emerald-800">Beschluss gefasst</h3>
                         <p className="text-sm text-emerald-700 mt-0.5">
-                          Konsent erreicht in Runde {selectedRound.roundNumber} — kein schwerwiegender Einwand.
+                          Konsent erreicht in Runde {selectedRound.roundNumber} — kein
+                          schwerwiegender Einwand.
                         </p>
                       </div>
                       {consentScore !== null && (
                         <div className="text-center shrink-0">
-                          <div className={`text-2xl font-black ${
-                            consentScore >= 80 ? 'text-emerald-600' : 'text-amber-600'
-                          }`}>
+                          <div
+                            className={`text-2xl font-black ${
+                              consentScore >= 80 ? 'text-emerald-600' : 'text-amber-600'
+                            }`}
+                          >
                             {consentScore}%
                           </div>
                           <div className="text-xs text-emerald-500">Konsent</div>
@@ -1568,7 +1584,9 @@ export default function ProjectDetailPage() {
                     {/* Vote Summary */}
                     {voteBreakdown && (
                       <div className="bg-white/70 rounded-lg p-3 mb-3">
-                        <p className="text-xs font-semibold text-emerald-800 mb-2">Abstimmungsergebnis</p>
+                        <p className="text-xs font-semibold text-emerald-800 mb-2">
+                          Abstimmungsergebnis
+                        </p>
                         <div className="flex flex-wrap gap-2">
                           {voteBreakdown.consent > 0 && (
                             <span className="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-medium">

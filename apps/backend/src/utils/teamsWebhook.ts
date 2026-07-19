@@ -33,7 +33,9 @@ interface TeamsNotification {
     | "objection_raised"
     | "round_completed"
     | "abstention_info_request"
-    | "abstention_clarification_request";
+    | "abstention_clarification_request"
+    | "evaluation_due"
+    | "info_request_answered";
   details?: {
     proposal?: string;
     userName?: string;
@@ -70,6 +72,8 @@ class TeamsWebhookService {
       round_completed: "✅ Runde abgeschlossen",
       abstention_info_request: "📚 Info-Anfrage — mehr Informationen benötigt",
       abstention_clarification_request: "🤔 Klärungsbedarf — ein Teil ist unklar",
+      evaluation_due: "📅 Evaluierungs-Termin erreicht",
+      info_request_answered: "💬 Info-Anfrage beantwortet — erneute Abstimmung möglich",
     };
 
     const facts: { name: string; value: string }[] = [
@@ -250,6 +254,42 @@ class TeamsWebhookService {
         abstentionReason: reason,
         abstentionDetail: detail,
         ownerName,
+      },
+    });
+  }
+
+  async notifyEvaluationDue(
+    projectName: string,
+    roundNumber: number,
+    evaluationDate: string,
+  ) {
+    return this.send({
+      webhookUrl: "",
+      projectName,
+      roundNumber,
+      eventType: "evaluation_due",
+      details: {
+        proposal: `Evaluierungs-Termin: ${evaluationDate}\n\nBitte prüft, ob der Beschluss noch trägt.`,
+      },
+    });
+  }
+
+  async notifyInfoRequestAnswered(
+    projectName: string,
+    roundNumber: number,
+    ownerName: string,
+    answer: string,
+    requesterName: string,
+  ) {
+    return this.send({
+      webhookUrl: "",
+      projectName,
+      roundNumber,
+      eventType: "info_request_answered",
+      details: {
+        userName: ownerName,
+        proposal: `Antwort an ${requesterName}:\n${answer.substring(0, 300)}${answer.length > 300 ? '...' : ''}`,
+        ownerName: requesterName,
       },
     });
   }

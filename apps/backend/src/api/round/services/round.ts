@@ -44,6 +44,66 @@ module.exports = createCoreService("api::round.round", ({ strapi }) => ({
   },
 
   /**
+   * Find completed rounds whose evaluationDate has been reached
+   * and haven't had an evaluation reminder sent yet
+   */
+  async getRoundsDueForEvaluation() {
+    const now = new Date().toISOString();
+    const rounds = await strapi.entityService.findMany("api::round.round", {
+      filters: {
+        status: "completed",
+        evaluationDate: { $lte: now, $notNull: true },
+        evaluationReminderSent: { $ne: true },
+      },
+      populate: ["project", "project.owner"],
+    });
+    return rounds;
+  },
+
+  /**
+   * Check evaluation dates and send reminders for due rounds
+   */
+  async checkEvaluationDates() {
+    const teamsWebhook = require("../../../utils/teamsWebhook").default;
+    const rounds = await this.getRoundsDueForEvaluation();
+    const results: { roundId: number; projectName: string; evaluationDate: string }[] = [];
+
+    for (const round of rounds) {
+      try {
+        await teamsWebhook.notifyEvaluationDue(
+          round.project?.name || "Unbekanntes Projekt",
+          round.roundNumber,
+          round.evaluationDate,
+        );
+      } catch (_) {}
+
+      try {
+        await strapi.entityService.create("api::audit-log.audit-log", {
+          data: {
+            action: "evaluation_reminder",
+            entityType: "round",
+            entityId: String(round.id),
+            details: `Evaluierungs-Erinnerung gesendet. Termin war: ${round.evaluationDate}`,
+            project: round.project?.id,
+          },
+        });
+      } catch (_) {}
+
+      await strapi.entityService.update("api::round.round", round.id, {
+        data: { evaluationReminderSent: true },
+      });
+
+      results.push({
+        roundId: round.id,
+        projectName: round.project?.name || "",
+        evaluationDate: round.evaluationDate,
+      });
+    }
+
+    return results;
+  },
+
+  /**
    * Send reminders to non-voters for all eligible rounds
    */
   async sendReminders(reminderAfterHours = 48) {

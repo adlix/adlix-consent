@@ -159,4 +159,11 @@ module.exports = createCoreController("api::round.round", ({ strapi }) => ({
       .sendReminders(hours);
     ctx.body = { data: results };
   },
+
+  async checkEvaluationDates(ctx) {
+    const results = await strapi
+      .service("api::round.round")
+      .checkEvaluationDates();
+    ctx.body = { data: results, count: results.length };
+  },
 }));

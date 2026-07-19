@@ -405,6 +405,20 @@ class StrapiClient {
       body: JSON.stringify({ hours }),
     })
   }
+
+  async checkEvaluationDates() {
+    return this.request<{
+      data: { roundId: number; projectName: string; evaluationDate: string }[]
+      count: number
+    }>('/rounds/check-evaluations', { method: 'POST' })
+  }
+
+  async answerInfoRequest(abstentionId: number | string, answer: string) {
+    return this.request<unknown>(`/abstentions/${abstentionId}/answer`, {
+      method: 'POST',
+      body: JSON.stringify({ answer }),
+    })
+  }
 }
 
 // Singleton instance

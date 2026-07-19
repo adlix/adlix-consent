@@ -18,5 +18,17 @@ module.exports = {
         },
       },
     },
+    {
+      method: "POST",
+      path: "/abstentions/:id/answer",
+      handler: "api::abstention.abstention.answerInfoRequest",
+      config: {
+        middlewares: [],
+        prefix: "",
+        auth: {
+          scope: ["api::abstention.abstention.update"],
+        },
+      },
+    },
   ],
 };

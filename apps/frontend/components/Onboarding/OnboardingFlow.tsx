@@ -4,8 +4,6 @@
  */
 'use client'
 
-'use client'
-
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { strapi } from '@/lib/strapi'
