@@ -855,6 +855,67 @@ export default function ProjectDetailPage() {
                   <p className="text-sm text-gray-500 mb-4">
                     Teile deine Perspektive — reihum, kein Gegenargumentieren. Aktives Zuhören.
                   </p>
+
+                  {/* Reaction participation tracker */}
+                  {(() => {
+                    const reactions = selectedRound.comments.filter(
+                      (c) => c.type === 'reaction' || c.type === 'perspective'
+                    )
+                    const reactionCount = reactions.length
+                    const total = participantCount
+                    const pct = total > 0 ? Math.round((reactionCount / total) * 100) : 0
+                    const allReacted = total > 0 && reactionCount >= total
+                    const currentUserReacted = reactions.some(
+                      (c) => String(c.user?.id) === String(userId)
+                    )
+                    if (reactionCount === 0 && !currentUserReacted) return null
+                    return (
+                      <div
+                        className={`mb-5 p-4 rounded-xl border-2 ${
+                          allReacted
+                            ? 'bg-purple-50 border-purple-200'
+                            : 'bg-slate-50 border-slate-200'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg" aria-hidden="true">
+                              {allReacted ? '✅' : '💬'}
+                            </span>
+                            <p
+                              className={`text-sm font-semibold ${
+                                allReacted ? 'text-purple-800' : 'text-slate-700'
+                              }`}
+                            >
+                              {allReacted
+                                ? 'Alle Perspektiven gesammelt'
+                                : `${reactionCount} von ${total > 0 ? total : '?'} Reaktionen`}
+                            </p>
+                          </div>
+                          {currentUserReacted && (
+                            <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-medium">
+                              ✓ Du hast reagiert
+                            </span>
+                          )}
+                        </div>
+                        {total > 0 && (
+                          <div className="w-full h-1.5 bg-white rounded-full overflow-hidden border border-purple-200">
+                            <div
+                              className="h-full rounded-full bg-purple-500 transition-all duration-500"
+                              style={{ width: `${Math.max(pct, reactionCount > 0 ? 5 : 0)}%` }}
+                            />
+                          </div>
+                        )}
+                        {allReacted && String(userId) === String(project?.owner?.id) && (
+                          <p className="mt-2 text-xs text-purple-700">
+                            Alle haben ihre Perspektive geteilt — du kannst jetzt zur
+                            Anpassungsphase wechseln.
+                          </p>
+                        )}
+                      </div>
+                    )
+                  })()}
+
                   {selectedRound.comments
                     .filter((c) => c.type === 'reaction' || c.type === 'perspective')
                     .map((cmt) => (
@@ -1676,8 +1737,8 @@ export default function ProjectDetailPage() {
                       ) : (
                         <div className="space-y-3 bg-gray-50 rounded-xl p-4 border border-gray-200">
                           <p className="text-xs text-gray-500">
-                            Überarbeite den Vorschlag (z.B. nach Evaluation) und starte eine neue
-                            Abstimmungsrunde.
+                            Überarbeite den Vorschlag (z.B. nach Evaluation) und starte einen neuen
+                            Consent-Loop — der Prozess beginnt wieder mit der Informationsrunde.
                           </p>
                           <label className="block">
                             <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
@@ -1698,10 +1759,11 @@ export default function ProjectDetailPage() {
                                 setAdvancing(true)
                                 strapi.setJwt(jwt || null)
                                 try {
+                                  // Evaluation re-loop starts fresh from information phase
                                   await strapi.createRound({
                                     roundNumber: rounds.length + 1,
                                     proposal: newRoundProposal.trim(),
-                                    status: 'voting',
+                                    status: 'information',
                                     project: project!.id,
                                   })
                                   setShowNewRoundForm(false)
@@ -1719,7 +1781,7 @@ export default function ProjectDetailPage() {
                               disabled={advancing || !newRoundProposal.trim()}
                               className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 text-sm"
                             >
-                              {advancing ? 'Starte Runde…' : '🔄 Neue Runde starten'}
+                              {advancing ? 'Starte Runde…' : '🔄 Neuen Loop starten'}
                             </button>
                             <button
                               onClick={() => {

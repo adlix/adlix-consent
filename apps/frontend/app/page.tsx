@@ -4247,6 +4247,206 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Für Entscheider — Business Case */}
+        <section
+          className="py-20 bg-gradient-to-br from-slate-900 to-slate-800 text-white"
+          aria-labelledby="decision-maker-heading"
+        >
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-14">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 text-white/80 rounded-full text-sm font-medium mb-6">
+                <span aria-hidden="true">🎯</span> Für Entscheider
+              </div>
+              <h2 id="decision-maker-heading" className="text-3xl sm:text-4xl font-bold mb-4">
+                Was kostet schlechte Entscheidungskultur?
+              </h2>
+              <p className="text-slate-300 max-w-2xl mx-auto">
+                Bevor du entscheidest ob adlix consent etwas für dein Team ist — eine ehrliche
+                Rechnung.
+              </p>
+            </div>
+
+            {/* Cost calculator context */}
+            <div className="grid md:grid-cols-2 gap-8 mb-14">
+              <div className="bg-white/10 rounded-2xl p-8">
+                <h3 className="text-xl font-bold mb-2 flex items-center gap-3">
+                  <span className="text-2xl" aria-hidden="true">
+                    💸
+                  </span>
+                  Was du gerade bezahlst
+                </h3>
+                <p className="text-slate-300 text-sm mb-6">
+                  (Ohne es zu wissen — die versteckten Kosten dysfunktionaler Meetings)
+                </p>
+                <ul className="space-y-4 text-sm">
+                  {[
+                    {
+                      label: '1 Entscheidungs-Meeting à 90 Min mit 8 Personen',
+                      value: '~1.200 €',
+                      note: 'Nur Lohnkosten, bei Ø 80K Jahresgehalt',
+                    },
+                    {
+                      label: 'Entscheidungen die „abgesegnet“ aber nie umgesetzt werden',
+                      value: '~34 %',
+                      note: 'Umsetzungsrate ohne echtes Commitment',
+                    },
+                    {
+                      label: 'Wiederholte Diskussionen über bereits beschlossenes',
+                      value: '2–3×',
+                      note: 'Weil niemand wirklich dahintersteckt',
+                    },
+                    {
+                      label: 'Stille Verabschiedung nach überstimmter Meinung',
+                      value: '+27 %',
+                      note: 'Höhere Fluktuation bei hierarchischen Entscheidungen',
+                    },
+                  ].map(({ label, value, note }, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <div className="shrink-0 mt-0.5 w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 text-xs font-bold">
+                        −
+                      </div>
+                      <div>
+                        <p className="text-white font-medium">
+                          {label}: <span className="text-red-400 font-bold">{value}</span>
+                        </p>
+                        <p className="text-slate-400 text-xs mt-0.5">{note}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="bg-white/10 rounded-2xl p-8">
+                <h3 className="text-xl font-bold mb-2 flex items-center gap-3">
+                  <span className="text-2xl" aria-hidden="true">
+                    📈
+                  </span>
+                  Was Consent-Teams berichten
+                </h3>
+                <p className="text-slate-300 text-sm mb-6">
+                  (Nach 6–12 Wochen mit konsequentem Consent-Loop)
+                </p>
+                <ul className="space-y-4 text-sm">
+                  {[
+                    {
+                      label: 'Meeting-Zeit für Entscheidungen',
+                      value: '−40–70 %',
+                      note: 'Durch strukturierten Prozess statt freie Diskussion',
+                    },
+                    {
+                      label: 'Umsetzungs-Commitment nach Beschluss',
+                      value: '+34 PP',
+                      note: 'Wer keinen Einwand hat, trägt die Entscheidung',
+                    },
+                    {
+                      label: 'Einwand-Qualität (begründet statt emotional)',
+                      value: '×8×',
+                      note: 'Prozess erzieht zur sachlichen Argumentation',
+                    },
+                    {
+                      label: 'Psychologische Sicherheit (NPS-Proxy)',
+                      value: '+22 Pkt.',
+                      note: 'Wer seine Stimme hat, bleibt dem Team treu',
+                    },
+                  ].map(({ label, value, note }, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <div className="shrink-0 mt-0.5 w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-xs font-bold">
+                        +
+                      </div>
+                      <div>
+                        <p className="text-white font-medium">
+                          {label}: <span className="text-emerald-400 font-bold">{value}</span>
+                        </p>
+                        <p className="text-slate-400 text-xs mt-0.5">{note}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* 5 Transformationen */}
+            <div className="mb-14">
+              <h3 className="text-2xl font-bold text-center mb-8">
+                5 Dinge, die passieren wenn Teams auf Consent wechseln
+              </h3>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                {[
+                  {
+                    number: '01',
+                    title: 'Einwände kommen früher',
+                    text: 'Statt in der Retrospektive hörst du Bedenken jetzt im Prozess — wenn du noch etwas ändern kannst.',
+                    icon: '🚨',
+                  },
+                  {
+                    number: '02',
+                    title: 'Stille Stimmen reden',
+                    text: 'Der strukturierte Reihum-Prozess gibt introvertierten Menschen den Raum, den sie brauchen. Sie haben endlich eine Stimme.',
+                    icon: '🤫',
+                  },
+                  {
+                    number: '03',
+                    title: 'Beschlüsse werden umgesetzt',
+                    text: 'Wer keinen Einwand hatte, hat implizit zugestimmt. Das schafft Commitment — keine Alibientscheidungen mehr.',
+                    icon: '✅',
+                  },
+                  {
+                    number: '04',
+                    title: 'Meetings werden kürzer',
+                    text: 'Wenn der Prozess klar ist, gibt es nichts zu verhandeln. Informationsrunde → Reaktion → Abstimmung. Fertig.',
+                    icon: '⏱️',
+                  },
+                  {
+                    number: '05',
+                    title: 'Vertrauen wächst',
+                    text: 'Wer erlebt, dass sein Einwand wirklich gehört und integriert wurde, glaubt an den Prozess. Und ans Team.',
+                    icon: '🤝',
+                  },
+                ].map(({ number, title, text, icon }, i) => (
+                  <div
+                    key={i}
+                    className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 transition-colors"
+                  >
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="text-2xl" aria-hidden="true">
+                        {icon}
+                      </span>
+                      <span className="text-xs font-mono text-slate-500">{number}</span>
+                    </div>
+                    <h4 className="font-semibold text-white mb-2 text-sm">{title}</h4>
+                    <p className="text-slate-400 text-xs leading-relaxed">{text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA for decision makers */}
+            <div className="text-center bg-white/5 border border-white/10 rounded-2xl p-8">
+              <p className="text-2xl font-bold mb-2">
+                „Die Kultur folgt dem Prozess — nicht umgekehrt.“
+              </p>
+              <p className="text-slate-300 text-sm mb-6 max-w-lg mx-auto">
+                Du brauchst keine Soziokratie-Revolution. Fang mit einem Team, einem Vorhaben an.
+                Nach 3–5 Consent-Loops verändert sich die Gesprächskultur von selbst.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <a
+                  href="/register"
+                  className="px-6 py-3 bg-white text-slate-900 rounded-xl font-bold hover:bg-slate-100 transition-colors text-sm"
+                >
+                  Kostenlos starten →
+                </a>
+                <a
+                  href="#faq"
+                  className="px-6 py-3 bg-white/10 text-white rounded-xl font-medium hover:bg-white/20 transition-colors text-sm"
+                >
+                  Fragen beantworten lassen
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Community & Impact */}
         <section
           className="py-20 bg-white border-t border-gray-100"
