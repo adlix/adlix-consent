@@ -198,6 +198,66 @@ export default function DashboardPage() {
             ✅ {clipboardToast}
           </div>
         )}
+
+        {/* Evaluation Alert Banner */}
+        {(() => {
+          const now = new Date()
+          const overdue = proposals.filter(
+            (p) => p.evaluationDate && new Date(p.evaluationDate) < now
+          )
+          const dueSoon = proposals.filter((p) => {
+            if (!p.evaluationDate) return false
+            const evalDate = new Date(p.evaluationDate)
+            const daysUntil = Math.ceil((evalDate.getTime() - now.getTime()) / 86400000)
+            return daysUntil >= 0 && daysUntil <= 7
+          })
+          if (overdue.length === 0 && dueSoon.length === 0) return null
+          return (
+            <div
+              className={`mb-6 p-4 rounded-xl border-l-4 ${
+                overdue.length > 0 ? 'bg-red-50 border-red-400' : 'bg-amber-50 border-amber-400'
+              }`}
+              role="alert"
+            >
+              <div className="flex items-start gap-3">
+                <span className="text-xl shrink-0" aria-hidden="true">
+                  {overdue.length > 0 ? '🔴' : '🟡'}
+                </span>
+                <div className="flex-1">
+                  <p
+                    className={`font-semibold text-sm ${
+                      overdue.length > 0 ? 'text-red-800' : 'text-amber-800'
+                    }`}
+                  >
+                    {overdue.length > 0
+                      ? `${overdue.length} Vorhaben mit überfälliger Evaluation`
+                      : `${dueSoon.length} Vorhaben mit Evaluation in den nächsten 7 Tagen`}
+                  </p>
+                  <ul className="mt-1 space-y-0.5 list-none">
+                    {[...overdue, ...dueSoon].slice(0, 3).map((p) => (
+                      <li key={p.id} className="text-xs text-gray-600">
+                        <a
+                          href={`/projects/${p.id}`}
+                          className={`hover:underline ${
+                            overdue.some((o) => o.id === p.id) ? 'text-red-700' : 'text-amber-700'
+                          }`}
+                        >
+                          → {p.title}
+                        </a>
+                      </li>
+                    ))}
+                    {overdue.length + dueSoon.length > 3 && (
+                      <li className="text-xs text-gray-500">
+                        + {overdue.length + dueSoon.length - 3} weitere
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )
+        })()}
+
         <h1 className="text-2xl font-bold mb-8">Willkommen zurück!</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

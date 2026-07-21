@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { PricingSection } from '@/components/PricingSection'
+import TeamCalculator from '@/components/TeamCalculator'
 
 export const metadata: Metadata = {
   title: 'adlix consent — Gemeinsam entscheiden',
@@ -6545,6 +6546,8 @@ export default function HomePage() {
           </div>
         </section>
 
+        <TeamCalculator />
+
         <PricingSection />
       </main>
 
@@ -6575,6 +6578,11 @@ export default function HomePage() {
                 <li>
                   <Link href="#team-benefits-heading" className="hover:text-gray-900">
                     Für Teams
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#calculator" className="hover:text-gray-900">
+                    Kosten-Rechner
                   </Link>
                 </li>
                 <li>

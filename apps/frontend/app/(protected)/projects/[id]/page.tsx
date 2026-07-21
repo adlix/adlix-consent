@@ -706,6 +706,65 @@ export default function ProjectDetailPage() {
                     Stelle Verständnisfragen zum Vorschlag. Keine Meinungen oder Diskussion — nur
                     Klärung.
                   </p>
+                  {/* Information participation tracker */}
+                  {(() => {
+                    const questions = selectedRound.comments.filter((c) => c.type === 'question')
+                    const questionCount = questions.length
+                    const total = participantCount
+                    const pct = total > 0 ? Math.round((questionCount / total) * 100) : 0
+                    const currentUserQuestioned = questions.some(
+                      (c) => String(c.user?.id) === String(userId)
+                    )
+                    const isOwner2 = String(userId) === String(project?.owner?.id)
+                    // Show tracker once at least one question exists OR current user already asked
+                    if (questionCount === 0 && !currentUserQuestioned) return null
+                    const allAsked = total > 0 && questionCount >= total
+                    return (
+                      <div
+                        className={`mb-5 p-4 rounded-xl border-2 ${
+                          allAsked
+                            ? 'bg-indigo-50 border-indigo-200'
+                            : 'bg-slate-50 border-slate-200'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg" aria-hidden="true">
+                              {allAsked ? '✅' : '❓'}
+                            </span>
+                            <p
+                              className={`text-sm font-semibold ${
+                                allAsked ? 'text-indigo-800' : 'text-slate-700'
+                              }`}
+                            >
+                              {allAsked
+                                ? 'Alle Fragen gestellt'
+                                : `${questionCount} Frage${questionCount !== 1 ? 'n' : ''} bisher${total > 0 ? ` (${total} Teilnehmer)` : ''}`}
+                            </p>
+                          </div>
+                          {currentUserQuestioned && (
+                            <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-medium">
+                              ✓ Du hast gefragt
+                            </span>
+                          )}
+                        </div>
+                        {total > 0 && (
+                          <div className="w-full h-1.5 bg-white rounded-full overflow-hidden border border-indigo-200">
+                            <div
+                              className="h-full rounded-full bg-indigo-500 transition-all duration-500"
+                              style={{ width: `${Math.max(pct, questionCount > 0 ? 5 : 0)}%` }}
+                            />
+                          </div>
+                        )}
+                        {allAsked && isOwner2 && (
+                          <p className="mt-2 text-xs text-indigo-700">
+                            Alle haben ihre Fragen gestellt — du kannst zur Reaktionsrunde wechseln.
+                          </p>
+                        )}
+                      </div>
+                    )
+                  })()}
+
                   {/* Group: questions with their answers */}
                   {(() => {
                     const questions = selectedRound.comments.filter((c) => c.type === 'question')
